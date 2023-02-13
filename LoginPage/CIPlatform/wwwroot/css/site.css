@@ -1,0 +1,105 @@
+* {
+    font-family: 'Noto Sans';
+}
+
+.main-login-container-wrapper {
+    max-width: 1920px;
+}
+
+.privacy-policy {
+    /* margin-top: 150px; */
+    /* position: relative;
+    top: 227px;     */
+    /* max-width: 401px; */
+}
+
+#privacy-policy-for-reg {
+    /* position: relative;
+    top: 61px; */
+}
+
+.main-login-right-continer {
+    /* max-width: 576px; */
+}
+
+.carousel-caption-text-h5 {
+    font-size: 43px;
+    font-weight: 400;
+}
+
+.carousel-caption-para {
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.login-form-label {
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.login-p-a {
+    font-size: 14px;
+    font-weight: 100;
+    color: #414141;
+}
+
+.main-login-right-continer form {
+    margin: auto;
+}
+
+    .main-login-right-continer form input, .main-login-right-continer form button, .main-login-right-continer form p {
+        width: 401px;
+    }
+
+@media screen and (max-width:1600px) {
+    .carousel-caption-text-h5 {
+        font-size: 38px;
+    }
+
+    .carousel-caption-para {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width:1400px) {
+    .main-login-right-continer form input, .main-login-right-continer form button, .main-login-right-continer form p {
+        width: 365px;
+    }
+}
+
+@media screen and (max-width:1200px) {
+    .main-login-container-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-login-right-continer {
+        margin-top: 30px;
+        width: 100%;
+    }
+
+    .privacy-policy {
+    }
+}
+
+@media screen and (max-width:992px) {
+    .carousel-caption-text-h5 {
+        font-size: 36px;
+    }
+
+    .carousel-caption-para {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width:576px) {
+    .main-login-right-continer form input, .main-login-right-continer form button, .main-login-right-continer form p {
+        width: 350px;
+    }
+}
+
+@media screen and (max-width:400px) {
+    .main-login-right-continer form input, .main-login-right-continer form button, .main-login-right-continer form p {
+        width: 300px;
+    }
+}
