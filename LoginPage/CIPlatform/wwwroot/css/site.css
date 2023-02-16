@@ -2,6 +2,11 @@
     font-family: 'Noto Sans';
 }
 
+.header a {
+    text-decoration: none;
+    color: #333333;
+}
+
 .main-login-container-wrapper {
     max-width: 1920px;
 }
@@ -102,4 +107,48 @@
     .main-login-right-continer form input, .main-login-right-continer form button, .main-login-right-continer form p {
         width: 300px;
     }
+}
+
+
+
+/* ***************** Lost Password ******************* */
+
+
+.lost-password-forgot-header {
+    font-size: 22px;
+    color: #414141;
+}
+
+.lost-password-forgot-header-caption {
+    font-size: 14px;
+    font-weight: 100;
+    color: #414141;
+}
+
+#forgot-password-email-label {
+    font-size: 16px;
+    font-weight: 100;
+}
+
+
+/* *********** Registration ************ */
+
+@media screen and (max-width:1756px) {
+    #privacy-policy-for-reg {
+    }
+}
+
+@media screen and (max-width:1440px) {
+    .main-login-right-continer form input, .main-login-right-continer form button, .main-login-right-continer form p {
+        width: 340px;
+    }
+
+    #privacy-policy-for-reg {
+    }
+}
+
+
+.header a {
+    text-decoration: none;
+    color: #333333;
 }

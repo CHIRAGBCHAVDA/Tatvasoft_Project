@@ -1,4 +1,6 @@
-﻿@{
+﻿@model TblUser
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -61,30 +63,48 @@
       </div>
       <div class="m-auto col-lg-12 col-xl-4">
         <div class="main-login-right-continer mx-4 d-flex flex-column justify-content-center mx-auto">
-          <form class="" action="">
-            <div class=" mb-3">
-              <label for="exampleFormControlInput1" class="form-label login-form-label">Email address</label>
-              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="">
+          <form method="post" asp-action="Index">
+                    @if(TempData["error"] != null)
+                    {
+                        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+                        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+                        <script type="text/javascript">
+                            toastr.error('@TempData["error"]');
+                        </script>
+
+                    }
+                     @if(TempData["success"] != null)
+                    {
+                        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+                        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+                        <script type="text/javascript">
+                            toastr.success('@TempData["success"]');
+                        </script>
+
+                    }
+                    <div class=" mb-3">
+              <label asp-for="Email" for="exampleFormControlInput1" class="form-label login-form-label">Email address</label>
+              <input asp-for="Email" type="email" class="form-control" id="exampleFormControlInput1" placeholder="">
             </div>
             <div class="password">
-              <label for="exampleFormControlInput2" class="form-label login-form-label">Password</label>
-              <input type="password" name="exampleFormControlInput2" class="form-control" id="">
+              <label asp-for="Password" for="exampleFormControlInput2" class="form-label login-form-label">Password</label>
+              <input asp-for="Password" type="password"  class="form-control" id="exampleFormControlInput2" placeholder="">
             </div>
             <div class="submit">
               <label for="">&nbsp; </label>
-              <button type="submit" class="form-control border rounded-pill border-warning text-warning">Login</button>
+              <button type="submit" class="form-control border rounded-pill border-warning text-warning" >Login</button>
             </div>
             <div class="lost-password mt-3">
-              <p class="text-center"><a href="lost-password.html" class=" text-decoration-none text-dark login-p-a">Lost your
+              <p class="text-center"><a class="text-decoration-none text-dark login-p-a" asp-controller = "Home" asp-action="LostPassword" >Lost your
                   password?</a></p>
             </div>
             <div class="new-account mt-3">
-              <p class="text-center login-p-a">Don't have an account? <a class="text-decoration-none " href="registration.html">Create an
+              <p class="text-center login-p-a">Don't have an account? <a class="text-decoration-none " asp-controller="Home" asp-action="Registration">Create an
                   account</a></p>
             </div>
           </form>
           <div class="mt-5 text-center">
-            <a href="" class="text-decoration-none text-center text-secondary privacy-policy login-p-a " id="">Privacy Policy</a>
+            <a  asp-controller="Home" asp-action="Privacy" class="text-decoration-none text-center text-secondary privacy-policy login-p-a " id="">Privacy Policy</a>
           </div>
         </div>
       </div>
