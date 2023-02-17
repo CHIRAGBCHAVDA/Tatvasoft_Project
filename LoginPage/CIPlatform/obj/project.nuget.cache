@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MrrMzPt5Qmp426lnA2x4jJaugzntlsy2FMFkKyY5WAKXA7UXgpfNovulMO+WQ6DTEZU4VRuLS2HqJc/krc1zuQ==",
+  "dgSpecHash": "RsjKX0XqGTxz8y+sBIOroBeKyWtLPthkIBCmq/DdcJCfLL2R7DiKGFiHDTBPob4LAbj+pKgCHsW9w2La8gyNEw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\pci41\\source\\repos\\LoginPage\\CIPlatform\\CIPlatform.csproj",
+  "projectFilePath": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\CIPlatform.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pci41\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\pci41\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

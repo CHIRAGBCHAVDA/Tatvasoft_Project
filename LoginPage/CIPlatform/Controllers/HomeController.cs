@@ -79,20 +79,20 @@ namespace CIPlatform.Controllers
             return View(obj);
         }
 
-        [HttpPost, ActionName("ResetPassword")]
-        [AutoValidateAntiforgeryToken]
-        public IActionResult ResetPasswordPOST(TblUser obj)
-        {
-            var usr = _db.TblUsers.SingleOrDefault(u => u.);
-            if (ModelState.IsValid)
-            {
-                _db.TblUsers.Add(obj);
-                _db.SaveChanges();
-                TempData["success"] = "User Added Successfully !";
-                return RedirectToAction("Index");
-            }
-            return View(obj);
-        }
+        //[HttpPost, ActionName("ResetPassword")]
+        //[AutoValidateAntiforgeryToken]
+        //public IActionResult ResetPasswordPOST(TblUser obj)
+        //{
+        //    var usr = _db.TblUsers.SingleOrDefault(u => u.);
+        //    if (ModelState.IsValid)
+        //    {
+        //        _db.TblUsers.Add(obj);
+        //        _db.SaveChanges();
+        //        TempData["success"] = "User Added Successfully !";
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(obj);
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
