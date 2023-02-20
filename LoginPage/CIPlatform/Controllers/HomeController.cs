@@ -79,6 +79,16 @@ namespace CIPlatform.Controllers
             return View(obj);
         }
 
+        public PartialViewResult GetGridView()
+        {
+            return PartialView("_GridMissionLayout");
+        }
+
+        public PartialViewResult GetListView()
+        {
+            return PartialView("_ListMissionLayout");
+        }
+
         //[HttpPost, ActionName("ResetPassword")]
         //[AutoValidateAntiforgeryToken]
         //public IActionResult ResetPasswordPOST(TblUser obj)
