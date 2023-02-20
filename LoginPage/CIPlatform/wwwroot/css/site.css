@@ -162,3 +162,17 @@
 #list:hover {
     background: #e6e6e6;
 }*/
+
+.mission-card-wrapper .mission-cards .item .card .card-title{
+    font-size:26px;
+    font-weight:300;
+}
+.mission-card-wrapper .mission-cards .item .card .card-text{
+    font-size:15px;
+    font-weight:100;
+}
+.features-like-location{
+    font-size:14px;
+    font-weight:100;
+    opacity:0.5;
+}
