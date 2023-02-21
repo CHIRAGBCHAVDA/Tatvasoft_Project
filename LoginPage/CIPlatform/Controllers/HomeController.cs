@@ -88,6 +88,12 @@ namespace CIPlatform.Controllers
         {
             return PartialView("_ListMissionLayout");
         }
+        
+        public IActionResult VolunteeringMissionPage()
+        {
+            return View();
+        }
+
 
         //[HttpPost, ActionName("ResetPassword")]
         //[AutoValidateAntiforgeryToken]

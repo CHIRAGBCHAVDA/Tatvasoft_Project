@@ -305,7 +305,8 @@
                 </div>
             </div>
             <div id="partialView">
-                <partial name="_MissionNotFound"/>
+                @*<partial name="_MissionNotFound"/>*@
+                <partial name = "_RelatedMissions"/>
             </div>
 
         </div>
@@ -315,7 +316,7 @@
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
+@*
 <script type="text/javascript">
         $(document).ready(function() {
         $("#partialView").load('/home/GetGridView');
@@ -340,4 +341,4 @@
       console.log("Button 2 clicked")
     });
 
-</script>
+</script>*@
