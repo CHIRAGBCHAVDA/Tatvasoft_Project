@@ -176,3 +176,19 @@
     font-weight:100;
     opacity:0.5;
 }
+
+
+
+nav .nav-tabs .active {
+    border-top: 0 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-bottom: 2px solid black !important;
+    font-weight:400 !important;
+    /* background-color:red; */
+    color: red;
+}
+.recent-volunteer-images img{
+    height:70px;
+    width:70px;
+}

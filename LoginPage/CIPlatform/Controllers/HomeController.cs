@@ -94,6 +94,11 @@ namespace CIPlatform.Controllers
             return View();
         }
 
+        public PartialViewResult CarouselMobileView()
+        {
+            return PartialView("_CarouselMoblieView");
+        }
+
 
         //[HttpPost, ActionName("ResetPassword")]
         //[AutoValidateAntiforgeryToken]
