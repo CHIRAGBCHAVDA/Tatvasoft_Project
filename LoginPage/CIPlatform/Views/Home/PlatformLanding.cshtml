@@ -163,35 +163,35 @@
                                 <div class="col-6 d-lg-flex ">
                                     <div class="d-flex w-100 dropdown">
                                         <button class="bg-white form-select text-start text-dark  w-100" type="button"
-                                            id="multiCheckboxDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            id="multiCheckboxDropdown1" data-bs-toggle="dropdown" aria-expanded="false">
                                             Country
                                         </button>
                                         <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown">
                                             <li><input class="form-check-input m-2" type="checkbox" value=""
-                                                    id="option1"><label class="form-check-label" for="option1">Option
+                                                    id="option11"><label class="form-check-label" for="option1">Option
                                                     1</label></li>
                                             <li><input class="form-check-input m-2" type="checkbox" value=""
-                                                    id="option2"><label class="form-check-label" for="option2">Option
+                                                    id="option12"><label class="form-check-label" for="option2">Option
                                                     2</label></li>
                                             <li><input class="form-check-input m-2" type="checkbox" value=""
-                                                    id="option3"><label class="form-check-label" for="option3">Option
+                                                    id="option13"><label class="form-check-label" for="option3">Option
                                                     3</label></li>
                                         </ul>
                                     </div>
                                     <div class="dropdown w-100 d-flex">
                                         <button class=" bg-white form-select text-start text-dark  w-100" type="button"
-                                            id="multiCheckboxDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            id="multiCheckboxDropdown2" data-bs-toggle="dropdown" aria-expanded="false">
                                             City
                                         </button>
                                         <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown">
                                             <li><input class="form-check-input m-2" type="checkbox" value=""
-                                                    id="option1"><label class="form-check-label" for="option1">Option
+                                                    id="option21"><label class="form-check-label" for="option1">Option
                                                     1</label></li>
                                             <li><input class="form-check-input m-2" type="checkbox" value=""
-                                                    id="option2"><label class="form-check-label" for="option2">Option
+                                                    id="option22"><label class="form-check-label" for="option2">Option
                                                     2</label></li>
                                             <li><input class="form-check-input m-2" type="checkbox" value=""
-                                                    id="option3"><label class="form-check-label" for="option3">Option
+                                                    id="option23"><label class="form-check-label" for="option3">Option
                                                     3</label></li>
                                         </ul>
                                     </div>
@@ -199,24 +199,24 @@
                                 <div class="col-6 d-lg-flex">
                                     <div class="d-flex w-100 dropdown">
                                         <button class=" bg-white form-select text-start text-dark  w-100" type="button"
-                                            id="multiCheckboxDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            id="multiCheckboxDropdown3" data-bs-toggle="dropdown" aria-expanded="false">
                                             Theme
                                         </button>
                                         <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown">
                                             <li><input class="form-check-input m-2" type="checkbox" value=""
-                                                    id="option1"><label class="form-check-label" for="option1">Option
+                                                    id="option31"><label class="form-check-label" for="option1">Option
                                                     1</label></li>
                                             <li><input class="form-check-input m-2" type="checkbox" value=""
-                                                    id="option2"><label class="form-check-label" for="option2">Option
+                                                    id="option32"><label class="form-check-label" for="option2">Option
                                                     2</label></li>
                                             <li><input class="form-check-input m-2" type="checkbox" value=""
-                                                    id="option3"><label class="form-check-label" for="option3">Option
+                                                    id="option33"><label class="form-check-label" for="option3">Option
                                                     3</label></li>
                                         </ul>
                                     </div>
                                     <div class="dropdown w-100 d-flex">
                                         <button class="bg-white form-select text-start text-dark  w-100" type="button"
-                                            id="multiCheckboxDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            id="multiCheckboxDropdown4" data-bs-toggle="dropdown" aria-expanded="false">
                                             Skills
                                         </button>
                                         <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown">
@@ -300,13 +300,16 @@
                         </button>
                     </div>
 
-
-
                 </div>
             </div>
             <div id="partialView">
-                @*<partial name="_MissionNotFound"/>*@
-                <partial name = "_RelatedMissions"/>
+                <partial name="_MissionNotFound"/>
+            </div>
+
+            <hr/>
+            <div class="related-mission-div mt-5">
+                @*<partial name = "_RelatedMissions"/>*@
+
             </div>
 
         </div>
@@ -316,7 +319,7 @@
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-@*
+
 <script type="text/javascript">
         $(document).ready(function() {
         $("#partialView").load('/home/GetGridView');
@@ -341,4 +344,4 @@
       console.log("Button 2 clicked")
     });
 
-</script>*@
+</script>

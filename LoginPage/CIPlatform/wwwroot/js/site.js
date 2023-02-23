@@ -2,3 +2,9 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+function display(item) {
+    let image = document.getElementById("image-area");
+    image.src = item.src;
+}
+

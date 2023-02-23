@@ -192,3 +192,10 @@ nav .nav-tabs .active {
     height:70px;
     width:70px;
 }
+/*.carousel-control-prev-icon{
+background-image: url("../assets/left.png");
+}
+
+.carousel-control-next-icon {
+    background-image: url("../assets/right-arrow2.png");
+}*/
