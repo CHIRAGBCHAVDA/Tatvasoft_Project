@@ -199,3 +199,32 @@ background-image: url("../assets/left.png");
 .carousel-control-next-icon {
     background-image: url("../assets/right-arrow2.png");
 }*/
+
+.story-listing-top-img-card .card img{
+    height:350px;
+    object-fit:cover;
+    opacity:0.4;
+}
+.story-listing-btn-to-hide{
+    display:none;
+}
+.img-to-overlay:hover{
+    background-color:black;
+}
+.img-to-overlay:hover img{
+    opacity:0.4;
+}
+.img-to-overlay:hover .story-listing-btn-to-hide {
+    display: block;
+}
+
+
+
+.story-listing-pagination-nav{
+    width:fit-content;
+    margin:auto;
+}
+    .story-listing-pagination-nav ul li a:hover {
+        background-color: #F88634;
+        color: white;
+    }

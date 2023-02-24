@@ -39,6 +39,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZXNldFBhc3N3b3JkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Home/StoryListing.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTdG9yeUxpc3RpbmcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Home/VolunteeringMissionPage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxWb2x1bnRlZXJpbmdNaXNzaW9uUGFnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -51,8 +55,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9DYXJvdXNlbE1vYmlsZVZpZXcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_Filter.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9GaWx0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_GridMissionLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9HcmlkTWlzc2lvbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_Header.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9IZWFkZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_ListMissionLayout.cshtml]
@@ -65,6 +77,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_RelatedMissions.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9SZWxhdGVkTWlzc2lvbnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_StoryListingCard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdG9yeUxpc3RpbmdDYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_ValidationScriptsPartial.cshtml]

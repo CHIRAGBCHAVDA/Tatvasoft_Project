@@ -99,6 +99,22 @@ namespace CIPlatform.Controllers
             return PartialView("_CarouselMoblieView");
         }
 
+        public PartialViewResult Header()
+        {
+            return PartialView("_Header");
+        }
+        public PartialViewResult Filter()
+        {
+            return PartialView("_Filter");
+        }
+        public IActionResult StoryListing()
+        {
+            return View();
+        }
+        public PartialViewResult StoryListingCard()
+        {
+            return PartialView("_StoryListingCard");
+        }
 
         //[HttpPost, ActionName("ResetPassword")]
         //[AutoValidateAntiforgeryToken]
