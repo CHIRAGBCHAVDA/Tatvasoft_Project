@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "HzCzYMvY6Aq6lu/HUqLWioEXe1J711kwvkank9/8AFxs5BMP3xziIz0j4uNDnPqA+jWJcOXh9eD+zqwkha/hIA==",
+  "dgSpecHash": "yhwBBkLiG0daZuFj0sm0pEkA9rgsTw1jm2H5jg1IhDwZePTqtzCK60drNe8ZVFi6HM5e+nQ8ve8gm6M3WMn2Mw==",
   "success": true,
   "projectFilePath": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\CIPlatform.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pci41\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\pci41\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\pci41\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\pci41\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\pci41\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
     "C:\\Users\\pci41\\.nuget\\packages\\messagepack.annotations\\2.1.152\\messagepack.annotations.2.1.152.nupkg.sha512",

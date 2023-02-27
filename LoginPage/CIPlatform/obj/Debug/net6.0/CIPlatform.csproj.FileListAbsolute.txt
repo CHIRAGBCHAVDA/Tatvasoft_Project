@@ -369,3 +369,4 @@ D:\Tatvasoft_Project\LoginPage\CIPlatform\bin\Debug\net6.0\runtimes\win\lib\net6
 D:\Tatvasoft_Project\LoginPage\CIPlatform\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\Tatvasoft_Project\LoginPage\CIPlatform\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 D:\Tatvasoft_Project\LoginPage\CIPlatform\obj\Debug\net6.0\CIPlatform.MvcApplicationPartsAssemblyInfo.cs
+D:\Tatvasoft_Project\LoginPage\CIPlatform\bin\Debug\net6.0\BCrypt.Net-Next.dll

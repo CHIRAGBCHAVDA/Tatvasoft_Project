@@ -1,7 +1,11 @@
 ﻿using CIPlatform.Data;
 using CIPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Writers;
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
+using BCrypt.Net;
 
 namespace CIPlatform.Controllers
 {
@@ -9,17 +13,14 @@ namespace CIPlatform.Controllers
     {
         //private readonly ILogger<HomeController> _logger;
         private readonly CiplatformContext _db;
-        public HomeController(CiplatformContext db)
+      
+
+        public HomeController( CiplatformContext db)
         {
-            _db = db;   
+            _db = db;
         }
 
-        //public HomeController(ILogger<HomeController> logger)
-        //{
-        //    _logger = logger;
-        //}
 
-        
         public IActionResult  LostPassword()
         {
             return View();
@@ -50,12 +51,18 @@ namespace CIPlatform.Controllers
             return View();
         }
 
+
+        
+
+
         [HttpPost]
         public IActionResult Index(TblUser user)
         {
-            var usr = _db.TblUsers.SingleOrDefault(u => u.Email == user.Email && u.Password == user.Password);
-            if(usr != null)
+            TblUser dbUser = _db.TblUsers.FirstOrDefault(u => u.Email == user.Email);
+
+            if (dbUser != null && BCrypt.Net.BCrypt.Verify(user.Password, dbUser.Password))
             {
+                // The password is valid, allow the user to log in
                 return RedirectToAction("PlatformLanding", "Home");
             }
             else
@@ -71,6 +78,8 @@ namespace CIPlatform.Controllers
         {
             if (ModelState.IsValid)
             {
+                string pwd = BCrypt.Net.BCrypt.HashPassword(obj.Password);
+                obj.Password = pwd;
                 _db.TblUsers.Add(obj);
                 _db.SaveChanges();
                 TempData["success"] = "User Added Successfully !";
