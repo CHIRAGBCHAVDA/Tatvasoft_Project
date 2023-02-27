@@ -1,0 +1,17 @@
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\obj\Debug\net6.0\CIPlatform.DataAccess.csproj.AssemblyReference.cache
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\obj\Debug\net6.0\CIPlatform.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\obj\Debug\net6.0\CIPlatform.DataAccess.AssemblyInfoInputs.cache
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\obj\Debug\net6.0\CIPlatform.DataAccess.AssemblyInfo.cs
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\obj\Debug\net6.0\CIPlatform.DataAccess.csproj.CoreCompileInputs.cache
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\bin\Debug\net6.0\CIPlatform.DataAccess.deps.json
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\bin\Debug\net6.0\CIPlatform.DataAccess.dll
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\bin\Debug\net6.0\ref\CIPlatform.DataAccess.dll
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\bin\Debug\net6.0\CIPlatform.DataAccess.pdb
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\bin\Debug\net6.0\CIPlatform.Models.dll
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\bin\Debug\net6.0\CIPlatform.Models.pdb
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\obj\Debug\net6.0\CIPlatform.DataAccess.csproj.CopyComplete
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\obj\Debug\net6.0\CIPlatform.DataAccess.dll
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\obj\Debug\net6.0\ref\CIPlatform.DataAccess.dll
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\obj\Debug\net6.0\CIPlatform.DataAccess.pdb
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\bin\Debug\net6.0\CIPlatform.DataAccess.runtimeconfig.json
+D:\Tatvasoft_Project\LoginPage\CIPlatform.DataAccess\obj\Debug\net6.0\CIPlatform.DataAccess.genruntimeconfig.cache

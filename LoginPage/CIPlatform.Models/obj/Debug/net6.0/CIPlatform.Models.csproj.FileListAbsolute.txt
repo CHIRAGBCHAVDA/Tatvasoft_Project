@@ -1,0 +1,14 @@
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\obj\Debug\net6.0\CIPlatform.Models.GeneratedMSBuildEditorConfig.editorconfig
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\obj\Debug\net6.0\CIPlatform.Models.AssemblyInfoInputs.cache
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\obj\Debug\net6.0\CIPlatform.Models.AssemblyInfo.cs
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\obj\Debug\net6.0\CIPlatform.Models.csproj.CoreCompileInputs.cache
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\bin\Debug\net6.0\CIPlatform.Models.deps.json
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\bin\Debug\net6.0\CIPlatform.Models.dll
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\bin\Debug\net6.0\ref\CIPlatform.Models.dll
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\bin\Debug\net6.0\CIPlatform.Models.pdb
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\obj\Debug\net6.0\CIPlatform.Models.dll
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\obj\Debug\net6.0\ref\CIPlatform.Models.dll
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\obj\Debug\net6.0\CIPlatform.Models.pdb
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\obj\Debug\net6.0\CIPlatform.Models.csproj.AssemblyReference.cache
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\bin\Debug\net6.0\CIPlatform.Models.runtimeconfig.json
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Models\obj\Debug\net6.0\CIPlatform.Models.genruntimeconfig.cache

@@ -1,11 +1,8 @@
-﻿using CIPlatform.Data;
-using CIPlatform.Models;
+﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Writers;
 using System.Diagnostics;
-using System.Security.Cryptography;
-using System.Text;
-using BCrypt.Net;
+using CIPlatform.DataAccess;
+using CIPlatform.Models;
 
 namespace CIPlatform.Controllers
 {
@@ -52,7 +49,7 @@ namespace CIPlatform.Controllers
         }
 
 
-        
+
 
 
         [HttpPost]
@@ -72,7 +69,7 @@ namespace CIPlatform.Controllers
             }
         }
 
-        [HttpPost,ActionName("Registration")]
+        [HttpPost, ActionName("Registration")]
         [AutoValidateAntiforgeryToken]
         public IActionResult RegistrationPOST(TblUser obj)
         {

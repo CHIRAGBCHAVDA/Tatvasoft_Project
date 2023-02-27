@@ -1,4 +1,4 @@
-using CIPlatform.Data;
+using CIPlatform.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
