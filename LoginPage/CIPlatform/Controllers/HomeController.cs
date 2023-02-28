@@ -37,7 +37,7 @@ namespace CIPlatform.Controllers
                 var body = "Hi " + getUser.FirstName + ", <br/> You recently requested to reset your password for your account. Click the link below to reset it. " + " <br/><br/><a href='" + link + "'>" + link + "</a> <br/><br/>" + "If you did not request a password reset, please ignore this email or reply to let us know.<br/><br/> Thank you";
                 SendEmail(getUser.Email, body, subject);
 
-                ViewBag.Message = "Reset password link has been sent to your email id.";
+                TempData["mail-success"] = "Reset password link has been sent to your email id.";
             }
             else
             {
@@ -59,8 +59,9 @@ namespace CIPlatform.Controllers
             message.To.Add(email);
             message.Subject = subject;
             message.Body = body;
-
+            message.IsBodyHtml = true;
             client.Send(message);
+            
 
         }
 
@@ -88,6 +89,7 @@ namespace CIPlatform.Controllers
                 string pwd = BCrypt.Net.BCrypt.HashPassword(tblUser.Password);
                 getUser.Password = pwd;
                 _unitOfWork.Save();
+                TempData["reset-success"] = "Your password has been updated !";
                 return RedirectToAction("Index", "Home");
             }
 

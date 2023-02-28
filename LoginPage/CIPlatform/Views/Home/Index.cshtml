@@ -84,6 +84,15 @@
                         </script>
 
                     }
+                    @if (TempData["reset-success"] != null)
+                    {
+                        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+                        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+                        <script type="text/javascript">
+                            toastr.success('@TempData["reset-success"]');
+                        </script>
+
+                    }
                     <div class=" mb-3">
                         <label asp-for="Email" for="exampleFormControlInput1" class="form-label login-form-label">Email address</label>
                         <input asp-for="Email" type="email" class="form-control" id="exampleFormControlInput1" placeholder="">
