@@ -3,16 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using CIPlatform.DataAccess;
 using CIPlatform.Models;
+using CIPlatform.DataAccess.Repository.IRepository;
 
 namespace CIPlatform.Controllers
 {
     public class HomeController : Controller
     {
         //private readonly ILogger<HomeController> _logger;
-        private readonly CiplatformContext _db;
+        private readonly IUserRepository _db;
       
 
-        public HomeController( CiplatformContext db)
+        public HomeController(IUserRepository db)
         {
             _db = db;
         }
@@ -55,7 +56,7 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public IActionResult Index(TblUser user)
         {
-            TblUser dbUser = _db.TblUsers.FirstOrDefault(u => u.Email == user.Email);
+            TblUser dbUser = _db.GetFirstOrDefault(u => u.Email == user.Email);
 
             if (dbUser != null && BCrypt.Net.BCrypt.Verify(user.Password, dbUser.Password))
             {
@@ -77,8 +78,8 @@ namespace CIPlatform.Controllers
             {
                 string pwd = BCrypt.Net.BCrypt.HashPassword(obj.Password);
                 obj.Password = pwd;
-                _db.TblUsers.Add(obj);
-                _db.SaveChanges();
+                _db.Register(obj);
+                _db.save();
                 TempData["success"] = "User Added Successfully !";
                 return RedirectToAction("Index");
             }

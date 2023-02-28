@@ -1,4 +1,5 @@
 ﻿using CIPlatform.DataAccess.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,18 +12,21 @@ namespace CIPlatform.DataAccess.Repository
     public class Repository<T> : IRepository<T> where T : class
     {
         public readonly CiplatformContext _db;
+        internal DbSet<T> dbSet;
+
+
         public Repository(CiplatformContext db)
         {
             _db = db;
+            this.dbSet = _db.Set<T>();
         }
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = dbSet;
+            query = query.Where(filter);
+            return query.FirstOrDefault();
         }
 
-        public void Register(T entity)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

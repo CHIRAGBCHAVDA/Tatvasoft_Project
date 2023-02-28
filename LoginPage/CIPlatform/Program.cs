@@ -1,10 +1,13 @@
 using CIPlatform.DataAccess;
+using CIPlatform.DataAccess.Repository;
+using CIPlatform.DataAccess.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<CiplatformContext>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 var app = builder.Build();
