@@ -1,36 +1,97 @@
-﻿
+﻿using System;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using CIPlatform.DataAccess;
 using CIPlatform.Models;
 using CIPlatform.DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Http.Extensions;
+using System.Net.Mail;
+using System.Net;
 
 namespace CIPlatform.Controllers
 {
     public class HomeController : Controller
     {
         //private readonly ILogger<HomeController> _logger;
-        private readonly IUserRepository _db;
+        private readonly IUnitOfWork _unitOfWork;
       
 
-        public HomeController(IUserRepository db)
+        public HomeController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
 
-
-        public IActionResult  LostPassword()
+        [HttpPost]
+        public IActionResult  LostPassword(TblUser tblUser)
         {
+            string resetcode = Guid.NewGuid().ToString();
+            var verifyUrl = "/Home/ResetPassword/" + resetcode;
+            var link = HttpContext.Request.GetDisplayUrl().Replace(HttpContext.Request.Path, verifyUrl);
+            var getUser = _unitOfWork.User.GetFirstOrDefault(u => u.Email == tblUser.Email);
+            if(getUser != null)
+            {
+                getUser.Passcode = resetcode;
+                _unitOfWork.Save();
+                var subject = "Password Reset Request";
+                var body = "Hi " + getUser.FirstName + ", <br/> You recently requested to reset your password for your account. Click the link below to reset it. " + " <br/><br/><a href='" + link + "'>" + link + "</a> <br/><br/>" + "If you did not request a password reset, please ignore this email or reply to let us know.<br/><br/> Thank you";
+                SendEmail(getUser.Email, body, subject);
+
+                ViewBag.Message = "Reset password link has been sent to your email id.";
+            }
+            else
+            {
+                ViewBag.Message = "User doesn't exists.";
+                return View();
+            }
             return View();
+        }
+
+        private void SendEmail(string email, string body, string subject)
+        {
+            var client = new SmtpClient("smtp.gmail.com", 587);
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential("chiragchavda.tatvasoft@gmail.com", "fiflkmawmeyqslxa");
+            client.EnableSsl = true;
+
+            var message = new MailMessage();
+            message.From = new MailAddress("chiragchavda.tatvasoft@gmail.com");
+            message.To.Add(email);
+            message.Subject = subject;
+            message.Body = body;
+
+            client.Send(message);
+
         }
 
         public IActionResult Registration()
         {
             return View();
         }
+        public IActionResult LostPassword()
+        {
+            return View();
+        }
 
         public IActionResult ResetPassword()
         {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ResetPassword(TblUser tblUser)
+        {
+
+            string token = HttpContext.Request.GetDisplayUrl().Replace("https://localhost:44383/Home/ResetPassword/", "");
+            TblUser getUser = _unitOfWork.User.GetFirstOrDefault(u => u.Passcode == token);
+            if(getUser != null)
+            {
+                string pwd = BCrypt.Net.BCrypt.HashPassword(tblUser.Password);
+                getUser.Password = pwd;
+                _unitOfWork.Save();
+                return RedirectToAction("Index", "Home");
+            }
+
+
             return View();
         }
 
@@ -56,7 +117,7 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public IActionResult Index(TblUser user)
         {
-            TblUser dbUser = _db.GetFirstOrDefault(u => u.Email == user.Email);
+            TblUser dbUser = _unitOfWork.User.GetFirstOrDefault(u => u.Email == user.Email);
 
             if (dbUser != null && BCrypt.Net.BCrypt.Verify(user.Password, dbUser.Password))
             {
@@ -78,8 +139,8 @@ namespace CIPlatform.Controllers
             {
                 string pwd = BCrypt.Net.BCrypt.HashPassword(obj.Password);
                 obj.Password = pwd;
-                _db.Register(obj);
-                _db.save();
+                _unitOfWork.User.Register(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "User Added Successfully !";
                 return RedirectToAction("Index");
             }

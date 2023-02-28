@@ -28,9 +28,6 @@ namespace CIPlatform.DataAccess.Repository
             _db.Add(user);
         }
 
-        public void save()
-        {
-            _db.SaveChanges();
-        }
+       
     }
 }

@@ -23,7 +23,6 @@ public partial class TblUser
     [Compare("Password",ErrorMessage ="Confirm password must be matched with Password!!")]
     public string? ConfirmPassword { get; set; }
 
-
     [Required(ErrorMessage = "You must provide a phone number")]
     [DataType(DataType.PhoneNumber)]
     [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
@@ -60,4 +59,6 @@ public partial class TblUser
     public virtual TblCountry? Country { get; set; }
 
     public virtual Status? StatusNavigation { get; set; }
+
+    public string? Passcode { get; set; }
 }
