@@ -8,6 +8,7 @@ using CIPlatform.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace CIPlatform.Controllers
 {
@@ -23,16 +24,18 @@ namespace CIPlatform.Controllers
         }
 
         [HttpPost]
-        public IActionResult  LostPassword(TblUser tblUser)
+        public IActionResult  LostPassword(User user)
         {
             string resetcode = Guid.NewGuid().ToString();
             var verifyUrl = "/Home/ResetPassword/" + resetcode;
             var link = HttpContext.Request.GetDisplayUrl().Replace(HttpContext.Request.Path, verifyUrl);
-            var getUser = _unitOfWork.User.GetFirstOrDefault(u => u.Email == tblUser.Email);
+            var getUser = _unitOfWork.User.GetFirstOrDefault(u => u.Email == user.Email);
             if(getUser != null)
             {
-                getUser.Passcode = resetcode;
-                _unitOfWork.Save();
+              
+                //getUser.Token = resetcode;
+                _unitOfWork.User.Update(getUser,resetcode);
+                //_unitOfWork.Save();
                 var subject = "Password Reset Request";
                 var body = "Hi " + getUser.FirstName + ", <br/> You recently requested to reset your password for your account. Click the link below to reset it. " + " <br/><br/><a href='" + link + "'>" + link + "</a> <br/><br/>" + "If you did not request a password reset, please ignore this email or reply to let us know.<br/><br/> Thank you";
                 SendEmail(getUser.Email, body, subject);
@@ -41,7 +44,7 @@ namespace CIPlatform.Controllers
             }
             else
             {
-                ViewBag.Message = "User doesn't exists.";
+                TempData["user-not-exists"]= "User doesn't exists.";
                 return View();
             }
             return View();
@@ -51,7 +54,7 @@ namespace CIPlatform.Controllers
         {
             var client = new SmtpClient("smtp.gmail.com", 587);
             client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential("chiragchavda.tatvasoft@gmail.com", "fiflkmawmeyqslxa");
+            client.Credentials = new NetworkCredential("chiragchavda.tatvasoft@gmail.com", "orltrydyhfxgxdrz");
             client.EnableSsl = true;
 
             var message = new MailMessage();
@@ -79,14 +82,17 @@ namespace CIPlatform.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult ResetPassword(TblUser tblUser)
+        public IActionResult ResetPassword(User user)
         {
 
             string token = HttpContext.Request.GetDisplayUrl().Replace("https://localhost:44383/Home/ResetPassword/", "");
-            TblUser getUser = _unitOfWork.User.GetFirstOrDefault(u => u.Passcode == token);
+            User getUser = _unitOfWork.User.GetFirstOrDefault(u => u.Token == token);
             if(getUser != null)
             {
-                string pwd = BCrypt.Net.BCrypt.HashPassword(tblUser.Password);
+                string pwd = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                //_unitOfWork.Entry(getUser).Reload();
+                var dbContext = (DbContext)_unitOfWork;
+                dbContext.Entry(user).State = EntityState.Modified;
                 getUser.Password = pwd;
                 _unitOfWork.Save();
                 TempData["reset-success"] = "Your password has been updated !";
@@ -117,9 +123,9 @@ namespace CIPlatform.Controllers
 
 
         [HttpPost]
-        public IActionResult Index(TblUser user)
+        public IActionResult Index(User user)
         {
-            TblUser dbUser = _unitOfWork.User.GetFirstOrDefault(u => u.Email == user.Email);
+            User dbUser = _unitOfWork.User.GetFirstOrDefault(u => u.Email == user.Email);
 
             if (dbUser != null && BCrypt.Net.BCrypt.Verify(user.Password, dbUser.Password))
             {
@@ -135,18 +141,17 @@ namespace CIPlatform.Controllers
 
         [HttpPost, ActionName("Registration")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult RegistrationPOST(TblUser obj)
+        public IActionResult RegistrationPOST(User obj)
         {
-            if (ModelState.IsValid)
-            {
+           
                 string pwd = BCrypt.Net.BCrypt.HashPassword(obj.Password);
                 obj.Password = pwd;
                 _unitOfWork.User.Register(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "User Added Successfully !";
                 return RedirectToAction("Index");
-            }
-            return View(obj);
+            
+            //return View(obj);
         }
 
         public PartialViewResult GetGridView()
