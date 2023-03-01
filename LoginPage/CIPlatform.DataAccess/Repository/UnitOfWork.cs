@@ -8,6 +8,7 @@ namespace CIPlatform.DataAccess.Repository
         public UnitOfWork(CiplatformContext db)
         {
             _db = db;
+            //hi
             User = new UserRepository(_db);
         }
         public IUserRepository User { get; }
