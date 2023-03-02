@@ -10,3 +10,5 @@ D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\obj\Debug\net6.0\CIPlatform.Ut
 D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\obj\Debug\net6.0\CIPlatform.Utility.dll
 D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\obj\Debug\net6.0\ref\CIPlatform.Utility.dll
 D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\obj\Debug\net6.0\CIPlatform.Utility.pdb
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\bin\Debug\net6.0\CIPlatform.Utility.runtimeconfig.json
+D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\obj\Debug\net6.0\CIPlatform.Utility.genruntimeconfig.cache

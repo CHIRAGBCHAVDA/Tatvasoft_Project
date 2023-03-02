@@ -8,7 +8,7 @@ namespace CIPlatform.Models
         public long SkillId { get; set; }
         public string? SkillName { get; set; }
         public byte Status { get; set; }
-        public DateTime? CreatedAt { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
     }

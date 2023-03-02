@@ -1,4 +1,5 @@
-﻿using CIPlatform.DataAccess.Repository.IRepository;
+﻿using CIPlatform.Data;
+using CIPlatform.DataAccess.Repository.IRepository;
 
 namespace CIPlatform.DataAccess.Repository
 {
@@ -12,6 +13,11 @@ namespace CIPlatform.DataAccess.Repository
             User = new UserRepository(_db);
         }
         public IUserRepository User { get; }
+
+        public void Dispose()
+        {
+            _db.Dispose();
+        }
 
         public void Save()
         {

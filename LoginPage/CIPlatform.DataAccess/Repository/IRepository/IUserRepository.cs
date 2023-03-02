@@ -8,6 +8,6 @@ namespace CIPlatform.DataAccess.Repository.IRepository
     {
         void Register(User entity);
         void login(User entity);
-        void Update(User getUser, string token);
+        User Update(User getUser, string token);
     }
 }

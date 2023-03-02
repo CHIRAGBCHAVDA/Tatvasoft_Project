@@ -7,6 +7,6 @@ namespace CIPlatform.Models
     {
         public string Email { get; set; } = null!;
         public string Token { get; set; } = null!;
-        public byte[] CreatedAt { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
     }
 }

@@ -1,24 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CIPlatform.Models
 {
     public partial class User
     {
-        
+        public User()
+        {
+            Comments = new HashSet<Comment>();
+        }
 
         public long UserId { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
-
-        [NotMapped]
-        [Compare("Password", ErrorMessage = "Confirm password must be matched with Password!!")]
-        public string? ConfirmPassword { get; set; }
-
         public string? Token { get; set; }
-        public int PhoneNumber { get; set; }
+        public long PhoneNumber { get; set; }
         public string? Avatar { get; set; }
         public string? WhyIVolunteer { get; set; }
         public string? EmployeeId { get; set; }
@@ -29,7 +27,7 @@ namespace CIPlatform.Models
         public string? LinkedInUrl { get; set; }
         public string? Title { get; set; }
         public bool? Status { get; set; }
-        public DateTime? CreatedAt { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using CIPlatform.DataAccess.Repository.IRepository;
+﻿using CIPlatform.Data;
+using CIPlatform.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace CIPlatform.DataAccess.Repository
     public class Repository<T> : IRepository<T> where T : class
     {
         public readonly CiplatformContext _db;
-        internal DbSet<T> dbSet;
+        public DbSet<T> dbSet;
 
 
         public Repository(CiplatformContext db)

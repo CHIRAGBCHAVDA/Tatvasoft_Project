@@ -23,10 +23,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMb3N0UGFzc3dvcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Home/PlatformLanding.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQbGF0Zm9ybUxhbmRpbmcuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -45,6 +41,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Home/VolunteeringMissionPage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxWb2x1bnRlZXJpbmdNaXNzaW9uUGFnZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/MissionListing/PlatformLanding.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWlzc2lvbkxpc3RpbmdcUGxhdGZvcm1MYW5kaW5nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/Error.cshtml]

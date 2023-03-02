@@ -10,7 +10,7 @@ namespace CIPlatform.Models
         public string DocumentName { get; set; } = null!;
         public string? DoucmentType { get; set; }
         public string? DocumentPath { get; set; }
-        public DateTime? CreatedAt { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
     }

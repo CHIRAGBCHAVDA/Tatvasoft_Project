@@ -34,7 +34,7 @@ namespace CIPlatform.Controllers
             {
               
                 //getUser.Token = resetcode;
-                _unitOfWork.User.Update(getUser,resetcode);
+               User a = _unitOfWork.User.Update(getUser,resetcode);
                 //_unitOfWork.Save();
                 var subject = "Password Reset Request";
                 var body = "Hi " + getUser.FirstName + ", <br/> You recently requested to reset your password for your account. Click the link below to reset it. " + " <br/><br/><a href='" + link + "'>" + link + "</a> <br/><br/>" + "If you did not request a password reset, please ignore this email or reply to let us know.<br/><br/> Thank you";
@@ -74,7 +74,9 @@ namespace CIPlatform.Controllers
         }
         public IActionResult LostPassword()
         {
+            //if(HttpContext.Session.GetString("email")!=null)
             return View();
+            //else return RedirectToAction("Index");
         }
 
         public IActionResult ResetPassword()
@@ -110,14 +112,12 @@ namespace CIPlatform.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            if (HttpContext.Session.GetString("email") != null)
+                return View();
+            else return RedirectToAction("Index");
         }
 
-        public IActionResult PlatformLanding()
-        {
-            return View();
-        }
-
+        
 
 
 
@@ -130,7 +130,9 @@ namespace CIPlatform.Controllers
             if (dbUser != null && BCrypt.Net.BCrypt.Verify(user.Password, dbUser.Password))
             {
                 // The password is valid, allow the user to log in
-                return RedirectToAction("PlatformLanding", "Home");
+                HttpContext.Session.SetString("username", dbUser.FirstName +" "+ dbUser.LastName);
+                HttpContext.Session.SetString("email", user.Email);
+                return RedirectToAction("PlatformLanding", "MissionListing");
             }
             else
             {
@@ -166,7 +168,9 @@ namespace CIPlatform.Controllers
         
         public IActionResult VolunteeringMissionPage()
         {
-            return View();
+            if (HttpContext.Session.GetString("email") != null)
+                return View();
+            else return RedirectToAction("Index");
         }
 
         public PartialViewResult CarouselMobileView()
@@ -184,7 +188,9 @@ namespace CIPlatform.Controllers
         }
         public IActionResult StoryListing()
         {
-            return View();
+            if (HttpContext.Session.GetString("email") != null)
+                return View();
+            else return RedirectToAction("Index");
         }
         public PartialViewResult StoryListingCard()
         {
@@ -205,6 +211,14 @@ namespace CIPlatform.Controllers
         //    }
         //    return View(obj);
         //}
+
+        public IActionResult Logout()
+        {
+
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

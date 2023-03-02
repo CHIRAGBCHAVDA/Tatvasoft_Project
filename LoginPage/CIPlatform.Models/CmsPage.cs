@@ -10,7 +10,7 @@ namespace CIPlatform.Models
         public string? Desciption { get; set; }
         public string Slug { get; set; } = null!;
         public bool? Status { get; set; }
-        public DateTime? CreatedAt { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
     }

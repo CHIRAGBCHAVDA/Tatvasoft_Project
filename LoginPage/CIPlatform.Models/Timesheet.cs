@@ -13,7 +13,7 @@ namespace CIPlatform.Models
         public DateTime DateVolunteered { get; set; }
         public string? Notes { get; set; }
         public byte ApprovalStatusId { get; set; }
-        public DateTime? CreatedAt { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
     }

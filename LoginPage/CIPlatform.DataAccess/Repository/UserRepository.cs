@@ -1,4 +1,5 @@
-﻿using CIPlatform.DataAccess.Repository.IRepository;
+﻿using CIPlatform.Data;
+using CIPlatform.DataAccess.Repository.IRepository;
 using CIPlatform.Models;
 
 namespace CIPlatform.DataAccess.Repository
@@ -22,11 +23,16 @@ namespace CIPlatform.DataAccess.Repository
             _db.Add(user);
         }
 
-        public void Update(User user,string token)
+        public User Update(User user,string token)
         {
-            user.Token = token;
-            _db.Users.Update(user);
-            _db.SaveChanges();
+            //user.Token = token;
+            User temp = _db.Users.FirstOrDefault(x => x.UserId == user.UserId);
+            temp.Token = token;
+            //temp.CreatedAt = DateTime.Now;
+            
+             _db.Users.Update(temp);
+             _db.SaveChanges();
+            return temp;
         }
     }
 }
