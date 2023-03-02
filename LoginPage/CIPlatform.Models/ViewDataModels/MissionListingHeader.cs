@@ -11,10 +11,12 @@ namespace CIPlatform.Models.ViewDataModels
     public class MissionListingHeader
     {
         
-        public List<SelectListItem>? City { get; set; }
-        public List<SelectListItem>? Country { get; set; }
-        public List<SelectListItem>? MissionTheme { get; set; }
-        public List<SelectListItem>? Skills { get; set; }    
+        public List<Country>? Country { get; set; }
+        public List<City>? City { get; set; }
+        public List<MissionTheme>? MissionTheme { get; set; }
+        public List<Skill>? Skills { get; set; }
+
+
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CIPlatform.Data;
 using CIPlatform.DataAccess.Repository.IRepository;
+using CIPlatform.Models;
 
 namespace CIPlatform.DataAccess.Repository
 {
@@ -11,13 +12,17 @@ namespace CIPlatform.DataAccess.Repository
             _db = db;
             //hi
             User = new UserRepository(_db);
+            Country = new Repository<Country>(_db);
+            City = new Repository<City>(_db);
+            Skill = new Repository<Skill>(_db);
+            MissionTheme = new Repository<MissionTheme>(_db);
         }
         public IUserRepository User { get; }
 
-        public void Dispose()
-        {
-            _db.Dispose();
-        }
+        public IRepository<Country> Country { get; }
+        public IRepository<City> City { get; }
+        public IRepository<Skill> Skill { get; }
+        public IRepository<MissionTheme> MissionTheme { get; }
 
         public void Save()
         {

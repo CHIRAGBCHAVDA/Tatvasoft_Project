@@ -21,6 +21,12 @@ namespace CIPlatform.DataAccess.Repository
             _db = db;
             this.dbSet = _db.Set<T>();
         }
+
+        public List<T> GetAll()
+        {
+            return dbSet.ToList<T>();
+        }
+
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = dbSet;
