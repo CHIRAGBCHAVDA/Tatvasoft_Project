@@ -12,6 +12,7 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         //T-user
         T GetFirstOrDefault(Expression<Func<T, bool>> filter);
         List<T> GetAll();
+        IEnumerable<T> GetAll(Expression<Func<T, bool>> filter);
        
 
     }

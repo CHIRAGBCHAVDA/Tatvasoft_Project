@@ -16,41 +16,37 @@
                 <div class="col col-12 d-flex col-lg-8 flex-lg-row">
                     <div class="col-6 d-lg-flex ">
                         <div class="d-flex w-100 dropdown">
-                            <button class="bg-white form-select text-start text-dark  w-100" type="button"
-                                    id="multiCheckboxDropdown1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="bg-white form-select text-start text-dark w-100" type="button" id="multiCheckboxDropdown1" data-bs-toggle="dropdown" aria-expanded="false">
                                 Country
                             </button>
-                            <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown">
-
+                            <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown1">
                                 @foreach (var item in Model.Country)
                                 {
                                     <li>
-                                        <input class="form-check-input m-2" type="checkbox" value=""
-                                           id="option11"><label class="form-check-label" for="option1">
-                                            @item.Name
-                                        </label>
+                                        <input class="form-check-input m-2 country-checkbox" type="checkbox" value="@item.CountryId" id="@item.Name" />
+                                        <label class="form-check-label" for="@item.Name">@item.Name</label>
                                     </li>
                                 }
                             </ul>
                         </div>
+
                         <div class="dropdown w-100 d-flex">
-                            <button class=" bg-white form-select text-start text-dark  w-100" type="button"
-                                    id="multiCheckboxDropdown2" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="bg-white form-select text-start text-dark w-100" type="button" id="multiCheckboxDropdown2" data-bs-toggle="dropdown" aria-expanded="false">
                                 City
                             </button>
-                            <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown">
+                            <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown2">
                                 @foreach (var item in Model.City)
                                 {
-                                    <li>
-                                        <input class="form-check-input m-2" type="checkbox" value=""
-                                           id="option11"><label class="form-check-label" for="option1">
-                                            @item.Name
-                                        </label>
+                                    <li class="city-item" data-country="@item.CountryId">
+                                        <input class="form-check-input m-2 city-checkbox" type="checkbox" value="@item.CityId" id="@item.Name" />
+                                        <label class="form-check-label" for="@item.Name">@item.Name</label>
                                     </li>
                                 }
-                                
                             </ul>
                         </div>
+
+
+
                     </div>
                     <div class="col-6 d-lg-flex">
                         <div class="d-flex w-100 dropdown">
@@ -62,8 +58,8 @@
                                 @foreach (var item in Model.MissionTheme)
                                 {
                                     <li>
-                                        <input class="form-check-input m-2" type="checkbox" value=""
-                                           id="option11"><label class="form-check-label" for="option1">
+                                        <input class="form-check-input m-2" type="checkbox" value=@item.Title
+                                           id=@item.Title><label class="form-check-label" for="option1">
                                             @item.Title
                                         </label>
                                     </li>
@@ -79,8 +75,8 @@
                                 @foreach (var item in Model.Skills)
                                 {
                                     <li>
-                                        <input class="form-check-input m-2" type="checkbox" value=""
-                                           id="option11"><label class="form-check-label" for="option1">
+                                        <input class="form-check-input m-2" type="checkbox" value=@item.SkillName
+                                           id=@item.SkillName><label class="form-check-label" for="option1">
                                             @item.SkillName
                                         </label>
                                     </li>
@@ -93,3 +89,91 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.country-checkbox').change(function () {
+            var selectedCountries = [];
+
+            $('.country-checkbox:checked').each(function () {
+                selectedCountries.push($(this).val());
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/MissionListing/GetCities",
+                data: { countryIds: selectedCountries },
+                success: function (data) {
+                    $('.city-item').hide();
+
+                    $.each(data, function (index, value) {
+                        var cityItem = $('.city-item[data-country="' + value.countryId + '"]');
+                        cityItem.show();
+                        cityItem.find('.city-checkbox[value="' + value.cityId + '"]').show();
+                    });
+                },
+                error: function () {
+                    alert("An error occurred while fetching cities.");
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+@*
+    <div class="d-flex w-100 dropdown">
+    <button class="bg-white form-select text-start text-dark  w-100" type="button"  id="multiCheckboxDropdown1" data-bs-toggle="dropdown" aria-expanded="false">
+    Country
+    </button>
+    <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown">
+
+    @foreach (var item in Model.Country)
+    {
+    <li>
+    <input class="form-check-input m-2" type="checkbox" value=@item.Name
+    id=@item.Name><label class="form-check-label" for="option1">
+    @item.Name
+    </label>
+    </li>
+    }
+    </ul>
+    <select class="form-control" id="country">
+    <option value="">--Select Country--</option>
+    @foreach (var country in Model.Country)
+    {
+    <option value="@country.Name">
+    <input type="checkbox" class="country-checkbox" value="@country.Name" /> @country.Name
+    </option>
+    }
+    </select>
+    </div>
+    <div class="dropdown w-100 d-flex">
+    <button class=" bg-white form-select text-start text-dark  w-100" type="button" id="multiCheckboxDropdown2" data-bs-toggle="dropdown" aria-expanded="false">
+    City
+    </button>
+    <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown">
+    @foreach (var item in Model.City)
+    {
+    <li>
+    <input class="form-check-input m-2" type="checkbox" value=@item.Name
+    id=@item.Name><label class="form-check-label" for="option1">
+    @item.Name
+    </label>
+    </li>
+    }
+    </ul>
+    <select class="form-control" id="city">
+    <option value="">--Select City--</option>
+    @foreach (var city in Model.City)
+    {
+    <option value="@city.Name">
+    <input type="checkbox" class="city-checkbox" value="@city.Name" /> @city.Name
+    </option>
+    }
+    </select>
+    </div>
+*@

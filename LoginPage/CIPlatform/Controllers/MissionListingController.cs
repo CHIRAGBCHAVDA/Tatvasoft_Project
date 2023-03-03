@@ -1,4 +1,5 @@
-﻿using CIPlatform.DataAccess.Repository;
+﻿using CIPlatform.Data;
+using CIPlatform.DataAccess.Repository;
 using CIPlatform.DataAccess.Repository.IRepository;
 using CIPlatform.Models;
 using CIPlatform.Models.ViewDataModels;
@@ -10,11 +11,13 @@ namespace CIPlatform.Controllers
     public class MissionListingController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly CiplatformContext _db;
 
 
-        public MissionListingController(IUnitOfWork unitOfWork)
+        public MissionListingController(IUnitOfWork unitOfWork, CiplatformContext db)
         {
             _unitOfWork = unitOfWork;
+            _db = db;
         }
         public IActionResult PlatformLanding()
         {
@@ -35,5 +38,15 @@ namespace CIPlatform.Controllers
             else return RedirectToAction("Index","Home");
 
         }
+
+        [HttpPost]
+        public JsonResult GetCities(string[] countryIds)
+        {
+            var cities = _db.Cities.Where(c => countryIds.Contains(c.CountryId.ToString())).Select(c => new { CityId = c.CityId, Name = c.Name, CountryId = c.CountryId }).ToList();
+            return Json(cities);
+        }
+
+
+
     }
 }

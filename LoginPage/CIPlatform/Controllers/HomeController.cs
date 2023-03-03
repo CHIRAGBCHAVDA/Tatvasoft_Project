@@ -93,8 +93,7 @@ namespace CIPlatform.Controllers
             {
                 string pwd = BCrypt.Net.BCrypt.HashPassword(user.Password);
                 //_unitOfWork.Entry(getUser).Reload();
-                var dbContext = (DbContext)_unitOfWork;
-                dbContext.Entry(user).State = EntityState.Modified;
+                
                 getUser.Password = pwd;
                 _unitOfWork.Save();
                 TempData["reset-success"] = "Your password has been updated !";
@@ -145,15 +144,16 @@ namespace CIPlatform.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult RegistrationPOST(User obj)
         {
-           
+            if (obj.Password != null)
+            {
                 string pwd = BCrypt.Net.BCrypt.HashPassword(obj.Password);
                 obj.Password = pwd;
                 _unitOfWork.User.Register(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "User Added Successfully !";
                 return RedirectToAction("Index");
-            
-            //return View(obj);
+            }
+            return View();
         }
 
         public PartialViewResult GetGridView()

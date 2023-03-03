@@ -27,6 +27,13 @@ namespace CIPlatform.DataAccess.Repository
             return dbSet.ToList<T>();
         }
 
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter)
+        {
+            IQueryable<T> query = dbSet;
+            query = query.Where(filter);
+            return query;
+        }
+
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = dbSet;
