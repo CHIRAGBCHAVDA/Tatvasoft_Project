@@ -16,7 +16,7 @@ namespace CIPlatform.Models.ViewDataModels
         public List<MissionTheme>? MissionTheme { get; set; }
         public List<Skill>? Skills { get; set; }
 
-
+        public List<Mission>? Mission { get; set; }
 
     }
 }

@@ -14,6 +14,10 @@ namespace CIPlatform.DataAccess.Repository.IRepository
 
         IRepository<Skill> Skill { get; }
 
+        IRepository<Mission> Mission { get; }
+
+        IMissionRepository MissionRepo { get; }
+
 
 
         void Save(); 

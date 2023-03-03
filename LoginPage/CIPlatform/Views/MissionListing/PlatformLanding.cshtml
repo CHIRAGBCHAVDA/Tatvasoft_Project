@@ -136,7 +136,7 @@
         <div class="mission-main-wrapper container mt-3">
             <div class="head-sort d-flex justify-content-between ">
                 <div class="explore-head">
-                    <p class="fs-3 fw-lighter">Explore <span class="fs-2 fw-bolder">72 Missions</span> </p>
+                    <p class="fs-3 fw-lighter">Explore <span class="fs-2 fw-bolder"> @ViewBag.totalMissions Missions</span> </p>
                 </div>
                 <div class="sort-head d-flex align-items-center">
 
@@ -180,7 +180,7 @@
 
 <script type="text/javascript">
         $(document).ready(function() {
-        $("#partialView").load('/home/GetGridView');
+        $("#partialView").load('/MissionListing/GetGridView');
         });
         $('#list').click(function() {
         $("#partialView").load('/home/GetListView');

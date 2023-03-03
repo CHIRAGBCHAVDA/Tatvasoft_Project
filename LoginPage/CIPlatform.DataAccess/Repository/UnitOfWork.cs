@@ -16,6 +16,7 @@ namespace CIPlatform.DataAccess.Repository
             City = new Repository<City>(_db);
             Skill = new Repository<Skill>(_db);
             MissionTheme = new Repository<MissionTheme>(_db);
+            MissionRepo = new MissionRepository(_db);
         }
         public IUserRepository User { get; }
 
@@ -23,6 +24,10 @@ namespace CIPlatform.DataAccess.Repository
         public IRepository<City> City { get; }
         public IRepository<Skill> Skill { get; }
         public IRepository<MissionTheme> MissionTheme { get; }
+
+        public IRepository<Mission> Mission { get; }
+
+        public IMissionRepository MissionRepo { get; }
 
         public void Save()
         {

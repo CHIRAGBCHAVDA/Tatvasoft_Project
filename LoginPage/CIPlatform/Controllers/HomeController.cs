@@ -116,11 +116,6 @@ namespace CIPlatform.Controllers
             else return RedirectToAction("Index");
         }
 
-        
-
-
-
-
         [HttpPost]
         public IActionResult Index(User user)
         {
@@ -144,7 +139,8 @@ namespace CIPlatform.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult RegistrationPOST(User obj)
         {
-            if (obj.Password != null)
+            User getTemp = _unitOfWork.User.GetFirstOrDefault(u => u.Email == obj.Email);
+            if (obj.Password != null && ModelState.IsValid && getTemp==null)
             {
                 string pwd = BCrypt.Net.BCrypt.HashPassword(obj.Password);
                 obj.Password = pwd;
@@ -153,13 +149,11 @@ namespace CIPlatform.Controllers
                 TempData["success"] = "User Added Successfully !";
                 return RedirectToAction("Index");
             }
+            TempData["User-Exists"] = "User EmailId already Exists in the database.";
             return View();
         }
 
-        public PartialViewResult GetGridView()
-        {
-            return PartialView("_GridMissionLayout");
-        }
+       
 
         public PartialViewResult GetListView()
         {

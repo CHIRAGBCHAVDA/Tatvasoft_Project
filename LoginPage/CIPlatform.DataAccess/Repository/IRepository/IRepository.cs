@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,6 +15,6 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         List<T> GetAll();
         IEnumerable<T> GetAll(Expression<Func<T, bool>> filter);
        
-
+        JsonResult 
     }
 }

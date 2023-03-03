@@ -12,12 +12,14 @@ namespace CIPlatform.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly CiplatformContext _db;
+        List<MissionListingCard> missionListingCards;
 
 
         public MissionListingController(IUnitOfWork unitOfWork, CiplatformContext db)
         {
             _unitOfWork = unitOfWork;
             _db = db;
+            missionListingCards = _unitOfWork.MissionRepo.getMissions();
         }
         public IActionResult PlatformLanding()
         {
@@ -28,10 +30,17 @@ namespace CIPlatform.Controllers
                 List<City> city = _unitOfWork.City.GetAll();
                 List<MissionTheme> theme = _unitOfWork.MissionTheme.GetAll();
                 List<Skill> skill = _unitOfWork.Skill.GetAll();
+
+                
+
                 Model.Country = country;
                 Model.City = city;
                 Model.MissionTheme = theme;
                 Model.Skills = skill;
+
+                ViewBag.totalMissions = missionListingCards.Count;
+
+
                 return View(Model);
 
             }
@@ -45,7 +54,10 @@ namespace CIPlatform.Controllers
             var cities = _db.Cities.Where(c => countryIds.Contains(c.CountryId.ToString())).Select(c => new { CityId = c.CityId, Name = c.Name, CountryId = c.CountryId }).ToList();
             return Json(cities);
         }
-
+        public PartialViewResult GetGridView()
+        {
+            return PartialView("_GridMissionLayout",missionListingCards);
+        }
 
 
     }

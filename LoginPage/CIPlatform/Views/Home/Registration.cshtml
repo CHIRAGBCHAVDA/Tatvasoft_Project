@@ -69,6 +69,15 @@
             <div class="m-auto col-lg-12 col-xl-4">
                 <div class="main-login-right-continer mx-4 d-flex flex-column justify-content-center">
                     <form method="post" asp-action="Registration">
+                         @if (TempData["User-Exists"] != null)
+                    {
+                        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+                        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+                        <script type="text/javascript">
+                            toastr.error('@TempData["User-Exists"]');
+                        </script>
+
+                    }
                         <div class=" mb-3">
                             <label asp-for="FirstName" for="exampleFormControlInput1" class="form-label"
                                 id="forgot-password-email-label">First Name</label>
@@ -99,12 +108,12 @@
                             <input asp-for="Password" type="password" class="form-control" id="exampleFormControlInput5">
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
-                        @*<div class=" mb-3">
+                        <div class=" mb-3">
                             <label asp-for="ConfirmPassword" for="exampleFormControlInput6" class="form-label"
                                 id="forgot-password-email-label">Confirm Password</label>
                             <input asp-for="ConfirmPassword" type="password" class="form-control" id="exampleFormControlInput6">
                             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                        </div>*@
+                        </div>
                         <div class="submit">
                             <label for="">&nbsp; </label>
                             <button type="submit"
