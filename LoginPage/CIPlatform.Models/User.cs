@@ -23,7 +23,7 @@ namespace CIPlatform.Models
         //[Unique(ErrorMessage = "This email address is already in use.")]
         public string Email { get; set; } = null!;
         [Required]
-        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%&*?])[A-Za-z\d!@#$%&*?]{6,10}$",
+        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%&*?])[A-Za-z\d!@#$%&*?]{6}$",
             ErrorMessage ="The Password must be atleast of 6 characters long and contain atleast 1 digit and 1 special character.")]
         public string Password { get; set; } = null!;
 

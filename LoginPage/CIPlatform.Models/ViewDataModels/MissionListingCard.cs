@@ -8,9 +8,12 @@ namespace CIPlatform.Models.ViewDataModels
 {
     public class MissionListingCard 
     {
-        public Mission? mission { get; set; }
+        public Mission mission { get; set; }
         public string? MissionTheme { get; set; }
         public string? City { get; set; }
+        public MissionSkill missionSkill { get; set; }
+        public List<string>? Skills { get; set; }
+        public string? ImageLink { get; set; }
        
     }
 }

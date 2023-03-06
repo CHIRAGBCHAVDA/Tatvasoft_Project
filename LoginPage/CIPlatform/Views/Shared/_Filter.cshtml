@@ -11,7 +11,7 @@
                     <input class="form-control me-2 border border-0"
                            type="search"
                            placeholder="Search Missions..."
-                           aria-label="Search" />
+                           aria-label="Search" id="search-query"/>
                 </div>
                 <div class="col col-12 d-flex col-lg-8 flex-lg-row">
                     <div class="col-6 d-lg-flex ">
@@ -91,6 +91,9 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/js/MissionListing.js"></script>
+
+@*
 <script>
     $(document).ready(function () {
         $('.country-checkbox').change(function () {
@@ -118,8 +121,30 @@
                 }
             });
         });
+
+        $("#search-query").keyup(function () {
+        searchMissions();
+        });
+
     });
-</script>
+
+    function searchMissions() {
+     
+    let query = document.getElementById("search-query").value;
+    $.ajax({
+        type: "GET",
+        url: "/MissionListing/Search",
+        data: { query: query },
+        success: function (result) {
+            console.log(result);
+            $("#partialView").html(result);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+</script>*@
 
 
 

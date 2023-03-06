@@ -10,7 +10,6 @@ namespace CIPlatform.DataAccess.Repository
         public UnitOfWork(CiplatformContext db)
         {
             _db = db;
-            //hi
             User = new UserRepository(_db);
             Country = new Repository<Country>(_db);
             City = new Repository<City>(_db);

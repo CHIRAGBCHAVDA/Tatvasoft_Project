@@ -5,9 +5,9 @@
         @foreach (var item in Model)
         {
             <div class="item col-md-6 col-sm-12 col-lg-4 my-4">
-                <div class="card thumbnail shadow">
+                <div class="card thumbnail shadow card-to-scale">
                     <div class="card">
-                        <img src="~/assets/Grow-Trees-On-the-path-to-environment-sustainability-2.png"
+                        <img src="@item.ImageLink.Replace("file/d/", "uc?export=download&id=").Replace("/view?usp=sharing","")"
                          class="card-img-top" alt="...">
                         <div class="card-img-overlay">
                             <div class="d-flex features-like-location flex-column align-items-end h-100 justify-content-between">
@@ -96,7 +96,7 @@
         <div class="item col-md-6 col-sm-12 col-lg-4 my-4">
             <div class="card thumbnail shadow">
                 <div class="card">
-                    <img src="~/assets/Education-Supplies-for-Every--Pair-of-Shoes-Sold-2.png"
+                    <img src="~/assets/img11.png"
                          class="card-img-top" alt="...">
                     <div class="card-img-overlay">
                         <div class="d-flex features-like-location flex-column align-items-end h-100 justify-content-between">

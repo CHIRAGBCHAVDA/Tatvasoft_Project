@@ -1,120 +1,147 @@
-﻿   <div class="mission-cards-list">
-                        <div class="card mb-3 shadow">
+﻿@model List<CIPlatform.Models.ViewDataModels.MissionListingCard>
+
+<div class="mission-cards-list">
+    @foreach (var item in Model)
+    {
+        <div class="card mb-3 shadow mt-4">
+            <div class="row g-0 ">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src= "@item.ImageLink.Replace("file/d/", "uc?export=download&id=").Replace("/view?usp=sharing","")" class="img-fluid rounded-start" alt="...">
+                        <div class="card-img-overlay">
+                            <div class="location-and-applied-tags d-flex justify-content-between">
+
+                                @if (item.mission.Status)
+                                {
+                                    <div class="applied-tag bg-success rounded-end px-3 ms-n1" style="margin-left:-1rem !important">
+                                        <span class="text-light"> Applied </span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="applied-tag bg-orange rounded-end px-3 ms-n1" style="margin-left:-1rem !important">
+                                        <span class="text-light"> Closed </span>
+                                    </div>
+                                }
+
+                                <div class="location-tag">
+                                    <div class="location-field text-light fw-lighter bg-dark px-2 py-1 rounded-pill text-center">
+                                        <a href="" class="text-decoration-none text-light">
+                                            <span>
+                                                <img src="~/assets/pin.png" alt="">&nbsp;
+                                                @item.City
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex features-like-location flex-column align-items-end h-75 justify-content-between">
+                                <div class="like-group d-flex flex-column justify-content-between align-items-end mt-auto">
+                                    <div class="bg-dark p-1 rounded-pill">
+                                        <a href=""> <img src="~/assets/heart.png" alt=""></a>
+                                    </div>
+                                    <div class="bg-dark p-1 rounded-pill">
+                                        <a href=""> <img src="~/assets/add1.png" alt=""></a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
 
 
-
-                            <div class="row g-0">
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <img src="~/assets/Grow-Trees-On-the-path-to-environment-sustainability-2.png"
-                                            class="img-fluid rounded-start" alt="...">
-                                        <div class="card-img-overlay">
-                                            <div class="location-and-applied-tags d-flex justify-content-between">
-                                                <div class="applied-tag bg-success rounded-end px-3 ms-n1" style="margin-left:-1rem !important">
-                                                    <span class="text-light">Applied</span>
-                                                </div>
-                                                <div class="location-tag">
-                                                    <div
-                                                        class="location-field text-light fw-lighter bg-dark px-2 py-1 rounded-pill text-center">
-                                                        <a href="" class="text-decoration-none text-light"> <span><img
-                                                                    src="~/assets/pin.png" alt="">&nbsp;
-                                                                Bhavnagar</span></a>
-                                                    </div>
-                                                </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <div class="d-flex card-header-small justify-content-between">
+                            <div class="card-header-small-left fs-6 d-flex flex-wrap">
+                                <span class="mx-1">
+                                    <img src="~/assets/pin1.png" alt=""> &nbsp;
+                                    @item.City
+                                </span>
+                                <span class="mx-1">
+                                    <img src="~/assets/web.png" alt=""> &nbsp;
+                                    @item.MissionTheme
+                                </span>
+                                <span class="mx-1">
+                                    <img src="~/assets/organization.png" alt=""> &nbsp;
+                                    @item.mission.OrganizationName
+                                </span>
+                            </div>
+                            <div class="card-header-small-right">
+                                <div class="d-flex rating-imgs">
+                                    <img src="~/assets/selected-star.png" alt="">
+                                    <img src="~/assets/selected-star.png" alt="">
+                                    <img src="~/assets/selected-star.png" alt="">
+                                    <img src="~/assets/selected-star.png" alt="">
+                                    <img src="~/assets/selected-star.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="card-title mt-3">@item.mission.Title</h5>
+                        <p class="p-0 m-0 card-text fw-lighter">
+                            @item.mission.Description
+                        </p>
+                        <div class="footer-insights-wrapper mt-5">
+                            <div class="d-flex mission-list-footer justify-content-between flex-wrap">
+                                <div class="d-flex mission-list-footer-left justify-content-between flex-wrap">
+                                    <div class="d-flex align-items-center mx-2">
+                                        <img src="~/assets/Seats-left.png" />
+                                        <div class="d-flex flex-column ms-2 ">
+                                            <span class="dark-gray">397</span>
+                                            <span class="light-gray fs-fourteen">Seats Left</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center mx-2">
+                                        <img src="~/assets/mission.png"
+                                         style="height:24px; width:24px" />
+                                        <div class="d-flex flex-column ms-2 ">
+                                            <div class="progress" role="progressbar" aria-valuenow="75"
+                                             aria-valuemin="0" aria-valuemax="100"
+                                             style="height:8px">
+                                                <div class="progress-bar bg-orange-color"
+                                                 style="width: 75%"></div>
                                             </div>
-                                            <div
-                                                class="d-flex features-like-location flex-column align-items-end h-75 justify-content-between">
-                                                <div
-                                                    class="like-group d-flex flex-column justify-content-between align-items-end mt-auto">
-                                                    <div class="bg-dark p-1 rounded-pill">
-                                                        <a href=""> <img src="~/assets/heart.png" alt=""></a>
-                                                    </div>
-                                                    <div class="bg-dark p-1 rounded-pill">
-                                                        <a href=""> <img src="~/assets/add1.png" alt=""></a>
-                                                    </div>
-                                                </div>
-
-                                            </div>
+                                            <span class="light-gray fs-fourteen mt-2">achieved</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center mx-2">
+                                        <img src="~/assets/calender.png" />
+                                        <div class="d-flex flex-column ms-2 ">
+                                            <span class="dark-gray">From @item.mission.StartDate.ToString().Substring(0,10)</span>
+                                            <span class="light-gray fs-fourteen">To @item.mission.EndDate.ToString().Substring(0,10)</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center mx-2">
+                                        <i class="bi bi-tools"></i>
+                                        <div class="d-flex flex-column ms-2 ">
+                                            <span class="dark-gray">Skills</span>
+                                            <span class="light-gray fs-fourteen">
+                                                @foreach (var skill in item.Skills)
+                                                {
+                                                    <span>@skill &nbsp;</span>
+                                                }
+                                            </span>
                                         </div>
                                     </div>
 
-
                                 </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <div class="d-flex card-header-small justify-content-between">
-                                            <div class="card-header-small-left fs-6 d-flex flex-wrap">
-                                                <span class="mx-1"><img src="~/assets/pin1.png" alt=""> &nbsp;
-                                                    Atlanta</span>
-                                                <span class="mx-1"><img src="~/assets/web.png" alt=""> &nbsp;
-                                                    Environment</span>
-                                                <span class="mx-1"><img src="~/assets/organization.png" alt=""> &nbsp;
-                                                    Smith International Caring Foundation</span>
-                                            </div>
-                                            <div class="card-header-small-right">
-                                                <div class="d-flex rating-imgs">
-                                                    <img src="~/assets/selected-star.png" alt="">
-                                                    <img src="~/assets/selected-star.png" alt="">
-                                                    <img src="~/assets/selected-star.png" alt="">
-                                                    <img src="~/assets/selected-star.png" alt="">
-                                                    <img src="~/assets/selected-star.png" alt="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <h5 class="card-title mt-3">Planting and afforestation activities</h5>
-                                        <p class="p-0 m-0 card-text fw-lighter">This summer we are aiming to plant 4000
-                                            trees</p>
-                                        <div class="footer-insights-wrapper mt-5">
-                                            <div class="d-flex mission-list-footer justify-content-between flex-wrap">
-                                                <div class="d-flex mission-list-footer-left justify-content-between flex-wrap">
-                                                    <div class="d-flex align-items-center mx-2">
-                                                        <img src="~/assets/Seats-left.png" />
-                                                        <div class="d-flex flex-column ms-2 ">
-                                                            <span class="dark-gray">397</span>
-                                                            <span class="light-gray fs-fourteen">Seats Left</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-center mx-2">
-                                                        <img src="~/assets/mission.png"
-                                                            style="height:24px; width:24px" />
-                                                        <div class="d-flex flex-column ms-2 ">
-                                                            <div class="progress" role="progressbar" aria-valuenow="75"
-                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                style="height:8px">
-                                                                <div class="progress-bar bg-orange-color"
-                                                                    style="width: 75%"></div>
-                                                            </div>
-                                                            <span class="light-gray fs-fourteen mt-2">achieved</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-center mx-2">
-                                                        <img src="~/assets/calender.png" />
-                                                        <div class="d-flex flex-column ms-2 ">
-                                                            <span class="dark-gray">From 01/09/2019</span>
-                                                            <span class="light-gray fs-fourteen">To 01/12/2019</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-center mx-2">
-                                                        <i class="bi bi-tools"></i>
-                                                        <div class="d-flex flex-column ms-2 ">
-                                                            <span class="dark-gray">Skills</span>
-                                                            <span class="light-gray fs-fourteen">Botany</span>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="mission-list-footer-right mt-2 mx-auto">
-                                                    <div class="mission-submit-btn text-center">
-                                                        <button type="submit"
-                                                            class="btn bg-white  rounded-pill px-4">Apply
-                                                            &nbsp; &nbsp;<img src="~/assets/right-arrow.png"
-                                                                alt=""></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="mission-list-footer-right mt-2 mx-auto">
+                                    <div class="mission-submit-btn text-center">
+                                        <button type="submit"
+                                            class="btn bg-white  rounded-pill px-4">
+                                            Apply
+                                            &nbsp; &nbsp;<img src="~/assets/right-arrow.png"
+                                                          alt="">
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>

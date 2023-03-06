@@ -155,10 +155,6 @@ namespace CIPlatform.Controllers
 
        
 
-        public PartialViewResult GetListView()
-        {
-            return PartialView("_ListMissionLayout");
-        }
         
         public IActionResult VolunteeringMissionPage()
         {

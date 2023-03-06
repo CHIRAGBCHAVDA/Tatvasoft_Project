@@ -23,15 +23,37 @@ namespace CIPlatform.DataAccess.Repository
                                      join C in _db.Cities on M.CityId equals C.CityId
                                      join
                                      Tm in _db.MissionThemes on M.MissionThemeId equals Tm.MissionThemeId
+                                     
 
                                      select new MissionListingCard()
                                      {
                                          mission = M,
                                          City = C.Name,
-                                         MissionTheme = Tm.Title
-                                     };
+                                         MissionTheme = Tm.Title,
+                                         Skills = (List<string>)(from ms in _db.MissionSkills
+                                                    join s in _db.Skills on ms.SkillId equals s.SkillId
+                                                    where ms.MissionId == M.MissionId
+                                                    select s.SkillName),
+                                         
+                                         ImageLink = (from ImgLink in _db.MissionMedia
+                                                     where ImgLink.MissionId  ==  M.MissionId
+                                                     select ImgLink.MediaPath).FirstOrDefault()
+                                        };
+            
+
 
             return missionListingCard.ToList();
         }
+
+        public List<string> getSkills(long id)
+        {
+            var a = from ms in _db.MissionSkills
+                         join s in _db.Skills on ms.SkillId equals s.SkillId
+                         where ms.MissionId == id
+                         select s.SkillName;
+            return a.ToList();
+        }
+
+        
     }
 }

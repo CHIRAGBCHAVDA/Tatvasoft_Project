@@ -2,7 +2,6 @@ D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\bin\Debug\net6.0\CIPlatform.Ut
 D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\bin\Debug\net6.0\CIPlatform.Utility.dll
 D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\bin\Debug\net6.0\ref\CIPlatform.Utility.dll
 D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\bin\Debug\net6.0\CIPlatform.Utility.pdb
-D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\obj\Debug\net6.0\CIPlatform.Utility.csproj.AssemblyReference.cache
 D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\obj\Debug\net6.0\CIPlatform.Utility.GeneratedMSBuildEditorConfig.editorconfig
 D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\obj\Debug\net6.0\CIPlatform.Utility.AssemblyInfoInputs.cache
 D:\Tatvasoft_Project\LoginPage\CIPlatform.Utility\obj\Debug\net6.0\CIPlatform.Utility.AssemblyInfo.cs

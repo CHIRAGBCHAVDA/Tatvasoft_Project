@@ -12,7 +12,7 @@ namespace CIPlatform.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly CiplatformContext _db;
-        List<MissionListingCard> missionListingCards;
+        public List<MissionListingCard>? missionListingCards, getMs;
 
 
         public MissionListingController(IUnitOfWork unitOfWork, CiplatformContext db)
@@ -59,6 +59,32 @@ namespace CIPlatform.Controllers
             return PartialView("_GridMissionLayout",missionListingCards);
         }
 
+        public PartialViewResult GetListView()
+        {
+            return PartialView("_ListMissionLayout", missionListingCards);
+        }
 
+        public ActionResult Search(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                return View();
+            }
+            getMs = _db.Missions.Where(m => m.Title.Contains(query) || m.Description.Contains(query)).Select(m => new MissionListingCard
+            {
+                mission = m,
+                ImageLink = "https://drive.google.com/uc?export=download&id=1O2NUH-2CRYmQKWgphC_UbgE_c9TGKAYv"
+            }).ToList();
+            if(getMs.Count > 0)
+            {
+                return PartialView("_GridMissionLayout", getMs);
+            }
+            else
+            {
+                return PartialView("_MissionNotFound");
+            }
+        }
+
+   
     }
 }

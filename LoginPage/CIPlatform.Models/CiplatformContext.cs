@@ -30,7 +30,7 @@ namespace CIPlatform.Models.Ciplatform.DataAccess.Data
         public virtual DbSet<MissionApplication> MissionApplications { get; set; } = null!;
         public virtual DbSet<MissionDocument> MissionDocuments { get; set; } = null!;
         public virtual DbSet<MissionInvite> MissionInvites { get; set; } = null!;
-        public virtual DbSet<MissionMedium> MissionMedia { get; set; } = null!;
+        public virtual DbSet<MissionMedia> MissionMedia { get; set; } = null!;
         public virtual DbSet<MissionRating> MissionRatings { get; set; } = null!;
         public virtual DbSet<MissionSkill> MissionSkills { get; set; } = null!;
         public virtual DbSet<MissionTheme> MissionThemes { get; set; } = null!;
@@ -541,7 +541,7 @@ namespace CIPlatform.Models.Ciplatform.DataAccess.Data
                     .HasColumnName("updated_at");
             });
 
-            modelBuilder.Entity<MissionMedium>(entity =>
+            modelBuilder.Entity<MissionMedia>(entity =>
             {
                 entity.HasKey(e => e.MissionMediaId)
                     .HasName("PK__mission___848A78E8C767159A");

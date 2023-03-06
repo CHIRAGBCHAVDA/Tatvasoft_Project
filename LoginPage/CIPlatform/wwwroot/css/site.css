@@ -156,6 +156,9 @@
     border: 2px solid #F88634;
     color: #F88634;
 }
+.bg-orange {
+    background-color: #F88634;
+}
 /*#grid:hover {
     background: #e6e6e6;
 }
@@ -227,4 +230,10 @@ background-image: url("../assets/left.png");
     .story-listing-pagination-nav ul li a:hover {
         background-color: #F88634;
         color: white;
+    }
+
+
+    .card-to-scale:hover{
+        transform : scale(1.1);
+        transition : 0.2s ease-in-out;
     }
