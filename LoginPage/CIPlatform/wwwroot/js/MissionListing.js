@@ -33,7 +33,7 @@
         var countryId = $(this).val();
         if (!$(this).prop('checked')) {
             debugger;
-            $('.city-checkbox[data-country="' + countryId + '"]').prop('checked', false);
+            $('.city-checkbox[data-country="'+countryId+'"]').prop('checked', false);
         }
 
 
@@ -61,7 +61,9 @@
                 $.each(data, function (index, value) {
                     var cityItem = $('.city-item[data-country="' + value.countryId + '"]');
                     cityItem.show();
-                    cityItem.find('.city-checkbox[value="' + value.cityId + '"]').show();
+                    //cityItem.find('.city-checkbox[value="' + value.cityId + 'data-country="' + value.countryId + '""]').show();
+                    cityItem.find('.city-checkbox[value="' + value.cityId + '"][data-country="' + value.countryId + '"]').show();
+
                     getBadge();
 
                 });
@@ -155,11 +157,32 @@ function getBadge() {
         var countryName = $(this).next().text();
 
         // Only add the badge if it was not already added
+        //if (selectedCountries.includes(countryId)) {
+        //    var badge = '<div class="d-flex bg-light rounded-pill p-2 m-2" data-country="' + countryId + '">';
+        //    badge += '<span>' + countryName + '</span>';
+        //    badge += '<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>';
+        //    badge += '</div>';
+        //    $('.filter-badge').append(badge);
+        //}
+
         if (selectedCountries.includes(countryId)) {
-            var badge = '<div class="d-flex bg-light rounded-pill p-2 m-2" data-country="' + countryId + '">';
-            badge += '<span>' + countryName + '</span>';
-            badge += '<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>';
-            badge += '</div>';
+            var badge = $('<div>', {
+                'class': 'd-flex bg-light rounded-pill p-2 m-2',
+                'data-country': countryId,
+                'html': $('<span>', { 'text': countryName }),
+            }).append($('<button>', {
+                'type': 'button',
+                'class': 'btn-close btn-sm',
+                'aria-label': 'Close',
+                'on': {
+                    'click': function () {
+                        var countryCheckbox = $('.country-checkbox[value="' + countryId + '"]');
+                        countryCheckbox.prop('checked', false);
+                        countryCheckbox.trigger('change');
+                        $(this).parent().remove();
+                    },
+                },
+            }));
             $('.filter-badge').append(badge);
         }
     });

@@ -38,7 +38,7 @@
                                 @foreach (var item in Model.City)
                                 {
                                     <li class="city-item" data-country="@item.CountryId">
-                                        <input class="form-check-input m-2 city-checkbox" type="checkbox" value="@item.CityId" id="@item.Name" />
+                                        <input class="form-check-input m-2 city-checkbox" type="checkbox" value="@item.CityId" id="@item.Name" data-country="@item.CountryId" />
                                         <label class="form-check-label" for="@item.Name">@item.Name</label>
                                     </li>
                                 }
