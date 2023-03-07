@@ -68,16 +68,34 @@ namespace CIPlatform.Controllers
         {
             if (string.IsNullOrEmpty(query))
             {
-                return View();
+                return PartialView("_GridMissionLayout", missionListingCards);
             }
-            getMs = _db.Missions.Where(m => m.Title.Contains(query) || m.Description.Contains(query)).Select(m => new MissionListingCard
+
+            var getMs = from M in _db.Missions
+                                     join C in _db.Cities on M.CityId equals C.CityId
+                                     join
+                                     Tm in _db.MissionThemes on M.MissionThemeId equals Tm.MissionThemeId
+                                     where M.Title.Contains(query) || M.Description.Contains(query)
+                                     select new MissionListingCard()
+                                     {
+                                         mission = M,
+                                         City = C.Name,
+                                         MissionTheme = Tm.Title,
+                                         Skills = (List<string>)(from ms in _db.MissionSkills
+                                                                 join s in _db.Skills on ms.SkillId equals s.SkillId
+                                                                 where ms.MissionId == M.MissionId
+                                                                 select s.SkillName),
+
+                                         ImageLink = (from ImgLink in _db.MissionMedia
+                                                      where ImgLink.MissionId == M.MissionId
+                                                      select ImgLink.MediaPath).FirstOrDefault()
+                                     };
+
+
+           
+            if(getMs.ToList().Count > 0)
             {
-                mission = m,
-                ImageLink = "https://drive.google.com/uc?export=download&id=1O2NUH-2CRYmQKWgphC_UbgE_c9TGKAYv"
-            }).ToList();
-            if(getMs.Count > 0)
-            {
-                return PartialView("_GridMissionLayout", getMs);
+                return PartialView("_GridMissionLayout", getMs.ToList());
             }
             else
             {
