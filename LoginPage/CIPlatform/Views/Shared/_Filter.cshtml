@@ -11,7 +11,7 @@
                     <input class="form-control me-2 border border-0"
                            type="search"
                            placeholder="Search Missions..."
-                           aria-label="Search" id="search-query"/>
+                           aria-label="Search" id="search-query" />
                 </div>
                 <div class="col col-12 d-flex col-lg-8 flex-lg-row">
                     <div class="col-6 d-lg-flex ">
@@ -90,115 +90,30 @@
     </div>
 </div>
 
+
+<hr class="m-0 opacity-100 bg-light text-dark" style="height:3px">
+
+<div class="filter-badge d-flex container flex-wrap mt-2 align-items-center">
+    
+
+    @*<div class="d-flex bg-light rounded-pill p-2 m-2">
+        <span>Tree Plantation </span>
+        <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>*@
+    <span>Clear all</span>
+</div>
+
+
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="~/js/MissionListing.js"></script>
 
-@*
 <script>
-    $(document).ready(function () {
-        $('.country-checkbox').change(function () {
-            var selectedCountries = [];
-
-            $('.country-checkbox:checked').each(function () {
-                selectedCountries.push($(this).val());
-            });
-
-            $.ajax({
-                type: "POST",
-                url: "/MissionListing/GetCities",
-                data: { countryIds: selectedCountries },
-                success: function (data) {
-                    $('.city-item').hide();
-
-                    $.each(data, function (index, value) {
-                        var cityItem = $('.city-item[data-country="' + value.countryId + '"]');
-                        cityItem.show();
-                        cityItem.find('.city-checkbox[value="' + value.cityId + '"]').show();
-                    });
-                },
-                error: function () {
-                    alert("An error occurred while fetching cities.");
-                }
-            });
-        });
-
-        $("#search-query").keyup(function () {
-        searchMissions();
-        });
-
-    });
-
-    function searchMissions() {
-     
-    let query = document.getElementById("search-query").value;
-    $.ajax({
-        type: "GET",
-        url: "/MissionListing/Search",
-        data: { query: query },
-        success: function (result) {
-            console.log(result);
-            $("#partialView").html(result);
-        },
-        error: function (xhr, status, error) {
-            console.log(error);
-        }
-    });
-}
-</script>*@
-
-
-
-
-@*
-    <div class="d-flex w-100 dropdown">
-    <button class="bg-white form-select text-start text-dark  w-100" type="button"  id="multiCheckboxDropdown1" data-bs-toggle="dropdown" aria-expanded="false">
-    Country
-    </button>
-    <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown">
-
-    @foreach (var item in Model.Country)
-    {
-    <li>
-    <input class="form-check-input m-2" type="checkbox" value=@item.Name
-    id=@item.Name><label class="form-check-label" for="option1">
-    @item.Name
-    </label>
-    </li>
+    $('.country-checkbox').on('change', function() {
+    var countryId = $(this).val();
+    if (!$(this).prop('checked')) {
+        $('.city-checkbox[data-country="' + countryId + '"]').prop('checked', false);
     }
-    </ul>
-    <select class="form-control" id="country">
-    <option value="">--Select Country--</option>
-    @foreach (var country in Model.Country)
-    {
-    <option value="@country.Name">
-    <input type="checkbox" class="country-checkbox" value="@country.Name" /> @country.Name
-    </option>
-    }
-    </select>
-    </div>
-    <div class="dropdown w-100 d-flex">
-    <button class=" bg-white form-select text-start text-dark  w-100" type="button" id="multiCheckboxDropdown2" data-bs-toggle="dropdown" aria-expanded="false">
-    City
-    </button>
-    <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown">
-    @foreach (var item in Model.City)
-    {
-    <li>
-    <input class="form-check-input m-2" type="checkbox" value=@item.Name
-    id=@item.Name><label class="form-check-label" for="option1">
-    @item.Name
-    </label>
-    </li>
-    }
-    </ul>
-    <select class="form-control" id="city">
-    <option value="">--Select City--</option>
-    @foreach (var city in Model.City)
-    {
-    <option value="@city.Name">
-    <input type="checkbox" class="city-checkbox" value="@city.Name" /> @city.Name
-    </option>
-    }
-    </select>
-    </div>
-*@
+});
+</script>

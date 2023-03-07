@@ -237,3 +237,6 @@ background-image: url("../assets/left.png");
         transform : scale(1.1);
         transition : 0.2s ease-in-out;
     }
+.city-item {
+    display: none;
+}
