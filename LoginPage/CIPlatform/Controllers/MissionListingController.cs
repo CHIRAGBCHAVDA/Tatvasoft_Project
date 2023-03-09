@@ -12,7 +12,7 @@ namespace CIPlatform.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly CiplatformContext _db;
-        public List<MissionListingCard>? missionListingCards, getMs;
+        public List<MissionListingCard>? missionListingCards, getMs,getFilterMs;
 
 
         public MissionListingController(IUnitOfWork unitOfWork, CiplatformContext db)
@@ -20,6 +20,7 @@ namespace CIPlatform.Controllers
             _unitOfWork = unitOfWork;
             _db = db;
             missionListingCards = _unitOfWork.MissionRepo.getMissions();
+            getFilterMs = missionListingCards;
         }
         public IActionResult PlatformLanding()
         {
@@ -71,29 +72,30 @@ namespace CIPlatform.Controllers
                 return PartialView("_GridMissionLayout", missionListingCards);
             }
 
-            var getMs = from M in _db.Missions
-                                     join C in _db.Cities on M.CityId equals C.CityId
-                                     join
-                                     Tm in _db.MissionThemes on M.MissionThemeId equals Tm.MissionThemeId
-                                     where M.Title.Contains(query) || M.Description.Contains(query)
-                                     select new MissionListingCard()
-                                     {
-                                         mission = M,
-                                         City = C.Name,
-                                         MissionTheme = Tm.Title,
-                                         Skills = (List<string>)(from ms in _db.MissionSkills
-                                                                 join s in _db.Skills on ms.SkillId equals s.SkillId
-                                                                 where ms.MissionId == M.MissionId
-                                                                 select s.SkillName),
+            var getMs =
+                from M in _db.Missions
+                join C in _db.Cities on M.CityId equals C.CityId
+                join
+                Tm in _db.MissionThemes on M.MissionThemeId equals Tm.MissionThemeId
+                where M.Title.Contains(query) || M.Description.Contains(query)
+                select new MissionListingCard()
+                {
+                    mission = M,
+                    City = C.Name,
+                    MissionTheme = Tm.Title,
+                    Skills = (List<string>)(from ms in _db.MissionSkills
+                                            join s in _db.Skills on ms.SkillId equals s.SkillId
+                                            where ms.MissionId == M.MissionId
+                                            select s.SkillName),
 
-                                         ImageLink = (from ImgLink in _db.MissionMedia
-                                                      where ImgLink.MissionId == M.MissionId
-                                                      select ImgLink.MediaPath).FirstOrDefault()
-                                     };
+                    ImageLink = (from ImgLink in _db.MissionMedia
+                                 where ImgLink.MissionId == M.MissionId
+                                 select ImgLink.MediaPath).FirstOrDefault()
+                };
 
 
-           
-            if(getMs.ToList().Count > 0)
+
+            if (getMs.ToList().Count > 0)
             {
                 return PartialView("_GridMissionLayout", getMs.ToList());
             }
@@ -103,6 +105,43 @@ namespace CIPlatform.Controllers
             }
         }
 
-   
+        [HttpPost]
+        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId)
+        {
+            if (countryId.Length>0)
+            {
+                getFilterMs = missionListingCards.Where(m => countryId.Contains(m.mission.CountryId.ToString())).ToList();
+                //return PartialView("_GridMissionLayout", getFilterMs);
+            }
+            if (cityName.Length > 0)
+            {
+                getFilterMs = missionListingCards.Where(m => cityName.Contains(m.City)).ToList();  
+            }
+            if (themeId.Length > 0)
+            {
+                getFilterMs = getFilterMs.Where(m => themeId.Contains(m.MissionTheme)).ToList();
+            }
+            if (skillId.Length > 0)
+            {
+                getFilterMs = missionListingCards.Where(m => m.Skills.Intersect(skillId).Any()).ToList();
+            }
+
+
+            if (getFilterMs.Count == 0)
+            {
+                return PartialView("_MissionNotFound");
+            }
+
+            ViewBag.totalMissions = getFilterMs.Count;
+            return PartialView("_GridMissionLayout", getFilterMs);
+        }
+         public int getMissionCount()
+        {
+            if(getFilterMs!=null)
+            return getFilterMs.Count;
+            return 0;
+        }
+
+
     }
 }

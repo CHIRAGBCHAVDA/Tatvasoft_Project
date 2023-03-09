@@ -19,7 +19,7 @@
                             <button class="bg-white form-select text-start text-dark w-100" type="button" id="multiCheckboxDropdown1" data-bs-toggle="dropdown" aria-expanded="false">
                                 Country
                             </button>
-                            <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown1">
+                            <ul class="dropdown-menu p-3" id="country" aria-labelledby="multiCheckboxDropdown1">
                                 @foreach (var item in Model.Country)
                                 {
                                     <li>
@@ -34,11 +34,11 @@
                             <button class="bg-white form-select text-start text-dark w-100" type="button" id="multiCheckboxDropdown2" data-bs-toggle="dropdown" aria-expanded="false">
                                 City
                             </button>
-                            <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown2">
+                            <ul class="dropdown-menu p-3" id="city" aria-labelledby="multiCheckboxDropdown2">
                                 @foreach (var item in Model.City)
                                 {
                                     <li class="city-item" data-country="@item.CountryId">
-                                        <input class="form-check-input m-2 city-checkbox" type="checkbox" value="@item.CityId" id="@item.Name" data-country="@item.CountryId" />
+                                        <input class="form-check-input m-2 city-checkbox" type="checkbox" value="@item.CityId" id="@item.Name" data-country="@item.CountryId" data-city="@item.CityId" />
                                         <label class="form-check-label" for="@item.Name">@item.Name</label>
                                     </li>
                                 }
@@ -54,11 +54,11 @@
                                     id="multiCheckboxDropdown3" data-bs-toggle="dropdown" aria-expanded="false">
                                 Theme
                             </button>
-                            <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown">
+                            <ul class="dropdown-menu p-3" id="theme" aria-labelledby="multiCheckboxDropdown">
                                 @foreach (var item in Model.MissionTheme)
                                 {
                                     <li>
-                                        <input class="form-check-input m-2" type="checkbox" value=@item.Title
+                                        <input class="form-check-input theme-checkbox m-2" type="checkbox" value=@item.Title
                                            id=@item.Title><label class="form-check-label" for="option1">
                                             @item.Title
                                         </label>
@@ -71,11 +71,11 @@
                                     id="multiCheckboxDropdown4" data-bs-toggle="dropdown" aria-expanded="false">
                                 Skills
                             </button>
-                            <ul class="dropdown-menu p-3" aria-labelledby="multiCheckboxDropdown">
+                            <ul class="dropdown-menu p-3" id="skills" aria-labelledby="multiCheckboxDropdown">
                                 @foreach (var item in Model.Skills)
                                 {
                                     <li>
-                                        <input class="form-check-input m-2" type="checkbox" value=@item.SkillName
+                                        <input class="form-check-input skill-checkbox m-2" type="checkbox" value=@item.SkillName
                                            id=@item.SkillName><label class="form-check-label" for="option1">
                                             @item.SkillName
                                         </label>

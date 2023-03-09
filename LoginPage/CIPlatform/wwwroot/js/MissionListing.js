@@ -1,7 +1,16 @@
-﻿$(document).ready(function () {
+﻿
+
+var selectedCountries = [];
+var selectedCities = [];
+var selectedThemes = [];
+var selectedSkills = [];
+
+
+$(document).ready(function () {
     $('.city-item').hide();
     $("#partialView").load('/MissionListing/GetGridView');
     $('#list').click(function () {
+        console.log("hi");
         $("#partialView").load('/MissionListing/GetListView');
     });
     $('#grid').click(function () {
@@ -18,39 +27,27 @@
     btn2.addEventListener("click", function () {
         btn1.classList.toggle("bg-white");
         btn2.classList.remove("bg-white");
-        console.log("Button 2 clicked")
+        console.log("Button 2 clicked");
     });
 
-    //$('.country-checkbox').on('change', function () {
-    //    debugger;
-
-    //});
-
-
+ 
     $('.country-checkbox').change(function () {
-        
-        var selectedCountries = [];
         var countryId = $(this).val();
         if (!$(this).prop('checked')) {
             debugger;
-            $('.city-checkbox[data-country="'+countryId+'"]').prop('checked', false);
+            $('.city-checkbox[data-country="' + countryId + '"]').prop('checked', false);
+            var index = selectedCountries.indexOf(countryId);
+            if (index > -1 && !$(this).prop('checked')) {
+                selectedCountries.splice(index);
+                getFilter();
+            }
+        } else {
+            selectedCountries.push($(this).val());
         }
 
+        //$('.country-checkbox:checked').each(function () {
+        //});
 
-        //if (!$(this).prop('checked')) {
-        //    debugger;
-        //    $('.city-checkbox[data-country="' + countryId + '"]').prop('checked', false).removeAttr('checked');
-        //    let x = [...document.getElementsByClassName("city-item")]
-        //    x.forEach(function (city, ind) {
-        //        if (city.countryId == countryId)
-        //            city.firstElementChild.checked = false;
-        //    })
-        //}
-
-        $('.country-checkbox:checked').each(function () {
-            selectedCountries.push($(this).val());
-
-        });
         $.ajax({
             type: "POST",
             url: "/MissionListing/GetCities",
@@ -61,7 +58,6 @@
                 $.each(data, function (index, value) {
                     var cityItem = $('.city-item[data-country="' + value.countryId + '"]');
                     cityItem.show();
-                    //cityItem.find('.city-checkbox[value="' + value.cityId + 'data-country="' + value.countryId + '""]').show();
                     cityItem.find('.city-checkbox[value="' + value.cityId + '"][data-country="' + value.countryId + '"]').show();
 
                     getBadge();
@@ -74,17 +70,77 @@
         });
     });
 
+    
+    $('.city-checkbox').change(function () {
+        var cityId = $(this).next().text();
+        if (!$(this).prop('checked')) {
+            debugger
+            $('.city-checkbox[value="' + cityId + '"]').prop('checked', false);
+            var index = selectedCities.indexOf(cityId);
+            if (index > -1 && !$(this).prop('checked')) {
+                selectedCities.splice(index);
+                getFilter();
+            }
+        }
+    });
+    //$('.theme-checkbox:checked').each(function () {
+    //    selectedThemes.push($(this).val());
+    //    console.log("The value of selected theme is : " + selectedThemes);
+    //});
+
+    $('.theme-checkbox').change(function () {
+        var themeName = $(this).next().text().trim();
+        debugger
+        if (!$(this).prop('checked')) {
+            $('.theme-checkbox[value="' + themeName.trim() + '"]').prop('checked', false);
+            var index = selectedThemes.indexOf(themeName);
+            if (index > -1 && !$(this).prop('checked')) {
+                selectedThemes.splice(index);
+                getFilter();
+            }
+        } else {
+            selectedThemes.push(themeName.trim());
+        }
+    });
+
+    //$('.city-checkbox').change(function () {
+    //    getBadge();
+    //});
+
     $("#search-query").keyup(function () {
         searchMissions();
     });
-
-    //$('.country-checkbox, .city-checkbox').change(function () {
-    //});
+    $('.skill-checkbox').on('change', function () {
+        getBadge();
+    });
+    $('.theme-checkbox').on('change', function () {
+        getBadge();
+    });
+   
 });
 
+
 $(document).on('change', function () {
-    $('.city-checkbox').on('change', function () {
+    $('.city-checkbox').on('change',function () {
         getBadge();
+    });
+    $('.theme-checkbox').on('change', function () {
+        getBadge();
+    });
+    $('.skill-checkbox').on('change', function () {
+        getBadge();
+    });
+
+
+    $.ajax({
+        type: 'GET',
+        url: '/MissionListing/getMissionCount',
+        success: function (result) {
+            $('#totalMissionFilterSpan').html(result);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
     });
 })
 
@@ -105,48 +161,20 @@ function searchMissions() {
 }
 
 
-//function getBadge() {
-//    $('.filter-badge').empty();
-
-//    // Loop through all checked country checkboxes
-//    $('.country-checkbox:checked').each(function () {
-//        var countryId = $(this).val();
-//        var countryName = $(this).next().text();
-
-//        // Create a badge for the country
-//        var countryBadge = '<div class="d-flex bg-light rounded-pill p-2 m-2" data-country="' + countryId + '">';
-//        countryBadge += '<span>' + countryName + '</span>';
-//        countryBadge += '<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>';
-//        countryBadge += '</div>';
-//        $('.filter-badge').append(countryBadge);
-
-//        // Loop through all checked city checkboxes associated with this country
-//        $('.city-checkbox[data-country="' + countryId + '"]:checked').each(function () {
-//            var cityName = $(this).next().text();
-
-//            // Create a badge for the city
-//            var cityBadge = '<div class="d-flex bg-light rounded-pill p-2 m-2">';
-//            cityBadge += '<span>' + cityName + '</span>';
-//            cityBadge += '<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>';
-//            cityBadge += '</div>';
-//            $('.filter-badge').append(cityBadge);
-//        });
-//    });
-//}
-
-
 function getBadge() {
-    var selectedCountries = [];
-    var selectedCities = [];
 
-    // Get the IDs of all selected countries and cities
-    $('.country-checkbox:checked').each(function () {
-        selectedCountries.push($(this).val());
-    });
 
     $('.city-checkbox:checked').each(function () {
-        selectedCities.push($(this).val());
+        console.log("hello data after push thisis selected cities" + selectedCities);
+        selectedCities.push($(this).next().text());
     });
+   
+    $('.skill-checkbox:checked').each(function () {
+        console.log("hello data after push" + selectedSkills);
+        selectedSkills.push($(this).next().text().trim());
+    });
+
+
 
     // Clear the badge container
     $('.filter-badge').empty();
@@ -155,15 +183,6 @@ function getBadge() {
     $('.country-checkbox:checked').each(function () {
         var countryId = $(this).val();
         var countryName = $(this).next().text();
-
-        // Only add the badge if it was not already added
-        //if (selectedCountries.includes(countryId)) {
-        //    var badge = '<div class="d-flex bg-light rounded-pill p-2 m-2" data-country="' + countryId + '">';
-        //    badge += '<span>' + countryName + '</span>';
-        //    badge += '<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>';
-        //    badge += '</div>';
-        //    $('.filter-badge').append(badge);
-        //}
 
         if (selectedCountries.includes(countryId)) {
             var badge = $('<div>', {
@@ -183,23 +202,122 @@ function getBadge() {
                     },
                 },
             }));
+            console.log("hello above ajax");
             $('.filter-badge').append(badge);
+
+            getFilter();
+
         }
     });
 
     // Add badges for all selected cities
     $('.city-checkbox:checked').each(function () {
+        debugger
         var cityId = $(this).val();
         var cityName = $(this).next().text();
         var countryId = $(this).data('country');
 
-        // Only add the badge if it was not already added
-        if (selectedCities.includes(cityId)) {
-            var badge = '<div class="d-flex bg-light rounded-pill p-2 m-2" data-country="' + countryId + '" data-city="' + cityId + '">';
-            badge += '<span>' + cityName + '</span>';
-            badge += '<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>';
-            badge += '</div>';
+        if (selectedCities.includes(cityName)) {
+            var badge = $('<div>', {
+                'class': 'd-flex bg-light rounded-pill p-2 m-2',
+                'data-country': countryId,
+                'data-city': cityId,
+                'html': $('<span>', { 'text': cityName }),
+            }).append($('<button>', {
+                'type': 'button',
+                'class': 'btn-close btn-sm',
+                'aria-label': 'Close',
+                'on': {
+                    'click': function () {
+                        var cityCheckbox = $('.city-checkbox[value="' + cityId + '"]');
+                        cityCheckbox.prop('checked', false);
+                        cityCheckbox.trigger('change');
+                        $(this).parent().remove();
+                    },
+                },
+            }));
+            console.log("You have reached to city badge append");
             $('.filter-badge').append(badge);
+            getFilter();
+        }
+       
+    });
+
+
+    $('.theme-checkbox:checked').each(function () {
+        debugger
+
+        var title = $(this).val();
+        if (selectedThemes.includes(title.toString())) {
+            var badge = $('<div>', {
+                'class': 'd-flex bg-light rounded-pill p-2 m-2',
+                'html': $('<span>', { 'text': title }),
+            }).append($('<button>', {
+                'type': 'button',
+                'class': 'btn-close btn-sm',
+                'aria-label': 'Close',
+                'on': {
+                    'click': function () {
+                        var themeCheckbox = $('.theme-checkbox[value="' + title + '"]');
+                        themeCheckbox.prop('checked', false);
+                        themeCheckbox.trigger('change');
+                        $(this).parent().remove();
+                    },
+                },
+            }));
+            $('.filter-badge').append(badge);
+            getFilter();
+        }
+
+    });
+
+
+    $('.skill-checkbox:checked').each(function () {
+        var skillName = $(this).val();
+        if (selectedSkills.includes(skillName.toString())) {
+            var badge = $('<div>', {
+                'class': 'd-flex bg-light rounded-pill p-2 m-2',
+                'html': $('<span>', { 'text': skillName }),
+            }).append($('<button>', {
+                'type': 'button',
+                'class': 'btn-close btn-sm',
+                'aria-label': 'Close',
+                'on': {
+                    'click': function () {
+                        var skillCheckbox = $('.skill-checkbox[value="' + skillName + '"]');
+                        skillCheckbox.prop('checked', false);
+                        skillCheckbox.trigger('change');
+                        $(this).parent().remove();
+                    },
+                },
+            }));
+            $('.filter-badge').append(badge);
+            getFilter();
+        }
+
+    });
+    
+
+}
+
+function getFilter() {
+
+    //debugger;
+    $.ajax({
+        url: "/MissionListing/filterMission",
+        type: "POST",
+        data: {
+            "countryId": selectedCountries,
+            "cityName": selectedCities,
+            "themeId": selectedThemes,
+            "skillId": selectedSkills
+        },
+        success: function (result) {
+            console.log(result);
+            $("#partialView").html(result);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
         }
     });
 }
