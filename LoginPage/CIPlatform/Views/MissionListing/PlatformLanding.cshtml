@@ -51,6 +51,26 @@
 
         </div>
     </div>
+
+    @{
+        double d = @ViewBag.totalMissions / 3.0;
+        double pages = Math.Ceiling(d);
+    }
+    <nav class="d-flex justify-content-center mt-5">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link"><span>&laquo;</span></a></li>
+            <li class="page-item"><a class="page-link"><img src="~/assets/left.png"/></a></li>
+            @for(int i = 1; i <= @pages; i++)
+            {
+                <li class="page-item" id="@i"><a class="page-link">@i</a></li>
+            }
+            <li class="page-item"><a class="page-link"><span>&raquo;</span></a></li>
+            <li class="page-item"><a class="page-link"><img src="~/assets/arrow.png"/></a></li>
+        </ul>
+    </nav>
+
+
+
 </div>
 
 

@@ -109,6 +109,12 @@ $(document).ready(function () {
 
     getTotalCount();
 
+
+    $("#1").addClass('active');
+    $('.pagination').on('click', '.page-item', function () {
+        getFilter($(this).attr('id'));
+    });
+
 });
 
 
@@ -304,7 +310,7 @@ function getBadge() {
     });
 }
 
-function getFilter() {
+function getFilter(pg) {
     $.ajax({
         url: "/MissionListing/filterMission",
         type: "POST",
@@ -314,7 +320,8 @@ function getFilter() {
             "themeId": selectedThemes,
             "skillId": selectedSkills,
             "sortBy": selectedOption,
-            "flag" : flag
+            "flag": flag,
+            "pageNum" : pg
         },
         success: function (result) {
             $("#partialView").html(result);

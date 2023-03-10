@@ -107,7 +107,7 @@ namespace CIPlatform.Controllers
         }
 
         [HttpPost]
-        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId, [DefaultValue(1)] int sortBy, [DefaultValue(1)] int flag)
+        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId, [DefaultValue(1)] int sortBy, [DefaultValue(1)] int flag, [DefaultValue(1)] int pageNum)
         {
             if (countryId!=null && countryId.Length>0)
             {
@@ -156,6 +156,8 @@ namespace CIPlatform.Controllers
             }
 
              a = getFilterMs.Count;
+
+            getFilterMs = getFilterMs.Skip((pageNum - 1) * 3).Take(3).ToList();
 
             if (flag == 1)
             {
