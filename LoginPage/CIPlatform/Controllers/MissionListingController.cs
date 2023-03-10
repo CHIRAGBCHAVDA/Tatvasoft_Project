@@ -5,6 +5,7 @@ using CIPlatform.Models;
 using CIPlatform.Models.ViewDataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
 
 namespace CIPlatform.Controllers
 {
@@ -13,7 +14,7 @@ namespace CIPlatform.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly CiplatformContext _db;
         public List<MissionListingCard>? missionListingCards, getMs,getFilterMs;
-
+        public static int a;
 
         public MissionListingController(IUnitOfWork unitOfWork, CiplatformContext db)
         {
@@ -106,7 +107,7 @@ namespace CIPlatform.Controllers
         }
 
         [HttpPost]
-        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId)
+        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId, [DefaultValue(1)] int sortBy)
         {
             if (countryId.Length>0)
             {
@@ -126,21 +127,44 @@ namespace CIPlatform.Controllers
                 getFilterMs = missionListingCards.Where(m => m.Skills.Intersect(skillId).Any()).ToList();
             }
 
+            if (getFilterMs != null)
+            {
+                switch (sortBy)
+                {
+                    case 1:
+                        getFilterMs = getFilterMs.OrderByDescending(m => m.mission.StartDate).ToList();
+                        break;
+                    case 2:
+                        getFilterMs = getFilterMs.OrderBy(m => m.mission.StartDate).ToList();
+                        break;
+                    case 3:
+                        getFilterMs = getFilterMs.OrderByDescending(m => m.mission.AvailableSeats).ToList();
+                        break;
+                    case 4:
+                        getFilterMs = getFilterMs.OrderBy(m => m.mission.AvailableSeats).ToList();
+                        break;
+                    default:
+                        getFilterMs = getFilterMs.OrderByDescending(m => m.mission.StartDate).ToList();
+                        break;
+                }
+            }
 
-            if (getFilterMs.Count == 0)
+            if (getFilterMs==null)
             {
                 return PartialView("_MissionNotFound");
             }
 
-            ViewBag.totalMissions = getFilterMs.Count;
+             a = getFilterMs.Count;
             return PartialView("_GridMissionLayout", getFilterMs);
         }
          public int getMissionCount()
         {
             if(getFilterMs!=null)
-            return getFilterMs.Count;
-            return 0;
+                return a; 
+            //getFilterMs.Count;
+            return 50;
         }
+
 
 
     }

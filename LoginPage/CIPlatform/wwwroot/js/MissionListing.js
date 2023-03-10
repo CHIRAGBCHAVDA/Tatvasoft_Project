@@ -4,7 +4,7 @@ var selectedCountries = [];
 var selectedCities = [];
 var selectedThemes = [];
 var selectedSkills = [];
-
+var selectedOption = 1;
 
 $(document).ready(function () {
     $('.city-item').hide();
@@ -116,7 +116,15 @@ $(document).ready(function () {
     $('.theme-checkbox').on('change', function () {
         getBadge();
     });
-   
+
+    $('#sortingMission').on('change', function () {
+        debugger;
+        selectedOption = $(this).val();
+        console.log("The value of sorting is : " + selectedOption);// Get the selected option value
+        getFilter(); // Call the sortMissions function with the selected option
+    });
+
+
 });
 
 
@@ -142,7 +150,21 @@ $(document).on('change', function () {
             console.log(error);
         }
     });
+
+    $('#sortingMission').on('change', function () {
+        debugger;
+        selectedOption = $(this).val();
+        console.log("The value of sorting is : " + selectedOption);// Get the selected option value
+        getFilter(); // Call the sortMissions function with the selected option
+    });
 })
+$('#sortingMission').change(function () {
+    debugger;
+    selectedOption = $(this).val();
+    console.log("The value of sorting is : " + selectedOption);// Get the selected option value
+    getFilter(); // Call the sortMissions function with the selected option
+});
+
 
 function searchMissions() {
     let query = document.getElementById("search-query").value;
@@ -310,7 +332,8 @@ function getFilter() {
             "countryId": selectedCountries,
             "cityName": selectedCities,
             "themeId": selectedThemes,
-            "skillId": selectedSkills
+            "skillId": selectedSkills,
+            "sortBy" : selectedOption,
         },
         success: function (result) {
             console.log(result);
@@ -321,6 +344,8 @@ function getFilter() {
         }
     });
 }
+
+
 
 
 

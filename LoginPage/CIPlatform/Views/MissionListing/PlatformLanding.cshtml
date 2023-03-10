@@ -3,92 +3,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-@* <div class="container-fluid">
-    heightt    <div class="main-wrapper">
-    <div class="header container">
-    <nav class="navbar navbar-expand-sm navbar-lightt">
-    <div class="container-fluid">
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-    <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">Stories</a>
-    </li>
-    <li class="nav-item ">
-    <a class="nav-link" href="#">Policy</a>
-    </li>
-    <li>
-    <a class="nav-link" href="#">
-    <img src="~/assets/drop-down.png" alt="">
-    </a>
-    </li>
-    </ul>
-    </div>
-    <span class="navbar-img">
-    <img src="~/assets/user-img-large.png" class="rounded-circle mx-2" style="height:40px;width:40px"   alt="">
-    <span>Evan Donochue</span>
-    </span>
-    <span class="navbar-text d-flex">
-
-    <a class="nav-link" href="#">
-    <img src="~/assets/drop-down.png"  alt="">
-    </a>
-    </span>
-    </div>
-    </nav>
-    </div>
-
-    <div class="filter-wrapper">
-    <div class="border border-bottom-0" style="height: 78px">
-    <div class="container h-100">
-    <form class="d-flex justify-content-between w-100 h-100">
-    <div class="d-flex align-items-center w-50">
-    <!-- <i class="bi bi-search"></i> -->
-    <img src="~/assets/search.png" alt="">
-    <input
-    class="form-control me-2 border border-0"
-    type="search"
-    placeholder="Search Missions..."
-    aria-label="Search"
-    />
-    </div>
-    <div class="d-flex w-50">
-    <select class="form-select" aria-label="Default select example">
-    <option selected>Country</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-    </select>
-    <select class="form-select" aria-label="Default select example">
-    <option selected>City</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-    </select>
-    <select class="form-select" aria-label="Default select example">
-    <option selected>Theme</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-    </select>
-    <select class="form-select" aria-label="Default select example">
-    <option selected>Skills</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-    </select>
-    </div>
-    </form>
-    </div>
-    </div>
-    </div>
-    <hr class="m-0 opacity-100 bg-dark text-dark" style="height:3px">
-    </div>
-    </div>*@
-
 <div class="container-fluid">
     <div class="main-wrapper">
       
@@ -100,15 +14,16 @@
         <div class="mission-main-wrapper container mt-3">
             <div class="head-sort d-flex justify-content-between ">
                 <div class="explore-head">
-                    <p class="fs-3 fw-lighter">Explore <span class="fs-2 fw-bolder" id="totalMissionFilterSpan"> @ViewBag.totalMissions Missions</span> </p>
+                    <p class="fs-3 fw-lighter">Explore <span class="fs-2 fw-bolder" id="totalMissionFilterSpan"> @ViewBag.totalMissions </span> Missions</p>
                 </div>
                 <div class="sort-head d-flex align-items-center">
 
-                    <select class="form-select mx-2" aria-label="Default select example">
+                    <select class="form-select mx-2" aria-label="Default select example" id="sortingMission">
                         <option selected>Sort By</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option value="1">Newest</option>
+                        <option value="2">Oldest</option>
+                        <option value="3">Highest Available seats</option>
+                        <option value="4">Lowest Available seats</option>
                     </select>
 
                     <div class=" p-2 mx-1">
