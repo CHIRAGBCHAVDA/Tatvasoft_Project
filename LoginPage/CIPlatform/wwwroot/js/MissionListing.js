@@ -5,32 +5,24 @@ var selectedCities = [];
 var selectedThemes = [];
 var selectedSkills = [];
 var selectedOption = 1;
+var flag = 1;
 
+
+
+getTotalCount();
 $(document).ready(function () {
     $('.city-item').hide();
+
     $("#partialView").load('/MissionListing/GetGridView');
     $('#list').click(function () {
-        console.log("hi");
+        flag = 2;
         $("#partialView").load('/MissionListing/GetListView');
     });
     $('#grid').click(function () {
+        flag = 1;
         $("#partialView").load('/MissionListing/GetGridView');
     });
 
-    const btn1 = document.getElementById("grid");
-    const btn2 = document.getElementById("list");
-    btn1.addEventListener("click", function () {
-        btn2.classList.toggle("bg-white");
-        btn1.classList.remove("bg-white");
-        console.log("Button 1 clicked")
-    });
-    btn2.addEventListener("click", function () {
-        btn1.classList.toggle("bg-white");
-        btn2.classList.remove("bg-white");
-        console.log("Button 2 clicked");
-    });
-
- 
     $('.country-checkbox').change(function () {
         var countryId = $(this).val();
         if (!$(this).prop('checked')) {
@@ -42,11 +34,11 @@ $(document).ready(function () {
                 getFilter();
             }
         } else {
-            selectedCountries.push($(this).val());
+            var index = selectedCountries.indexOf(countryId);
+            if (index == -1) {
+                selectedCountries.push($(this).val());
+            }
         }
-
-        //$('.country-checkbox:checked').each(function () {
-        //});
 
         $.ajax({
             type: "POST",
@@ -54,14 +46,11 @@ $(document).ready(function () {
             data: { countryIds: selectedCountries },
             success: function (data) {
                 $('.city-item').hide();
-
                 $.each(data, function (index, value) {
                     var cityItem = $('.city-item[data-country="' + value.countryId + '"]');
                     cityItem.show();
                     cityItem.find('.city-checkbox[value="' + value.cityId + '"][data-country="' + value.countryId + '"]').show();
-
                     getBadge();
-
                 });
             },
             error: function () {
@@ -81,12 +70,13 @@ $(document).ready(function () {
                 selectedCities.splice(index);
                 getFilter();
             }
+        } else {
+            var index = selectedCities.indexOf(cityId.trim());
+            if (index == -1) {
+                selectedCities.push(cityId.trim());
+            }
         }
     });
-    //$('.theme-checkbox:checked').each(function () {
-    //    selectedThemes.push($(this).val());
-    //    console.log("The value of selected theme is : " + selectedThemes);
-    //});
 
     $('.theme-checkbox').change(function () {
         var themeName = $(this).next().text().trim();
@@ -99,17 +89,17 @@ $(document).ready(function () {
                 getFilter();
             }
         } else {
-            selectedThemes.push(themeName.trim());
+            var index = selectedThemes.indexOf(themeName);
+            if (index == -1) { 
+                selectedThemes.push(themeName.trim());
+            }
         }
     });
-
-    //$('.city-checkbox').change(function () {
-    //    getBadge();
-    //});
 
     $("#search-query").keyup(function () {
         searchMissions();
     });
+
     $('.skill-checkbox').on('change', function () {
         getBadge();
     });
@@ -117,19 +107,30 @@ $(document).ready(function () {
         getBadge();
     });
 
-    $('#sortingMission').on('change', function () {
-        debugger;
-        selectedOption = $(this).val();
-        console.log("The value of sorting is : " + selectedOption);// Get the selected option value
-        getFilter(); // Call the sortMissions function with the selected option
-    });
-
+    getTotalCount();
 
 });
 
 
+
+function getTotalCount() {
+    $.ajax({
+        type: 'GET',
+        url: '/MissionListing/getMissionCount',
+        success: function (result) {
+            $('#totalMissionFilterSpan').html(result);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+
+
 $(document).on('change', function () {
-    $('.city-checkbox').on('change',function () {
+    getTotalCount();
+    $('.city-checkbox').on('change', function () {
         getBadge();
     });
     $('.theme-checkbox').on('change', function () {
@@ -150,14 +151,8 @@ $(document).on('change', function () {
             console.log(error);
         }
     });
+});
 
-    $('#sortingMission').on('change', function () {
-        debugger;
-        selectedOption = $(this).val();
-        console.log("The value of sorting is : " + selectedOption);// Get the selected option value
-        getFilter(); // Call the sortMissions function with the selected option
-    });
-})
 $('#sortingMission').change(function () {
     debugger;
     selectedOption = $(this).val();
@@ -165,7 +160,7 @@ $('#sortingMission').change(function () {
     getFilter(); // Call the sortMissions function with the selected option
 });
 
-
+getFilter();
 function searchMissions() {
     let query = document.getElementById("search-query").value;
     $.ajax({
@@ -185,24 +180,23 @@ function searchMissions() {
 
 function getBadge() {
 
-
     $('.city-checkbox:checked').each(function () {
-        console.log("hello data after push thisis selected cities" + selectedCities);
-        selectedCities.push($(this).next().text());
+        var index = selectedThemes.indexOf($(this).next().text().trim());
+        if (index == -1) {
+            selectedCities.push($(this).next().text());
+        }
     });
    
     $('.skill-checkbox:checked').each(function () {
-        console.log("hello data after push" + selectedSkills);
-        selectedSkills.push($(this).next().text().trim());
+        var index = selectedSkills.indexOf($(this).next().text().trim());
+        if (index == -1) {
+            selectedSkills.push($(this).next().text().trim());
+        }
     });
 
+    $('.filter-badge').empty(); // Clear the badge container
 
-
-    // Clear the badge container
-    $('.filter-badge').empty();
-
-    // Add badges for all selected countries
-    $('.country-checkbox:checked').each(function () {
+    $('.country-checkbox:checked').each(function () { // Add badges for all selected countries
         var countryId = $(this).val();
         var countryName = $(this).next().text();
 
@@ -224,16 +218,12 @@ function getBadge() {
                     },
                 },
             }));
-            console.log("hello above ajax");
             $('.filter-badge').append(badge);
-
             getFilter();
-
         }
     });
 
-    // Add badges for all selected cities
-    $('.city-checkbox:checked').each(function () {
+    $('.city-checkbox:checked').each(function () {// Add badges for all selected cities
         debugger
         var cityId = $(this).val();
         var cityName = $(this).next().text();
@@ -262,13 +252,9 @@ function getBadge() {
             $('.filter-badge').append(badge);
             getFilter();
         }
-       
     });
 
-
     $('.theme-checkbox:checked').each(function () {
-        debugger
-
         var title = $(this).val();
         if (selectedThemes.includes(title.toString())) {
             var badge = $('<div>', {
@@ -290,7 +276,6 @@ function getBadge() {
             $('.filter-badge').append(badge);
             getFilter();
         }
-
     });
 
 
@@ -316,15 +301,10 @@ function getBadge() {
             $('.filter-badge').append(badge);
             getFilter();
         }
-
     });
-    
-
 }
 
 function getFilter() {
-
-    //debugger;
     $.ajax({
         url: "/MissionListing/filterMission",
         type: "POST",
@@ -333,10 +313,10 @@ function getFilter() {
             "cityName": selectedCities,
             "themeId": selectedThemes,
             "skillId": selectedSkills,
-            "sortBy" : selectedOption,
+            "sortBy": selectedOption,
+            "flag" : flag
         },
         success: function (result) {
-            console.log(result);
             $("#partialView").html(result);
         },
         error: function (xhr, status, error) {
@@ -344,31 +324,3 @@ function getFilter() {
         }
     });
 }
-
-
-
-
-
-//function getBadge() {
-//    $('.filter-badge').empty();
-
-//    $('.country-checkbox:checked').each(function () {
-//        var countryName = $(this).next().text();
-//        console.log(countryName);
-//        var badge = '<div class="d-flex bg-light rounded-pill p-2 m-2" data-country="@item.CountryId">';
-//        badge += '<span>' + countryName + '</span>';
-//        badge += '<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>';
-//        badge += '</div>';
-//        $('.filter-badge').append(badge);
-//    });
-
-//    $('.city-checkbox:checked').each(function () {
-//        var cityName = $(this).next().text();
-//        console.log(cityName);
-//        var badge = '<div class="d-flex bg-light rounded-pill p-2 m-2">';
-//        badge += '<span>' + cityName + '</span>';
-//        badge += '<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>';
-//        badge += '</div>';
-//        $('.filter-badge').append(badge);
-//    });
-//}

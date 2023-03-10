@@ -107,22 +107,22 @@ namespace CIPlatform.Controllers
         }
 
         [HttpPost]
-        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId, [DefaultValue(1)] int sortBy)
+        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId, [DefaultValue(1)] int sortBy, [DefaultValue(1)] int flag)
         {
-            if (countryId.Length>0)
+            if (countryId!=null && countryId.Length>0)
             {
                 getFilterMs = missionListingCards.Where(m => countryId.Contains(m.mission.CountryId.ToString())).ToList();
                 //return PartialView("_GridMissionLayout", getFilterMs);
             }
-            if (cityName.Length > 0)
+            if (cityName!=null && cityName.Length > 0)
             {
                 getFilterMs = missionListingCards.Where(m => cityName.Contains(m.City)).ToList();  
             }
-            if (themeId.Length > 0)
+            if (themeId!=null && themeId.Length > 0)
             {
                 getFilterMs = getFilterMs.Where(m => themeId.Contains(m.MissionTheme)).ToList();
             }
-            if (skillId.Length > 0)
+            if (skillId!=null && skillId.Length > 0)
             {
                 getFilterMs = missionListingCards.Where(m => m.Skills.Intersect(skillId).Any()).ToList();
             }
@@ -149,13 +149,23 @@ namespace CIPlatform.Controllers
                 }
             }
 
-            if (getFilterMs==null)
+            if (getFilterMs==null || getFilterMs.Count==0)
             {
+                a = getFilterMs.Count;
                 return PartialView("_MissionNotFound");
             }
 
              a = getFilterMs.Count;
-            return PartialView("_GridMissionLayout", getFilterMs);
+
+            if (flag == 1)
+            {
+                return PartialView("_GridMissionLayout", getFilterMs);
+            }
+            else
+            {
+                return PartialView("_ListMissionLayout", getFilterMs);
+            }
+
         }
          public int getMissionCount()
         {
