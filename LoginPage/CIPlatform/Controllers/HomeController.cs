@@ -156,12 +156,7 @@ namespace CIPlatform.Controllers
        
 
         
-        public IActionResult VolunteeringMissionPage()
-        {
-            if (HttpContext.Session.GetString("email") != null)
-                return View();
-            else return RedirectToAction("Index");
-        }
+        
 
         public PartialViewResult CarouselMobileView()
         {

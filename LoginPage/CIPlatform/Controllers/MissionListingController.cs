@@ -178,6 +178,17 @@ namespace CIPlatform.Controllers
         }
 
 
+        public IActionResult VolunteeringMissionPage(int missionId)
+        {
+            MissionListingCard missionToVolunteer = missionListingCards.FirstOrDefault(m => m.mission.MissionId == missionId);
+
+            if (HttpContext.Session.GetString("email") != null)
+                return View(missionToVolunteer);
+            else return RedirectToAction("Index");
+        }
+
+        
+
 
     }
 }

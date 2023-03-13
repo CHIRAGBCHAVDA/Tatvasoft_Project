@@ -1,4 +1,12 @@
-﻿
+﻿@model CIPlatform.Models.ViewDataModels.MissionListingCard
+
+<div class="container-fluid">
+    <div class="main-wrapper">
+      
+        <partial name="_Header" />
+        @*<partial name="_Filter" />*@
+
+
 <div class="container mt-4" >
     <div class="mission-image-and-info-wrapper d-flex flex-column flex-lg-row justify-content-between">
         <div class="temp">
@@ -63,10 +71,10 @@
 
         <div class="mission-info-wrapper container w-md-100 w-lg-50 mt-5">
             <div class="mission-title">
-                <h2 class="fw-light fs-2">CSR initiative stands for Coffee & Farmer Equity</h2>
+                <h2 class="fw-light fs-2">@Model.mission.Title</h2>
             </div>
             <div class="mission-info">
-                <h6 class="fw-lighter fs-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</h6>
+                <h6 class="fw-lighter fs-5">@Model.mission.ShortDescription</h6>
             </div>
             <hr style="opacity:1; color:lightgray" />
             <div class="mission-goal-badge text-center" style="margin-top:-2rem">
@@ -80,7 +88,7 @@
                             <img src="~/assets/Already-volunteered.png" alt="">
                         </div>
                         <div class="d-flex flex-column">
-                            <span>10</span>
+                            <span>@Model.mission.AvailableSeats</span>
                             <span class="fw-lighter">Seats left</span>
                         </div>
                     </div>
@@ -148,26 +156,26 @@
                     <img src="~/assets/pin1.png" />
                     <div class="mission-location-info d-flex flex-column flex-start mt-4">
                         <span class="city-tag text-secondary fw-lighter">City</span>
-                        <span class="city-tag text-secondary">Berlin</span>
+                        <span class="city-tag text-secondary">@Model.City</span>
                     </div>
                 </div> <div class="Location-city d-flex justify-content-between flex-column align-items-start border p-3 w-25 ms-md-2">
                     <img src="~/assets/web.png" />
                     <div class="mission-location-info d-flex flex-column flex-start mt-4">
                         <span class="city-tag text-secondary fw-lighter">Theme</span>
-                        <span class="city-tag text-secondary">Environment</span>
+                        <span class="city-tag text-secondary">@Model.MissionTheme</span>
                     </div>
                 </div>
                 <div class="Location-city justify-content-between d-flex flex-column align-items-start border p-3 w-25 ms-md-2">
                     <img src="~/assets/calender.png" />
                     <div class="mission-location-info d-flex flex-column flex-start mt-4">
                         <span class="city-tag text-secondary fw-lighter">Date</span>
-                        <span class="city-tag text-secondary">Ongoing Opportunity</span>
+                        <span class="city-tag text-secondary">@Model.mission.EndDate.ToString().Substring(0,11)</span>
                     </div>
                 </div><div class="Location-city justify-content-between d-flex flex-column align-items-start border p-3 w-25 ms-md-2">
                     <img src="~/assets/organization.png" />
                     <div class="mission-location-info d-flex flex-column flex-start mt-4">
                         <span class="city-tag text-secondary fw-lighter">Organization</span>
-                        <span class="city-tag text-secondary">CSE Network</span>
+                        <span class="city-tag text-secondary">@Model.mission.OrganizationName</span>
                     </div>
                 </div>
             </div>
@@ -226,14 +234,17 @@
                     <div class="tab-content mt-5" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
                             <h2 class="fs-3 fw-normal text-lighter">Introduction</h2>
-                            <p class="fw-lighter" style="font-size:15px">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            <p class="fw-lighter paragraph" style="font-size:15px">
+                                @*Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                                 <br />
                                 <br />
                                 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                                 <br />
                                 <br />
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                @orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.*@
+        
+                               @Html.Raw(@Model.mission.Description)
+
                             </p>
 
                             <h2 class="fs-3 fw-normal text-lighter mt-4">Challenge</h2>
@@ -420,23 +431,46 @@
                             </button>
                         </div>
                     </nav>
-                    <div class="row border-bottom mt-3" style="font-size:15px">
-                        <div class="col-xl-3">
-                            <h6 class="fw-lighter">Skills</h6>
-                        </div>
-                        <div class="col-xl-9">
-                            <h6 class="fw-lighter">Cool, Easy going, Math, Computer Weekend only</h6>
-                        </div>
+                            <div class="row border-bottom mt-3" style="font-size:15px">
+                                <div class="col-xl-3">
+                                    <h6 class="fw-lighter">Skills</h6>
+                                </div>
+                                <div class="col-xl-9">
+                                    <h6 class="fw-lighter">
+                                        @foreach (var skill in Model.Skills)
+                                        {
+                                            <span>@skill &nbsp;</span>
+                                        }
+                                    </h6>
+                                </div>
                     </div>
                     <div class="row border-bottom mt-3" style="font-size:15px">
                         <div class="col-xl-3">
                             <h6 class="fw-lighter">Days</h6>
                         </div>
                         <div class="col-xl-9">
-                            <h6 class="fw-lighter">Weekend only</h6>
-                        </div>
+                                    
+                                        @if (@Model.mission.AvailabilityId == 1)
+                                        {
+                                          <h6 class="fw-lighter">  Daily </h6>
+                                        }
+                                        else if (@Model.mission.AvailabilityId == 2)
+                                        {
+                                             <h6 class="fw-lighter">  Weekly Only </h6>
+                                        }
+                                        else if (@Model.mission.AvailabilityId == 3)
+                                        {
+                                             <h6 class="fw-lighter">  Weekend Only</h6>
+                                        }
+                                        else
+                                        {
+                                             <h6 class="fw-lighter">  Monthly Only</h6>
+                                        }
+                                        
+                                    
+                                    </div>
                     </div>
-                    <div class="row border-bottom mt-3" style="font-size:15px">
+                    <div class="row  mt-3" style="font-size:15px">
                         <div class="col-xl-3">
                             <h6 class="fw-lighter">Rating</h6>
                         </div>
@@ -625,6 +659,8 @@
 
     </div>
 
+</div>
+</div>
 </div>
 
 

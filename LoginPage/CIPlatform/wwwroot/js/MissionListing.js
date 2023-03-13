@@ -331,3 +331,8 @@ function getFilter(pg) {
         }
     });
 }
+
+
+function volunteeringMissionDetails(missionId) {
+    window.location.href = '@Url.Action("VolunteeringMissionPage","MissionListing")?missionId=' + missionId;
+}

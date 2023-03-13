@@ -240,3 +240,6 @@ background-image: url("../assets/left.png");
 .city-item {
     display: none;
 }
+.paragraph::before {
+    white-space: pre-line;
+}
