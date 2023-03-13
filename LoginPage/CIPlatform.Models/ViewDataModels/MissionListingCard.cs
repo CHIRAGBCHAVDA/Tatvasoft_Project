@@ -14,6 +14,6 @@ namespace CIPlatform.Models.ViewDataModels
         public MissionSkill missionSkill { get; set; }
         public List<string>? Skills { get; set; }
         public string? ImageLink { get; set; }
-       
+        public List<MissionRating> rating { get; set; }
     }
 }

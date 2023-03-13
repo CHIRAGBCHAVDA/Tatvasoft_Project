@@ -15,6 +15,7 @@ namespace CIPlatform.Controllers
         private readonly CiplatformContext _db;
         public List<MissionListingCard>? missionListingCards, getMs,getFilterMs;
         public static int a;
+        public MissionDetailsViewModel? missionDetailsViewModel;
 
         public MissionListingController(IUnitOfWork unitOfWork, CiplatformContext db)
         {
@@ -91,7 +92,9 @@ namespace CIPlatform.Controllers
 
                     ImageLink = (from ImgLink in _db.MissionMedia
                                  where ImgLink.MissionId == M.MissionId
-                                 select ImgLink.MediaPath).FirstOrDefault()
+                                 select ImgLink.MediaPath).FirstOrDefault(),
+
+                    rating = _db.MissionRatings.Where(m => m.MissionId == M.MissionId).ToList()
                 };
 
 
@@ -174,18 +177,22 @@ namespace CIPlatform.Controllers
             if(getFilterMs!=null)
                 return a; 
             //getFilterMs.Count;
-            return 50;
+            return 0;
         }
 
 
         public IActionResult VolunteeringMissionPage(int missionId)
         {
-            MissionListingCard missionToVolunteer = missionListingCards.FirstOrDefault(m => m.mission.MissionId == missionId);
+            missionDetailsViewModel = new MissionDetailsViewModel();
+            missionDetailsViewModel.myMission = missionListingCards.FirstOrDefault(m => m.mission.MissionId == missionId);
+            //missionDetailsViewModel.myMission = missionToVolunteer;
+            missionDetailsViewModel.myRelatedMission = missionListingCards.Where(m => m.MissionTheme.Equals(missionDetailsViewModel.myMission.MissionTheme)).ToList();
 
             if (HttpContext.Session.GetString("email") != null)
-                return View(missionToVolunteer);
+                return View(missionDetailsViewModel);
             else return RedirectToAction("Index");
         }
+
 
         
 

@@ -1,4 +1,6 @@
-﻿<div class="container">
+﻿@model CIPlatform.Models.ViewDataModels.MissionDetailsViewModel
+
+<div class="container">
 
     <div class="header-related-mission">
         <h2 class="fs-4 text-center fw-normnal text-secondary">Related Mission</h2>
@@ -7,7 +9,10 @@
 
     <div class="mission-card-wrapper">
         <div class="mission-cards row  view-group" id="products">
-            <div class="item col-md-6 col-sm-12 col-lg-4 my-4">
+            @foreach(var item in Model.myRelatedMission)
+            {
+                
+            <div class="item card-to-scale col-md-6 col-sm-12 col-lg-4 my-4">
                 <div class="card thumbnail shadow">
                     <div class="card">
                         <img src="~/assets/Grow-Trees-On-the-path-to-environment-sustainability-2.png"
@@ -22,7 +27,7 @@
                                         <a href="" class="text-decoration-none text-light">
                                             <span>
                                                 <img src="~/assets/pin.png" alt="">&nbsp;
-                                                Bhavnagar
+                                                @item.City
                                             </span>
                                         </a>
                                     </div>
@@ -42,54 +47,90 @@
                         </div>
                     </div>
                     <span class="fw-lighter bg-white rounded-pill text-center fw-lighter w-50 align-self-center"
-                          style="margin-top: -10px; z-index: 5;">Children</span>
+                          style="margin-top: -10px; z-index: 5;">@item.MissionTheme</span>
                     <div class="card-body">
                         <h5 class="card-title">
-                            Education Supplies for Every Pair of Shoes
-                            Sold
+                            @item.mission.Title
                         </h5>
                         <p class="card-text">
-                            Lorem ipsum dolor sit amet, consectetur
-                            adipiscing elit, sed do eiusmod tempor incididunt ut labore...
+                            @item.mission.ShortDescription
                         </p>
                         <div class="rating-img d-flex justify-content-between align-items-center">
-                            <span class="fw-light fs">Australian Paradise</span>
+                            <span class="fw-light fs">@item.mission.OrganizationName</span>
                             <div class="d-flex">
-                                <img src="~/assets/selected-star.png" alt="">
-                                <img src="~/assets/selected-star.png" alt="">
-                                <img src="~/assets/star-empty.png" alt="">
-                                <img src="~/assets/star-empty.png" alt="">
-                                <img src="~/assets/star-empty.png" alt="">
+                                @{
+                                    double? avgRating = @item.rating.Average(u => u.Rating);
+                                }
+
+                                        @for (double i = 1; i <= 5; i+=1)
+                                        {
+                                            if(i<=avgRating)
+                                            {
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            }
+                                            else if (i <= avgRating+0.5)
+                                            {
+                                                <i class="bi bi-star-half text-warning"></i>
+                                            }
+                                            else
+                                            {
+                                                 <i class="bi bi-star text-muted"></i>
+                                            }
+                                        }
                             </div>
                         </div>
                         <div class="d-flex justify-content-center">
                             <span class="rounded-pill bg-white fw-light border px-2 mt-4" style="z-index: 1;">
-                                From
-                                10/01/2019 until 25/02/2019
+                               From
+                                @item.mission.StartDate.ToString().Substring(0,10) until @item.mission.EndDate.ToString().Substring(0,10)
                             </span>
                         </div>
                         <hr class="" style="margin-top: -10px;">
 
                         <div class="time-seats">
                             <div class="d-flex time-seats-wrapper align-items-center justify-content-between">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="seats mx-2">
-                                        <img src="~/assets/Seats-left.png" alt="">
-                                    </div>
-                                    <div class="d-flex flex-column">
-                                        <span>10</span>
-                                        <span class="fw-lighter">Seats Left</span>
-                                    </div>
-                                </div>
-                                <div class="deadlines d-flex align-items-center justify-content-between">
-                                    <div class="deadline mx-2">
-                                        <img src="~/assets/deadline.png" alt="">
-                                    </div>
-                                    <div class="d-flex flex-column ">
-                                        <span>09/01/2019</span>
-                                        <span class="fw-lighter">Deadline</span>
-                                    </div>
-                                </div>
+                                @if (item.mission.MissionTypeId == 1)
+                                    {
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="seats mx-2">
+                                                <img src="~/assets/Seats-left.png" alt="">
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <span>
+                                                    @item.mission.AvailableSeats
+                                                </span>
+                                                <span class="fw-lighter">Seats Left</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="deadlines d-flex align-items-center justify-content-between">
+                                            <div class="deadline mx-2">
+                                                <img src="~/assets/deadline.png" alt="">
+                                            </div>
+                                            <div class="d-flex flex-column ">
+                                                <span>09/01/2019</span>
+                                                <span class="fw-lighter">Deadline</span>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center mx-2 w-75">
+                                            <img src="~/assets/mission.png"
+                                         style="height:24px; width:24px" />
+                                            <div class="d-flex flex-column ms-2 w-75">
+                                                <div class="progress" role="progressbar" aria-valuenow="75"
+                                             aria-valuemin="0" aria-valuemax="100"
+                                             style="height:8px">
+                                                    <div class="progress-bar bg-warning"
+                                                 style="width: 75%"></div>
+                                                </div>
+                                                <span class="light-gray fs-fourteen mt-2">achieved</span>
+                                            </div>
+                                        </div>
+
+                                    }
                             </div>
                         </div>
                         <hr>
@@ -103,7 +144,10 @@
                 </div>
 
             </div>
-            <div class="item col-md-6 col-sm-12 col-lg-4 my-4">
+            }
+
+
+            @*<div class="item col-md-6 col-sm-12 col-lg-4 my-4">
                 <div class="card thumbnail shadow">
                     <div class="card">
                         <img src="~/assets/Education-Supplies-for-Every--Pair-of-Shoes-Sold-2.png"
@@ -302,7 +346,7 @@
                 <div class="col-xl-4">
                 </div>
 
-            </div>
+            </div>*@
            
 
         </div>

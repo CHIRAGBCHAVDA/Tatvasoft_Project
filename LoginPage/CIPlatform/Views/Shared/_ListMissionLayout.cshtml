@@ -3,7 +3,7 @@
 <div class="mission-cards-list">
     @foreach (var item in Model)
     {
-        <div class="card mb-3 shadow mt-4">
+        <div class="card mb-3 shadow mt-4 card-to-scale">
             <div class="row g-0 ">
                 <div class="col-md-4">
                     <div class="card">
@@ -71,11 +71,25 @@
                             </div>
                             <div class="card-header-small-right">
                                 <div class="d-flex rating-imgs">
-                                    <img src="~/assets/selected-star.png" alt="">
-                                    <img src="~/assets/selected-star.png" alt="">
-                                    <img src="~/assets/selected-star.png" alt="">
-                                    <img src="~/assets/selected-star.png" alt="">
-                                    <img src="~/assets/selected-star.png" alt="">
+                                    @{
+                                    double? avgRating = @item.rating.Average(u => u.Rating);
+                                     }
+
+                                        @for (double i = 1; i <= 5; i+=1)
+                                        {
+                                            if(i<=avgRating)
+                                            {
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            }
+                                            else if (i <= avgRating+0.5)
+                                            {
+                                                <i class="bi bi-star-half text-warning"></i>
+                                            }
+                                            else
+                                            {
+                                                 <i class="bi bi-star text-muted"></i>
+                                            }
+                                        }
                                 </div>
                             </div>
                         </div>

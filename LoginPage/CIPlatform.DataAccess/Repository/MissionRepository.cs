@@ -37,8 +37,10 @@ namespace CIPlatform.DataAccess.Repository
                                          
                                          ImageLink = (from ImgLink in _db.MissionMedia
                                                      where ImgLink.MissionId  ==  M.MissionId
-                                                     select ImgLink.MediaPath).FirstOrDefault()
-                                        };
+                                                     select ImgLink.MediaPath).FirstOrDefault(),
+
+                                         rating = _db.MissionRatings.Where(m => m.MissionId == M.MissionId).ToList()
+                                     };
             
 
 
