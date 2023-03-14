@@ -42,11 +42,12 @@ namespace CIPlatform.Controllers
 
                 TempData["mail-success"] = "Reset password link has been sent to your email id.";
             }
-            else
+            else if(getUser==null)
             {
                 TempData["user-not-exists"]= "User doesn't exists.";
                 return View();
             }
+            
             return View();
         }
 
@@ -64,7 +65,7 @@ namespace CIPlatform.Controllers
             message.Body = body;
             message.IsBodyHtml = true;
             client.Send(message);
-            
+            //sendgrid
 
         }
 
@@ -89,7 +90,7 @@ namespace CIPlatform.Controllers
 
             string token = HttpContext.Request.GetDisplayUrl().Replace("https://localhost:44383/Home/ResetPassword/", "");
             User getUser = _unitOfWork.User.GetFirstOrDefault(u => u.Token == token);
-            if(getUser != null)
+            if(getUser != null && (getUser.TokenCreatedAt>= DateTime.Now.AddMinutes(-1)))
             {
                 string pwd = BCrypt.Net.BCrypt.HashPassword(user.Password);
                 //_unitOfWork.Entry(getUser).Reload();
@@ -98,6 +99,10 @@ namespace CIPlatform.Controllers
                 _unitOfWork.Save();
                 TempData["reset-success"] = "Your password has been updated !";
                 return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                TempData["reset-error"] = "Link is not generated or is expired!!";
             }
 
 
@@ -126,6 +131,7 @@ namespace CIPlatform.Controllers
                 // The password is valid, allow the user to log in
                 HttpContext.Session.SetString("username", dbUser.FirstName +" "+ dbUser.LastName);
                 HttpContext.Session.SetString("email", user.Email);
+                HttpContext.Session.SetString("userId", dbUser.UserId.ToString());
                 return RedirectToAction("PlatformLanding", "MissionListing");
             }
             else
@@ -140,7 +146,7 @@ namespace CIPlatform.Controllers
         public IActionResult RegistrationPOST(User obj)
         {
             User getTemp = _unitOfWork.User.GetFirstOrDefault(u => u.Email == obj.Email);
-            if (obj.Password != null && ModelState.IsValid && getTemp==null)
+            if (obj.Password != null && getTemp==null)
             {
                 string pwd = BCrypt.Net.BCrypt.HashPassword(obj.Password);
                 obj.Password = pwd;

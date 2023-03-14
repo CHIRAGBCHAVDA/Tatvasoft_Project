@@ -47,6 +47,8 @@ namespace CIPlatform.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
+        public DateTime? TokenCreatedAt { get; set; }
+
         public virtual ICollection<Comment> Comments { get; set; }
     }
 }

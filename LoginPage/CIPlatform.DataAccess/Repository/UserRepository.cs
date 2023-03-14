@@ -27,11 +27,16 @@ namespace CIPlatform.DataAccess.Repository
         {
             //user.Token = token;
             User temp = _db.Users.FirstOrDefault(x => x.UserId == user.UserId);
-            temp.Token = token;
+            temp.TokenCreatedAt = DateTime.Now;
             //temp.CreatedAt = DateTime.Now;
-            
              _db.Users.Update(temp);
              _db.SaveChanges();
+
+            temp.Token = token;
+            
+            _db.Users.Update(temp);
+             _db.SaveChanges();
+            
             return temp;
         }
     }

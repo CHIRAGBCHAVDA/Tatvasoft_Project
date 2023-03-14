@@ -994,6 +994,10 @@ namespace CIPlatform.Data
                 entity.Property(e => e.WhyIVolunteer)
                     .HasColumnType("text")
                     .HasColumnName("why_i_volunteer");
+
+                entity.Property(e => e.TokenCreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("token_created_at");
             });
 
             modelBuilder.Entity<UserSkill>(entity =>

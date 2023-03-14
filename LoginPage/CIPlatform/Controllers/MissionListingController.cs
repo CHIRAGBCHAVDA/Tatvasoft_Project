@@ -21,7 +21,7 @@ namespace CIPlatform.Controllers
         {
             _unitOfWork = unitOfWork;
             _db = db;
-            missionListingCards = _unitOfWork.MissionRepo.getMissions();
+            missionListingCards = _unitOfWork.MissionRepo.getMissions("1");
             getFilterMs = missionListingCards;
         }
         public IActionResult PlatformLanding()
