@@ -1,0 +1,164 @@
+﻿@model CIPlatform.Models.ViewDataModels.myMissionAndUser
+@{
+    bool favFlag;
+}
+
+
+<div class="mission-info-wrapper container w-md-100 w-lg-50 mt-5">
+    <div class="mission-title">
+        <h2 class="fw-light fs-2">@Model.myMission.mission.Title</h2>
+    </div>
+    <div class="mission-info">
+        <h6 class="fw-lighter fs-5">@Model.myMission.mission.ShortDescription</h6>
+    </div>
+    <hr style="opacity:1; color:lightgray" />
+    <div class="mission-goal-badge text-center" style="margin-top:-2rem">
+        <span class="border rounded-pill badge bg-white text-dark fw-lighter ">Plant 10,000 Trees</span>
+    </div>
+    <div class="seats-left-wrapper">
+
+        <div class="d-flex time-seats-wrapper align-items-center justify-content-between">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="seats mx-2">
+                    <img src="~/assets/Already-volunteered.png" alt="">
+                </div>
+                <div class="d-flex flex-column">
+                    <span>@Model.myMission.mission.AvailableSeats</span>
+                    <span class="fw-lighter">Seats left</span>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mx-2">
+                <img src="~/assets/mission.png"
+                     style="height:24px; width:24px" />
+                <div class="d-flex flex-column ms-2 ">
+                    <div class="progress" role="progressbar" aria-valuenow="75"
+                         aria-valuemin="0" aria-valuemax="100"
+                         style="height:8px">
+                        <div class="progress-bar bg-warning bg-orange-color"
+                             style="width: 75%"></div>
+                    </div>
+                    <span class="light-gray fs-fourteen mt-2">achieved</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <hr style="opacity:1; color:lightgray" />
+
+    <div class="add-to-fav-and-share-btn d-flex justify-content-between mt-3 align-items-center flex-wrap flex-md-nowrap">
+        <div class="add-to-fav-btn w-100 w-md-50 my-2 me-2">
+            @if (Model.myMission.favourite == null)
+            {
+                favFlag = false;
+            }
+            else
+            {
+                favFlag = true;
+            }
+            <button class="btn-primary form-control bg-white text-secondary border border-secondary p-2 rounded-pill d-flex flex-wrap flex-md-nowrap justify-content-center align-items-center" id="button-to-fav" data-isfav="@favFlag" data-mid="@Model.myMission.mission.MissionId" onclick="btnAddRmFav()">
+                @if (Model.myMission.favourite == null)
+                {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" stroke="white" class="bi bi-heart" viewBox="0 0 16 16" style="height:20px;width:20px">
+                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                    </svg>
+
+                    <span>
+                        &nbsp; &nbsp; Add To Favourite
+                    </span>
+                }
+                else
+                {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16" style="color: red;height:20px;width:20px">
+                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                    </svg>
+
+                    <span>
+                        &nbsp; &nbsp; Remove From Favourite
+                    </span>
+                }
+
+            </button>
+        </div>
+        @*<div class="add-to-fav-btn w-100 w-md-50 my-2">
+            <button class="btn-primary form-control bg-white text-secondary border border-secondary p-2 rounded-pill d-flex flex-wrap flex-md-nowrap justify-content-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <img src="~/assets/add1.png" />
+                &nbsp; &nbsp;
+                <span>
+                    Recommend to a Co-Worker
+                </span>
+            </button>
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Select the co-workers</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary">Reccommend</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+        <partial name="_ReccommendBtn" model="Model.Users" />
+    </div>
+
+    <hr style="opacity:1; color:lightgray" />
+    <div class="text-center" style="margin-top:-2.5rem">
+        <span class="rating-star-images bg-white">
+            <i class="bi bi-star-fill text-muted fs-2" id="star1" data-star="1"></i>
+            <i class="bi bi-star-fill text-muted fs-2" id="star2" data-star="2"></i>
+            <i class="bi bi-star-fill text-muted fs-2" id="star3" data-star="3"></i>
+            <i class="bi bi-star-fill text-muted fs-2" id="star4" data-star="4"></i>
+            <i class="bi bi-star-fill text-muted fs-2" id="star5" data-star="5"></i>
+
+        </span>
+    </div>
+
+    <div class="mission-org-city-wrapper d-flex flex-wrap flex-md-nowrap justify-content-between mt-3">
+       
+        <div class="Location-city d-flex justify-content-between flex-column align-items-start border p-3 w-25 ms-md-2">
+            <img src="~/assets/pin1.png" />
+            <div class="mission-location-info d-flex flex-column flex-start mt-4">
+                <span class="city-tag text-secondary fw-lighter">City</span>
+                <span class="city-tag text-secondary">@Model.myMission.City</span>
+            </div>
+        </div> <div class="Location-city d-flex justify-content-between flex-column align-items-start border p-3 w-25 ms-md-2">
+            <img src="~/assets/web.png" />
+            <div class="mission-location-info d-flex flex-column flex-start mt-4">
+                <span class="city-tag text-secondary fw-lighter">Theme</span>
+                <span class="city-tag text-secondary">@Model.myMission.MissionTheme</span>
+            </div>
+        </div>
+        <div class="Location-city justify-content-between d-flex flex-column align-items-start border p-3 w-25 ms-md-2">
+            <img src="~/assets/calender.png" />
+            <div class="mission-location-info d-flex flex-column flex-start mt-4">
+                <span class="city-tag text-secondary fw-lighter">Date</span>
+                <span class="city-tag text-secondary">@Model.myMission.mission.EndDate.ToString().Substring(0,11)</span>
+            </div>
+        </div><div class="Location-city justify-content-between d-flex flex-column align-items-start border p-3 w-25 ms-md-2">
+            <img src="~/assets/organization.png" />
+            <div class="mission-location-info d-flex flex-column flex-start mt-4">
+                <span class="city-tag text-secondary fw-lighter">Organization</span>
+                <span class="city-tag text-secondary">@Model.myMission.mission.OrganizationName</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="mission-submit-btn text-center mt-3">
+        <button type="submit" class="btn bg-white  rounded-pill px-4">
+            Apply
+            &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
+        </button>
+    </div>
+
+</div>

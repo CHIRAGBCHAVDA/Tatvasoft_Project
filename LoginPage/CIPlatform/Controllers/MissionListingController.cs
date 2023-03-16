@@ -6,6 +6,7 @@ using CIPlatform.Models.ViewDataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
+using System.Linq;
 
 namespace CIPlatform.Controllers
 {
@@ -21,9 +22,11 @@ namespace CIPlatform.Controllers
         {
             _unitOfWork = unitOfWork;
             _db = db;
-            missionListingCards = _unitOfWork.MissionRepo.getMissions("1");
+            missionListingCards = _unitOfWork.MissionRepo.getMissions();
             getFilterMs = missionListingCards;
+
         }
+
         public IActionResult PlatformLanding()
         {
             if (HttpContext.Session.GetString("email") != null)
@@ -33,7 +36,6 @@ namespace CIPlatform.Controllers
                 List<City> city = _unitOfWork.City.GetAll();
                 List<MissionTheme> theme = _unitOfWork.MissionTheme.GetAll();
                 List<Skill> skill = _unitOfWork.Skill.GetAll();
-
                 
 
                 Model.Country = country;
@@ -41,15 +43,18 @@ namespace CIPlatform.Controllers
                 Model.MissionTheme = theme;
                 Model.Skills = skill;
 
-                ViewBag.totalMissions = missionListingCards.Count;
-
+                if (missionListingCards != null)
+                {
+                    ViewBag.totalMissions = missionListingCards.Count;
+                }
 
                 return View(Model);
 
             }
             else return RedirectToAction("Index","Home");
-
         }
+
+        #region Get Cities Grid List
 
         [HttpPost]
         public JsonResult GetCities(string[] countryIds)
@@ -66,6 +71,8 @@ namespace CIPlatform.Controllers
         {
             return PartialView("_ListMissionLayout", missionListingCards);
         }
+        #endregion 
+
 
         public ActionResult Search(string query)
         {
@@ -108,6 +115,8 @@ namespace CIPlatform.Controllers
                 return PartialView("_MissionNotFound");
             }
         }
+
+        #region Filter mission and Count
 
         [HttpPost]
         public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId, [DefaultValue(1)] int sortBy, [DefaultValue(1)] int flag, [DefaultValue(1)] int pageNum)
@@ -179,22 +188,74 @@ namespace CIPlatform.Controllers
             //getFilterMs.Count;
             return 0;
         }
+        #endregion
 
 
         public IActionResult VolunteeringMissionPage(int missionId)
         {
-            missionDetailsViewModel = new MissionDetailsViewModel();
-            missionDetailsViewModel.myMission = missionListingCards.FirstOrDefault(m => m.mission.MissionId == missionId);
-            //missionDetailsViewModel.myMission = missionToVolunteer;
-            missionDetailsViewModel.myRelatedMission = missionListingCards.Where(m => m.MissionTheme.Equals(missionDetailsViewModel.myMission.MissionTheme)).ToList();
-
             if (HttpContext.Session.GetString("email") != null)
+            {
+                var missionDetail = missionListingCards.Where(m => m.mission.MissionId == missionId).FirstOrDefault();
+                missionDetailsViewModel = new MissionDetailsViewModel();
+                myMissionAndUser myuser = new myMissionAndUser()
+                {
+                    myMission = missionDetail,
+                    Users = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList()
+                };
+                missionDetailsViewModel.myMissionAndUser = myuser;
+
+                var relatedMission = missionListingCards.Where(m => m.MissionTheme.Equals(missionDetail.MissionTheme)).ToList();
+                missionDetailsViewModel.myRelatedMission = relatedMission;
+                ViewBag.missionTitle = myuser.myMission.mission.Title;
+                
+                ViewBag.missionSkill = string.Join(", ", myuser.myMission.Skills);
+                ViewBag.missionTheme = myuser.myMission.MissionTheme;
+
                 return View(missionDetailsViewModel);
-            else return RedirectToAction("Index");
+            }
+            else return RedirectToAction("Index","Home");
+        }
+
+        public IActionResult ToggleFav(bool favFlag,int mID)
+        {
+            if (favFlag == true)
+            {
+                //flag= false;
+                var getM = _db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId.ToString().Equals(HttpContext.Session.GetString("userId"))).FirstOrDefault();
+                if (getM != null)
+                {
+                    _db.FavouriteMissions.Remove(_db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId.ToString().Equals(HttpContext.Session.GetString("userId"))).First());
+                     _db.SaveChanges();
+                }
+                var toSendM = _unitOfWork.MissionRepo.getMissions().Where(m=> m.mission.MissionId == mID).FirstOrDefault();
+                
+                return PartialView("_VolunteerMissionRightUpper", toSendM);
+            }
+            else
+            {
+                //flag = true;
+                var UID = HttpContext.Session.GetString("userId");
+                FavouriteMission newFav = new FavouriteMission();
+                newFav.MissionId = mID;
+                newFav.UserId = long.Parse(UID);
+
+                _db.FavouriteMissions.Add(newFav);
+                _db.SaveChanges();
+                var toSendM = _unitOfWork.MissionRepo.getMissions().Where(m => m.mission.MissionId == mID).FirstOrDefault();
+                return PartialView("_VolunteerMissionRightUpper", toSendM);
+            }
+        }
+
+        public List<User> GetListOfUser4Recommendation()
+        {
+            var usersList = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList();
+
+            return usersList;
         }
 
 
-        
+
+
 
 
     }

@@ -16,13 +16,16 @@ namespace CIPlatform.DataAccess.Repository
     public class MissionRepository : IMissionRepository
     {
         private readonly CiplatformContext _db;
-        public MissionRepository(CiplatformContext db)
+        private HttpContext _httpContext;
+        public MissionRepository(CiplatformContext db,HttpContext httpContext)
         {
             _db = db;
+            _httpContext = httpContext;
             
         }
-        public List<MissionListingCard> getMissions(string myUserId)
+        public List<MissionListingCard> getMissions()
         {
+            string myUserId = _httpContext.Session.GetString("userId");
 
             var missionListingCard = from M in _db.Missions
                                      join C in _db.Cities on M.CityId equals C.CityId
@@ -53,8 +56,9 @@ namespace CIPlatform.DataAccess.Repository
 
                                          rating = _db.MissionRatings.Where(m => m.MissionId == M.MissionId).ToList(),
 
-                                         //UserId = favMissionSubTbl != null ? favMissionSubTbl.UserId : 1,
-                                         //isFav = favMissionSubTbl.UserId != null ? true : false
+                                         //UserId = favMissionSubTbl != null ? favMission.UserId : 1,
+                                         //isFav = favMission.UserId != null ? true : false
+                                         favourite = favMission,
                                      };
 
 

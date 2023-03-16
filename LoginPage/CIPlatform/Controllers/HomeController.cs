@@ -51,7 +51,8 @@ namespace CIPlatform.Controllers
             return View();
         }
 
-        private void SendEmail(string email, string body, string subject)
+        [HttpPost]
+        public void SendEmail(string email, string body, string subject)
         {
             var client = new SmtpClient("smtp.gmail.com", 587);
             client.UseDefaultCredentials = false;
@@ -122,7 +123,7 @@ namespace CIPlatform.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(User user)
+        public IActionResult Index(User user,string? returnUrl)
         {
             User dbUser = _unitOfWork.User.GetFirstOrDefault(u => u.Email == user.Email);
 
@@ -132,7 +133,16 @@ namespace CIPlatform.Controllers
                 HttpContext.Session.SetString("username", dbUser.FirstName +" "+ dbUser.LastName);
                 HttpContext.Session.SetString("email", user.Email);
                 HttpContext.Session.SetString("userId", dbUser.UserId.ToString());
-                return RedirectToAction("PlatformLanding", "MissionListing");
+                HttpContext.Session.SetString("userImage", dbUser.Avatar);
+
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("PlatformLanding", "MissionListing");
+                }
             }
             else
             {

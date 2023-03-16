@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CIPlatform.Models.ViewDataModels
 {
-    public class MissionDetailsViewModel
+    public class myMissionAndUser
     {
-        public myMissionAndUser myMissionAndUser;
-        public List<MissionListingCard> myRelatedMission;
+        public MissionListingCard? myMission;
+        public List<User>? Users;
     }
 }

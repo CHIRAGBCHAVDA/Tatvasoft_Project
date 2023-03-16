@@ -32,7 +32,7 @@
                 </ul>
             </div>
             <div class="navbar-img d-flex">
-                <img src="~/assets/user-img-large.png" class="rounded-circle mx-2" style="height:40px;width:40px" alt="">
+                <img src="@HttpContextAccessor.HttpContext.Session.GetString("userImage")" class="rounded-circle mx-2" style="height:40px;width:40px" alt="">
                 <div class="dropdown">
 
                     <a class="btn btn-secondary bg-white text-white  border border-0 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">

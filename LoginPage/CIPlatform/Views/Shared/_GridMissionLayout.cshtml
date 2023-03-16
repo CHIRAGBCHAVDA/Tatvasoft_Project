@@ -22,13 +22,60 @@
                                     </a>
                                 </div>
                                 <div class="like-group d-flex flex-column justify-content-between">
-                                    <div class="bg-dark p-1  my-1 rounded-pill">
-                                        @*@if(item.FavouriteMissions.Contains(item.mission.MissionId))*@
-                                        <a href=""> <img src="~/assets/heart.png" alt=""></a>
+                                    <div class="bg-dark p-1 my-1 rounded-circle d-flex justify-content-center align-items-center">
+                                        @if (item.favourite != null)
+                                        {
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16" style="color: red;height:20px;width:20px">
+                                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                            </svg>
+                                        }
+                                        else
+                                        {
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="white" class="bi bi-heart" viewBox="0 0 16 16" style="height:20px;width:20px">
+                                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                            </svg>
+
+                                        }
+
+
                                     </div>
-                                    <div class="bg-dark p-1 my-1  rounded-pill">
-                                        <a href=""> <img src="~/assets/add1.png" alt=""></a>
+
+                                    <button class="bg-dark bg-dark p-1 my-1  rounded-pill border-0 recommendation-grid-list" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+                                        <img src="~/assets/add1.png" />
+                                    </button>
+                                    <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="staticBackdropLabel1">Select the co-workers</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body grid_list_modal_body">
+                                                    <ul class="list-group" id="list-group-in-reccoworker" data-missiontitle="@ViewBag.missionTitle" data-missiontheme="@ViewBag.missionTheme" data-missionskills="@ViewBag.missionSkill">
+                                                        @*@foreach (var item in Model)
+                                                            {
+
+                                                            <li class="list-group-item d-flex align-items-center co-worker-checkbox">
+                                                            <input class="form-check-input me-1" type="checkbox" value="@item.Email" id="checkbox_@item.Email">
+                                                            <label for="checkbox_@item.Email" class="user-image d-flex ms-1">
+                                                            <img src="@item.Avatar" alt="" class="rounded-circle" style="height:40px">
+                                                            <div class="d-flex flex-column ms-2">
+                                                            <p class="mb-0 ">@item.FirstName @item.LastName  </p>
+                                                            <p class="my-0" style="font-size:13px ;">@item.Email</p>
+                                                            </div>
+                                                            </label>
+                                                            </li>
+                                                            }*@
+                                                        <li>Hi</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" id="reccommendMissionBtn" data-bs-dismiss="modal">Reccommend</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
                                 </div>
 
                             </div>
@@ -60,21 +107,21 @@
                                     double? avgRating = @item.rating.Average(u => u.Rating);
                                 }
 
-                                        @for (double i = 1; i <= 5; i+=1)
-                                        {
-                                            if(i<=avgRating)
-                                            {
-                                                <i class="bi bi-star-fill text-warning"></i>
-                                            }
-                                            else if (i <= avgRating+0.5)
-                                            {
-                                                <i class="bi bi-star-half text-warning"></i>
-                                            }
-                                            else
-                                            {
-                                                 <i class="bi bi-star text-muted"></i>
-                                            }
-                                        }
+                                @for (double i = 1; i <= 5; i += 1)
+                                {
+                                    if (i <= avgRating)
+                                    {
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                    }
+                                    else if (i <= avgRating + 0.5)
+                                    {
+                                        <i class="bi bi-star-half text-warning"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-star text-muted"></i>
+                                    }
+                                }
                             </div>
                         </div>
                         <div class="d-flex justify-content-center">
@@ -156,444 +203,3 @@
         window.location.href = '@Url.Action("VolunteeringMissionPage","MissionListing")?missionId=' + missionId;
     }
 </script>
-@*<div class="item col-md-6 col-sm-12 col-lg-4 my-4">
-    <div class="card thumbnail shadow">
-    <div class="card">
-    <img src="~/assets/img11.png"
-    class="card-img-top" alt="...">
-    <div class="card-img-overlay">
-    <div class="d-flex features-like-location flex-column align-items-end h-100 justify-content-between">
-    <div class="location-field text-light fw-lighter bg-dark px-2 py-1 rounded-pill text-center">
-    <span> <img src="~/assets/pin.png" alt="">&nbsp; Bhavnagar</span>
-    </div>
-    <div class="like-group d-flex flex-column justify-content-between">
-    <div class="bg-dark p-1 my-1  rounded-pill">
-    <img src="~/assets/heart.png" alt="">
-    </div>
-    <div class="bg-dark p-1  my-1 rounded-pill">
-    <img src="~/assets/add1.png" alt="">
-    </div>
-    </div>
-
-    </div>
-    </div>
-    </div>
-    <span class="fw-lighter bg-white rounded-pill text-center fw-lighter w-50 align-self-center"
-    style="margin-top: -10px; z-index: 5;">Children</span>
-    <div class="card-body">
-    <h5 class="card-title">
-    Education Supplies for Every Pair of Shoes
-    Sold
-    </h5>
-    <p class="card-text">
-    Lorem ipsum dolor sit amet, consectetur
-    adipiscing elit, sed do eiusmod tempor incididunt ut labore...
-    </p>
-    <div class="rating-img d-flex justify-content-between align-items-center">
-    <span class="fw-light fs">Australian Paradise</span>
-    <div class="d-flex">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/star-empty.png" alt="">
-    <img src="~/assets/star-empty.png" alt="">
-    </div>
-    </div>
-    <div class="d-flex justify-content-center">
-    <span class="rounded-pill bg-white fw-light border px-2 mt-4" style="z-index: 1;">
-    From
-    10/01/2019 until 25/02/2019
-    </span>
-    </div>
-    <hr class="" style="margin-top: -10px;">
-
-    <div class="time-seats">
-    <div class="d-flex time-seats-wrapper align-items-center justify-content-between">
-    <div class="d-flex align-items-center justify-content-between">
-    <div class="seats mx-2">
-    <img src="~/assets/Already-volunteered.png" alt="">
-    </div>
-    <div class="d-flex flex-column">
-    <span>250</span>
-    <span class="fw-lighter">Already volunteered</span>
-    </div>
-    </div>
-    <div class="deadlines d-flex align-items-center justify-content-between">
-    <div class="deadline mx-2">
-    <img src="~/assets/deadline.png" alt="">
-    </div>
-    <div class="d-flex flex-column ">
-    <span>09/01/2019</span>
-    <span class="fw-lighter">Deadline</span>
-    </div>
-    </div>
-    </div>
-    </div>
-    <hr>
-    <div class="mission-submit-btn text-center">
-    <button type="submit" class="btn bg-white  rounded-pill px-4">
-    Apply
-    &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
-    </button>
-    </div>
-    </div>
-    </div>
-    <div class="col-xl-4">
-    </div>
-    <div class="col-xl-4">
-    </div>
-
-    </div>
-    <div class="item col-md-6 col-sm-12 col-lg-4 my-4">
-    <div class="card thumbnail shadow">
-    <div class="card">
-    <img src="~/assets/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png"
-    class="card-img-top" alt="...">
-    <div class="card-img-overlay">
-    <div class="d-flex features-like-location flex-column align-items-end h-100 justify-content-between">
-    <div class="location-field text-light fw-lighter bg-dark px-2 py-1 rounded-pill text-center">
-    <span> <img src="~/assets/pin.png" alt="">&nbsp; Bhavnagar</span>
-    </div>
-    <div class="like-group d-flex flex-column justify-content-between">
-    <div class="bg-dark p-1  my-1 rounded-pill">
-    <img src="~/assets/heart.png" alt="">
-    </div>
-    <div class="bg-dark p-1  my-1 rounded-pill">
-    <img src="~/assets/add1.png" alt="">
-    </div>
-    </div>
-
-    </div>
-    </div>
-    </div>
-    <span class="fw-lighter bg-white rounded-pill text-center fw-lighter w-50 align-self-center"
-    style="margin-top: -10px; z-index: 5;">Children</span>
-    <div class="card-body">
-    <h5 class="card-title">
-    Education Supplies for Every Pair of Shoes
-    Sold
-    </h5>
-    <p class="card-text">
-    Lorem ipsum dolor sit amet, consectetur
-    adipiscing elit, sed do eiusmod tempor incididunt ut labore...
-    </p>
-    <div class="rating-img d-flex justify-content-between align-items-center">
-    <span class="fw-light fs">Australian Paradise</span>
-    <div class="d-flex">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/star-empty.png" alt="">
-    </div>
-    </div>
-    <div class="d-flex justify-content-center">
-    <span class="rounded-pill bg-white fw-light border px-2 mt-4" style="z-index: 1;">
-    From
-    10/01/2019 until 25/02/2019
-    </span>
-    </div>
-    <hr class="" style="margin-top: -10px;">
-
-    <div class="time-seats">
-    <div class="d-flex time-seats-wrapper align-items-center justify-content-between">
-    <div class="d-flex align-items-center justify-content-between">
-    <div class="seats mx-2">
-    <img src="~/assets/Seats-left.png" alt="">
-    </div>
-    <div class="d-flex flex-column">
-    <span>10</span>
-    <span class="fw-lighter">Seats Left</span>
-    </div>
-    </div>
-    <div class="deadlines d-flex align-items-center justify-content-between">
-    <div class="deadline mx-2">
-    <img src="~/assets/deadline.png" alt="">
-    </div>
-    <div class="d-flex flex-column ">
-    <span>09/01/2019</span>
-    <span class="fw-lighter">Deadline</span>
-    </div>
-    </div>
-    </div>
-    </div>
-    <hr>
-    <div class="mission-submit-btn text-center">
-    <button type="submit" class="btn bg-white  rounded-pill px-4">
-    Apply
-    &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
-    </button>
-    </div>
-    </div>
-    </div>
-    <div class="col-xl-4">
-    </div>
-    <div class="col-xl-4">
-    </div>
-
-    </div>
-    <div class="item col-md-6 col-sm-12 col-lg-4 my-4">
-    <div class="card  thumbnail">
-    <div class="card">
-    <img src="~/assets/Grow-Trees-On-the-path-to-environment-sustainability-2.png"
-    class="card-img-top" alt="...">
-    <div class="card-img-overlay">
-    <div class="d-flex features-like-location flex-column align-items-end h-100 justify-content-between">
-    <div class="location-field text-light fw-lighter bg-dark px-2 py-1 rounded-pill text-center">
-    <span> <img src="~/assets/pin.png" alt="">&nbsp; Bhavnagar</span>
-    </div>
-    <div class="like-group d-flex flex-column justify-content-between">
-    <div class="bg-dark p-1 my-1  rounded-pill">
-    <img src="~/assets/heart.png" alt="">
-    </div>
-    <div class="bg-dark p-1  my-1 rounded-pill">
-    <img src="~/assets/add1.png" alt="">
-    </div>
-    </div>
-
-    </div>
-    </div>
-    </div>
-    <span class="fw-lighter bg-white rounded-pill text-center fw-lighter w-50 align-self-center"
-    style="margin-top: -10px; z-index: 5;">Children</span>
-    <div class="card-body">
-    <h5 class="card-title">
-    Education Supplies for Every Pair of Shoes
-    Sold
-    </h5>
-    <p class="card-text">
-    Lorem ipsum dolor sit amet, consectetur
-    adipiscing elit, sed do eiusmod tempor incididunt ut labore...
-    </p>
-    <div class="rating-img d-flex justify-content-between align-items-center">
-    <span class="fw-light fs">Australian Paradise</span>
-    <div class="d-flex">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/star-empty.png" alt="">
-    <img src="~/assets/star-empty.png" alt="">
-    <img src="~/assets/star-empty.png" alt="">
-    </div>
-    </div>
-    <div class="d-flex justify-content-center">
-    <span class="rounded-pill bg-white fw-light border px-2 mt-4" style="z-index: 1;">
-    From
-    10/01/2019 until 25/02/2019
-    </span>
-    </div>
-    <hr class="" style="margin-top: -10px;">
-
-    <div class="time-seats">
-    <div class="d-flex time-seats-wrapper align-items-center justify-content-between">
-    <div class="d-flex align-items-center justify-content-between">
-    <div class="seats mx-2">
-    <img src="~/assets/Already-volunteered.png" alt="">
-    </div>
-    <div class="d-flex flex-column">
-    <span>250</span>
-    <span class="fw-lighter">Already volunteered</span>
-    </div>
-    </div>
-    <div class="deadlines d-flex align-items-center justify-content-between">
-    <div class="deadline mx-2">
-    <img src="~/assets/deadline.png" alt="">
-    </div>
-    <div class="d-flex flex-column ">
-    <span>09/01/2019</span>
-    <span class="fw-lighter">Deadline</span>
-    </div>
-    </div>
-    </div>
-    </div>
-    <hr>
-    <div class="mission-submit-btn text-center">
-    <button type="submit" class="btn bg-white  rounded-pill px-4">
-    Apply
-    &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
-    </button>
-    </div>
-    </div>
-    </div>
-    <div class="col-xl-4">
-    </div>
-    <div class="col-xl-4">
-    </div>
-
-    </div>
-    <div class="item col-md-6 col-sm-12 col-lg-4 my-4">
-    <div class="card thumbnail shadow">
-    <div class="card">
-    <img src="~/assets/Grow-Trees-On-the-path-to-environment-sustainability-2.png"
-    class="card-img-top" alt="...">
-    <div class="card-img-overlay">
-    <div class="d-flex features-like-location flex-column align-items-end h-100 justify-content-between">
-    <div class="location-field text-light fw-lighter bg-dark px-2 py-1 rounded-pill text-center">
-    <span> <img src="~/assets/pin.png" alt="">&nbsp; Bhavnagar</span>
-    </div>
-    <div class="like-group d-flex flex-column justify-content-between">
-    <div class="bg-dark p-1 my-1 rounded-pill">
-    <img src="~/assets/heart.png" alt="">
-    </div>
-    <div class="bg-dark p-1  my-1 rounded-pill">
-    <img src="~/assets/add1.png" alt="">
-    </div>
-    </div>
-
-    </div>
-    </div>
-    </div>
-    <span class="fw-lighter bg-white rounded-pill text-center fw-lighter w-50 align-self-center"
-    style="margin-top: -10px; z-index: 5;">Children</span>
-    <div class="card-body">
-    <h5 class="card-title">
-    Education Supplies for Every Pair of Shoes
-    Sold
-    </h5>
-    <p class="card-text">
-    Lorem ipsum dolor sit amet, consectetur
-    adipiscing elit, sed do eiusmod tempor incididunt ut labore...
-    </p>
-    <div class="rating-img d-flex justify-content-between align-items-center">
-    <span class="fw-light fs">Australian Paradise</span>
-    <div class="d-flex">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/star-empty.png" alt="">
-    <img src="~/assets/star-empty.png" alt="">
-    <img src="~/assets/star-empty.png" alt="">
-    </div>
-    </div>
-    <div class="d-flex justify-content-center">
-    <span class="rounded-pill bg-white fw-light border px-2 mt-4" style="z-index: 1;">
-    From
-    10/01/2019 until 25/02/2019
-    </span>
-    </div>
-    <hr class="" style="margin-top: -10px;">
-
-    <div class="time-seats">
-    <div class="d-flex time-seats-wrapper align-items-center justify-content-between">
-    <div class="d-flex align-items-center justify-content-between">
-    <div class="seats mx-2">
-    <img src="~/assets/Already-volunteered.png" alt="">
-    </div>
-    <div class="d-flex flex-column">
-    <span>250</span>
-    <span class="fw-lighter">Already volunteered</span>
-    </div>
-    </div>
-    <div class="deadlines d-flex align-items-center justify-content-between">
-    <div class="deadline mx-2">
-    <img src="~/assets/deadline.png" alt="">
-    </div>
-    <div class="d-flex flex-column ">
-    <span>09/01/2019</span>
-    <span class="fw-lighter">Deadline</span>
-    </div>
-    </div>
-    </div>
-    </div>
-    <hr>
-    <div class="mission-submit-btn text-center">
-    <button type="submit" class="btn bg-white  rounded-pill px-4">
-    Apply
-    &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
-    </button>
-    </div>
-    </div>
-    </div>
-    <div class="col-xl-4">
-    </div>
-    <div class="col-xl-4">
-    </div>
-
-    </div>
-    <div class="item col-md-6 col-sm-12 col-lg-4 my-4">
-    <div class="card thumbnail shadow">
-    <div class="card">
-    <img src="~/assets/Grow-Trees-On-the-path-to-environment-sustainability-2.png"
-    class="card-img-top" alt="...">
-    <div class="card-img-overlay">
-    <div class="d-flex features-like-location flex-column align-items-end h-100 justify-content-between">
-    <div class="location-field text-light fw-lighter bg-dark px-2 py-1 rounded-pill text-center">
-    <span> <img src="~/assets/pin.png" alt="">&nbsp; Bhavnagar</span>
-    </div>
-    <div class="like-group d-flex flex-column justify-content-between">
-    <div class="bg-dark p-1  my-1 rounded-pill">
-    <img src="~/assets/heart.png" alt="">
-    </div>
-    <div class="bg-dark p-1 my-1  rounded-pill">
-    <img src="~/assets/add1.png" alt="">
-    </div>
-    </div>
-
-    </div>
-    </div>
-    </div>
-    <span class="fw-lighter bg-white rounded-pill text-center fw-lighter w-50 align-self-center"
-    style="margin-top: -10px; z-index: 5;">Children</span>
-    <div class="card-body">
-    <h5 class="card-title">
-    Education Supplies for Every Pair of Shoes
-    Sold
-    </h5>
-    <p class="card-text">
-    Lorem ipsum dolor sit amet, consectetur
-    adipiscing elit, sed do eiusmod tempor incididunt ut labore...
-    </p>
-    <div class="rating-img d-flex justify-content-between align-items-center">
-    <span class="fw-light fs">Australian Paradise</span>
-    <div class="d-flex">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/selected-star.png" alt="">
-    <img src="~/assets/selected-star.png" alt="">
-    </div>
-    </div>
-    <div class="d-flex justify-content-center">
-    <span class="rounded-pill bg-white fw-light border px-2 mt-4" style="z-index: 1;">
-    From
-    10/01/2019 until 25/02/2019
-    </span>
-    </div>
-    <hr class="" style="margin-top: -10px;">
-
-    <div class="time-seats">
-    <div class="d-flex time-seats-wrapper align-items-center justify-content-between">
-    <div class="d-flex align-items-center justify-content-between">
-    <div class="seats mx-2">
-    <img src="~/assets/Already-volunteered.png" alt="">
-    </div>
-    <div class="d-flex flex-column">
-    <span>250</span>
-    <span class="fw-lighter">Already volunteered</span>
-    </div>
-    </div>
-    <div class="deadlines d-flex align-items-center justify-content-between">
-    <div class="deadline mx-2">
-    <img src="~/assets/deadline.png" alt="">
-    </div>
-    <div class="d-flex flex-column ">
-    <span>09/01/2019</span>
-    <span class="fw-lighter">Deadline</span>
-    </div>
-    </div>
-    </div>
-    </div>
-    <hr>
-    <div class="mission-submit-btn text-center">
-    <button type="submit" class="btn bg-white  rounded-pill px-4">
-    Apply
-    &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
-    </button>
-    </div>
-    </div>
-    </div>
-    <div class="col-xl-4">
-    </div>
-    <div class="col-xl-4">
-    </div>
-
-    </div>*@
-

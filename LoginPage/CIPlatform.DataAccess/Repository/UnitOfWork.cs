@@ -1,13 +1,15 @@
 ﻿using CIPlatform.Data;
 using CIPlatform.DataAccess.Repository.IRepository;
 using CIPlatform.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace CIPlatform.DataAccess.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly CiplatformContext _db;
-        public UnitOfWork(CiplatformContext db)
+        
+        public UnitOfWork(CiplatformContext db,IHttpContextAccessor httpContext)
         {
             _db = db;
             User = new UserRepository(_db);
@@ -15,7 +17,7 @@ namespace CIPlatform.DataAccess.Repository
             City = new Repository<City>(_db);
             Skill = new Repository<Skill>(_db);
             MissionTheme = new Repository<MissionTheme>(_db);
-            MissionRepo = new MissionRepository(_db);
+            MissionRepo = new MissionRepository(_db,httpContext.HttpContext);
         }
         public IUserRepository User { get; }
 

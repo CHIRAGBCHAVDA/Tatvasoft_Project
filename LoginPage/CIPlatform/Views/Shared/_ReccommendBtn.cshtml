@@ -1,0 +1,55 @@
+﻿@model List<CIPlatform.Models.User>
+
+
+<div class="add-to-fav-btn w-100 w-md-50 my-2">
+    <button class="btn-primary form-control bg-white text-secondary border border-secondary p-2 rounded-pill d-flex flex-wrap flex-md-nowrap justify-content-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <img src="~/assets/add1.png" />
+        &nbsp; &nbsp;
+        <span>
+            Recommend to a Co-Worker
+        </span>
+    </button>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Select the co-workers</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group" id="list-group-in-reccoworker" data-missiontitle="@ViewBag.missionTitle" data-missiontheme="@ViewBag.missionTheme" data-missionskills="@ViewBag.missionSkill">
+                        @foreach (var item in Model)
+                        {
+                            @*<li class="list-group-item d-flex  co-worker-checkbox">
+                                <input class="form-check-input me-1" type="checkbox" value="@item.Email" id="checkbox_@item.Email">
+                                <div class="card-wrapper d-flex flex-column bg-white mt-2 p-3">
+                                    <div class="user-image">
+                                        <img src="~/assets/volunteer9.png" alt="" class="rounded-circle" style="height:20px">
+                                    </div>
+                                    <p class="mb-0">Soniya</p> <br />
+                                    <p style="font-size:13px ;margin-top:0;">Monday, October 21, 2019 4:57 PM</p>
+                                    
+                                </div>
+                                @*<label class="form-check-label" for="firstCheckbox">@item.FirstName &nbsp; (@item.Email)</label>*@
+                            @*</li>*@
+                            <li class="list-group-item d-flex align-items-center co-worker-checkbox">
+                                <input class="form-check-input me-1" type="checkbox" value="@item.Email" id="checkbox_@item.Email">
+                                <label for="checkbox_@item.Email" class="user-image d-flex ms-1">
+                                    <img src="@item.Avatar" alt="" class="rounded-circle" style="height:40px">
+                                    <div class="d-flex flex-column ms-2">
+                                        <p class="mb-0 ">@item.FirstName @item.LastName  </p>
+                                        <p class="my-0" style="font-size:13px ;">@item.Email</p>
+                                    </div>
+                                </label>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="reccommendMissionBtn" data-bs-dismiss="modal">Reccommend</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

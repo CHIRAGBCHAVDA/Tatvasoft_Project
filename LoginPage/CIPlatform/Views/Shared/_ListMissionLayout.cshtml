@@ -39,7 +39,19 @@
                             <div class="d-flex features-like-location flex-column align-items-end h-75 justify-content-between">
                                 <div class="like-group d-flex flex-column justify-content-between align-items-end mt-auto">
                                     <div class="bg-dark p-1 rounded-pill">
-                                        <a href=""> <img src="~/assets/heart.png" alt=""></a>
+                                        @if (item.favourite != null)
+                                        {
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16" style="color: red;height:20px;width:20px">
+                                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                            </svg>
+                                        }
+                                        else
+                                        {
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="white" class="bi bi-heart" viewBox="0 0 16 16" style="height:20px;width:20px">
+                                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                            </svg>
+
+                                        }
                                     </div>
                                     <div class="bg-dark p-1 rounded-pill">
                                         <a href=""> <img src="~/assets/add1.png" alt=""></a>

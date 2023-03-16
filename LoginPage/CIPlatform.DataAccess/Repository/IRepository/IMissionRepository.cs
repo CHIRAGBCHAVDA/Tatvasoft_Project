@@ -9,6 +9,6 @@ namespace CIPlatform.DataAccess.Repository.IRepository
 {
     public interface IMissionRepository
     {
-        public List<MissionListingCard>? getMissions(string myUserId);
+        public List<MissionListingCard> getMissions();
     }
 }

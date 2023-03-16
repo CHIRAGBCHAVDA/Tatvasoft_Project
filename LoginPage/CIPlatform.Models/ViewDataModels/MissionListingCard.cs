@@ -15,7 +15,9 @@ namespace CIPlatform.Models.ViewDataModels
         public List<string>? Skills { get; set; }
         public string? ImageLink { get; set; }
         public List<MissionRating>? rating { get; set; }
-        public bool isFav { get; set; }
-        public long? UserId { get; set; }
+        //public bool isFav { get; set; }
+        //public long? UserId { get; set; }
+        public FavouriteMission favourite { get; set; }
+
     }
 }

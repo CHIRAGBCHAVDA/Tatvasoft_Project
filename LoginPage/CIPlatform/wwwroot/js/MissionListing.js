@@ -115,9 +115,129 @@ $(document).ready(function () {
         getFilter($(this).attr('id'));
     });
 
+    $(".rating-star-images").on("click", "i", function () {
+        addRating($(this).attr('data-star'));
+    });
+
+    $('#reccommendMissionBtn').click(function () {
+        var selected = $('.co-worker-checkbox input[type="checkbox"]:checked');
+        var values = [];
+        selected.each(function () {
+            values.push($(this).val().trim());
+        });
+        var result = values.join(","); // combine the values with a comma and space
+        result = result.replace(/,\s*$/, "");
+
+        console.log(result);
+        let missionTitle = $("#list-group-in-reccoworker").attr('data-missiontitle');
+        let missionTheme = $("#list-group-in-reccoworker").attr('data-missiontheme');
+        let missionSkills = $("#list-group-in-reccoworker").attr('data-missionskills');
+
+
+
+        let subject = " Reccommendation to join " + missionTitle;
+        console.log("The type of  missions skills is " + typeof (missionSkills));
+        var currentUrl = window.location.href;
+        console.log(currentUrl);
+        let missionLink = "https://localhost:44383/?returnUrl=" + currentUrl;
+        debugger
+        let body = `<!DOCTYPE html>
+                    <html>
+
+                    <head>
+                      <meta charset="utf-8">
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      <title>Recommendation Email</title>
+                    </head>
+
+                    <body>
+                      <div style="margin: 0 auto; max-width: 900px; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5em; color: #555;">
+                        <div style="background-color: aqua; padding: 30px; border-radius: 10px; box-shadow: 0 50px 100px rgba(3, 0, 0, 0.5);">
+                          <h1 style="text-align: center;">Recommendation for a Volunteer Mission</h1>
+                          <p>Hello,</p>
+                          <p>We would like to recommend a volunteer mission for you:</p>
+                          <div style="background-color: #f1f1f1; padding: 20px; border-radius: 5px; margin-top: 20px;box-shadow: 2px 5px 10px yellow;">
+                            <h2 style="margin-top: 0; font-size: 24px;">${missionTitle}</h2>
+                            <p style="margin-top: 20px;"><strong>Theme:</strong> ${missionTheme}</p>
+                            <p style="margin-top: 20px;"><strong>Skills:</strong> ${missionSkills}</p>
+                            <p style="margin-top: 20px;">Please click the button below to view the mission:</p>
+                            <p style="text-align: center; margin-top: 30px;">
+                              <a href="${missionLink}" style="display: inline-block; padding: 10px 20px; background-color: #0053b3; color: #fff; text-decoration: none; border-radius: 5px;">View Mission</a>
+                            </p>
+                          </div>
+                          <p style="margin-top: 30px;">Thank you,</p>
+                          <p>The Volunteer Mission Team</p>
+                        </div>
+                      </div>
+                    </body>
+
+                    </html>
+
+
+
+                `;
+        //body += "https://localhost:44383/?returnUrl=" + currentUrl;
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/Home/SendEmail',
+            data: {
+                "email": result,
+                "body": body,
+                "subject": subject
+            },
+            success: function () {
+                console.log("Mail is sent...");
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+
+
+    //$('.recommendation-grid-list').click(function () {
+    //    $.ajax({
+    //        type: 'GET',
+    //        url: 'MissionListing/GetListOfUser4Recommendation',
+    //        success: function (data) {
+    //            let newHtml = `<ul class="list-group" id="list - group -in -reccoworker" data-missiontitle="@ViewBag.missionTitle" data-missiontheme="@ViewBag.missionTheme" data-missionskills="@ViewBag.missionSkill">`;
+
+    //            data.each(function (item) {
+    //                newHtml += `
+    //                            <li class="list-group-item d-flex align-items-center co-worker-checkbox">
+    //                            <input class="form-check-input me-1" type="checkbox" value="${item.Email}" id="checkbox_${item.Email}">
+    //                            <label for="checkbox_${item.Email}" class="user-image d-flex ms-1">
+    //                            <img src="${item.Avatar}" alt="" class="rounded-circle" style="height:40px">
+    //                            <div class="d-flex flex-column ms-2">
+    //                                <p class="mb-0 ">${item.FirstName}${item.LastName}</p>
+    //                                <p class="my-0" style="font-size:13px ;">${item.Email}</p>
+    //                            </div>
+    //                            </label>
+    //                        </li>`
+    //            });
+    //            newHtml += `</ul>`;
+
+    //            $('.grid_list_modal_body').html(newHtml);
+    //        },
+    //        error: function (xhr, status, error) {
+    //            console.log(error);
+    //        }
+    //    });
+    //});
 });
 
-
+function addRating(toTill) {
+    let imgsToAdd = "";
+    for (let i = 1; i <= toTill; i++) {
+        imgsToAdd += `<i class="bi bi-star-fill text-warning fs-2" id="star${i}" data-star=${i}></i>`;
+    }
+    for (let j = toTill; j < 5; j++) {
+        imgsToAdd += `<i class="bi bi-star-fill text-muted fs-2" id="star${parseInt(j)+1}" data-star=${parseInt(j)+1}></i>`;
+    }
+    $(".rating-star-images").html(imgsToAdd);
+}
 
 function getTotalCount() {
     $.ajax({
@@ -144,6 +264,10 @@ $(document).on('change', function () {
     });
     $('.skill-checkbox').on('change', function () {
         getBadge();
+    });
+
+    $(".rating-star-images i").on("click", function () {
+        addRating($(this).attr('data-star'));
     });
 
 
@@ -332,7 +456,30 @@ function getFilter(pg) {
     });
 }
 
+function btnAddRmFav() {
+    debugger;
+
+    var mID = $("#button-to-fav").attr('data-mid');
+    var favFlag = $("#button-to-fav").attr('data-isfav');
+    $.ajax({
+        url: "/MissionListing/ToggleFav",
+        type: "GET",
+        data: {
+            mID: mID,
+            "favFlag": favFlag
+        },
+        success: function (result) {
+            debugger;
+            $("#volMissionRightUpper").html(result);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
 
 function volunteeringMissionDetails(missionId) {
+    debugger;
     window.location.href = '@Url.Action("VolunteeringMissionPage","MissionListing")?missionId=' + missionId;
 }
