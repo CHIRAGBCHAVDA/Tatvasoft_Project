@@ -485,3 +485,35 @@ function volunteeringMissionDetails(missionId) {
     debugger;
     window.location.href = '@Url.Action("VolunteeringMissionPage","MissionListing")?missionId=' + missionId;
 }
+
+
+function postTheComment() {
+    debugger;
+    console.log(new URLSearchParams(window.location.href))
+    let comment = $('#comment-area-volmission').val();
+    
+    console.log(comment);
+    var missionId = new URLSearchParams(window.location.href).get("missionId");
+
+    $.ajax({
+        url: "/MissionListing/postTheComment",
+        type: "POST",
+        data: {
+            comment: comment
+        },
+        success: function (result) {
+            //console.log(result)
+            console.log("The comment has been added");
+            var f = document.getElementById("commentMissionDiv");
+            f.innerHTML = "";
+            f.innerHTML = result;
+            console.log("*************************************************\n +  " + result)
+            //$("#commentMissionDiv").html(result);
+            $('#comment-area-volmission').val() = "";
+
+        },
+        error: function (xhr, status, error) {
+            console.log("There are some errors....");
+        }
+    });
+}

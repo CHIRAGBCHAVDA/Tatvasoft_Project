@@ -17,7 +17,7 @@ namespace CIPlatform.Controllers
         public List<MissionListingCard>? missionListingCards, getMs,getFilterMs;
         public static int a;
         public MissionDetailsViewModel? missionDetailsViewModel;
-
+        public static long currentMissionId;
         public MissionListingController(IUnitOfWork unitOfWork, CiplatformContext db)
         {
             _unitOfWork = unitOfWork;
@@ -195,6 +195,7 @@ namespace CIPlatform.Controllers
         {
             if (HttpContext.Session.GetString("email") != null)
             {
+                currentMissionId = missionId;
                 var missionDetail = missionListingCards.Where(m => m.mission.MissionId == missionId).FirstOrDefault();
                 missionDetailsViewModel = new MissionDetailsViewModel();
                 myMissionAndUser myuser = new myMissionAndUser()
@@ -207,7 +208,17 @@ namespace CIPlatform.Controllers
                 var relatedMission = missionListingCards.Where(m => m.MissionTheme.Equals(missionDetail.MissionTheme)).ToList();
                 missionDetailsViewModel.myRelatedMission = relatedMission;
                 ViewBag.missionTitle = myuser.myMission.mission.Title;
+
+                var cui = from c in _db.Comments join u in _db.Users on c.UserId equals u.UserId where c.MissionId == missionId
+                                  select new CommentUserInfo()
+                                  {
+                                      comments = c,
+                                      users = u
+                                  };
                 
+                missionDetailsViewModel.commentUser = cui.ToList();
+                               
+
                 ViewBag.missionSkill = string.Join(", ", myuser.myMission.Skills);
                 ViewBag.missionTheme = myuser.myMission.MissionTheme;
 
@@ -254,8 +265,31 @@ namespace CIPlatform.Controllers
             return usersList;
         }
 
+        [HttpPost]
+        public IActionResult postTheComment(string comment)
+        {
 
+            Comment toAdd = new Comment()
+            {
+                UserId = long.Parse(HttpContext.Session.GetString("userId")),
+                MissionId = currentMissionId,
+                CommentDescription = comment
+            };
 
+            _db.Comments.Add(toAdd);
+            _db.SaveChanges();
+
+            var newcui = from c in _db.Comments
+                      join u in _db.Users on c.UserId equals u.UserId
+                      where c.MissionId == currentMissionId
+                      select new CommentUserInfo()
+                      {
+                          comments = c,
+                          users = u
+                      };
+
+            return PartialView("_CommentVolMission", newcui.ToList());
+        }
 
 
 

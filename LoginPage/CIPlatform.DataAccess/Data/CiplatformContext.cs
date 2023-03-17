@@ -260,6 +260,7 @@ namespace CIPlatform.Data
             modelBuilder.Entity<Comment>(entity =>
             {
                 entity.ToTable("comment");
+                entity.Property(e => e.CommentDescription).HasColumnType("text").HasColumnName("comment_description");
 
                 entity.Property(e => e.CommentId).HasColumnName("comment_id");
 
@@ -268,8 +269,9 @@ namespace CIPlatform.Data
                     .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.CreatedAt)
-                    .IsRowVersion()
-                    .IsConcurrencyToken()
+                    //.IsRowVersion()
+                    //.IsConcurrencyToken()
+                    .HasColumnType("datetime")
                     .HasColumnName("created_at");
 
                 entity.Property(e => e.DeletedAt)

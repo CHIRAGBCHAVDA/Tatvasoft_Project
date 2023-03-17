@@ -1,0 +1,24 @@
+﻿@model List<CIPlatform.Models.ViewDataModels.CommentUserInfo>
+
+
+
+<div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-light p-3 rounded-2 mt-0 pt-0" tabindex="0" style="height:400px">
+    @foreach (var item in Model)
+    {
+        <div class="card-wrapper d-flex bg-white mt-2 p-3">
+            <div class="user-image">
+                <img src="~/assets/volunteer9.png" alt="" class="rounded-circle" style="height:52px">
+            </div>
+            <div class="user-info-comment d-flex flex-column justify-content-between ms-3">
+                <div class="user-info-in-comment">
+                    <span class="mb-0">@item.users.FirstName</span> <br />
+                    <span style="font-size:13px ;margin-top:0;">@item.comments.CreatedAt</span>
+                </div>
+                <div class="user-comment mt-2">
+                    <p>@item.comments.CommentDescription</p>
+                </div>
+            </div>
+        </div>
+        @*Monday, October 21, 2019 4:57 PM*@
+    }
+</div>

@@ -10,5 +10,6 @@ namespace CIPlatform.Models.ViewDataModels
     {
         public myMissionAndUser myMissionAndUser;
         public List<MissionListingCard> myRelatedMission;
+        public List<CommentUserInfo> commentUser;
     }
 }
