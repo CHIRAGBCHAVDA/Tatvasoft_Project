@@ -246,8 +246,9 @@ namespace CIPlatform.Controllers
             }
         }
 
-        public List<User> GetListOfUser4Recommendation()
+        public List<User> GetListOfUserRecommendation()
         {
+
             var usersList = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList();
 
             return usersList;

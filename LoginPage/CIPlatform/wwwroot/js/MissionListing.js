@@ -119,7 +119,8 @@ $(document).ready(function () {
         addRating($(this).attr('data-star'));
     });
 
-    $('#reccommendMissionBtn').click(function () {
+    $(document).on("click","#partialView .reccommendMissionBtn, .reccommendMissionBtn",function () {
+        debugger
         var selected = $('.co-worker-checkbox input[type="checkbox"]:checked');
         var values = [];
         selected.each(function () {
@@ -195,38 +196,39 @@ $(document).ready(function () {
             }
         });
     });
-
-
-    //$('.recommendation-grid-list').click(function () {
-    //    $.ajax({
-    //        type: 'GET',
-    //        url: 'MissionListing/GetListOfUser4Recommendation',
-    //        success: function (data) {
-    //            let newHtml = `<ul class="list-group" id="list - group -in -reccoworker" data-missiontitle="@ViewBag.missionTitle" data-missiontheme="@ViewBag.missionTheme" data-missionskills="@ViewBag.missionSkill">`;
-
-    //            data.each(function (item) {
-    //                newHtml += `
-    //                            <li class="list-group-item d-flex align-items-center co-worker-checkbox">
-    //                            <input class="form-check-input me-1" type="checkbox" value="${item.Email}" id="checkbox_${item.Email}">
-    //                            <label for="checkbox_${item.Email}" class="user-image d-flex ms-1">
-    //                            <img src="${item.Avatar}" alt="" class="rounded-circle" style="height:40px">
-    //                            <div class="d-flex flex-column ms-2">
-    //                                <p class="mb-0 ">${item.FirstName}${item.LastName}</p>
-    //                                <p class="my-0" style="font-size:13px ;">${item.Email}</p>
-    //                            </div>
-    //                            </label>
-    //                        </li>`
-    //            });
-    //            newHtml += `</ul>`;
-
-    //            $('.grid_list_modal_body').html(newHtml);
-    //        },
-    //        error: function (xhr, status, error) {
-    //            console.log(error);
-    //        }
-    //    });
-    //});
 });
+
+function gridListRecommend() {
+    console.log("lkjhikgyuftyubvhj");
+    $.ajax({
+        type: 'GET',
+        url: '/MissionListing/GetListOfUserRecommendation',
+        success: function (data) {
+            let newHtml = `<ul class="list-group" id="list-group-in-reccoworker" data-missiontitle="@ViewBag.missionTitle" data-missiontheme="@ViewBag.missionTheme" data-missionskills="@ViewBag.missionSkill">`;
+
+            $.each(data,function (index,item) {
+                debugger;
+                newHtml += `
+                                <li class="list-group-item d-flex align-items-center co-worker-checkbox">
+                                <input class="form-check-input me-1" type="checkbox" value="${item.email}" id="checkbox_${item.email}">
+                                <label for="checkbox_${item.email}" class="user-image d-flex ms-1">
+                                <img src="${item.avatar}" alt="" class="rounded-circle" style="height:40px">
+                                <div class="d-flex flex-column ms-2">
+                                    <p class="mb-0 ">${item.firstName} ${item.lastName}</p>
+                                    <p class="my-0" style="font-size:13px ;">${item.email}</p>
+                                </div>
+                                </label>
+                            </li>`
+            });
+            newHtml += `</ul>`;
+
+            $('.grid_list_modal_body').html(newHtml);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
 
 function addRating(toTill) {
     let imgsToAdd = "";

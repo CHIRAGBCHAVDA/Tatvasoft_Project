@@ -53,9 +53,9 @@
 
                                         }
                                     </div>
-                                    <div class="bg-dark p-1 rounded-pill">
-                                        <a href=""> <img src="~/assets/add1.png" alt=""></a>
-                                    </div>
+                                     <button class="bg-dark bg-dark p-1 my-1  rounded-pill border-0 recommendation-grid-list" id="tempToCoworker" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" onclick="gridListRecommend()">
+                                        <img src="~/assets/add1.png" />
+                                    </button>
                                 </div>
 
                             </div>
@@ -171,4 +171,40 @@
 
         </div>
     }
+</div>
+
+
+
+
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel1">Select the co-workers</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body grid_list_modal_body">
+                <ul class="list-group" id="list-group-in-reccoworker" data-missiontitle="@ViewBag.missionTitle" data-missiontheme="@ViewBag.missionTheme" data-missionskills="@ViewBag.missionSkill">
+                    @*@foreach (var item in Model)
+                        {
+
+                        <li class="list-group-item d-flex align-items-center co-worker-checkbox">
+                        <input class="form-check-input me-1" type="checkbox" value="@item.Email" id="checkbox_@item.Email">
+                        <label for="checkbox_@item.Email" class="user-image d-flex ms-1">
+                        <img src="@item.Avatar" alt="" class="rounded-circle" style="height:40px">
+                        <div class="d-flex flex-column ms-2">
+                        <p class="mb-0 ">@item.FirstName @item.LastName  </p>
+                        <p class="my-0" style="font-size:13px ;">@item.Email</p>
+                        </div>
+                        </label>
+                        </li>
+                        }*@
+                    @*<li>Hi</li>*@
+                </ul>
+            </div>
+            <div class="modal-footer">
+                    <button type="button" class="btn btn-primary reccommendMissionBtn" id="reccommendMissionBtn2" data-bs-dismiss="modal" onclick="jovamate()">Reccommend</button>
+            </div>
+        </div>
+    </div>
 </div>

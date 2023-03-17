@@ -177,7 +177,7 @@
 .features-like-location{
     font-size:14px;
     font-weight:100;
-    /*opacity:0.5;*/
+    opacity:0.5;
 }
 
 
@@ -215,7 +215,7 @@ background-image: url("../assets/left.png");
     background-color:black;
 }
 .img-to-overlay:hover img{
-    /*opacity:0.4;*/
+    opacity:0.4;
 }
 .img-to-overlay:hover .story-listing-btn-to-hide {
     display: block;
