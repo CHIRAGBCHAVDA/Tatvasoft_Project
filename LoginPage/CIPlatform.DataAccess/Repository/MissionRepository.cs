@@ -61,10 +61,6 @@ namespace CIPlatform.DataAccess.Repository
                                          favourite = favMission,
                                      };
 
-
-                                        
-
-
             return missionListingCard.ToList();
         }
 
@@ -77,6 +73,47 @@ namespace CIPlatform.DataAccess.Repository
             return a.ToList();
         }
 
-        
+        public List<CommentUserInfo> CommentByMissionUserId(long missionId)
+        {
+            var newcui = from c in _db.Comments
+                         join u in _db.Users on c.UserId equals u.UserId
+                         where c.MissionId == missionId
+                         select new CommentUserInfo()
+                         {
+                             comments = c,
+                             users = u
+                         };
+            return newcui.ToList();
+        }
+
+        public void AddComment(string comment,long missionId,long userId)
+        {
+            Comment toAdd = new Comment()
+            {
+                UserId = userId,
+                MissionId = missionId,
+                CommentDescription = comment,
+                CreatedAt = DateTime.Now,
+            };
+            _db.Comments.Add(toAdd);
+        }
+
+        public void ApplyMission(long missionId, long userId)
+        {
+            var checkIfExist = _db.MissionApplications.Where(mapp => mapp.UserId == userId && mapp.MissionId == missionId).FirstOrDefault();
+            if(checkIfExist == null)
+            {
+                MissionApplication missionApplication = new MissionApplication()
+                {
+                    MissionId = missionId,
+                    AppliedAt = DateTime.Now,
+                    UserId = userId,
+                    ApprovalStatusId = 1,
+                    CreatedAt = DateTime.Now
+                };
+                _db.MissionApplications.Add(missionApplication);
+
+            }
+        }
     }
 }

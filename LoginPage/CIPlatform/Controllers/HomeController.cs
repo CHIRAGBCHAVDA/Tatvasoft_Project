@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
+using CIPlatform.Services;
 
 namespace CIPlatform.Controllers
 {
@@ -16,59 +17,39 @@ namespace CIPlatform.Controllers
     {
         //private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
-      
+        private EmailSender _emailSender;
 
-        public HomeController(IUnitOfWork unitOfWork)
+        public HomeController(IUnitOfWork unitOfWork, EmailSender emailSender)
         {
             _unitOfWork = unitOfWork;
+            _emailSender = emailSender;
         }
 
         [HttpPost]
-        public IActionResult  LostPassword(User user)
+        public IActionResult LostPassword(User user)
         {
             string resetcode = Guid.NewGuid().ToString();
             var verifyUrl = "/Home/ResetPassword/" + resetcode;
             var link = HttpContext.Request.GetDisplayUrl().Replace(HttpContext.Request.Path, verifyUrl);
             var getUser = _unitOfWork.User.GetFirstOrDefault(u => u.Email == user.Email);
-            if(getUser != null)
+            if (getUser != null)
             {
-              
-                //getUser.Token = resetcode;
-               User a = _unitOfWork.User.Update(getUser,resetcode);
-                //_unitOfWork.Save();
+                User a = _unitOfWork.User.Update(getUser, resetcode);
                 var subject = "Password Reset Request";
                 var body = "Hi " + getUser.FirstName + ", <br/> You recently requested to reset your password for your account. Click the link below to reset it. " + " <br/><br/><a href='" + link + "'>" + link + "</a> <br/><br/>" + "If you did not request a password reset, please ignore this email or reply to let us know.<br/><br/> Thank you";
-                SendEmail(getUser.Email, body, subject);
-
+                _emailSender.SendEmail(getUser.Email, body, subject);
                 TempData["mail-success"] = "Reset password link has been sent to your email id.";
             }
-            else if(getUser==null)
+            else if (getUser == null)
             {
-                TempData["user-not-exists"]= "User doesn't exists.";
+                TempData["user-not-exists"] = "User doesn't exists.";
                 return View();
             }
-            
+
             return View();
         }
 
-        [HttpPost]
-        public void SendEmail(string email, string body, string subject)
-        {
-            var client = new SmtpClient("smtp.gmail.com", 587);
-            client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential("chiragchavda.tatvasoft@gmail.com", "orltrydyhfxgxdrz");
-            client.EnableSsl = true;
 
-            var message = new MailMessage();
-            message.From = new MailAddress("chiragchavda.tatvasoft@gmail.com");
-            message.To.Add(email);
-            message.Subject = subject;
-            message.Body = body;
-            message.IsBodyHtml = true;
-            client.Send(message);
-            //sendgrid
-
-        }
 
         public IActionResult Registration()
         {
@@ -76,9 +57,7 @@ namespace CIPlatform.Controllers
         }
         public IActionResult LostPassword()
         {
-            //if(HttpContext.Session.GetString("email")!=null)
             return View();
-            //else return RedirectToAction("Index");
         }
 
         public IActionResult ResetPassword()
@@ -91,11 +70,9 @@ namespace CIPlatform.Controllers
 
             string token = HttpContext.Request.GetDisplayUrl().Replace("https://localhost:44383/Home/ResetPassword/", "");
             User getUser = _unitOfWork.User.GetFirstOrDefault(u => u.Token == token);
-            if(getUser != null && (getUser.TokenCreatedAt>= DateTime.Now.AddMinutes(-1)))
+            if (getUser != null && (getUser.TokenCreatedAt >= DateTime.Now.AddMinutes(-1)))
             {
                 string pwd = BCrypt.Net.BCrypt.HashPassword(user.Password);
-                //_unitOfWork.Entry(getUser).Reload();
-                
                 getUser.Password = pwd;
                 _unitOfWork.Save();
                 TempData["reset-success"] = "Your password has been updated !";
@@ -123,17 +100,21 @@ namespace CIPlatform.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(User user,string? returnUrl)
+        public IActionResult Index(User user, string? returnUrl)
         {
-            User dbUser = _unitOfWork.User.GetFirstOrDefault(u => u.Email == user.Email);
+            User dbUser = _unitOfWork.User.login(user.Email, user.Password);
 
-            if (dbUser != null && BCrypt.Net.BCrypt.Verify(user.Password, dbUser.Password))
+            if (dbUser != null)
             {
-                // The password is valid, allow the user to log in
-                HttpContext.Session.SetString("username", dbUser.FirstName +" "+ dbUser.LastName);
+                HttpContext.Session.SetString("username", dbUser.FirstName + " " + dbUser.LastName);
                 HttpContext.Session.SetString("email", user.Email);
                 HttpContext.Session.SetString("userId", dbUser.UserId.ToString());
-                HttpContext.Session.SetString("userImage", dbUser.Avatar);
+                if (dbUser.Avatar != null)
+                {
+                    HttpContext.Session.SetString("userImage", dbUser.Avatar);
+                }
+                HttpContext.Session.SetString("userImage", "/assets/user1.png");
+
 
                 if (!string.IsNullOrEmpty(returnUrl))
                 {
@@ -156,10 +137,8 @@ namespace CIPlatform.Controllers
         public IActionResult RegistrationPOST(User obj)
         {
             User getTemp = _unitOfWork.User.GetFirstOrDefault(u => u.Email == obj.Email);
-            if (obj.Password != null && getTemp==null)
+            if (obj.Password != null && getTemp == null)
             {
-                string pwd = BCrypt.Net.BCrypt.HashPassword(obj.Password);
-                obj.Password = pwd;
                 _unitOfWork.User.Register(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "User Added Successfully !";
@@ -168,11 +147,6 @@ namespace CIPlatform.Controllers
             TempData["User-Exists"] = "User EmailId already Exists in the database.";
             return View();
         }
-
-       
-
-        
-        
 
         public PartialViewResult CarouselMobileView()
         {
@@ -198,21 +172,6 @@ namespace CIPlatform.Controllers
             return PartialView("_StoryListingCard");
         }
 
-        //[HttpPost, ActionName("ResetPassword")]
-        //[AutoValidateAntiforgeryToken]
-        //public IActionResult ResetPasswordPOST(TblUser obj)
-        //{
-        //    var usr = _db.TblUsers.SingleOrDefault(u => u.);
-        //    if (ModelState.IsValid)
-        //    {
-        //        _db.TblUsers.Add(obj);
-        //        _db.SaveChanges();
-        //        TempData["success"] = "User Added Successfully !";
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(obj);
-        //}
-
         public IActionResult Logout()
         {
 
@@ -226,5 +185,26 @@ namespace CIPlatform.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+        [HttpPost]
+        public void SendEmail(string email, string body, string subject)
+        {
+            var client = new SmtpClient("smtp.gmail.com", 587);
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential("chiragchavda.tatvasoft@gmail.com", "orltrydyhfxgxdrz");
+            client.EnableSsl = true;
+
+            var message = new MailMessage();
+            message.From = new MailAddress("chiragchavda.tatvasoft@gmail.com");
+            message.To.Add(email);
+            message.Subject = subject;
+            message.Body = body;
+            message.IsBodyHtml = true;
+            client.Send(message);
+
+        }
+
+
     }
 }

@@ -13,29 +13,33 @@ namespace CIPlatform.DataAccess.Repository
             _db = db;
         }
 
-        public void login(User user)
+        public User login(string email,string password)
         {
-            throw new NotImplementedException();
+            User dbUser = _db.Users.FirstOrDefault(u => u.Email == email);
+            if (dbUser != null && BCrypt.Net.BCrypt.Verify(password, dbUser.Password))
+            {
+                return dbUser;
+            }
+            
+            return null;
+
         }
 
         public void Register(User user)
         {
+            string pwd = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            user.Password = pwd;
             _db.Add(user);
         }
 
         public User Update(User user,string token)
         {
-            //user.Token = token;
             User temp = _db.Users.FirstOrDefault(x => x.UserId == user.UserId);
             temp.TokenCreatedAt = DateTime.Now;
-            //temp.CreatedAt = DateTime.Now;
-             _db.Users.Update(temp);
-             _db.SaveChanges();
-
             temp.Token = token;
             
             _db.Users.Update(temp);
-             _db.SaveChanges();
+            _db.SaveChanges();
             
             return temp;
         }

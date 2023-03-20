@@ -59,7 +59,7 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public JsonResult GetCities(string[] countryIds)
         {
-            var cities = _db.Cities.Where(c => countryIds.Contains(c.CountryId.ToString())).Select(c => new { CityId = c.CityId, Name = c.Name, CountryId = c.CountryId }).ToList();
+            var cities = _unitOfWork.City.GetAll(c => countryIds.Contains(c.CountryId.ToString())).Select(c => new {CityId=c.CityId,Name=c.Name,CountryId=c.CountryId}).ToList();
             return Json(cities);
         }
         public PartialViewResult GetGridView()
@@ -74,61 +74,60 @@ namespace CIPlatform.Controllers
         #endregion 
 
 
-        public ActionResult Search(string query)
-        {
-            if (string.IsNullOrEmpty(query))
-            {
-                return PartialView("_GridMissionLayout", missionListingCards);
-            }
+        //public ActionResult Search(string query)
+        //{
+        //    if (string.IsNullOrEmpty(query))
+        //    {
+        //        return PartialView("_GridMissionLayout", missionListingCards);
+        //    }
 
-            var getMs =
-                from M in _db.Missions
-                join C in _db.Cities on M.CityId equals C.CityId
-                join
-                Tm in _db.MissionThemes on M.MissionThemeId equals Tm.MissionThemeId
-                where M.Title.Contains(query) || M.Description.Contains(query)
-                select new MissionListingCard()
-                {
-                    mission = M,
-                    City = C.Name,
-                    MissionTheme = Tm.Title,
-                    Skills = (List<string>)(from ms in _db.MissionSkills
-                                            join s in _db.Skills on ms.SkillId equals s.SkillId
-                                            where ms.MissionId == M.MissionId
-                                            select s.SkillName),
+        //    var getMs =
+        //        from M in _db.Missions
+        //        join C in _db.Cities on M.CityId equals C.CityId
+        //        join
+        //        Tm in _db.MissionThemes on M.MissionThemeId equals Tm.MissionThemeId
+        //        where M.Title.Contains(query) || M.Description.Contains(query)
+        //        select new MissionListingCard()
+        //        {
+        //            mission = M,
+        //            City = C.Name,
+        //            MissionTheme = Tm.Title,
+        //            Skills = (List<string>)(from ms in _db.MissionSkills
+        //                                    join s in _db.Skills on ms.SkillId equals s.SkillId
+        //                                    where ms.MissionId == M.MissionId
+        //                                    select s.SkillName),
 
-                    ImageLink = (from ImgLink in _db.MissionMedia
-                                 where ImgLink.MissionId == M.MissionId
-                                 select ImgLink.MediaPath).FirstOrDefault(),
+        //            ImageLink = (from ImgLink in _db.MissionMedia
+        //                         where ImgLink.MissionId == M.MissionId
+        //                         select ImgLink.MediaPath).FirstOrDefault(),
 
-                    rating = _db.MissionRatings.Where(m => m.MissionId == M.MissionId).ToList()
-                };
+        //            rating = _db.MissionRatings.Where(m => m.MissionId == M.MissionId).ToList()
+        //        };
 
 
 
-            if (getMs.ToList().Count > 0)
-            {
-                return PartialView("_GridMissionLayout", getMs.ToList());
-            }
-            else
-            {
-                return PartialView("_MissionNotFound");
-            }
-        }
+        //    if (getMs.ToList().Count > 0)
+        //    {
+        //        return PartialView("_GridMissionLayout", getMs.ToList());
+        //    }
+        //    else
+        //    {
+        //        return PartialView("_MissionNotFound");
+        //    }
+        //}
 
         #region Filter mission and Count
 
         [HttpPost]
-        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId, [DefaultValue(1)] int sortBy, [DefaultValue(1)] int flag, [DefaultValue(1)] int pageNum)
+        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId,string? searchKeyword , [DefaultValue(1)] int sortBy, [DefaultValue(1)] int flag, [DefaultValue(1)] int pageNum)
         {
             if (countryId!=null && countryId.Length>0)
             {
                 getFilterMs = missionListingCards.Where(m => countryId.Contains(m.mission.CountryId.ToString())).ToList();
-                //return PartialView("_GridMissionLayout", getFilterMs);
             }
             if (cityName!=null && cityName.Length > 0)
             {
-                getFilterMs = missionListingCards.Where(m => cityName.Contains(m.City)).ToList();  
+                getFilterMs = getFilterMs.Where(m => cityName.Contains(m.City)).ToList();  
             }
             if (themeId!=null && themeId.Length > 0)
             {
@@ -136,7 +135,11 @@ namespace CIPlatform.Controllers
             }
             if (skillId!=null && skillId.Length > 0)
             {
-                getFilterMs = missionListingCards.Where(m => m.Skills.Intersect(skillId).Any()).ToList();
+                getFilterMs = getFilterMs.Where(m => m.Skills.Intersect(skillId).Any()).ToList();
+            }
+            if (!string.IsNullOrEmpty(searchKeyword))
+            {
+                getFilterMs = getFilterMs.Where(m => m.mission.Title.Contains(searchKeyword) || m.mission.Description.Contains(searchKeyword)).ToList();
             }
 
             if (getFilterMs != null)
@@ -261,63 +264,34 @@ namespace CIPlatform.Controllers
 
         public List<User> GetListOfUserRecommendation()
         {
-
-            var usersList = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList();
-
+            var usersList = _unitOfWork.User.GetAll(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList();
             return usersList;
         }
 
         [HttpPost]
         public IActionResult postTheComment(string comment)
         {
+            var UserId = long.Parse(HttpContext.Session.GetString("userId"));
+            _unitOfWork.MissionRepo.AddComment(comment, currentMissionId, UserId);
+            _unitOfWork.Save();
 
-            Comment toAdd = new Comment()
-            {
-                UserId = long.Parse(HttpContext.Session.GetString("userId")),
-                MissionId = currentMissionId,
-                CommentDescription = comment,
-                CreatedAt = DateTime.Now,
-            };
+            var newcui = _unitOfWork.MissionRepo.CommentByMissionUserId(currentMissionId);
 
-            _db.Comments.Add(toAdd);
-            _db.SaveChanges();
-
-            var newcui = from c in _db.Comments
-                      join u in _db.Users on c.UserId equals u.UserId
-                      where c.MissionId == currentMissionId
-                      select new CommentUserInfo()
-                      {
-                          comments = c,
-                          users = u
-                      };
-
-            return PartialView("_CommentVolMission", newcui.ToList());
+            return PartialView("_CommentVolMission", newcui);
         }
 
         public IActionResult applyMission(long missionId)
         {
-            var checkExist = _db.MissionApplications.Where(mapp => mapp.UserId == long.Parse(HttpContext.Session.GetString("userId"))
-                                && mapp.MissionId == missionId).FirstOrDefault();
-            if (checkExist == null)
-            {
-                MissionApplication missionApplication = new MissionApplication()
-                {
-                    MissionId = missionId,
-                    AppliedAt = DateTime.Now,
-                    UserId = long.Parse(HttpContext.Session.GetString("userId")),
-                    ApprovalStatusId = 1,
-                    CreatedAt = DateTime.Now
-                };
 
-                _db.MissionApplications.Add(missionApplication);
-                _db.SaveChanges();
-            }
+            var UserId = long.Parse(HttpContext.Session.GetString("userId"));
 
-            
+            _unitOfWork.MissionRepo.ApplyMission(missionId, UserId);
+            _unitOfWork.Save();
+                        
             myMissionAndUser myuser = new myMissionAndUser()
             {
                 myMission = missionListingCards.Where(m => m.mission.MissionId == missionId).FirstOrDefault(),
-                Users = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList(),
+                Users = _unitOfWork.User.GetAll(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList(),
                 IsApplied = true
             };
 

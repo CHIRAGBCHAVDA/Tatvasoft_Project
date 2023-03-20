@@ -7,12 +7,13 @@ var selectedThemes = [];
 var selectedSkills = [];
 var selectedOption = 1;
 var flag = 1;
-
+var searchKeyword = "";
 
 
 getTotalCount();
 $(document).ready(function () {
     $('.city-item').hide();
+
 
     $("#partialView").load('/MissionListing/GetGridView');
     $('#list').click(function () {
@@ -27,7 +28,6 @@ $(document).ready(function () {
     $('.country-checkbox').change(function () {
         var countryId = $(this).val();
         if (!$(this).prop('checked')) {
-            debugger;
             $('.city-checkbox[data-country="' + countryId + '"]').prop('checked', false);
             var index = selectedCountries.indexOf(countryId);
             if (index > -1 && !$(this).prop('checked')) {
@@ -64,7 +64,6 @@ $(document).ready(function () {
     $('.city-checkbox').change(function () {
         var cityId = $(this).next().text();
         if (!$(this).prop('checked')) {
-            debugger
             $('.city-checkbox[value="' + cityId + '"]').prop('checked', false);
             var index = selectedCities.indexOf(cityId);
             if (index > -1 && !$(this).prop('checked')) {
@@ -81,7 +80,6 @@ $(document).ready(function () {
 
     $('.theme-checkbox').change(function () {
         var themeName = $(this).next().text().trim();
-        debugger
         if (!$(this).prop('checked')) {
             $('.theme-checkbox[value="' + themeName.trim() + '"]').prop('checked', false);
             var index = selectedThemes.indexOf(themeName);
@@ -121,7 +119,6 @@ $(document).ready(function () {
     });
 
     $(document).on("click","#partialView .reccommendMissionBtn, .reccommendMissionBtn",function () {
-        debugger
         var selected = $('.co-worker-checkbox input[type="checkbox"]:checked');
         var values = [];
         selected.each(function () {
@@ -142,7 +139,6 @@ $(document).ready(function () {
         var currentUrl = window.location.href;
         console.log(currentUrl);
         let missionLink = "https://localhost:44383/?returnUrl=" + currentUrl;
-        debugger
         let body = `<!DOCTYPE html>
                     <html>
 
@@ -208,7 +204,6 @@ function gridListRecommend() {
             let newHtml = `<ul class="list-group" id="list-group-in-reccoworker" data-missiontitle="@ViewBag.missionTitle" data-missiontheme="@ViewBag.missionTheme" data-missionskills="@ViewBag.missionSkill">`;
 
             $.each(data,function (index,item) {
-                debugger;
                 newHtml += `
                                 <li class="list-group-item d-flex align-items-center co-worker-checkbox">
                                 <input class="form-check-input me-1" type="checkbox" value="${item.email}" id="checkbox_${item.email}">
@@ -287,7 +282,6 @@ $(document).on('change', function () {
 });
 
 $('#sortingMission').change(function () {
-    debugger;
     selectedOption = $(this).val();
     console.log("The value of sorting is : " + selectedOption);// Get the selected option value
     getFilter(); // Call the sortMissions function with the selected option
@@ -295,19 +289,9 @@ $('#sortingMission').change(function () {
 
 getFilter();
 function searchMissions() {
-    let query = document.getElementById("search-query").value;
-    $.ajax({
-        type: "GET",
-        url: "/MissionListing/Search",
-        data: { query: query },
-        success: function (result) {
-            console.log(result);
-            $("#partialView").html(result);
-        },
-        error: function (xhr, status, error) {
-            console.log(error);
-        }
-    });
+    searchKeyword = document.getElementById("search-query").value;
+    console.log(searchKeyword)
+    getFilter();
 }
 
 
@@ -357,7 +341,6 @@ function getBadge() {
     });
 
     $('.city-checkbox:checked').each(function () {// Add badges for all selected cities
-        debugger
         var cityId = $(this).val();
         var cityName = $(this).next().text();
         var countryId = $(this).data('country');
@@ -446,6 +429,7 @@ function getFilter(pg) {
             "cityName": selectedCities,
             "themeId": selectedThemes,
             "skillId": selectedSkills,
+            "searchKeyword":searchKeyword,
             "sortBy": selectedOption,
             "flag": flag,
             "pageNum" : pg
@@ -460,7 +444,6 @@ function getFilter(pg) {
 }
 
 function btnAddRmFav() {
-    debugger;
 
     var mID = $("#button-to-fav").attr('data-mid');
     var favFlag = $("#button-to-fav").attr('data-isfav');
@@ -472,7 +455,6 @@ function btnAddRmFav() {
             "favFlag": favFlag
         },
         success: function (result) {
-            debugger;
             $("#volMissionRightUpper").html(result);
         },
         error: function (xhr, status, error) {
@@ -483,13 +465,11 @@ function btnAddRmFav() {
 
 
 function volunteeringMissionDetails(missionId) {
-    debugger;
     window.location.href = '@Url.Action("VolunteeringMissionPage","MissionListing")?missionId=' + missionId;
 }
 
 
 function postTheComment() {
-    debugger;
     console.log(new URLSearchParams(window.location.href))
     let comment = $('#comment-area-volmission').val();
     
@@ -521,7 +501,6 @@ function postTheComment() {
 
 
 function applyMission() {
-    debugger;
     let missionId = $(".volMission-applybtn").attr('data-missionid');
     console.log(typeof(missionId));
     console.log(missionId);

@@ -2,6 +2,7 @@ using CIPlatform.Data;
 using CIPlatform.DataAccess;
 using CIPlatform.DataAccess.Repository;
 using CIPlatform.DataAccess.Repository.IRepository;
+using CIPlatform.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+builder.Services.AddScoped<EmailSender>();
 
 
 var app = builder.Build();
