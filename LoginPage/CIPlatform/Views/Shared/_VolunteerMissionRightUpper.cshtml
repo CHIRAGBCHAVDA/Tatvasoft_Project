@@ -2,7 +2,7 @@
 @{
     bool favFlag;
 }
-
+<script src="~/js/MissionListing.js"></script>
 
 <div class="mission-info-wrapper container w-md-100 w-lg-50 mt-5">
     <div class="mission-title">
@@ -81,33 +81,6 @@
 
             </button>
         </div>
-        @*<div class="add-to-fav-btn w-100 w-md-50 my-2">
-            <button class="btn-primary form-control bg-white text-secondary border border-secondary p-2 rounded-pill d-flex flex-wrap flex-md-nowrap justify-content-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                <img src="~/assets/add1.png" />
-                &nbsp; &nbsp;
-                <span>
-                    Recommend to a Co-Worker
-                </span>
-            </button>
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Select the co-workers</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary">Reccommend</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
 
         <partial name="_ReccommendBtn" model="Model.Users" />
     </div>
@@ -154,11 +127,22 @@
         </div>
     </div>
 
-    <div class="mission-submit-btn text-center mt-3">
-        <button type="submit" class="btn bg-white  rounded-pill px-4">
-            Apply
-            &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
-        </button>
+    <div class="mission-submit-btn text-center mt-3 apply-missionbtn-div-volmission">
+        @if (Model.IsApplied==true)
+        {
+            <button type="submit" class="btn bg-white  rounded-pill px-4 volMission-applybtn" data-missionid = "@Model.myMission.mission.MissionId" onclick="applyMission()" disabled>
+                Applied
+                &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
+            </button>
+        }
+        else
+        {
+
+            <button type="submit" class="btn bg-white  rounded-pill px-4 volMission-applybtn" data-missionid = "@Model.myMission.mission.MissionId" onclick="applyMission()">
+                Apply
+                &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
+            </button>
+        }
     </div>
 
 </div>

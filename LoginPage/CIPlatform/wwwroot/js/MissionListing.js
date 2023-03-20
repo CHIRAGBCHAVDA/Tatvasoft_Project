@@ -1,5 +1,6 @@
 ﻿
 
+
 var selectedCountries = [];
 var selectedCities = [];
 var selectedThemes = [];
@@ -514,6 +515,36 @@ function postTheComment() {
         },
         error: function (xhr, status, error) {
             console.log("There are some errors....");
+        }
+    });
+}
+
+
+function applyMission() {
+    debugger;
+    let missionId = $(".volMission-applybtn").attr('data-missionid');
+    console.log(typeof(missionId));
+    console.log(missionId);
+    $.ajax({
+        url: "/MissionListing/applyMission",
+        type: "GET",
+        data: {
+            missionId:missionId
+        },
+        success: function (result) {
+            console.log("Application is submitted successfully...");
+            $('#volMissionRightUpper').html(result);
+            //let xApplyBtn = `
+            //                <button type="submit" class="btn bg-white  rounded-pill px-4 volMission-applybtn" data-missionid = "@Model.myMission.mission.MissionId" onclick="applyMission()" disabled>
+            //                    Applied
+            //                    &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
+            //                </button>
+            //                `
+            //$(".apply-missionbtn-div-volmission").html(xApplyBtn);
+
+        },
+        error: function (xhr, status, error) {
+            console.log("Some error occured while applying in mission...\n" + error);
         }
     });
 }

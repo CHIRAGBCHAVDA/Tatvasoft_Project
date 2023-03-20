@@ -201,7 +201,9 @@ namespace CIPlatform.Controllers
                 myMissionAndUser myuser = new myMissionAndUser()
                 {
                     myMission = missionDetail,
-                    Users = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList()
+                    Users = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList(),
+                    IsApplied = _db.MissionApplications.Where(m => m.MissionId == missionId && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault() != null ? true : false
+                    
                 };
                 missionDetailsViewModel.myMissionAndUser = myuser;
 
@@ -290,6 +292,37 @@ namespace CIPlatform.Controllers
                       };
 
             return PartialView("_CommentVolMission", newcui.ToList());
+        }
+
+        public IActionResult applyMission(long missionId)
+        {
+            var checkExist = _db.MissionApplications.Where(mapp => mapp.UserId == long.Parse(HttpContext.Session.GetString("userId"))
+                                && mapp.MissionId == missionId).FirstOrDefault();
+            if (checkExist == null)
+            {
+                MissionApplication missionApplication = new MissionApplication()
+                {
+                    MissionId = missionId,
+                    AppliedAt = DateTime.Now,
+                    UserId = long.Parse(HttpContext.Session.GetString("userId")),
+                    ApprovalStatusId = 1,
+                    CreatedAt = DateTime.Now
+                };
+
+                _db.MissionApplications.Add(missionApplication);
+                _db.SaveChanges();
+            }
+
+            
+            myMissionAndUser myuser = new myMissionAndUser()
+            {
+                myMission = missionListingCards.Where(m => m.mission.MissionId == missionId).FirstOrDefault(),
+                Users = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList(),
+                IsApplied = true
+            };
+
+
+            return PartialView("_VolunteerMissionRightUpper", myuser);
         }
 
 
