@@ -1,9 +1,11 @@
-﻿
+﻿@*@model List<CIPlatform.Models.ViewDataModels.StoryListingViewModel>*@
+@model CIPlatform.Models.ViewDataModels.StoryViewModel
+
 <div class="container-fluid">
     <div class="main-wrapper">
 
         <partial name="_Header" />
-        @*<partial name="_Filter" />*@
+        <partial name="_Filter" model="@Model.StoryListingHeader"/>
 
         <div class="story-listing-top-img-card">
 
@@ -24,7 +26,7 @@
 
         <div class="container story-cards mt-4">
 
-            <partial name="_StoryListingCard" />
+            <partial name="_StoryListingCard" model="@Model.StoryListing"/>
            
         </div>
 

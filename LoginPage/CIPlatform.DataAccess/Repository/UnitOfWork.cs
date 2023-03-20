@@ -18,6 +18,7 @@ namespace CIPlatform.DataAccess.Repository
             Skill = new Repository<Skill>(_db);
             MissionTheme = new Repository<MissionTheme>(_db);
             MissionRepo = new MissionRepository(_db,httpContext.HttpContext);
+            StoryRepo = new StoryRepository(_db,httpContext.HttpContext);
         }
         public IUserRepository User { get; }
 
@@ -29,6 +30,8 @@ namespace CIPlatform.DataAccess.Repository
         public IRepository<Mission> Mission { get; }
 
         public IMissionRepository MissionRepo { get; }
+
+        public IStoryRepository StoryRepo { get; }
 
         public void Save()
         {

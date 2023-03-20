@@ -17,6 +17,7 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         IRepository<Mission> Mission { get; }
 
         IMissionRepository MissionRepo { get; }
+        IStoryRepository StoryRepo { get; }
 
 
 

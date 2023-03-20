@@ -222,7 +222,6 @@ namespace CIPlatform.Controllers
                                   };
                 
                 missionDetailsViewModel.commentUser = cui.ToList();
-                               
 
                 ViewBag.missionSkill = string.Join(", ", myuser.myMission.Skills);
                 ViewBag.missionTheme = myuser.myMission.MissionTheme;
@@ -282,7 +281,6 @@ namespace CIPlatform.Controllers
 
         public IActionResult applyMission(long missionId)
         {
-
             var UserId = long.Parse(HttpContext.Session.GetString("userId"));
 
             _unitOfWork.MissionRepo.ApplyMission(missionId, UserId);
@@ -295,11 +293,7 @@ namespace CIPlatform.Controllers
                 IsApplied = true
             };
 
-
             return PartialView("_VolunteerMissionRightUpper", myuser);
         }
-
-
-
     }
 }
