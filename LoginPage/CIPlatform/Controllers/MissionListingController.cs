@@ -273,7 +273,8 @@ namespace CIPlatform.Controllers
             {
                 UserId = long.Parse(HttpContext.Session.GetString("userId")),
                 MissionId = currentMissionId,
-                CommentDescription = comment
+                CommentDescription = comment,
+                CreatedAt = DateTime.Now,
             };
 
             _db.Comments.Add(toAdd);

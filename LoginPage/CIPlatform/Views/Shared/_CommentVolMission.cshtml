@@ -1,4 +1,5 @@
-﻿@model List<CIPlatform.Models.ViewDataModels.CommentUserInfo>
+﻿@using System.Globalization
+@model List<CIPlatform.Models.ViewDataModels.CommentUserInfo>
 
 
 
@@ -7,12 +8,26 @@
     {
         <div class="card-wrapper d-flex bg-white mt-2 p-3">
             <div class="user-image">
-                <img src="~/assets/volunteer9.png" alt="" class="rounded-circle" style="height:52px">
+                @if(string.IsNullOrEmpty(item.users.Avatar))
+                {
+                    <img src="~/assets/user-img.png" alt="" class="rounded-circle" style="height:52px">
+                }
+                else
+                {
+                    <img src="@item.users.Avatar" alt="" class="rounded-circle" style="height:52px">
+                }
             </div>
             <div class="user-info-comment d-flex flex-column justify-content-between ms-3">
                 <div class="user-info-in-comment">
                     <span class="mb-0">@item.users.FirstName</span> <br />
-                    <span style="font-size:13px ;margin-top:0;">@item.comments.CreatedAt</span>
+                    @{
+                        string dateString = @item.comments.CreatedAt.ToString();
+                        DateTime date = DateTime.ParseExact(dateString, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                        string formattedDate = date.ToString("dddd, MMMM dd, yyyy, h:mm tt");
+
+                    <span style="font-size:13px ;margin-top:0;">@formattedDate</span>
+
+                    }
                 </div>
                 <div class="user-comment mt-2">
                     <p>@item.comments.CommentDescription</p>
