@@ -1,11 +1,14 @@
 ﻿@*@model List<CIPlatform.Models.ViewDataModels.StoryListingViewModel>*@
 @model CIPlatform.Models.ViewDataModels.StoryViewModel
 
+<script src="~/js/StoryListing.js"></script>
+
 <div class="container-fluid">
     <div class="main-wrapper">
 
+        @*<h1 id="totalStoryFilterSpan">Total stories are : </h1>*@
         <partial name="_Header" />
-        <partial name="_Filter" model="@Model.StoryListingHeader"/>
+        <partial name="_Filter" model="@Model.StoryListingHeader" />
 
         <div class="story-listing-top-img-card">
 
@@ -26,39 +29,10 @@
 
         <div class="container story-cards mt-4">
 
-            <partial name="_StoryListingCard" model="@Model.StoryListing"/>
-           
+            <partial name="_StoryListingCard" model="@Model.StoryListing" />
+
         </div>
 
-        <div class="mt-4 text-center m-auto">
-            <nav aria-label="Page navigation example" class="story-listing-pagination-nav">
-              <ul class="pagination">
-                <li class="page-item mx-2">
-                  <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true"><i class="bi bi-chevron-double-left"></i></span>
-                  </a>
-                </li>
-                <li class="page-item mx-2">
-                  <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
-                  </a>
-                </li>
-                <li class="page-item mx-2"><a class="page-link" href="#">1</a></li>
-                <li class="page-item mx-2"><a class="page-link" href="#">2</a></li>
-                <li class="page-item mx-2"><a class="page-link" href="#">3</a></li>
-                <li class="page-item mx-2">
-                  <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
-                  </a>
-                </li>
-                <li class="page-item mx-2">
-                  <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true"><i class="bi bi-chevron-double-right"></i></span>
-                  </a>
-                </li>
-              </ul>
-            </nav>    
-        </div>
 
 
     </div>

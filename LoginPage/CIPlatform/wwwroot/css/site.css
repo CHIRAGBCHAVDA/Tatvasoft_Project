@@ -244,3 +244,23 @@ background-image: url("../assets/left.png");
 .paragraph::before {
     white-space: pre-line;
 }
+
+.page-item.active .page-link {
+    background-color: #F88634;
+}
+.story-card-wrapper{
+    height:500px;
+}
+
+.card-text {
+    height: 120px;
+    overflow-y: auto;
+    text-align:justify;
+}
+.card-text::-webkit-scrollbar {
+    width: 0px;
+}
+
+.card-to-scale{
+    height:670px;
+}

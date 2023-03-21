@@ -89,7 +89,9 @@ namespace CIPlatform.Controllers
 
         public IActionResult Index()
         {
+            if(HttpContext.Session.GetString("userId")==null)
             return View();
+            return RedirectToAction("PlatformLanding", "MissionListing");
         }
 
         public IActionResult Privacy()
@@ -113,8 +115,10 @@ namespace CIPlatform.Controllers
                 {
                     HttpContext.Session.SetString("userImage", dbUser.Avatar);
                 }
-                HttpContext.Session.SetString("userImage", "/assets/user1.png");
-
+                else
+                {
+                    HttpContext.Session.SetString("userImage", "/assets/user1.png");
+                }
 
                 if (!string.IsNullOrEmpty(returnUrl))
                 {

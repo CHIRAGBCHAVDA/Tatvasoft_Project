@@ -13,5 +13,6 @@ namespace CIPlatform.Models.ViewDataModels
         public Mission Missions { get; set;}
         public string Theme { get; set;}
         public List<string>? Skills { get; set;}
+        public string? City { get; set; }
     }
 }

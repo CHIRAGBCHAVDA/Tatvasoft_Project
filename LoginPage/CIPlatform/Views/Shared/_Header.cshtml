@@ -9,7 +9,7 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center d-flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Stories</a>
+                        <a class="nav-link active" aria-current="page" asp-action="StoryListing" asp-controller="StoryListing">Stories</a>
                     </li>
                     <li class="nav-item ">
                         @*<a class="nav-link" href="#">Policy</a>*@
@@ -42,9 +42,9 @@
                     </a>
 
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" asp-action="PlatformLanding" asp-controller="MissionListing">Home</a></li>
                         <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" asp-action="Logout" asp-controller="Home">LOG OUT</a></li>
+                        <li class="bg-danger"><a class="dropdown-item text-white" asp-action="Logout" asp-controller="Home">LOG OUT</a></li>
                     </ul>
                 </div>
             </div>

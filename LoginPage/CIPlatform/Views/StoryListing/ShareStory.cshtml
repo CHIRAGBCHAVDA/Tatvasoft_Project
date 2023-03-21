@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container-fluid">
+
+    <div class="main-wrapper">
+        <partial name="_Header" />
+
+        <div class="share-story-wrapper mt-4 container">
+            <h1 class="fs-1 fw-lighter">Share your story</h1>
+
+            <div class="share-story-form d-flex w-100 mt-5">
+                <div class="select-mission w-100 me-2">
+                    <label for="mission" class="form-label">Select Mission</label>
+                    <select class="form-select" id="mission" name="mission">
+                        <option selected disabled value="">Select Your Mission</option>
+                        <option value="mission1">Mission 1</option>
+                        <option value="mission2">Mission 2</option>
+                        <option value="mission3">Mission 3</option>
+                    </select>
+                </div>
+                <div class="my-story-title w-100 me-2">
+                    <label for="title" class="form-label">My story title</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter Story Title">
+                </div>
+                <div class="story-date w-100">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="date" name="date" placeholder="Select Date">
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
