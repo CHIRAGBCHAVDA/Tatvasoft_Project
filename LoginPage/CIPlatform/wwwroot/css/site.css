@@ -159,6 +159,12 @@
 .bg-orange {
     background-color: #F88634;
 }
+.border-orange {
+    border: 1px solid #F88634;
+}
+.text-orange {
+    color: #F88634;
+}
 /*#grid:hover {
     background: #e6e6e6;
 }
@@ -264,3 +270,11 @@ background-image: url("../assets/left.png");
 .card-to-scale{
     height:670px;
 }
+
+
+
+.btn-primary.btn:hover {
+    color: black;
+    border: 1px solid #F88634;
+}
+

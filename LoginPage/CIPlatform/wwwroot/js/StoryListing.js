@@ -9,6 +9,57 @@ var searchKeyword = "";
 
 getTotalCount();
 $(document).ready(function () {
+
+    $('#file-upload').on('change', function () {
+        var files = $(this)[0].files;
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var imageType = /image/;
+                var videoType = /video/;
+                var src = e.target.result;
+                if (imageType.test(file.type)) {
+                    $('#file-preview').append('<div class="col-auto"><div class="position-relative"><img class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
+                } else if (videoType.test(file.type)) {
+                    $('#file-preview').append('<div class="col-auto"><div class="position-relative"><video class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"></video><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
+                }
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    $('#file-preview').on('click', '.btn-close', function () {
+        $(this).closest('.col-auto').remove();
+    });
+
+    $('#file-label').on('drop', function (e) {
+        e.preventDefault();
+        var files = e.originalEvent.dataTransfer.files;
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var imageType = /image/;
+                var videoType = /video/;
+                var src = e.target.result;
+                if (imageType.test(file.type)) {
+                    $('#file-preview').append('<div class="col-auto"><div class="position-relative"><img class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
+                } else if (videoType.test(file.type)) {
+                    $('#file-preview').append('<div class="col-auto"><div class="position-relative"><video class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"></video><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
+                }
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    $('#file-label').on('dragover', function (e) {
+        e.preventDefault();
+    });
+
+
+
+
     $('.city-item').hide();
 
     $('.country-checkbox').change(function () {

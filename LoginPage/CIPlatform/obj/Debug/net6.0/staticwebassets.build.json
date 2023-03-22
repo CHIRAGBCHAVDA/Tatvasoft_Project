@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "OGmPbZvdNCqLjkVbYuEmCVkBwHAxAmFS9fVkjryfIMs=",
+  "Hash": "u5A3RGbM5Pv578CHvGUj8BrdMre95VAiNcajlBNOIO0=",
   "Source": "CIPlatform",
   "BasePath": "_content/CIPlatform",
   "Mode": "Default",
@@ -1902,6 +1902,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\js\\CkConfig.js",
+      "SourceId": "CIPlatform",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\",
+      "BasePath": "_content/CIPlatform",
+      "RelativePath": "js/CkConfig.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\CkConfig.js"
     },
     {
       "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\js\\MissionListing.js",

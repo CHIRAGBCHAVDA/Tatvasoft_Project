@@ -8,3 +8,5 @@ function display(item) {
     image.src = item.src;
 }
 
+
+

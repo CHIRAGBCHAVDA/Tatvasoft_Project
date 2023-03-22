@@ -3,35 +3,84 @@
 *@
 @{
 }
+<script src="~/js/CkConfig.js"></script>
+<script src="~/js/StoryListing.js"></script>
 
 <div class="container-fluid">
 
     <div class="main-wrapper">
         <partial name="_Header" />
+        <hr />
 
         <div class="share-story-wrapper mt-4 container">
             <h1 class="fs-1 fw-lighter">Share your story</h1>
 
-            <div class="share-story-form d-flex w-100 mt-5">
-                <div class="select-mission w-100 me-2">
-                    <label for="mission" class="form-label">Select Mission</label>
-                    <select class="form-select" id="mission" name="mission">
-                        <option selected disabled value="">Select Your Mission</option>
-                        <option value="mission1">Mission 1</option>
-                        <option value="mission2">Mission 2</option>
-                        <option value="mission3">Mission 3</option>
-                    </select>
-                </div>
-                <div class="my-story-title w-100 me-2">
-                    <label for="title" class="form-label">My story title</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter Story Title">
-                </div>
-                <div class="story-date w-100">
-                    <label for="date" class="form-label">Date</label>
-                    <input type="date" class="form-control" id="date" name="date" placeholder="Select Date">
-                </div>
+            <div class="form-wrapper">
+                <form>
+                    <div class="share-story-form d-flex w-100 mt-4">
+                        <div class="select-mission w-100 me-2">
+                            <label for="mission" class="form-label">Select Mission</label>
+                            <select class="form-select" id="mission" name="mission">
+                                <option selected disabled value="">Select Your Mission</option>
+                                <option value="mission1">Mission 1</option>
+                                <option value="mission2">Mission 2</option>
+                                <option value="mission3">Mission 3</option>
+                            </select>
+                        </div>
+                        <div class="my-story-title w-100 me-2">
+                            <label for="title" class="form-label">My story title</label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Enter Story Title">
+                        </div>
+                        <div class="story-date w-100">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="text" class="form-control" id="date" name="date" onfocus="this.placeholder='';this.type='date'" onblur="this.placeholder='Select Date';;this.type='text'" placeholder="Select Date">
+                        </div>
+                    </div>
 
+                    <div class="text-editor-ck-wrapper mt-4">
+                        <label for="ck-editor" class="form-label">My Story</label>
+                        <textarea class="ck-editor" id="ck-editor">
+
+                </textarea>
+                        <script>
+                            CKEDITOR.replace( 'ck-editor', {
+                            customConfig: '/js/CkConfig.js'
+                            });
+                        </script>
+
+                        <label for="video-url" class="form-label mt-4">Enter Video URL</label>
+                        <input type="text" class="form-control" id="video-url" placeholder="Enter your url" />
+                    </div>
+                    @**************************************************************@
+                    <div class="input-group mb-3 mt-4">
+                        <label class="form-label">Upload your Photos</label>
+                        <input type="file" class="form-control" id="file-upload" multiple style="display: none;">
+                        <label for="file-upload" class="input-group-text form-label w-100 bg-white" id="file-label">
+                            <span class="m-auto p-3">
+                                <i class="bi bi-plus-lg fs-1"></i> <br />
+                                <p class="">Drag and Drop photos and videos here</p>
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="row g-2" id="file-preview"></div>
+
+                    <div class="d-flex w-100 justify-content-between mt-4">
+                        <div>
+                            <button class="btn-primary btn bg-white text-dark border border-dark rounded-pill px-4">Cancel</button>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn-primary btn bg-white text-orange border-orange rounded-pill me-3 px-4">Save</button>
+                            <button class="btn-primary btn bg-white text-orange border-orange rounded-pill px-4">Submit</button>
+                        </div>
+                    </div>
+
+                </form>
             </div>
+
+
+
+
         </div>
 
     </div>
