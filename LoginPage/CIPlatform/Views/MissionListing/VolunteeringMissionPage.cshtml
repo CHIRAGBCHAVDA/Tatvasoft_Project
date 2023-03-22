@@ -294,68 +294,22 @@
                             </nav>
                             <div id="myCarousel" class="carousel slide text-dark">
                                 <div class="carousel-inner w-100 text-center" style="font-size:13px">
-                                    <div class="carousel-item chirag" data-item-number=1>
+                                    <div class="carousel-item chirag active" data-item-number=1>
                                         <div class="row">
-                                            <div class="col-4 mt-4">
-                                                <div class="d-flex flex-column align-items-center recent-volunteer-images">
-                                                    <img src="~/assets/volunteer1.png" class="rounded-circle" />
-                                                    <span>Andrew Johnson</span>
+                                            @foreach(var rv in Model.recentVolunteers)
+                                            {
+                                                <div class="col-4 mt-4">
+                                                    <div class="d-flex flex-column align-items-center recent-volunteer-images">
+                                                        <img src="@rv.Avatar" class="rounded-circle" />
+                                                        <span>@rv.Name</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-4 mt-4">
-                                                <div class="d-flex flex-column align-items-center recent-volunteer-images">
-                                                    <img src="~/assets/volunteer1.png" class="rounded-circle" />
-                                                    <span>Andrew Johnson</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 mt-4">
-                                                <div class="d-flex flex-column align-items-center recent-volunteer-images">
-                                                    <img src="~/assets/volunteer1.png" class="rounded-circle" />
-                                                    <span>Andrew Johnson</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 mt-4">
-                                                <div class="d-flex flex-column align-items-center recent-volunteer-images">
-                                                    <img src="~/assets/volunteer1.png" class="rounded-circle" />
-                                                    <span>Andrew Johnson</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 mt-4">
-                                                <div class="d-flex flex-column align-items-center recent-volunteer-images">
-                                                    <img src="~/assets/volunteer1.png" class="rounded-circle" />
-                                                    <span>Andrew Johnson</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 mt-4">
-                                                <div class="d-flex flex-column align-items-center recent-volunteer-images">
-                                                    <img src="~/assets/volunteer1.png" class="rounded-circle" />
-                                                    <span>Andrew Johnson</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 mt-4">
-                                                <div class="d-flex flex-column align-items-center recent-volunteer-images">
-                                                    <img src="~/assets/volunteer1.png" class="rounded-circle" />
-                                                    <span>Andrew Johnson</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 mt-4">
-                                                <div class="d-flex flex-column align-items-center recent-volunteer-images">
-                                                    <img src="~/assets/volunteer1.png" class="rounded-circle" />
-                                                    <span>Andrew Johnson</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 mt-4">
-                                                <div class="d-flex flex-column align-items-center recent-volunteer-images">
-                                                    <img src="~/assets/volunteer1.png" class="rounded-circle" />
-                                                    <span>Andrew Johnson</span>
-                                                </div>
-                                            </div>
-
+                                            }
                                         </div>
 
                                     </div>
 
-                                    <div class="carousel-item chirag active" data-item-number=2>
+                                    @*<div class="carousel-item chirag active" data-item-number=2>
                                         <div class="row">
                                             <div class="col-4 mt-4">
                                                 <div class="d-flex flex-column align-items-center recent-volunteer-images">
@@ -414,7 +368,7 @@
 
                                         </div>
 
-                                    </div>
+                                    </div>*@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between border mt-3 align-items-center" style="height:50px">

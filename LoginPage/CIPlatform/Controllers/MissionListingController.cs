@@ -74,48 +74,6 @@ namespace CIPlatform.Controllers
         #endregion 
 
 
-        //public ActionResult Search(string query)
-        //{
-        //    if (string.IsNullOrEmpty(query))
-        //    {
-        //        return PartialView("_GridMissionLayout", missionListingCards);
-        //    }
-
-        //    var getMs =
-        //        from M in _db.Missions
-        //        join C in _db.Cities on M.CityId equals C.CityId
-        //        join
-        //        Tm in _db.MissionThemes on M.MissionThemeId equals Tm.MissionThemeId
-        //        where M.Title.Contains(query) || M.Description.Contains(query)
-        //        select new MissionListingCard()
-        //        {
-        //            mission = M,
-        //            City = C.Name,
-        //            MissionTheme = Tm.Title,
-        //            Skills = (List<string>)(from ms in _db.MissionSkills
-        //                                    join s in _db.Skills on ms.SkillId equals s.SkillId
-        //                                    where ms.MissionId == M.MissionId
-        //                                    select s.SkillName),
-
-        //            ImageLink = (from ImgLink in _db.MissionMedia
-        //                         where ImgLink.MissionId == M.MissionId
-        //                         select ImgLink.MediaPath).FirstOrDefault(),
-
-        //            rating = _db.MissionRatings.Where(m => m.MissionId == M.MissionId).ToList()
-        //        };
-
-
-
-        //    if (getMs.ToList().Count > 0)
-        //    {
-        //        return PartialView("_GridMissionLayout", getMs.ToList());
-        //    }
-        //    else
-        //    {
-        //        return PartialView("_MissionNotFound");
-        //    }
-        //}
-
         #region Filter mission and Count
 
         [HttpPost]
@@ -223,6 +181,16 @@ namespace CIPlatform.Controllers
                 
                 missionDetailsViewModel.commentUser = cui.ToList();
 
+                var xyz = from u in _db.Users
+                          join ma in _db.MissionApplications on u.UserId equals ma.UserId
+                          where ma.MissionId == missionId && u.UserId != long.Parse(HttpContext.Session.GetString("userId"))
+                          select new RecentVolunteersViewModel()
+                          {
+                              Avatar = u.Avatar,
+                              Name = u.FirstName + " " + u.LastName
+                          };
+                missionDetailsViewModel.recentVolunteers = xyz.ToList();
+
                 ViewBag.missionSkill = string.Join(", ", myuser.myMission.Skills);
                 ViewBag.missionTheme = myuser.myMission.MissionTheme;
 
@@ -239,7 +207,7 @@ namespace CIPlatform.Controllers
                 var getM = _db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId.ToString().Equals(HttpContext.Session.GetString("userId"))).FirstOrDefault();
                 if (getM != null)
                 {
-                    _db.FavouriteMissions.Remove(_db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId.ToString().Equals(HttpContext.Session.GetString("userId"))).First());
+                    _db.FavouriteMissions.RemoveRange(_db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId.ToString().Equals(HttpContext.Session.GetString("userId"))).ToList());
                      _db.SaveChanges();
                 }
                 var toSendM = _unitOfWork.MissionRepo.getMissions().Where(m=> m.mission.MissionId == mID).FirstOrDefault();

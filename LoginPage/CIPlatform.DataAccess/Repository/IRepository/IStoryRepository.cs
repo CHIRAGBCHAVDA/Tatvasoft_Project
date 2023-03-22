@@ -13,5 +13,6 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         public List<StoryListingViewModel> getAllStories();
         public List<StoryListingViewModel> getStoriesByCountryId(string[] cid);
         public List<StoryListingViewModel> getStoriesPerPage(int pageNum, int pageSize);
+        //public bool AddStory(ShareStoryViewModel story);
     }
 }

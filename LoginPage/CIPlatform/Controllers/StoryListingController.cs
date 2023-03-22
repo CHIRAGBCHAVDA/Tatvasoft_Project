@@ -96,6 +96,22 @@ namespace CIPlatform.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //public IActionResult AddStory(ShareStoryViewModel obj)
+        //{
+        //    if (obj == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    else
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+
+        //        }
+        //    }
+        //}
+
 
 
     }

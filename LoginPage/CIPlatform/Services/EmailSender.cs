@@ -7,7 +7,7 @@ namespace CIPlatform.Services
     {
         public void SendEmail(string email, string body, string subject)
         {
-            var client = new SmtpClient("smtp.gmail.com", 587);
+             var client = new SmtpClient("smtp.gmail.com", 587);
             client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential("chiragchavda.tatvasoft@gmail.com", "orltrydyhfxgxdrz");
             client.EnableSsl = true;

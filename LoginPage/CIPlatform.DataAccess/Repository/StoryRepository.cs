@@ -1,5 +1,6 @@
 ﻿using CIPlatform.Data;
 using CIPlatform.DataAccess.Repository.IRepository;
+using CIPlatform.Models;
 using CIPlatform.Models.ViewDataModels;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -20,6 +21,22 @@ namespace CIPlatform.DataAccess.Repository
             _db = db;
             _httpContext = httpContext;
         }
+
+        //public bool AddStory(ShareStoryViewModel story)
+        //{
+        //    if (story != null)
+        //    {
+        //        Story s = new Story()
+        //        {
+                    
+        //        }
+        //    }
+        //    else
+        //    {
+
+        //    }
+        //}
+
         public List<StoryListingViewModel> getAllStories()
         {
             var stories = from s in _db.Stories join m in _db.Missions on s.MissionId equals m.MissionId
