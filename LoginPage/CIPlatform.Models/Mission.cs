@@ -31,5 +31,7 @@ namespace CIPlatform.Models
         public int? AvailableSeats { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<FavouriteMission> FavouriteMissions { get; set; }
+
     }
 }

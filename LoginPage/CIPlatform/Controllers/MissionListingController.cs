@@ -199,34 +199,80 @@ namespace CIPlatform.Controllers
             else return RedirectToAction("Index","Home");
         }
 
-        public IActionResult ToggleFav(bool favFlag,int mID)
+        [HttpPost]
+        public IActionResult ToggleFav(int mID,bool favFlag)
         {
             if (favFlag == true)
             {
-                //flag= false;
-                var getM = _db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId.ToString().Equals(HttpContext.Session.GetString("userId"))).FirstOrDefault();
+                var getM = _db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId == long.Parse(HttpContext.Session.GetString("userId")) && m.DeletedAt==null).FirstOrDefault();
                 if (getM != null)
                 {
-                    _db.FavouriteMissions.RemoveRange(_db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId.ToString().Equals(HttpContext.Session.GetString("userId"))).ToList());
-                     _db.SaveChanges();
+                    getM.DeletedAt = DateTime.Now;
+                    _db.FavouriteMissions.Update(getM);
+                    _db.SaveChanges();
                 }
-                var toSendM = _unitOfWork.MissionRepo.getMissions().Where(m=> m.mission.MissionId == mID).FirstOrDefault();
-                
-                return PartialView("_VolunteerMissionRightUpper", toSendM);
             }
             else
             {
-                //flag = true;
-                var UID = HttpContext.Session.GetString("userId");
                 FavouriteMission newFav = new FavouriteMission();
                 newFav.MissionId = mID;
-                newFav.UserId = long.Parse(UID);
+                newFav.UserId = long.Parse(HttpContext.Session.GetString("userId"));
 
                 _db.FavouriteMissions.Add(newFav);
                 _db.SaveChanges();
-                var toSendM = _unitOfWork.MissionRepo.getMissions().Where(m => m.mission.MissionId == mID).FirstOrDefault();
-                return PartialView("_VolunteerMissionRightUpper", toSendM);
             }
+
+            var missionDetail = _unitOfWork.MissionRepo.getMissions().Where(m => m.mission.MissionId == mID).FirstOrDefault();
+
+            myMissionAndUser myuser = new myMissionAndUser()
+            {
+                myMission = missionDetail,
+                Users = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList(),
+                IsApplied = _db.MissionApplications.Where(m => m.MissionId == mID && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault() != null ? true : false,
+                FavM = _db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault()
+            };
+
+
+            return PartialView("_VolunteerMissionRightUpper", myuser);
+
+
+        }
+
+        [HttpPost]
+        public int addRmFav(long mId)
+        {
+            long uid = long.Parse(HttpContext.Session.GetString("userId"));
+            var getFromFav = _db.FavouriteMissions.Where(m => m.MissionId==mId && m.UserId == uid).FirstOrDefault();
+            if (getFromFav != null && getFromFav.DeletedAt == null)
+            {
+                getFromFav.DeletedAt = DateTime.Now;
+                _db.FavouriteMissions.Update(getFromFav);
+                _db.SaveChanges();
+                return 0;
+            }
+            else if(getFromFav == null || getFromFav.DeletedAt != null)
+            {
+                if(getFromFav == null)
+                {
+                    var addFv = new FavouriteMission()
+                    {
+                        UserId = uid,
+                        MissionId = mId,
+                        DeletedAt = null,
+                    };
+                    _db.FavouriteMissions.Add(addFv);
+                }
+                else
+                {
+                    getFromFav.DeletedAt = null;
+                    _db.FavouriteMissions.Update(getFromFav);
+                }
+                
+                _db.SaveChanges();
+                return 1;
+
+            }
+            return 404;
         }
 
         public List<User> GetListOfUserRecommendation()
@@ -262,6 +308,20 @@ namespace CIPlatform.Controllers
             };
 
             return PartialView("_VolunteerMissionRightUpper", myuser);
+        }
+
+        public void addRating(int rate)
+        {
+            var getExistance = _db.MissionRatings.Where(mr => mr.UserId == long.Parse(HttpContext.Session.GetString("userId")) && mr.MissionId==currentMissionId);
+            if (getExistance == null)
+            {
+                MissionRating newMR = new MissionRating()
+                {
+                    MissionId = currentMissionId,
+                    UserId = long.Parse(HttpContext.Session.GetString("userId")),
+                    Rating = rate
+                }
+            }
         }
     }
 }

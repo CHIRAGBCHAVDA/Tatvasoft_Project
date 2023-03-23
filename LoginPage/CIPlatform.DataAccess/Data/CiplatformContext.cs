@@ -335,29 +335,64 @@ namespace CIPlatform.Data
                     .HasColumnName("updated_at");
             });
 
+            //modelBuilder.Entity<FavouriteMission>(entity =>
+            //{
+            //    entity.ToTable("favourite_mission");
+
+            //    entity.Property(e => e.FavouriteMissionId).HasColumnName("favourite_mission_id");
+
+            //    entity.Property(e => e.CreatedAt)
+            //        .IsRowVersion()
+            //        .IsConcurrencyToken()
+            //        .HasColumnName("created_at");
+
+            //    entity.Property(e => e.DeletedAt)
+            //        .HasColumnType("datetime")
+            //        .HasColumnName("deleted_at");
+
+            //    entity.Property(e => e.MissionId).HasColumnName("mission_id");
+
+            //    entity.Property(e => e.UpdatedAt)
+            //        .HasColumnType("datetime")
+            //        .HasColumnName("updated_at");
+
+            //    entity.Property(e => e.UserId).HasColumnName("user_id");
+            //});
+
             modelBuilder.Entity<FavouriteMission>(entity =>
             {
                 entity.ToTable("favourite_mission");
 
+                entity.HasKey(e => e.FavouriteMissionId);
+
                 entity.Property(e => e.FavouriteMissionId).HasColumnName("favourite_mission_id");
 
                 entity.Property(e => e.CreatedAt)
-                    .IsRowVersion()
-                    .IsConcurrencyToken()
-                    .HasColumnName("created_at");
-
-                entity.Property(e => e.DeletedAt)
-                    .HasColumnType("datetime")
-                    .HasColumnName("deleted_at");
-
-                entity.Property(e => e.MissionId).HasColumnName("mission_id");
+                    .HasColumnName("created_at")
+                    .HasDefaultValueSql("GETDATE()");
 
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
 
+                entity.Property(e => e.DeletedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("deleted_at");
+
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(e => e.User)
+                    .WithMany(u => u.FavouriteMissions)
+                    .HasForeignKey(e => e.UserId);
+
+                entity.Property(e => e.MissionId).HasColumnName("mission_id");
+
+                entity.HasOne(e => e.Mission)
+                    .WithMany(m => m.FavouriteMissions)
+                    .HasForeignKey(e => e.MissionId);
             });
+
+
 
             modelBuilder.Entity<GoalMission>(entity =>
             {

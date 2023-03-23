@@ -50,5 +50,8 @@ namespace CIPlatform.Models
         public DateTime? TokenCreatedAt { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<FavouriteMission> FavouriteMissions { get; set; }
+
+
     }
 }

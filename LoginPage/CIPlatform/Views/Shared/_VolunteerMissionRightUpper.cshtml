@@ -4,7 +4,7 @@
 }
 <script src="~/js/MissionListing.js"></script>
 
-<div class="mission-info-wrapper container w-md-100 w-lg-50 mt-5">
+<div class="mission-info-wrapper container w-md-100 w-lg-50 mt-5" >
     <div class="mission-title">
         <h2 class="fw-light fs-2">@Model.myMission.mission.Title</h2>
     </div>
@@ -48,8 +48,7 @@
     <hr style="opacity:1; color:lightgray" />
 
     <div class="add-to-fav-and-share-btn d-flex justify-content-between mt-3 align-items-center flex-wrap flex-md-nowrap">
-        <div class="add-to-fav-btn w-100 w-md-50 my-2 me-2">
-            @if (Model.myMission.favourite == null)
+         @if (Model.myMission.favourite == null)
             {
                 favFlag = false;
             }
@@ -57,8 +56,11 @@
             {
                 favFlag = true;
             }
-            <button class="btn-primary form-control bg-white text-secondary border border-secondary p-2 rounded-pill d-flex flex-wrap flex-md-nowrap justify-content-center align-items-center" id="button-to-fav" data-isfav="@favFlag" data-mid="@Model.myMission.mission.MissionId" onclick="btnAddRmFav()">
-                @if (Model.myMission.favourite == null)
+        <div class="add-to-fav-btn w-100 w-md-50 my-2 me-2" id="add-rm-fav-div">
+            @*<span>Fav mission is deleted or not??  @Model.myMission.favourite.DeletedAt</span>*@
+           
+            <button class="btn-primary form-control bg-white text-secondary border border-secondary p-2 rounded-pill d-flex flex-wrap flex-md-nowrap justify-content-center align-items-center" id="button-to-fav" data-isfav="@favFlag" data-mid="@Model.myMission.mission.MissionId" >
+                @if (Model.myMission.favourite==null || Model.myMission.favourite.DeletedAt != null)
                 {
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" stroke="white" class="bi bi-heart" viewBox="0 0 16 16" style="height:20px;width:20px">
                         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />

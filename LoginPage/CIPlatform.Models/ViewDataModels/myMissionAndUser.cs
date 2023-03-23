@@ -11,5 +11,6 @@ namespace CIPlatform.Models.ViewDataModels
         public MissionListingCard? myMission;
         public List<User>? Users;
         public bool IsApplied;
+        public FavouriteMission? FavM;
     }
 }

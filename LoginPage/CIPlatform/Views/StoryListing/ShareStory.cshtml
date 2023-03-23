@@ -60,6 +60,18 @@
                         </label>
                     </div>
 
+
+                   @* <div class="input-group mb-3 mt-4">
+                        <label asp-for="Photos" class="form-label">Upload your Photos</label>
+                        <input type="file" name="file" class="cloudinary-fileupload" data-cloudinary-field="image_id" data-form-data="{'transformation': {'width': 500, 'height': 500, 'crop': 'limit'}, 'tags': ['tag1', 'tag2']}" multiple style="display:none">
+                        <label for="file-upload" class="input-group-text form-label w-100 bg-white" id="file-label">
+                            <span class="m-auto p-3">
+                                <i class="bi bi-plus-lg fs-1"></i> <br />
+                                <p class="">Drag and Drop photos and videos here</p>
+                            </span>
+                        </label>
+                    </div>*@
+
                     <div class="row g-2" id="file-preview"></div>
 
                     <div class="d-flex w-100 justify-content-between mt-4">

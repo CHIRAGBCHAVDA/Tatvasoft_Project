@@ -11,5 +11,8 @@ namespace CIPlatform.Models
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
+
+        public User User { get; set; } // Navigation property for User entity
+        public Mission Mission { get; set; } // Navigation property for Mission entity
     }
 }

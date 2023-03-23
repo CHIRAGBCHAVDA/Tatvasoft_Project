@@ -17,11 +17,11 @@ namespace CIPlatform.DataAccess.Repository
     {
         private readonly CiplatformContext _db;
         private HttpContext _httpContext;
-        public MissionRepository(CiplatformContext db,HttpContext httpContext)
+        public MissionRepository(CiplatformContext db, HttpContext httpContext)
         {
             _db = db;
             _httpContext = httpContext;
-            
+
         }
         public List<MissionListingCard> getMissions()
         {
@@ -29,17 +29,11 @@ namespace CIPlatform.DataAccess.Repository
 
             var missionListingCard = from M in _db.Missions
                                      join C in _db.Cities on M.CityId equals C.CityId
-                                     join
-                                     Tm in _db.MissionThemes on M.MissionThemeId equals Tm.MissionThemeId
-
-                                     //join F in _db.FavouriteMissions on M.MissionId equals F.MissionId into favMissionTbl
-                                     //from favMissionSubTbl in favMissionTbl.DefaultIfEmpty().Where(x => x.UserId.ToString().Equals(myUserId))
+                                     join Tm in _db.MissionThemes on M.MissionThemeId equals Tm.MissionThemeId
                                      join favMissionTbl in (from F in _db.FavouriteMissions
                                                             where F.UserId.ToString() == myUserId
                                                             select F) on M.MissionId equals favMissionTbl.MissionId into favMissionSubTbl
                                      from favMission in favMissionSubTbl.DefaultIfEmpty()
-
-
                                      select new MissionListingCard()
                                      {
                                          mission = M,
@@ -56,8 +50,6 @@ namespace CIPlatform.DataAccess.Repository
 
                                          rating = _db.MissionRatings.Where(m => m.MissionId == M.MissionId).ToList(),
 
-                                         //UserId = favMissionSubTbl != null ? favMission.UserId : 1,
-                                         //isFav = favMission.UserId != null ? true : false
                                          favourite = favMission,
                                      };
 
@@ -67,9 +59,9 @@ namespace CIPlatform.DataAccess.Repository
         public List<string> getSkills(long id)
         {
             var a = from ms in _db.MissionSkills
-                         join s in _db.Skills on ms.SkillId equals s.SkillId
-                         where ms.MissionId == id
-                         select s.SkillName;
+                    join s in _db.Skills on ms.SkillId equals s.SkillId
+                    where ms.MissionId == id
+                    select s.SkillName;
             return a.ToList();
         }
 
@@ -86,7 +78,7 @@ namespace CIPlatform.DataAccess.Repository
             return newcui.ToList();
         }
 
-        public void AddComment(string comment,long missionId,long userId)
+        public void AddComment(string comment, long missionId, long userId)
         {
             Comment toAdd = new Comment()
             {
@@ -101,7 +93,7 @@ namespace CIPlatform.DataAccess.Repository
         public void ApplyMission(long missionId, long userId)
         {
             var checkIfExist = _db.MissionApplications.Where(mapp => mapp.UserId == userId && mapp.MissionId == missionId).FirstOrDefault();
-            if(checkIfExist == null)
+            if (checkIfExist == null)
             {
                 MissionApplication missionApplication = new MissionApplication()
                 {
