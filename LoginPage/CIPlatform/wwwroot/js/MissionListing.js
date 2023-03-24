@@ -113,9 +113,9 @@ $(document).ready(function () {
         getFilter($(this).attr('id'));
     });
 
-    $(".rating-star-images").on("click", "i", function () {
-        addRating($(this).attr('data-star'));
-    });
+    //$(".rating-star-images").on("click", "i", function () {
+    //    addRating($(this).attr('data-star'));
+    //});
 
     $(document).on("click","#partialView .reccommendMissionBtn, .reccommendMissionBtn",function () {
         var selected = $('.co-worker-checkbox input[type="checkbox"]:checked');
@@ -228,12 +228,26 @@ function gridListRecommend() {
 function addRating(toTill) {
     let imgsToAdd = "";
     for (let i = 1; i <= toTill; i++) {
-        imgsToAdd += `<i class="bi bi-star-fill text-warning fs-2" id="star${i}" data-star=${i}></i>`;
+        imgsToAdd += `<i class="bi bi-star-fill text-warning fs-2" id="star${i}" data-star=${i} onclick="addRating(${i})" ></i>`;
     }
     for (let j = toTill; j < 5; j++) {
-        imgsToAdd += `<i class="bi bi-star-fill text-muted fs-2" id="star${parseInt(j)+1}" data-star=${parseInt(j)+1}></i>`;
+        imgsToAdd += `<i class="bi bi-star-fill text-muted fs-2" id="star${parseInt(j) + 1}" data-star=${parseInt(j) + 1} onclick="addRating(${j})" ></i>`;
     }
     $(".rating-star-images").html(imgsToAdd);
+
+    $.ajax({
+        type: "post",
+        url: "/MissionListing/addRating",
+        data: {
+            rate: toTill
+        },
+        success: function () {
+            console.log("Successfully rated the given mission");
+        },
+        error: function (xhr, status, error) {
+            console.log("Some error occured while doing rating" + error);
+        }
+    });
 }
 
 function getTotalCount() {
@@ -263,9 +277,9 @@ $(document).on('change', function () {
         getBadge();
     });
 
-    $(".rating-star-images i").on("click", function () {
-        addRating($(this).attr('data-star'));
-    });
+    //$(".rating-star-images i").on("click", function () {
+    //    addRating($(this).attr('data-star'));
+    //});
 
 
     $.ajax({

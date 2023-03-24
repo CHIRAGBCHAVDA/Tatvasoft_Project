@@ -598,7 +598,6 @@ namespace CIPlatform.Models.Ciplatform.DataAccess.Data
                     .HasColumnType("datetime")
                     .HasColumnName("deleted_at");
 
-                entity.Property(e => e.MissionId).HasColumnName("mission_id");
 
                 entity.Property(e => e.Rating).HasColumnName("rating");
 
@@ -607,6 +606,15 @@ namespace CIPlatform.Models.Ciplatform.DataAccess.Data
                     .HasColumnName("updated_at");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.HasOne(e => e.User)
+                    .WithMany(m => m.MissionRatings)
+                    .HasForeignKey(e => e.UserId);
+
+                entity.Property(e => e.MissionId).HasColumnName("mission_id");
+
+                entity.HasOne(e => e.Mission)
+                    .WithMany(m => m.MissionRatings)
+                    .HasForeignKey(e => e.MissionId);
             });
 
             modelBuilder.Entity<MissionSkill>(entity =>

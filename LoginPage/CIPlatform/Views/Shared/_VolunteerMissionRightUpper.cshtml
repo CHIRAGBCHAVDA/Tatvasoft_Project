@@ -90,11 +90,21 @@
     <hr style="opacity:1; color:lightgray" />
     <div class="text-center" style="margin-top:-2.5rem">
         <span class="rating-star-images bg-white">
-            <i class="bi bi-star-fill text-muted fs-2" id="star1" data-star="1"></i>
+            @for(int i = 1; i <= Model.ratedByUser; i++)
+            {
+                <i class="bi bi-star-fill text-warning fs-2" id="star@(i)" onclick="addRating(@i)" data-star="@(i)"></i>
+            }
+            @for(int j = (int)Model.ratedByUser+1; j <= 5; j++)
+            {
+                <i class="bi bi-star-fill text-muted fs-2" id="star@(j+1)" data-star="@(j+1)" onclick="addRating(@j)"  ></i>
+            }
+
+
+            @*<i class="bi bi-star-fill text-muted fs-2" id="star1" data-star="1"></i>
             <i class="bi bi-star-fill text-muted fs-2" id="star2" data-star="2"></i>
             <i class="bi bi-star-fill text-muted fs-2" id="star3" data-star="3"></i>
             <i class="bi bi-star-fill text-muted fs-2" id="star4" data-star="4"></i>
-            <i class="bi bi-star-fill text-muted fs-2" id="star5" data-star="5"></i>
+            <i class="bi bi-star-fill text-muted fs-2" id="star5" data-star="5"></i>*@
 
         </span>
     </div>

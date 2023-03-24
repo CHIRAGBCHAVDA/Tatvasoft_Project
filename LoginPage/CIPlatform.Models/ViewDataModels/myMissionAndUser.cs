@@ -12,5 +12,6 @@ namespace CIPlatform.Models.ViewDataModels
         public List<User>? Users;
         public bool IsApplied;
         public FavouriteMission? FavM;
+        public long ratedByUser;
     }
 }

@@ -51,6 +51,7 @@ namespace CIPlatform.Models
 
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<FavouriteMission> FavouriteMissions { get; set; }
+        public virtual ICollection<MissionRating> MissionRatings { get; set; }
 
 
     }

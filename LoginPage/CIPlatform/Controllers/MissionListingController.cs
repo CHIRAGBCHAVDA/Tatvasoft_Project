@@ -14,7 +14,7 @@ namespace CIPlatform.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly CiplatformContext _db;
-        public List<MissionListingCard>? missionListingCards, getMs,getFilterMs;
+        public List<MissionListingCard>? missionListingCards, getMs, getFilterMs;
         public static int a;
         public MissionDetailsViewModel? missionDetailsViewModel;
         public static long currentMissionId;
@@ -36,7 +36,7 @@ namespace CIPlatform.Controllers
                 List<City> city = _unitOfWork.City.GetAll();
                 List<MissionTheme> theme = _unitOfWork.MissionTheme.GetAll();
                 List<Skill> skill = _unitOfWork.Skill.GetAll();
-                
+
 
                 Model.Country = country;
                 Model.City = city;
@@ -51,7 +51,7 @@ namespace CIPlatform.Controllers
                 return View(Model);
 
             }
-            else return RedirectToAction("Index","Home");
+            else return RedirectToAction("Index", "Home");
         }
 
         #region Get Cities Grid List
@@ -59,12 +59,12 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public JsonResult GetCities(string[] countryIds)
         {
-            var cities = _unitOfWork.City.GetAll(c => countryIds.Contains(c.CountryId.ToString())).Select(c => new {CityId=c.CityId,Name=c.Name,CountryId=c.CountryId}).ToList();
+            var cities = _unitOfWork.City.GetAll(c => countryIds.Contains(c.CountryId.ToString())).Select(c => new { CityId = c.CityId, Name = c.Name, CountryId = c.CountryId }).ToList();
             return Json(cities);
         }
         public PartialViewResult GetGridView()
         {
-            return PartialView("_GridMissionLayout",missionListingCards);
+            return PartialView("_GridMissionLayout", missionListingCards);
         }
 
         public PartialViewResult GetListView()
@@ -77,21 +77,21 @@ namespace CIPlatform.Controllers
         #region Filter mission and Count
 
         [HttpPost]
-        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId,string? searchKeyword , [DefaultValue(1)] int sortBy, [DefaultValue(1)] int flag, [DefaultValue(1)] int pageNum)
+        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId, string? searchKeyword, [DefaultValue(1)] int sortBy, [DefaultValue(1)] int flag, [DefaultValue(1)] int pageNum)
         {
-            if (countryId!=null && countryId.Length>0)
+            if (countryId != null && countryId.Length > 0)
             {
                 getFilterMs = missionListingCards.Where(m => countryId.Contains(m.mission.CountryId.ToString())).ToList();
             }
-            if (cityName!=null && cityName.Length > 0)
+            if (cityName != null && cityName.Length > 0)
             {
-                getFilterMs = getFilterMs.Where(m => cityName.Contains(m.City)).ToList();  
+                getFilterMs = getFilterMs.Where(m => cityName.Contains(m.City)).ToList();
             }
-            if (themeId!=null && themeId.Length > 0)
+            if (themeId != null && themeId.Length > 0)
             {
                 getFilterMs = getFilterMs.Where(m => themeId.Contains(m.MissionTheme)).ToList();
             }
-            if (skillId!=null && skillId.Length > 0)
+            if (skillId != null && skillId.Length > 0)
             {
                 getFilterMs = getFilterMs.Where(m => m.Skills.Intersect(skillId).Any()).ToList();
             }
@@ -122,13 +122,13 @@ namespace CIPlatform.Controllers
                 }
             }
 
-            if (getFilterMs==null || getFilterMs.Count==0)
+            if (getFilterMs == null || getFilterMs.Count == 0)
             {
                 a = getFilterMs.Count;
                 return PartialView("_MissionNotFound");
             }
 
-             a = getFilterMs.Count;
+            a = getFilterMs.Count;
 
             getFilterMs = getFilterMs.Skip((pageNum - 1) * 3).Take(3).ToList();
 
@@ -142,10 +142,10 @@ namespace CIPlatform.Controllers
             }
 
         }
-         public int getMissionCount()
+        public int getMissionCount()
         {
-            if(getFilterMs!=null)
-                return a; 
+            if (getFilterMs != null)
+                return a;
             //getFilterMs.Count;
             return 0;
         }
@@ -159,12 +159,15 @@ namespace CIPlatform.Controllers
                 currentMissionId = missionId;
                 var missionDetail = missionListingCards.Where(m => m.mission.MissionId == missionId).FirstOrDefault();
                 missionDetailsViewModel = new MissionDetailsViewModel();
+
+                var tempMr = _db.MissionRatings.Where(m => m.UserId == long.Parse(HttpContext.Session.GetString("userId")) && m.MissionId == missionId).FirstOrDefault();
+                var Rating = tempMr != null ? tempMr.Rating : 0;
                 myMissionAndUser myuser = new myMissionAndUser()
                 {
                     myMission = missionDetail,
                     Users = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList(),
-                    IsApplied = _db.MissionApplications.Where(m => m.MissionId == missionId && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault() != null ? true : false
-                    
+                    IsApplied = _db.MissionApplications.Where(m => m.MissionId == missionId && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault() != null ? true : false,
+                    ratedByUser = (long)Rating
                 };
                 missionDetailsViewModel.myMissionAndUser = myuser;
 
@@ -172,13 +175,15 @@ namespace CIPlatform.Controllers
                 missionDetailsViewModel.myRelatedMission = relatedMission;
                 ViewBag.missionTitle = myuser.myMission.mission.Title;
 
-                var cui = from c in _db.Comments join u in _db.Users on c.UserId equals u.UserId where c.MissionId == missionId
-                                  select new CommentUserInfo()
-                                  {
-                                      comments = c,
-                                      users = u
-                                  };
-                
+                var cui = from c in _db.Comments
+                          join u in _db.Users on c.UserId equals u.UserId
+                          where c.MissionId == missionId
+                          select new CommentUserInfo()
+                          {
+                              comments = c,
+                              users = u
+                          };
+
                 missionDetailsViewModel.commentUser = cui.ToList();
 
                 var xyz = from u in _db.Users
@@ -196,53 +201,58 @@ namespace CIPlatform.Controllers
 
                 return View(missionDetailsViewModel);
             }
-            else return RedirectToAction("Index","Home");
+            else return RedirectToAction("Index", "Home");
         }
+        #region commented togglefav
+        //[HttpPost]
+        //public IActionResult ToggleFav(int mID, bool favFlag)
+        //{
+        //    if (favFlag == true)
+        //    {
+        //        var getM = _db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId == long.Parse(HttpContext.Session.GetString("userId")) && m.DeletedAt == null).FirstOrDefault();
+        //        if (getM != null)
+        //        {
+        //            getM.DeletedAt = DateTime.Now;
+        //            _db.FavouriteMissions.Update(getM);
+        //            _db.SaveChanges();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        FavouriteMission newFav = new FavouriteMission();
+        //        newFav.MissionId = mID;
+        //        newFav.UserId = long.Parse(HttpContext.Session.GetString("userId"));
 
-        [HttpPost]
-        public IActionResult ToggleFav(int mID,bool favFlag)
-        {
-            if (favFlag == true)
-            {
-                var getM = _db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId == long.Parse(HttpContext.Session.GetString("userId")) && m.DeletedAt==null).FirstOrDefault();
-                if (getM != null)
-                {
-                    getM.DeletedAt = DateTime.Now;
-                    _db.FavouriteMissions.Update(getM);
-                    _db.SaveChanges();
-                }
-            }
-            else
-            {
-                FavouriteMission newFav = new FavouriteMission();
-                newFav.MissionId = mID;
-                newFav.UserId = long.Parse(HttpContext.Session.GetString("userId"));
+        //        _db.FavouriteMissions.Add(newFav);
+        //        _db.SaveChanges();
+        //    }
 
-                _db.FavouriteMissions.Add(newFav);
-                _db.SaveChanges();
-            }
+        //    var missionDetail = _unitOfWork.MissionRepo.getMissions().Where(m => m.mission.MissionId == mID).FirstOrDefault();
 
-            var missionDetail = _unitOfWork.MissionRepo.getMissions().Where(m => m.mission.MissionId == mID).FirstOrDefault();
-
-            myMissionAndUser myuser = new myMissionAndUser()
-            {
-                myMission = missionDetail,
-                Users = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList(),
-                IsApplied = _db.MissionApplications.Where(m => m.MissionId == mID && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault() != null ? true : false,
-                FavM = _db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault()
-            };
+        //    var tempMr = _db.MissionRatings.Where(m => m.UserId == long.Parse(HttpContext.Session.GetString("userId")) && m.MissionId == mID).FirstOrDefault();
+        //    var Rating = tempMr != null ? tempMr.Rating : 0;
+        //    myMissionAndUser myuser = new myMissionAndUser()
+        //    {
+        //        myMission = missionDetail,
+        //        Users = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList(),
+        //        IsApplied = _db.MissionApplications.Where(m => m.MissionId == mID && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault() != null ? true : false,
+        //        FavM = _db.FavouriteMissions.Where(m => m.MissionId == mID && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault(),
+        //        ratedByUser = (long)Rating
+        //    };
 
 
-            return PartialView("_VolunteerMissionRightUpper", myuser);
+        //    return PartialView("_VolunteerMissionRightUpper", myuser);
 
 
-        }
-
+        //}
+        #endregion
+        
+        
         [HttpPost]
         public int addRmFav(long mId)
         {
             long uid = long.Parse(HttpContext.Session.GetString("userId"));
-            var getFromFav = _db.FavouriteMissions.Where(m => m.MissionId==mId && m.UserId == uid).FirstOrDefault();
+            var getFromFav = _db.FavouriteMissions.Where(m => m.MissionId == mId && m.UserId == uid).FirstOrDefault();
             if (getFromFav != null && getFromFav.DeletedAt == null)
             {
                 getFromFav.DeletedAt = DateTime.Now;
@@ -250,9 +260,9 @@ namespace CIPlatform.Controllers
                 _db.SaveChanges();
                 return 0;
             }
-            else if(getFromFav == null || getFromFav.DeletedAt != null)
+            else if (getFromFav == null || getFromFav.DeletedAt != null)
             {
-                if(getFromFav == null)
+                if (getFromFav == null)
                 {
                     var addFv = new FavouriteMission()
                     {
@@ -267,7 +277,7 @@ namespace CIPlatform.Controllers
                     getFromFav.DeletedAt = null;
                     _db.FavouriteMissions.Update(getFromFav);
                 }
-                
+
                 _db.SaveChanges();
                 return 1;
 
@@ -299,7 +309,7 @@ namespace CIPlatform.Controllers
 
             _unitOfWork.MissionRepo.ApplyMission(missionId, UserId);
             _unitOfWork.Save();
-                        
+
             myMissionAndUser myuser = new myMissionAndUser()
             {
                 myMission = missionListingCards.Where(m => m.mission.MissionId == missionId).FirstOrDefault(),
@@ -310,9 +320,12 @@ namespace CIPlatform.Controllers
             return PartialView("_VolunteerMissionRightUpper", myuser);
         }
 
+        [HttpPost]
         public void addRating(int rate)
         {
-            var getExistance = _db.MissionRatings.Where(mr => mr.UserId == long.Parse(HttpContext.Session.GetString("userId")) && mr.MissionId==currentMissionId);
+            var getExistance = _db.MissionRatings.FirstOrDefault(mr => mr.UserId == long.Parse(HttpContext.Session.GetString("userId")) && mr.MissionId == currentMissionId);
+
+
             if (getExistance == null)
             {
                 MissionRating newMR = new MissionRating()
@@ -320,8 +333,20 @@ namespace CIPlatform.Controllers
                     MissionId = currentMissionId,
                     UserId = long.Parse(HttpContext.Session.GetString("userId")),
                     Rating = rate
-                }
+                };
+                _db.MissionRatings.Add(newMR);
             }
+            else
+            {
+                var tempTry = _db.MissionRatings.FirstOrDefault(m => m.MissionRatingId == getExistance.MissionRatingId);
+                tempTry.Rating = rate;
+                tempTry.UpdatedAt = DateTime.Now;
+                _db.MissionRatings.Update(tempTry);
+                //_unitOfWork.MissionRepo.UpdateRate(getExistance);
+            }
+            _db.SaveChanges();
+            //_unitOfWork.Save();
+
         }
     }
 }

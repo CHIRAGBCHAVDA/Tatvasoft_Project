@@ -107,5 +107,16 @@ namespace CIPlatform.DataAccess.Repository
 
             }
         }
+
+        public void UpdateRate(MissionRating missionRating)
+        {
+            missionRating.UpdatedAt = DateTime.Now;
+            _db.MissionRatings.Update(missionRating);
+
+        }
+        public void addRate(MissionRating missionRating)
+        {
+            _db.MissionRatings.Add(missionRating);
+        }
     }
 }
