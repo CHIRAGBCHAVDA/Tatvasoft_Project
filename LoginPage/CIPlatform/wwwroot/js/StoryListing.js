@@ -5,6 +5,8 @@ var selectedSkills = [];
 var selectedOption = 1;
 var flag = 1;
 var searchKeyword = "";
+var sources = [];
+
 
 //const cloudinary = require('cloudinary').v2;
 //cloudinary.config({
@@ -92,9 +94,15 @@ $(document).ready(function () {
                 } else if (videoType.test(file.type)) {
                     $('#file-preview').append('<div class="col-auto"><div class="position-relative"><video class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"></video><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
                 }
+                sources.push(src); //push into the array
             }
             reader.readAsDataURL(file);
         }
+        console.log("GOING TO PRINT THE SRC FILEEEEEEEE");
+        sources.forEach(function (source) {
+            debugger
+            console.log(source);
+        });
     });
 
     $('#file-preview').on('click', '.btn-close', function () {
@@ -116,9 +124,15 @@ $(document).ready(function () {
                 } else if (videoType.test(file.type)) {
                     $('#file-preview').append('<div class="col-auto"><div class="position-relative"><video class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"></video><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
                 }
+
+                sources.push(src); //push into the array
             }
             reader.readAsDataURL(file);
         }
+        console.log("GOING TO PRINT THE SRC FILEEEEEEEE");
+        sources.forEach(function (source) {
+            console.log(source);
+        });
     });
 
     $('#file-label').on('dragover', function (e) {
@@ -424,4 +438,17 @@ function getFilter(pg) {
             console.log(error);
         }
     });
+}
+
+
+function getEditorHTML() {
+    debugger
+    // Get the CKEditor instance
+    const editor = CKEDITOR.instances['ck-editor'];
+
+    // Get the HTML data from the editor
+    const htmlData = editor.getData();
+
+    // Do something with the HTML data
+    console.log(htmlData);
 }
