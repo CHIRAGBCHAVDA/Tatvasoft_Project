@@ -2,10 +2,10 @@
 i:{00000000-0000-0000-0000-000000000000}:CIPlatform.sln
 ++CIPlatform.DataAccess
 i:{00000000-0000-0000-0000-000000000000}:CIPlatform.DataAccess
-i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform.dataaccess\bin\debug\net6.0\ciplatform.dataaccess.dll
+i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform.dataaccess\ciplatform.dataaccess.csproj
 ++Dependencies
-i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>637
-i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>636
+i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>672
+i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>621
 i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>706
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1075
 ++Data
@@ -97,35 +97,35 @@ i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:d:\tatvasoft_project\loginpage\ciplatfo
 i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:d:\tatvasoft_project\loginpage\ciplatform.utility\microsoft.netcore.app
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\microsoft.netcore.app
 ++BCrypt.Net-Next (4.0.3)
-i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>1099
-i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>1114
-i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>1098
-i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1138
-++Microsoft.EntityFrameworkCore (6.0.14)
-i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>1091
-i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>1110
-i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>1089
-i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1133
-++Microsoft.EntityFrameworkCore.Design (6.0.14)
-i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>1095
-i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>1112
-i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>1094
-i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1136
-++Microsoft.EntityFrameworkCore.SqlServer (6.0.14)
-i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>1093
-i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>1111
-i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>1092
-i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1134
-++Microsoft.EntityFrameworkCore.Tools (6.0.14)
-i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>1101
+i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>1112
 i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>1115
-i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>1100
-i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1140
+i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>1139
+i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1117
+++Microsoft.EntityFrameworkCore (6.0.14)
+i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>1098
+i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>1102
+i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>1135
+i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1103
+++Microsoft.EntityFrameworkCore.Design (6.0.14)
+i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>1104
+i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>1107
+i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>1137
+i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1111
+++Microsoft.EntityFrameworkCore.SqlServer (6.0.14)
+i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>1100
+i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>1105
+i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>1136
+i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1106
+++Microsoft.EntityFrameworkCore.Tools (6.0.14)
+i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>1114
+i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>1116
+i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>1140
+i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1119
 ++Swashbuckle.AspNetCore (6.0.7)
-i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>1097
-i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>1113
-i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>1096
-i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1137
+i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:>1109
+i:{ab412aa9-8c47-499b-b5bf-2d6a891fe3bb}:>1110
+i:{05ef9628-0e9d-41ec-9e11-8073fba3e48f}:>1138
+i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1113
 ++CIPlatform.Models
 i:{8c59090c-1c92-4ba4-8355-a8bcb2c66c66}:d:\tatvasoft_project\loginpage\ciplatform.models\ciplatform.models.csproj
 i:{00000000-0000-0000-0000-000000000000}:CIPlatform.Models
@@ -233,8 +233,6 @@ i:{00000000-0000-0000-0000-000000000000}:CIPlatform
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1076
 ++Properties
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\properties\
-++launchSettings.json
-i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\properties\launchsettings.json
 ++wwwroot
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\wwwroot\
 ++assets
@@ -523,6 +521,10 @@ i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatfo
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\views\shared\error.cshtml
 ++StoryListing
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\views\storylisting\
+++ShareStory.cshtml
+i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\views\storylisting\sharestory.cshtml
+++StoryListing.cshtml
+i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\views\storylisting\storylisting.cshtml
 ++_ViewImports.cshtml
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\views\_viewimports.cshtml
 ++_ViewStart.cshtml
@@ -533,6 +535,8 @@ i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatfo
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\program.cs
 ++No service dependencies discovered
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1077
+++launchSettings.json
+i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\properties\launchsettings.json
 ++site.css
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\wwwroot\css\site.css
 ++bootstrap
@@ -557,10 +561,6 @@ i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatfo
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\views\home\resetpassword.cshtml
 ++_Layout.cshtml.css
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\views\shared\_layout.cshtml.css
-++ShareStory.cshtml
-i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\views\storylisting\sharestory.cshtml
-++StoryListing.cshtml
-i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\views\storylisting\storylisting.cshtml
 ++appsettings.Development.json
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\appsettings.development.json
 ++Microsoft.AspNetCore.Analyzers
@@ -576,9 +576,9 @@ i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:c:\program files\dotnet\sdk\6.0.100\sdk
 ++Microsoft.AspNetCore.App
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\microsoft.aspnetcore.app
 ++Microsoft.AspNet.WebApi.Client (5.2.9)
-i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1135
+i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1108
 ++Microsoft.AspNetCore.Http (2.2.2)
-i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1139
+i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:>1118
 ++dist
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\wwwroot\lib\bootstrap\dist\
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\wwwroot\lib\jquery\dist\
@@ -696,3 +696,18 @@ i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatfo
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
 ++bootstrap.esm.min.js.map
 i:{61ee335f-1c05-41bb-94b1-f0108837e4ba}:d:\tatvasoft_project\loginpage\ciplatform\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+++Script Documents
+++VM5
+++ckeditor.js
+++jquery-3.6.0.min.js
+++all.js
+++aspnetcore-browser-refresh.js
+++browserLink
+++jquery-3.5.1.min.js
+++PlatformLanding
+++VM29
+++VM30
+++VM239
+++VM240
+++VM241
+++VM243

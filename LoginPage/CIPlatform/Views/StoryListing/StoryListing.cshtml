@@ -2,6 +2,7 @@
 @model CIPlatform.Models.ViewDataModels.StoryViewModel
 
 <script src="~/js/StoryListing.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <div class="container-fluid">
     <div class="main-wrapper">
@@ -28,7 +29,7 @@
             </div>
         </div>
 
-        <div class="container story-cards mt-4">
+        <div class="container story-cards mt-4" id="story-cards">
 
             <partial name="_StoryListingCard" model="@Model.StoryListing" />
 

@@ -14,5 +14,6 @@ namespace CIPlatform.Models.ViewDataModels
         public string Theme { get; set;}
         public List<string>? Skills { get; set;}
         public string? City { get; set; }
+        public string? ImgLink{ get; set; }
     }
 }

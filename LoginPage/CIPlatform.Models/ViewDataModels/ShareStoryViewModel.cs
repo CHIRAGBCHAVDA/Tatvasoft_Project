@@ -8,11 +8,11 @@ namespace CIPlatform.Models.ViewDataModels
 {
     public class ShareStoryViewModel
     {
-        public long MissionId { get; set; }
-        public string StoryTitle { get; set; }
-        public DateTime Date { get; set; }
-        public string MyStory { get; set; }
-        public string? VideoUrl { get; set; }
-        public List<String>? Photos { get; set; }
+        public List<string> MissionNames{ get; set; }
+        //public string StoryTitle { get; set; }
+        //public DateTime Date { get; set; }
+        //public string MyStory { get; set; }
+        //public string? VideoUrl { get; set; }
+        //public List<string>? Photos { get; set; }
     }
 }

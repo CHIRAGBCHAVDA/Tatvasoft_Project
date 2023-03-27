@@ -26,7 +26,7 @@ namespace CIPlatform.Controllers
             if (HttpContext.Session.GetString("email") != null)
             {
                 ViewData["totalStories"] = Stories.Count();
-
+                
                 var pageNo = 1;
                 StoryViewModel storyViewModel = new StoryViewModel()
                 {
@@ -93,24 +93,44 @@ namespace CIPlatform.Controllers
 
         public IActionResult ShareStory()
         {
-            return View();
+            var missionNames = _unitOfWork.StoryRepo.addStoryView();
+            return View(missionNames);
         }
 
-        //[HttpPost]
-        //public IActionResult AddStory(ShareStoryViewModel obj)
-        //{
-        //    if (obj == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    else
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
+        public IActionResult newStory(string storyMissionName,string storyTitle,DateTime storyDate,string story,string? storyVideoUrl,string[]? srcs)
+        {
+            bool isSuccess = _unitOfWork.StoryRepo.newStorybyUser(storyMissionName, storyTitle, storyDate, story, storyVideoUrl, srcs);
+            if(isSuccess)
+            return RedirectToAction("StoryListing", "StoryListing");
+            return RedirectToAction("ShareStory", "StoryListing");
+        }
 
-        //        }
-        //    }
-        //}
+        [HttpPost]
+        public IActionResult DeleteStory(long storyId)
+        {
+            bool isSuccess = _unitOfWork.StoryRepo.deleteStory(storyId);
+            if (isSuccess)
+            {
+                ViewData["totalStories"] = Stories.Count();
+            }
+            else
+            {
+                
+            }
+
+            StoryViewModel storyViewModel = new StoryViewModel()
+            {
+                StoryListing = _unitOfWork.StoryRepo.getStoriesPerPage(1, 3),
+                StoryListingHeader = new MissionListingHeader()
+                {
+                    Country = _unitOfWork.Country.GetAll(),
+                    City = _unitOfWork.City.GetAll(),
+                    MissionTheme = _unitOfWork.MissionTheme.GetAll(),
+                    Skills = _unitOfWork.Skill.GetAll()
+                }
+            };
+            return View("StoryListing", storyViewModel);
+        }
 
 
 

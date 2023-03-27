@@ -1,4 +1,5 @@
-﻿var selectedCountries = [];
+﻿
+var selectedCountries = [];
 var selectedCities = [];
 var selectedThemes = [];
 var selectedSkills = [];
@@ -20,119 +21,116 @@ var sources = [];
 getTotalCount();
 $(document).ready(function () {
 
+    $('#storyForm').submit(function (e) {
+        e.preventDefault();
+        var storyMissionName = $("#storyMissionName").val();
+        var storyTitle = $("#storyTitle").val();
+        var storyDate = $("#storyDate").val();
+        var story = CKEDITOR.instances['ck-editor'].getData();
+        var storyVideoUrl = $("#storyVideoUrl").val();
+        var srcs = sources;
+
+        $.ajax({
+            type: "POST",
+            url : "/StoryListing/newStory",
+            data: {
+                storyMissionName: storyMissionName,
+                storyTitle: storyTitle,
+                storyDate: storyDate,
+                story: story,
+                storyVideoUrl: storyVideoUrl,
+                srcs : srcs
+            },
+            success: function (response) {
+                console.log("storyMissionName" + storyMissionName);
+                console.log("storyTitle" + storyTitle);
+                console.log("storyDate" + storyDate);
+                console.log("story" + story);
+                console.log("storyVideoUrl" + storyVideoUrl);
+                console.log("Source array", srcs);
+            },
+            error: function (error) {
+                console.log(error); // print error in console
+            }
+        });
+
+    });
 
 
-    //$('#file-upload').on('change', function () {
-    //    var files = $(this)[0].files;
-    //    for (var i = 0; i < files.length; i++) {
-    //        var file = files[i];
-    //        var formData = new FormData();
-    //        formData.append('file', file);
-    //        formData.append('upload_preset', 'ci_preset');
-    //        cloudinary.uploader.upload(formData, function (error, result) {
-    //            if (error) {
-    //                console.log('Cloudinary upload error: ', error);
-    //            } else {
-    //                var imageType = /image/;
-    //                var videoType = /video/;
-    //                var src = result.secure_url;
-    //                if (imageType.test(file.type)) {
-    //                    $('#file-preview').append('<div class="col-auto"><div class="position-relative"><img class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
-    //                } else if (videoType.test(file.type)) {
-    //                    $('#file-preview').append('<div class="col-auto"><div class="position-relative"><video class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"></video><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
-    //                }
-    //            }
-    //        });
-    //    }
-    //});
+    
 
-    //$('#file-preview').on('click', '.btn-close', function () {
-    //    $(this).closest('.col-auto').remove();
-    //});
-
-    //$('#file-label').on('drop', function (e) {
-    //    e.preventDefault();
-    //    var files = e.originalEvent.dataTransfer.files;
-    //    for (var i = 0; i < files.length; i++) {
-    //        var file = files[i];
-    //        var formData = new FormData();
-    //        formData.append('file', file);
-    //        formData.append('upload_preset', 'ci_preset');
-    //        cloudinary.uploader.upload(formData, function (error, result) {
-    //            if (error) {
-    //                console.log('Cloudinary upload error: ', error);
-    //            } else {
-    //                var imageType = /image/;
-    //                var videoType = /video/;
-    //                var src = result.secure_url;
-    //                if (imageType.test(file.type)) {
-    //                    $('#file-preview').append('<div class="col-auto"><div class="position-relative"><img class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
-    //                } else if (videoType.test(file.type)) {
-    //                    $('#file-preview').append('<div class="col-auto"><div class="position-relative"><video class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"></video><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
-    //                }
-    //            }
-    //        });
-    //    }
-    //});
-
-
-
-
-
-    $('#file-upload').on('change', function () {
-        debugger
+    $('#file-upload').on('change', async function () {
         var files = $(this)[0].files;
+
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
             var reader = new FileReader();
-            reader.onload = function (e) {
-                var imageType = /image/;
-                var videoType = /video/;
-                var src = e.target.result;
-                if (imageType.test(file.type)) {
-                    $('#file-preview').append('<div class="col-auto"><div class="position-relative"><img class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
-                } else if (videoType.test(file.type)) {
-                    $('#file-preview').append('<div class="col-auto"><div class="position-relative"><video class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"></video><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
-                }
-                sources.push(src); //push into the array
+
+            var src = await new Promise((resolve, reject) => {
+                reader.onload = () => {
+                    resolve(reader.result);
+                };
+
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+
+            if (file.type.includes('image')) {
+                $('#file-preview').append('<div class="col-auto"><div class="position-relative"><img class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
+                sources.push(src);
+            } else if (file.type.includes('video')) {
+                $('#file-preview').append('<div class="col-auto"><div class="position-relative"><video class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"></video><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
+                sources.push(src);
+            } else {
+                alert("Please upload a supported file type (image or video).");
             }
-            reader.readAsDataURL(file);
         }
-        console.log("GOING TO PRINT THE SRC FILEEEEEEEE");
-        sources.forEach(function (source) {
-            debugger
-            console.log(source);
-        });
+
+        //console.log("Sources array: ", sources);
     });
+
+
 
     $('#file-preview').on('click', '.btn-close', function () {
+        var imageSrc = $(this).siblings('img').attr('src'); // get the src of the image
+        var index = sources.indexOf(imageSrc); // get the index of the image src in the sources array
+        if (index !== -1) {
+            sources.splice(index, 1); // remove the image src from the sources array
+        }
         $(this).closest('.col-auto').remove();
+        console.log("Sources array: ", sources);
+
     });
 
-    $('#file-label').on('drop', function (e) {
+
+    $('#file-label').on('drop', async function (e) {
         e.preventDefault();
         var files = e.originalEvent.dataTransfer.files;
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
             var reader = new FileReader();
-            reader.onload = function (e) {
-                var imageType = /image/;
-                var videoType = /video/;
-                var src = e.target.result;
-                if (imageType.test(file.type)) {
-                    $('#file-preview').append('<div class="col-auto"><div class="position-relative"><img class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
-                } else if (videoType.test(file.type)) {
-                    $('#file-preview').append('<div class="col-auto"><div class="position-relative"><video class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"></video><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
-                }
 
-                sources.push(src); //push into the array
+            var src = await new Promise((resolve, reject) => {
+                reader.onload = () => {
+                    resolve(reader.result);
+                };
+
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+
+            if (file.type.includes('image')) {
+                $('#file-preview').append('<div class="col-auto"><div class="position-relative"><img class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
+                sources.push(src);
+            } else if (file.type.includes('video')) {
+                $('#file-preview').append('<div class="col-auto"><div class="position-relative"><video class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"></video><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
+                sources.push(src);
+            } else {
+                alert("Please upload a supported file type (image or video).");
             }
-            reader.readAsDataURL(file);
         }
-        console.log("GOING TO PRINT THE SRC FILEEEEEEEE");
-        sources.forEach(function (source) {
-            console.log(source);
-        });
+
+        console.log("Sources array: ", sources);
     });
 
     $('#file-label').on('dragover', function (e) {
@@ -140,6 +138,58 @@ $(document).ready(function () {
     });
 
 
+    $(".storyDeleteIcon").on('click', function () {
+        debugger
+        var storyId = $(this).attr("data-storyid");
+        $.ajax({
+            type: 'POST',
+            url: '/StoryListing/DeleteStory',
+            data: {
+                storyId:storyId
+            },
+            success: function () {
+                console.log("Your story has been deleted successfully");
+            },
+            error: function (xhr, status, error) {
+                console.log("this error occured while doing deletion of story", error);
+            }
+        });
+    });
+
+
+
+    //$('#file-label').on('drop', function (e) {
+    //    e.preventDefault();
+    //    var files = e.originalEvent.dataTransfer.files;
+    //    for (var i = 0; i < files.length; i++) {
+    //        var file = files[i];
+    //        var reader = new FileReader();
+    //        reader.onload = function (e) {
+    //            var imageType = /image/;
+    //            var videoType = /video/;
+    //            var src = e.target.result;
+    //            if (imageType.test(file.type)) {
+    //                $('#file-preview').append('<div class="col-auto"><div class="position-relative"><img class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
+    //            } else if (videoType.test(file.type)) {
+    //                $('#file-preview').append('<div class="col-auto"><div class="position-relative"><video class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"></video><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
+    //            }
+
+    //            sources.push(src); //push into the array
+    //        }
+    //        reader.readAsDataURL(file);
+    //    }
+    //    console.log("GOING TO PRINT THE SRC FILEEEEEEEE");
+    //    sources.forEach(function (source) {
+    //        console.log(source);
+    //    });
+    //});
+
+    //$('#file-label').on('dragover', function (e) {
+    //    e.preventDefault();
+    //});
+
+
+    
 
 
     $('.city-item').hide();
@@ -451,4 +501,23 @@ function getEditorHTML() {
 
     // Do something with the HTML data
     console.log(htmlData);
+}
+
+
+
+function tempcc(storyId) {
+    $.ajax({
+        type: 'POST',
+        url: '/StoryListing/DeleteStory',
+        data: {
+            storyId: storyId
+        },
+        complete: function (result) {
+            console.log("Your story has been deleted successfully");
+            location.reload();
+        },
+        error: function (xhr, status, error) {
+            console.log("this error occured while doing deletion of story", error);
+        }
+    });
 }

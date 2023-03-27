@@ -111,6 +111,7 @@ namespace CIPlatform.Controllers
                 HttpContext.Session.SetString("username", dbUser.FirstName + " " + dbUser.LastName);
                 HttpContext.Session.SetString("email", user.Email);
                 HttpContext.Session.SetString("userId", dbUser.UserId.ToString());
+
                 if (dbUser.Avatar != null)
                 {
                     HttpContext.Session.SetString("userImage", dbUser.Avatar);
