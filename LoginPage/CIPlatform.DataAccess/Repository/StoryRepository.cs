@@ -64,22 +64,17 @@ namespace CIPlatform.DataAccess.Repository
             return storiesPerPage;
         }
 
-        public ShareStoryViewModel addStoryView()
+        public List<Mission> getAppliedMissions(long userId)
         {
-            ShareStoryViewModel missionNames = new ShareStoryViewModel()
-            {
-                MissionNames = (from ma in _db.MissionApplications.Where(ma => ma.UserId == long.Parse(_httpContext.Session.GetString("userId")))
-                                join m in _db.Missions on ma.MissionId equals m.MissionId
-                                select m.Title).Distinct().ToList()
-            };
-
-            return missionNames;
+            var toReturn = from ma in _db.MissionApplications join m in _db.Missions on ma.MissionId equals m.MissionId where ma.UserId == userId group m by m.MissionId  into g select g.First();
+            return toReturn.ToList();
         }
-        public bool newStorybyUser(string storyMissionName, string storyTitle, DateTime storyDate, string story, string? storyVideoUrl, string[]? srcs)
+
+        public long newStorybyUser(string storyMissionName, string storyTitle, DateTime storyDate, string story, string? storyVideoUrl, string[]? srcs)
         {
             try
             {
-                var MissionId = _db.Missions.Where(m => m.Title.Equals(storyMissionName)).Select(m => m.MissionId).FirstOrDefault();
+                var MissionId = _db.Missions.Where(m => m.MissionId== long.Parse(storyMissionName)).Select(m => m.MissionId).FirstOrDefault();
                 var UserId = long.Parse(_httpContext.Session.GetString("userId"));
 
                 MissionApplication newMA = new MissionApplication()
@@ -97,7 +92,7 @@ namespace CIPlatform.DataAccess.Repository
                     MissionId = MissionId,
                     Title = storyTitle,
                     Description = story,
-                    StoryStatusId = 3,
+                    StoryStatusId = 1,
                     PublishedAt = DateTime.Now,
                     CreatedAt = storyDate
                 };
@@ -110,24 +105,40 @@ namespace CIPlatform.DataAccess.Repository
                 {
                     foreach (var src in srcs)
                     {
-                        StoryMedium sMedia = new StoryMedium()
+                        StoryMedium sMediaImg = new StoryMedium()
                         {
                             StoryId = _db.Stories.Where(s => s.UserId == UserId && s.MissionId == MissionId && s.Title.Equals(storyTitle)).Select(s => s.StoryId).FirstOrDefault(),
                             Type = "img",
                             Path = src,
                             CreatedAt = DateTime.Now
                         };
-                        _db.StoryMedia.Add(sMedia);
+                        _db.StoryMedia.Add(sMediaImg);
                     }
                     _db.SaveChanges();
                 }
-                
-                return true;
+                if (storyVideoUrl != "")
+                {
+                    var strArr = storyVideoUrl.Split(',');
+                    foreach(var str in strArr)
+                    {
+                        StoryMedium sMediaVideo = new StoryMedium()
+                        {
+                            StoryId = _db.Stories.Where(s => s.UserId == UserId && s.MissionId == MissionId && s.Title.Equals(storyTitle)).Select(s => s.StoryId).FirstOrDefault(),
+                            Type = "vid",
+                            Path = str,
+                            CreatedAt = DateTime.Now
+                        };
+                        _db.StoryMedia.Add(sMediaVideo);
+                    }
+                    _db.SaveChanges();
+                }
+
+                return newS.MissionId;
             }
 
             catch (Exception ex)
             {
-                return false;
+                return 0;
             }
         }
 
@@ -154,5 +165,53 @@ namespace CIPlatform.DataAccess.Repository
                 return false;
             }
         }
+
+        public ShareStoryViewModel getDraftedStory(long userId)
+        {
+            var checkIfDrafted = _db.Stories.Where(st => st.UserId == userId && st.StoryStatusId==1).FirstOrDefault();
+            if (checkIfDrafted != null)
+            {
+                var checkIfVideo = _db.StoryMedia.Where(sm => sm.StoryId == checkIfDrafted.StoryId && sm.Type=="vid").ToList();
+                List<string> videoUrls = new List<string>();
+
+                var checkIfImg = _db.StoryMedia.Where(sm => sm.StoryId == checkIfDrafted.StoryId && sm.Type == "img").ToList();
+                List<string> imgSrcs = new List<string>();
+
+                if (checkIfVideo != null)
+                {
+                    foreach (var v in checkIfVideo)
+                    {
+                        videoUrls.Add(v.Path);
+                    }
+                }
+                if (checkIfImg != null)
+                {
+                    foreach (var i in checkIfImg)
+                    {
+                        imgSrcs.Add(i.Path);
+                    }
+                }
+
+                if (checkIfDrafted != null)
+                {
+                    var toReturn = new ShareStoryViewModel()
+                    {
+                        StoryTitle = checkIfDrafted.Title,
+                        Date = checkIfDrafted.CreatedAt,
+                        MyStory = checkIfDrafted.Description,
+                        VideoUrl = videoUrls,
+                        Photos = imgSrcs,
+                        MissionId = checkIfDrafted.MissionId
+                    };
+                    return toReturn;
+                }
+
+            }
+
+           
+
+            return null;
+        }
+
     }
 }

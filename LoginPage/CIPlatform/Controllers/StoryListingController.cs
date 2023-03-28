@@ -1,5 +1,6 @@
 ﻿using CIPlatform.Data;
 using CIPlatform.DataAccess.Repository.IRepository;
+using CIPlatform.Models;
 using CIPlatform.Models.ViewDataModels;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -93,15 +94,39 @@ namespace CIPlatform.Controllers
 
         public IActionResult ShareStory()
         {
-            var missionNames = _unitOfWork.StoryRepo.addStoryView();
-            return View(missionNames);
+            long ui = long.Parse(HttpContext.Session.GetString("userId"));
+            var toReturnAsModel = _unitOfWork.StoryRepo.getDraftedStory(ui);
+            if(toReturnAsModel != null)
+            {
+                ViewData["MissionId"] = toReturnAsModel.MissionId;
+                return View(toReturnAsModel);
+            }
+
+            return View();
         }
+
+
+        [HttpPost]
+        public List<Mission> getAppliedMission()
+        {
+            long ui = long.Parse(HttpContext.Session.GetString("userId"));
+            var toReturn = _unitOfWork.StoryRepo.getAppliedMissions(ui);
+            if (toReturn == null)
+            {
+                return null;
+            }
+            return toReturn;
+        }
+
+
 
         public IActionResult newStory(string storyMissionName,string storyTitle,DateTime storyDate,string story,string? storyVideoUrl,string[]? srcs)
         {
-            bool isSuccess = _unitOfWork.StoryRepo.newStorybyUser(storyMissionName, storyTitle, storyDate, story, storyVideoUrl, srcs);
-            if(isSuccess)
-            return RedirectToAction("StoryListing", "StoryListing");
+            long SmissionId = _unitOfWork.StoryRepo.newStorybyUser(storyMissionName, storyTitle, storyDate, story, storyVideoUrl, srcs);
+            if (SmissionId>0)
+            {
+                return RedirectToAction("StoryListing", "StoryListing");
+            }
             return RedirectToAction("ShareStory", "StoryListing");
         }
 

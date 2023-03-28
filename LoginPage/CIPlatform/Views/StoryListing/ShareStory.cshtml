@@ -19,25 +19,21 @@
                             <label  for="mission" class="form-label">Select Mission</label>
                             <select  class="form-select" id="storyMissionName" name="mission">
                                 <option selected disabled value="">Select Your Mission</option>
-                                @foreach (var item in Model.MissionNames)
-                                {
-                                    <option>@item</option>
-                                }
                             </select>
                         </div>
                         <div class="my-story-title w-100 me-2">
-                            <label  for="title" class="form-label">My story title</label>
-                            <input  type="text" class="form-control" id="storyTitle" name="title" placeholder="Enter Story Title">
+                            <label asp-for="StoryTitle" for="title" class="form-label">My story title</label>
+                            <input asp-for="StoryTitle" type="text" class="form-control" id="storyTitle" name="title" placeholder="Enter Story Title">
                         </div>
                         <div class="story-date w-100">
-                            <label for="date" class="form-label">Date</label>
-                            <input type="text" class="form-control" id="storyDate" name="date" onfocus="this.placeholder='';this.type='date'" onblur="this.placeholder='Select Date';;this.type='text'" placeholder="Select Date">
+                            <label asp-for="Date" for="date" class="form-label">Date</label>
+                            <input asp-for="Date" type="text" class="form-control" id="storyDate" name="date" onfocus="this.placeholder='';this.type='date'" onblur="this.placeholder='Select Date';;this.type='text'" placeholder="Select Date">
                         </div>
                     </div>
 
                     <div class="text-editor-ck-wrapper mt-4">
-                        <label  for="ck-editor" class="form-label">My Story</label>
-                        <textarea  class="ck-editor" id="ck-editor">
+                        <label asp-for="MyStory" for="ck-editor" class="form-label">My Story</label>
+                        <textarea asp-for="MyStory" class="ck-editor" id="ck-editor">
 
                         </textarea>
                         <script>
@@ -46,14 +42,21 @@
                             });
                         </script>
                     <button class="btn btn-warning rounded-pill mx-3" type="button" onclick="getEditorHTML()">Get HTML</button>
-
-                        <label  for="video-url" class="form-label mt-4">Enter Video URL</label>
-                        <input  type="text" class="form-control" id="storyVideoUrl" placeholder="Enter your url" />
+                    <label for="video-url" class="form-label mt-4">Enter Video URL</label>
+                        @if (Model!=null && Model.VideoUrl != null && Model.VideoUrl.Count > 0)
+                        {
+                            string videoUrls = string.Join(",", Model.VideoUrl);
+                            <input type="text" class="form-control" id="storyVideoUrl" placeholder="Enter your url" value="@videoUrls" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" id="storyVideoUrl" placeholder="Enter your url" />
+                        }
                     </div>
                     @**************************************************************@
                     <div class="input-group mb-3 mt-4">
-                        <label  class="form-label">Upload your Photos</label>
-                        <input  type="file" class="form-control" id="file-upload" multiple style="display: none;">
+                        <label asp-for="Photos" class="form-label">Upload your Photos</label>
+                        <input asp-for="Photos" type="file" class="form-control" id="file-upload" multiple style="display: none;">
                         <label for="file-upload" class="input-group-text form-label w-100 bg-white" id="file-label">
                             <span class="m-auto p-3">
                                 <i class="bi bi-plus-lg fs-1"></i> <br />
@@ -74,7 +77,24 @@
                         </label>
                     </div>*@
 
-                    <div class="row g-2" id="file-preview"></div>
+                    <div class="row g-2" id="file-preview">
+
+                        @if (Model!=null  && Model.Photos != null)
+                        {
+                            foreach(var i in Model.Photos)
+                            {
+                                <div class="col-auto">
+                                    <div class="position-relative">
+                                        <img class="img-thumbnail" style="width: 150px; height: 150px;" src="@i">
+                                        <button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            }
+                            
+                        }
+
+
+                    </div>
 
                     <div class="d-flex w-100 justify-content-between mt-4">
                         <div>
@@ -99,3 +119,7 @@
 
 
 </div>
+
+<script>
+    var viewdataMissionId = @Html.Raw(Json.Serialize(ViewData["MissionId"]));
+</script>
