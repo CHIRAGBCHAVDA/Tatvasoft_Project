@@ -20,7 +20,9 @@ var sources = [];
 
 getTotalCount();
 $(document).ready(function () {
-
+    $("#preview").find("img").each(function () {
+        sources.push($(this).attr("src"));
+    });
     $.ajax({
         type: "post",
         url: "/StoryListing/getAppliedMission",
@@ -45,7 +47,7 @@ $(document).ready(function () {
 
 
 
-    $('#storyForm').submit(function (e) {
+    $('#storySaveBtn').on('click',function (e) {
         e.preventDefault();
         var storyMissionName = $("#storyMissionName").val();
         var storyTitle = $("#storyTitle").val();
@@ -56,7 +58,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url : "/StoryListing/newStory",
+            url: "/StoryListing/draftStory",
             data: {
                 storyMissionName: storyMissionName,
                 storyTitle: storyTitle,
@@ -66,12 +68,9 @@ $(document).ready(function () {
                 srcs : srcs
             },
             success: function (response) {
-                console.log("storyMissionName" + storyMissionName);
-                console.log("storyTitle" + storyTitle);
-                console.log("storyDate" + storyDate);
-                console.log("story" + story);
-                console.log("storyVideoUrl" + storyVideoUrl);
-                console.log("Source array", srcs);
+                console.log(response);
+                //$("body").html(response); // We do not need to append the data evrytime just change the window location
+                window.location.href = "/StoryListing/StoryListing";
             },
             error: function (error) {
                 console.log(error); // print error in console
@@ -79,6 +78,45 @@ $(document).ready(function () {
         });
 
     });
+
+
+
+
+    $('#storyForm').submit(function (e) {
+        e.preventDefault();
+        //var storyMissionName = $("#storyMissionName").val();
+        //var storyTitle = $("#storyTitle").val();
+        //var storyDate = $("#storyDate").val();
+        //var story = CKEDITOR.instances['ck-editor'].getData();
+        //var storyVideoUrl = $("#storyVideoUrl").val();
+        //var srcs = sources;
+
+        $.ajax({
+            type: "POST",
+            url: "/StoryListing/newStory",
+            //data: {
+            //    storyMissionName: storyMissionName,
+            //    storyTitle: storyTitle,
+            //    storyDate: storyDate,
+            //    story: story,
+            //    storyVideoUrl: storyVideoUrl,
+            //    srcs: srcs
+            //},
+            success: function (response) {
+                
+                window.location.href = "/StoryListing/StoryListing";
+            },
+            error: function (error) {
+                console.log(error); // print error in console
+            }
+        });
+
+    });
+
+
+
+
+
 
 
     

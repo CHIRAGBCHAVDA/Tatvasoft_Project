@@ -117,18 +117,34 @@ namespace CIPlatform.Controllers
             }
             return toReturn;
         }
+        #region Draft and Save Story
 
-
-
-        public IActionResult newStory(string storyMissionName,string storyTitle,DateTime storyDate,string story,string? storyVideoUrl,string[]? srcs)
+        [HttpPost]
+        public IActionResult draftStory(string storyMissionName,string storyTitle,DateTime storyDate,string story,string? storyVideoUrl,string[]? srcs)
         {
-            long SmissionId = _unitOfWork.StoryRepo.newStorybyUser(storyMissionName, storyTitle, storyDate, story, storyVideoUrl, srcs);
+            long SmissionId = _unitOfWork.StoryRepo.draftStorybyUser(storyMissionName, storyTitle, storyDate, story, storyVideoUrl, srcs);
             if (SmissionId>0)
             {
                 return RedirectToAction("StoryListing", "StoryListing");
             }
             return RedirectToAction("ShareStory", "StoryListing");
         }
+
+        [HttpPost]
+        public IActionResult newStory()
+        {
+            var draftedS = _unitOfWork.StoryRepo.getDraftedStory(long.Parse(HttpContext.Session.GetString("userId")));
+            bool sid = _unitOfWork.StoryRepo.storeNewStory(long.Parse(HttpContext.Session.GetString("userId")), draftedS.MissionId);
+            if (sid)
+            {
+                return RedirectToAction("StoryListing", "StoryListing");
+            }
+            return RedirectToAction("ShareStory", "StoryListing");
+
+            
+        }
+
+        #endregion
 
         [HttpPost]
         public IActionResult DeleteStory(long storyId)

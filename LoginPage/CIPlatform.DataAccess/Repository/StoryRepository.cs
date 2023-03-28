@@ -3,6 +3,7 @@ using CIPlatform.DataAccess.Repository.IRepository;
 using CIPlatform.Models;
 using CIPlatform.Models.ViewDataModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -70,76 +71,206 @@ namespace CIPlatform.DataAccess.Repository
             return toReturn.ToList();
         }
 
-        public long newStorybyUser(string storyMissionName, string storyTitle, DateTime storyDate, string story, string? storyVideoUrl, string[]? srcs)
+        public long draftStorybyUser(string storyMissionName, string storyTitle, DateTime storyDate, string story, string? storyVideoUrl, string[]? srcs)
         {
-            try
+            var ifAlreadyDrafted = _db.Stories.Where(s => s.MissionId==long.Parse(storyMissionName) && s.UserId==long.Parse(_httpContext.Session.GetString("userId")) && s.StoryStatusId==1).FirstOrDefault();
+            if (ifAlreadyDrafted == null)
             {
-                var MissionId = _db.Missions.Where(m => m.MissionId== long.Parse(storyMissionName)).Select(m => m.MissionId).FirstOrDefault();
-                var UserId = long.Parse(_httpContext.Session.GetString("userId"));
-
-                MissionApplication newMA = new MissionApplication()
+                try
                 {
-                    MissionId = MissionId,
-                    UserId = UserId,
-                    AppliedAt = storyDate,
-                    ApprovalStatusId = 1,
-                    CreatedAt = DateTime.Now
-                };
+                    var MissionId = _db.Missions.Where(m => m.MissionId == long.Parse(storyMissionName)).Select(m => m.MissionId).FirstOrDefault();
+                    var UserId = long.Parse(_httpContext.Session.GetString("userId"));
 
-                Story newS = new Story()
+                    Story newS = new Story()
+                    {
+                        UserId = UserId,
+                        MissionId = MissionId,
+                        Title = storyTitle,
+                        Description = story,
+                        StoryStatusId = 1,
+                        PublishedAt = DateTime.Now,
+                        CreatedAt = storyDate
+                    };
+
+                    _db.Stories.Add(newS);
+                    _db.SaveChanges();
+
+                    if (srcs != null)
+                    {
+                        foreach (var src in srcs)
+                        {
+                            StoryMedium sMediaImg = new StoryMedium()
+                            {
+                                StoryId = _db.Stories.Where(s => s.UserId == UserId && s.MissionId == MissionId && s.Title.Equals(storyTitle)).Select(s => s.StoryId).FirstOrDefault(),
+                                Type = "img",
+                                Path = src,
+                                CreatedAt = DateTime.Now
+                            };
+                            _db.StoryMedia.Add(sMediaImg);
+                        }
+
+                    }
+                    if (storyVideoUrl != "")
+                    {
+                        var strArr = storyVideoUrl.Split(',');
+                        foreach (var str in strArr)
+                        {
+                            StoryMedium sMediaVideo = new StoryMedium()
+                            {
+                                StoryId = _db.Stories.Where(s => s.UserId == UserId && s.MissionId == MissionId && s.Title.Equals(storyTitle)).Select(s => s.StoryId).FirstOrDefault(),
+                                Type = "vid",
+                                Path = str,
+                                CreatedAt = DateTime.Now
+                            };
+                            _db.StoryMedia.Add(sMediaVideo);
+                        }
+
+                    }
+                    _db.SaveChanges();
+                    return newS.MissionId;
+                }
+
+                catch (Exception ex)
                 {
-                    UserId = UserId,
-                    MissionId = MissionId,
-                    Title = storyTitle,
-                    Description = story,
-                    StoryStatusId = 1,
-                    PublishedAt = DateTime.Now,
-                    CreatedAt = storyDate
-                };
-
-                _db.MissionApplications.Add(newMA);
-                _db.Stories.Add(newS);
-                _db.SaveChanges();
-
-                if (srcs != null)
+                    return 0;
+                }
+            }
+            else
+            {
+                try
                 {
+                    #region update story using efcore
+                    //var MissionId = _db.Missions.Where(m => m.MissionId == long.Parse(storyMissionName)).Select(m => m.MissionId).FirstOrDefault();
+                    //var UserId = long.Parse(_httpContext.Session.GetString("userId"));
+
+                    //long sid = ifAlreadyDrafted.StoryId;
+                    //var toNewDraft = ifAlreadyDrafted;
+                    //toNewDraft.MissionId = MissionId;
+                    //toNewDraft.UserId = UserId;
+                    //toNewDraft.Title = storyTitle;
+                    //toNewDraft.Description = story;
+                    //toNewDraft.StoryStatusId = 1;
+                    //toNewDraft.UpdatedAt = DateTime.Now;
+
+                    //_db.Stories.Update(toNewDraft);
+                    //_db.SaveChanges();
+                    #endregion
+
+                    var MissionId = _db.Missions
+                  .Where(m => m.MissionId == long.Parse(storyMissionName))
+                  .Select(m => m.MissionId)
+                  .FirstOrDefault();
+                    var UserId = long.Parse(_httpContext.Session.GetString("userId"));
+                    long sid = ifAlreadyDrafted.StoryId;
+
+                    string query = @"UPDATE story SET mission_id = @missionId, user_id = @userId, title = @title, 
+                    description = @description, story_status_id = 1, updated_at = @updatedAt 
+                    WHERE story_id = @storyId";
+
+                    _db.Database.ExecuteSqlRaw(query, new SqlParameter("@missionId", MissionId),
+                                                         new SqlParameter("@userId", UserId),
+                                                         new SqlParameter("@title", storyTitle),
+                                                         new SqlParameter("@description", story),
+                                                         new SqlParameter("@updatedAt", DateTime.Now),
+                                                         new SqlParameter("@storyId", sid));
+
+
+                    var existingMedia = _db.StoryMedia.Where(s => s.StoryId == ifAlreadyDrafted.StoryId).ToList();
+
+                    #region removeIMG using efcore
+                    //foreach (var media in existingMedia)
+                    //{
+                    //    if (!srcs.Contains(media.Path) && media.Type.Equals("img"))
+                    //    {
+                    //        media.DeletedAt = DateTime.Now;
+                    //        _db.StoryMedia.Update(media);
+                    //    }
+                    //}
+                    #endregion
+
+                    foreach (var media in existingMedia)
+                    {
+                        if (!srcs.Contains(media.Path) && media.Type.Equals("img"))
+                        {
+                            var sql = $"UPDATE story_media SET deleted_at = '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE story_media_id = {media.StoryMediaId}";
+                            _db.Database.ExecuteSqlRaw(sql);
+                        }
+                    }
+
+
+
                     foreach (var src in srcs)
                     {
-                        StoryMedium sMediaImg = new StoryMedium()
+                        if (!existingMedia.Any(m => m.Path == src))
                         {
-                            StoryId = _db.Stories.Where(s => s.UserId == UserId && s.MissionId == MissionId && s.Title.Equals(storyTitle)).Select(s => s.StoryId).FirstOrDefault(),
-                            Type = "img",
-                            Path = src,
-                            CreatedAt = DateTime.Now
-                        };
-                        _db.StoryMedia.Add(sMediaImg);
+                            StoryMedium sMediaImg = new StoryMedium()
+                            {
+                                StoryId = ifAlreadyDrafted.StoryId,
+                                Type = "img",
+                                Path = src,
+                                CreatedAt = DateTime.Now
+                            };
+                            _db.StoryMedia.Add(sMediaImg);
+                        }
                     }
-                    _db.SaveChanges();
-                }
-                if (storyVideoUrl != "")
-                {
-                    var strArr = storyVideoUrl.Split(',');
-                    foreach(var str in strArr)
+
+                    
+                    if (storyVideoUrl != "")
                     {
-                        StoryMedium sMediaVideo = new StoryMedium()
+                        var strArr = storyVideoUrl.Split(',');
+
+
+                        foreach (var media in existingMedia)
                         {
-                            StoryId = _db.Stories.Where(s => s.UserId == UserId && s.MissionId == MissionId && s.Title.Equals(storyTitle)).Select(s => s.StoryId).FirstOrDefault(),
-                            Type = "vid",
-                            Path = str,
-                            CreatedAt = DateTime.Now
-                        };
-                        _db.StoryMedia.Add(sMediaVideo);
+                            if (!strArr.Contains(media.Path) && media.Type.Equals("vid"))
+                            {
+                                var sql = $"UPDATE story_media SET deleted_at = '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE story_media_id = {media.StoryMediaId}";
+                                _db.Database.ExecuteSqlRaw(sql);
+                            }
+                        }
+
+
+                        #region remove video url using efcore
+                        //foreach (var media in existingMedia)
+                        //{
+                        //    if(!(strArr.Contains(media.Path)&& media.Type.Equals("vid")))
+                        //    {
+                        //        media.DeletedAt = DateTime.Now;
+                        //        _db.StoryMedia.Update(media) ;
+                        //    }
+                        //}
+                        #endregion
+
+                        foreach (var vurl in strArr)
+                        {
+                            if (!existingMedia.Any(m => m.Path == vurl))
+                            {
+                                StoryMedium sMediaVid = new StoryMedium()
+                                {
+                                    StoryId = ifAlreadyDrafted.StoryId,
+                                    Type = "vid",
+                                    Path = vurl,
+                                    CreatedAt = DateTime.Now
+                                };
+                                _db.StoryMedia.Add(sMediaVid);
+                            }
+                        }
+
                     }
+
                     _db.SaveChanges();
+                    return ifAlreadyDrafted.MissionId;
+
+
                 }
-
-                return newS.MissionId;
+                catch(Exception ex)
+                {
+                    return 0;
+                }
             }
 
-            catch (Exception ex)
-            {
-                return 0;
-            }
+
+            
         }
 
 
@@ -171,10 +302,10 @@ namespace CIPlatform.DataAccess.Repository
             var checkIfDrafted = _db.Stories.Where(st => st.UserId == userId && st.StoryStatusId==1).FirstOrDefault();
             if (checkIfDrafted != null)
             {
-                var checkIfVideo = _db.StoryMedia.Where(sm => sm.StoryId == checkIfDrafted.StoryId && sm.Type=="vid").ToList();
+                var checkIfVideo = _db.StoryMedia.Where(sm => sm.StoryId == checkIfDrafted.StoryId && sm.Type=="vid" && sm.DeletedAt==null).ToList();
                 List<string> videoUrls = new List<string>();
 
-                var checkIfImg = _db.StoryMedia.Where(sm => sm.StoryId == checkIfDrafted.StoryId && sm.Type == "img").ToList();
+                var checkIfImg = _db.StoryMedia.Where(sm => sm.StoryId == checkIfDrafted.StoryId && sm.Type == "img" &&sm.DeletedAt==null).ToList();
                 List<string> imgSrcs = new List<string>();
 
                 if (checkIfVideo != null)
@@ -213,5 +344,27 @@ namespace CIPlatform.DataAccess.Repository
             return null;
         }
 
+
+        public bool storeNewStory(long userId, long missionId)
+        {
+            try
+            {
+                var sql = $"UPDATE story SET story_status_id = 2 WHERE user_id = {userId} AND mission_id = {missionId} AND story_status_id = 1";
+                _db.Database.ExecuteSqlRaw(sql);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+            //var getDrafted = _db.Stories.Where(s => s.UserId == userId && s.MissionId == missionId && s.StoryStatusId == 1).FirstOrDefault();
+            //if (getDrafted != null)
+            //{
+            //    getDrafted.StoryStatusId = 2;
+            //    _db.Stories.Update(getDrafted);
+            //    _db.SaveChanges();
+            //    return true;
+            //}
+        }
     }
 }
