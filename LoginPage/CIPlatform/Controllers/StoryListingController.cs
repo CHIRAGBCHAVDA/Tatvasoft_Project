@@ -173,6 +173,36 @@ namespace CIPlatform.Controllers
             return View("StoryListing", storyViewModel);
         }
 
+        public IActionResult StoryDetail(long missionId,long storyId,long userId)
+        {
+            var tempUserForAvatar = _unitOfWork.User.getUserByUID(userId);
+            var allUsers = _unitOfWork.User.GetAllUsers();
+            var story = _unitOfWork.StoryRepo.getStoryBySID(storyId);
+            var storyMedia = _unitOfWork.StoryRepo.storyMedia(storyId);
+
+            ShareStoryViewModel shareStr = new ShareStoryViewModel()
+            {
+                StoryTitle = story.Title,
+                Date = story.PublishedAt,
+                MyStory = story.Description,
+                Photos = storyMedia.Where(sm => sm.Type=="img").Select(sm => sm.Path).ToList(),
+                VideoUrl = storyMedia.Where(sm => sm.Type=="vid").Select(sm => sm.Path).ToList(),
+                MissionId = missionId
+            };
+
+            StoryDetailViewModel storyDetailViewModel = new StoryDetailViewModel()
+            {
+                Avatar = tempUserForAvatar.Avatar,
+                Name = tempUserForAvatar.FirstName + " " + tempUserForAvatar.LastName,
+                WhyIVolunteer = tempUserForAvatar.WhyIVolunteer,
+                Users = allUsers.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList(),
+                ShareStory = shareStr
+            };
+
+
+            return View(storyDetailViewModel);
+        }
+
 
 
     }

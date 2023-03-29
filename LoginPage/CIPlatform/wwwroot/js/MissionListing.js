@@ -13,7 +13,6 @@ var searchKeyword = "";
 getTotalCount();
 $(document).ready(function () {
     $('.city-item').hide();
-
     $("#partialView").load('/MissionListing/GetGridView');
     $('#list').click(function () {
         flag = 2;
@@ -112,10 +111,6 @@ $(document).ready(function () {
     $('.pagination').on('click', '.page-item', function () {
         getFilter($(this).attr('id'));
     });
-
-    //$(".rating-star-images").on("click", "i", function () {
-    //    addRating($(this).attr('data-star'));
-    //});
 
     $(document).on("click","#partialView .reccommendMissionBtn, .reccommendMissionBtn",function () {
         var selected = $('.co-worker-checkbox input[type="checkbox"]:checked');
@@ -216,8 +211,11 @@ function gridListRecommend() {
                             </li>`
             });
             newHtml += `</ul>`;
-
+            debugger
             $('.grid_list_modal_body').html(newHtml);
+        },
+        complete: function (data) {
+            console.log(data);
         },
         error: function (xhr, status, error) {
             console.log(error);
@@ -276,11 +274,6 @@ $(document).on('change', function () {
     $('.skill-checkbox').on('change', function () {
         getBadge();
     });
-
-    //$(".rating-star-images i").on("click", function () {
-    //    addRating($(this).attr('data-star'));
-    //});
-
 
     $.ajax({
         type: 'GET',
@@ -585,14 +578,6 @@ function applyMission() {
         success: function (result) {
             console.log("Application is submitted successfully...");
             $('#volMissionRightUpper').html(result);
-            //let xApplyBtn = `
-            //                <button type="submit" class="btn bg-white  rounded-pill px-4 volMission-applybtn" data-missionid = "@Model.myMission.mission.MissionId" onclick="applyMission()" disabled>
-            //                    Applied
-            //                    &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
-            //                </button>
-            //                `
-            //$(".apply-missionbtn-div-volmission").html(xApplyBtn);
-
         },
         error: function (xhr, status, error) {
             console.log("Some error occured while applying in mission...\n" + error);
@@ -615,28 +600,7 @@ $(document).on('click', '#add-rm-fav-div', function () {
             if (result == 0) {
                 console.log("ADD BUTTON IS ADDED RETURNED 1");
                 console.log($("#button-to-fav"));
-                //add btn
-                //$("#button-to-fav").html(
-                //    `<button class="btn-primary form-control bg-white text-secondary border border-secondary p-2 rounded-pill d-flex flex-wrap flex-md-nowrap justify-content-center align-items-center" id="button-to-fav" data-isfav="@favFlag" data-mid='@Model.myMission.mission.MissionId' onclick="btnAddRmFav()">
-                //        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" stroke="white" class="bi bi-heart" viewBox="0 0 16 16" style="height:20px;width:20px">
-                //            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
-                //        </svg>
-
-                //        <span>
-                //            &nbsp; &nbsp; Add To Favourite
-                //        </span>
-                //    </button>`
-                //);
-                //document.getElementById("button-to-fav").innerHTML=`
-                //        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" stroke="white" class="bi bi-heart" viewBox="0 0 16 16" style="height:20px;width:20px">
-                //            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
-                //        </svg>
-
-                //        <span>
-                //            &nbsp; &nbsp; Add To Favourite
-                //        </span>
-                //`;
-
+                
                 $("#button-to-fav").html(`
                   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" stroke="white" class="bi bi-heart" viewBox="0 0 16 16" style="height:20px;width:20px">
                         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
@@ -656,29 +620,7 @@ $(document).on('click', '#add-rm-fav-div', function () {
                 console.log("ADD BUTTON IS REMOVED RETURNED 0")
                 console.log($("#button-to-fav"));
 
-                //ren btn
-                //$("#button-to-fav").html(
-                //    `
-                //    <button class="btn-primary form-control bg-white text-secondary border border-secondary p-2 rounded-pill d-flex flex-wrap flex-md-nowrap justify-content-center align-items-center" id="button-to-fav" data-isfav="@favFlag" data-mid='@Model.myMission.mission.MissionId' onclick="btnAddRmFav()">
-                //        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16" style="color: red;height:20px;width:20px">
-                //            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
-                //        </svg>
-
-                //        <span>
-                //            &nbsp; &nbsp; Remove From Favourite
-                //        </span>
-                //    </button>`
-                //);
-                //document.getElementById("button-to-fav").innerHTML=`
-                //        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16" style="color: red;height:20px;width:20px">
-                //            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
-                //        </svg>
-
-                //        <span>
-                //            &nbsp; &nbsp; Remove From Favourite
-                //        </span>
-
-                //`;
+               
 
                 $("#button-to-fav").html(`
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16" style="color: red;height:20px;width:20px">

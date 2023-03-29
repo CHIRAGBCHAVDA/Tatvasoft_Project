@@ -20,5 +20,8 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         public long draftStorybyUser(string storyMissionName, string storyTitle, DateTime storyDate, string story, string? storyVideoUrl, string[]? srcs);
         public bool storeNewStory(long userId, long missionId);
 
+        public Story getStoryBySID(long sid);
+        public List<StoryMedium> storyMedia(long storyId);
+
     }
 }

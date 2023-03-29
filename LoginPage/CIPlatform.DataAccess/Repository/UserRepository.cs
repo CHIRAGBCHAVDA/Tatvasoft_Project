@@ -43,5 +43,17 @@ namespace CIPlatform.DataAccess.Repository
             
             return temp;
         }
+
+        public User getUserByUID(long userId)
+        {
+            var toReturn = _db.Users.Where(u => u.UserId == userId).FirstOrDefault();
+            return toReturn;
+        }
+
+        public List<User> GetAllUsers()
+        {
+            var allU = _db.Users.Where(u => u.UserId > 0).ToList();
+            return allU;
+        }
     }
 }

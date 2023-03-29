@@ -21,7 +21,7 @@
                     }
                     <div class="card-img-overlay d-flex flex-column">
                         <div class="text-center story-listing-btn-to-hide m-auto">
-                            <button class="btn border rounded-pill px-4 py-2 m-auto text-light fw-bold">View Details &nbsp; &nbsp; <i class="bi bi-arrow-right"></i></button>
+                            <button class="btn border rounded-pill px-4 py-2 m-auto text-light fw-bold view-storydetails-btn" data-mid="@item.Stories.MissionId" data-uid="@item.Stories.UserId" data-sid="@item.Stories.StoryId" onclick="viewStoryDetails(this)">View Details &nbsp; &nbsp; <i class="bi bi-arrow-right"></i></button>
                         </div>
                         <div class="story-listing-card-theme text-dark fw-lighter text-center" style="margin-top:auto;margin-bottom:-2rem">
                             <span class="rounded-pill px-2 bg-light">@item.Theme</span>

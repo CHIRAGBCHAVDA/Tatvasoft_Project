@@ -1,0 +1,123 @@
+﻿@using CIPlatform.Models.ViewDataModels
+@model StoryDetailViewModel
+
+<script src="~/js/StoryListing.js"></script>
+
+<div class=container-fluid>
+
+    <partial name="_Header" />
+    <hr />
+
+    <div class="container mt-4">
+        <div class="mission-image-and-info-wrapper row flex-column flex-lg-row">
+            <div class="temp col-lg-6 order-lg-1 order-2">
+
+                <div class="d-sm-flex w-md-100 w-lg-50 flex-column d-none h-100">
+
+
+                    <img src="~/assets/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png" id="image-area" class="w-100 h-100" />
+
+                    <div id="carousel-bottom" class="carousel slide">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active ">
+                                <div class="row p-1">
+                                    <div class="col-3 p-1">
+                                        <img src="~/assets/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
+                                    </div>
+                                    <div class="col-3 p-1">
+                                        <img src="~/assets/Education-Supplies-for-Every--Pair-of-Shoes-Sold.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
+                                    </div>
+                                    <div class="col-3 p-1">
+                                        <img src="~/assets/Grow-Trees-On-the-path-to-environment-sustainability.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
+                                    </div>
+                                    <div class="col-3 p-1">
+                                        <img src="~/assets/Nourish-the-Children-in--African-country.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="row p-1">
+                                    <div class="col-3 p-1">
+                                        <img src="~/assets/Nourish-the-Children-in--African-country.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
+                                    </div>
+                                    <div class="col-3 p-1">
+                                        <img src="~/assets/Plantation-and-Afforestation-programme.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
+                                    </div>
+                                    <div class="col-3 p-1">
+                                        <img src="~/assets/CSR-initiative-stands-for-Coffee--and-Farmer-Equity.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
+                                    </div>
+                                    <div class="col-3 p-1">
+                                        <img src="~/assets/Plantation-and-Afforestation-programme.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev w-auto ps-2 pe-2 bg-black bg-opacity-50 mt-2 mb-2" type="button" data-bs-target="#carousel-bottom" data-bs-slide="prev">
+                            <img src="~/assets/left1.png" aria-hidden="true" />
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next w-auto ps-2 pe-2 bg-black bg-opacity-50  mt-2 mb-2" type="button" data-bs-target="#carousel-bottom" data-bs-slide="next">
+                            <img src="~/assets/right-arrow2.png" aria-hidden="true" />
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="w-100 d-xs-block d-sm-none">
+                    <partial name="_CarouselMobileView" />
+                </div>
+            </div>
+
+
+            <div class="col-lg-6 order-lg-2 order-1 mt-lg-5 mb-lg-0 mb-4" id="storyDetailRightUpper">
+                <div class="d-flex justify-content-between align-items-end">
+                    <div class="d-flex flex-column">
+                        <img src="@Model.Avatar" class="rounded-circle" style="height:75px; width:75px" />
+                        <span>@Model.Name</span>
+                    </div>
+                    <div class="storyViews bg-white border px-3 py-1 rounded-pill">
+                        <i class="bi bi-eye fst-normal"> &nbsp; 10000 Views</i>
+                    </div>
+                </div>
+
+                <div class="whyIVolunteer mt-4">
+                    <p class="fs-13 fw-lighter">
+                       @Html.Raw(@Model.WhyIVolunteer)
+                    </p>
+                </div>
+
+                   <partial name="_ReccommendBtn" model="Model.Users" />
+                <div class="d-flex justify-content-between">
+                    @*<button class="w-md-25 btn form-control bg-white text-orange border-orange p-2 rounded-pill">
+                        <span>
+                           Open Mission  &nbsp; &nbsp; <i class="bi bi-arrow-right"></i>
+                        </span>
+                    </button>*@
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mt-4 story-details-info">
+            <h2>@Model.ShareStory.StoryTitle</h2>
+            <hr style="border:0.5px solid black" />
+           <hr style="border:1.5px solid black;width:100px;margin-top:-1rem"/>
+
+           <div class="story-description-all">
+              @Html.Raw(@Model.ShareStory.MyStory)
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+

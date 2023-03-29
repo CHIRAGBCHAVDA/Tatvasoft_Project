@@ -261,7 +261,6 @@ namespace CIPlatform.DataAccess.Repository
                     _db.SaveChanges();
                     return ifAlreadyDrafted.MissionId;
 
-
                 }
                 catch(Exception ex)
                 {
@@ -365,6 +364,18 @@ namespace CIPlatform.DataAccess.Repository
             //    _db.SaveChanges();
             //    return true;
             //}
+        }
+
+        public Story getStoryBySID(long sid)
+        {
+            var str = _db.Stories.Where(s => s.StoryId == sid).FirstOrDefault();
+            return str;
+        }
+
+        public List<StoryMedium> storyMedia(long storyId)
+        {
+            var toRet = _db.StoryMedia.Where(s => s.StoryId == storyId).ToList();
+            return toRet;
         }
     }
 }

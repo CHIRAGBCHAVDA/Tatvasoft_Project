@@ -288,7 +288,7 @@ namespace CIPlatform.Controllers
         public List<User> GetListOfUserRecommendation()
         {
             var usersList = _unitOfWork.User.GetAll(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList();
-            return usersList;
+             return usersList;
         }
 
         [HttpPost]

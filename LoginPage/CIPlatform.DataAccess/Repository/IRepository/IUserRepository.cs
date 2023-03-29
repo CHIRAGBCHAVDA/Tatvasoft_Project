@@ -9,5 +9,7 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         void Register(User entity);
         User login(string email,string password);
         User Update(User getUser, string token);
+        User getUserByUID(long userId);
+        List<User> GetAllUsers();
     }
 }

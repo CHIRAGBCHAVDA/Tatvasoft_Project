@@ -20,7 +20,9 @@ var sources = [];
 
 getTotalCount();
 $(document).ready(function () {
-    $("#preview").find("img").each(function () {
+    gridListRecommend()
+
+    $("#file-preview").find("img").each(function () {
         sources.push($(this).attr("src"));
     });
     $.ajax({
@@ -70,7 +72,7 @@ $(document).ready(function () {
             success: function (response) {
                 console.log(response);
                 //$("body").html(response); // We do not need to append the data evrytime just change the window location
-                window.location.href = "/StoryListing/StoryListing";
+                //window.location.href = "/StoryListing/StoryListing";
             },
             error: function (error) {
                 console.log(error); // print error in console
@@ -84,33 +86,41 @@ $(document).ready(function () {
 
     $('#storyForm').submit(function (e) {
         e.preventDefault();
+        var ifSaved = confirm("Last saved story will be submitted....Make sure you have saved the latest one!!");
+
+        
+
         //var storyMissionName = $("#storyMissionName").val();
         //var storyTitle = $("#storyTitle").val();
         //var storyDate = $("#storyDate").val();
         //var story = CKEDITOR.instances['ck-editor'].getData();
         //var storyVideoUrl = $("#storyVideoUrl").val();
         //var srcs = sources;
+        if (ifSaved) {
+            $.ajax({
+                type: "POST",
+                url: "/StoryListing/newStory",
+                //data: {
+                //    storyMissionName: storyMissionName,
+                //    storyTitle: storyTitle,
+                //    storyDate: storyDate,
+                //    story: story,
+                //    storyVideoUrl: storyVideoUrl,
+                //    srcs: srcs
+                //},
 
-        $.ajax({
-            type: "POST",
-            url: "/StoryListing/newStory",
-            //data: {
-            //    storyMissionName: storyMissionName,
-            //    storyTitle: storyTitle,
-            //    storyDate: storyDate,
-            //    story: story,
-            //    storyVideoUrl: storyVideoUrl,
-            //    srcs: srcs
-            //},
-            success: function (response) {
-                
-                window.location.href = "/StoryListing/StoryListing";
-            },
-            error: function (error) {
-                console.log(error); // print error in console
-            }
-        });
+                success: function (response) {
+                    window.location.href = "/StoryListing/StoryListing";
+                },
+                error: function (error) {
+                    console.log(error); // print error in console
+                }
+            });
 
+        } else {
+            return;
+        }
+        
     });
 
 
@@ -353,6 +363,94 @@ $(document).ready(function () {
     });
 
 
+    $(document).on("click", "#partialView .reccommendMissionBtn, .reccommendMissionBtn", function () {
+        var selected = $('.co-worker-checkbox input[type="checkbox"]:checked');
+        var values = [];
+        selected.each(function () {
+            values.push($(this).val().trim());
+        });
+        var result = values.join(","); // combine the values with a comma and space
+        result = result.replace(/,\s*$/, "");
+
+        console.log(result);
+        //let missionTitle = $("#list-group-in-reccoworker").attr('data-missiontitle');
+        //let missionTheme = $("#list-group-in-reccoworker").attr('data-missiontheme');
+        let storyTitle = $("#list-group-in-reccoworker").attr('data-storytitle');
+        let username = $("#list-group-in-reccoworker").attr('data-name');
+
+        let queryStr = window.location.search;
+        let urlParams = new URLSearchParams(queryStr);
+        let storyId = urlParams.get("storyId")
+        let missionId = urlParams.get("missionId")
+        let userId = urlParams.get("userId")
+
+
+        let subject = " Reccommendation to join " + storyTitle;
+        //console.log("The type of  missions skills is " + typeof (missionSkills));
+        var currentUrl = window.location.href;
+        console.log(currentUrl);
+        let missionLink = "https://localhost:44383/?returnUrl=" + currentUrl;
+        let body = `<!DOCTYPE html>
+                    <html>
+
+                    <head>
+                      <meta charset="utf-8">
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      <title>Recommendation Email</title>
+                    </head>
+
+                    <body>
+                      <div style="margin: 0 auto; max-width: 900px; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5em; color: #555;">
+                        <div style="background-color: aqua; padding: 30px; border-radius: 10px; box-shadow: 0 50px 100px rgba(3, 0, 0, 0.5);">
+                          <h1 style="text-align: center;">Recommendation for a Volunteer Mission</h1>
+                          <p>Hello,</p>
+                          <p>We would like to recommend a volunteer mission for you:</p>
+                          <div style="background-color: #f1f1f1; padding: 20px; border-radius: 5px; margin-top: 20px;box-shadow: 2px 5px 10px yellow;">
+                            <h2 style="margin-top: 0; font-size: 24px;">${storyTitle}</h2>
+                            <p style="margin-top: 20px;"><strong>Written By:</strong> ${username}</p>
+                            <p style="margin-top: 20px;">Please click the button below to view the mission:</p>
+                            <p style="text-align: center; margin-top: 30px;">
+                              <a href="${missionLink}" style="display: inline-block; padding: 10px 20px; background-color: #0053b3; color: #fff; text-decoration: none; border-radius: 5px;">View Mission</a>
+                            </p>
+                          </div>
+                          <p style="margin-top: 30px;">Thank you,</p>
+                          <p>The Volunteer Mission Team</p>
+                        </div>
+                      </div>
+                    </body>
+
+                    </html>
+
+
+
+                `;
+        //body += "https://localhost:44383/?returnUrl=" + currentUrl;
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/Home/SendEmail',
+            data: {
+                "email": result,
+                "body": body,
+                "subject": subject
+            },
+            success: function () {
+                console.log("Mail is sent...");
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+
+
+
+
+
+
+
+
     
 });
 
@@ -580,6 +678,52 @@ function tempcc(storyId) {
         },
         error: function (xhr, status, error) {
             console.log("this error occured while doing deletion of story", error);
+        }
+    });
+}
+
+
+function viewStoryDetails(btn) {
+    var mid = $(btn).attr("data-mid");
+    var sid = $(btn).attr("data-sid");
+    var uid = $(btn).attr("data-uid");
+
+    var url = '/StoryListing/StoryDetail?missionId=' + mid + '&storyId=' + sid + '&userId=' + uid;
+    window.location.href = url;
+
+}
+
+
+
+
+
+function gridListRecommend() {
+    console.log("lkjhikgyuftyubvhj");
+    $.ajax({
+        type: 'GET',
+        url: '/MissionListing/GetListOfUserRecommendation',
+        success: function (data) {
+            let newHtml = `<ul class="list-group" id="list-group-in-reccoworker" data-name="@Model.Name" data-storytitle="@Model.ShareStory.StoryTitle" data-missionid="@Model.ShareStory.MissionId">`;
+
+            $.each(data, function (index, item) {
+                newHtml += `
+                                <li class="list-group-item d-flex align-items-center co-worker-checkbox">
+                                <input class="form-check-input me-1" type="checkbox" value="${item.email}" id="checkbox_${item.email}">
+                                <label for="checkbox_${item.email}" class="user-image d-flex ms-1">
+                                <img src="${item.avatar}" alt="" class="rounded-circle" style="height:40px">
+                                <div class="d-flex flex-column ms-2">
+                                    <p class="mb-0 ">${item.firstName} ${item.lastName}</p>
+                                    <p class="my-0" style="font-size:13px ;">${item.email}</p>
+                                </div>
+                                </label>
+                            </li>`
+            });
+            newHtml += `</ul>`;
+
+            $('.grid_list_modal_body').html(newHtml);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
         }
     });
 }
