@@ -1,6 +1,9 @@
 ﻿@using CIPlatform.Models.ViewDataModels
 @model StoryDetailViewModel
 
+@{
+    int totalItems = Model.ShareStory.Photos.Count + Model.ShareStory.VideoUrl.Count;
+}
 <script src="~/js/StoryListing.js"></script>
 
 <div class=container-fluid>
@@ -15,43 +18,45 @@
                 <div class="d-sm-flex w-md-100 w-lg-50 flex-column d-none h-100">
 
 
-                    <img src="~/assets/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png" id="image-area" class="w-100 h-100" />
+                    <img src="~/assets/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png" id="image-area" class="w-100" style="height:576px" />
+                    <iframe src=""  id="video-area" style="height: 576px;display:none"></iframe>
 
                     <div id="carousel-bottom" class="carousel slide">
                         <div class="carousel-inner">
-                            <div class="carousel-item active ">
-                                <div class="row p-1">
-                                    <div class="col-3 p-1">
-                                        <img src="~/assets/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                    </div>
-                                    <div class="col-3 p-1">
-                                        <img src="~/assets/Education-Supplies-for-Every--Pair-of-Shoes-Sold.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                    </div>
-                                    <div class="col-3 p-1">
-                                        <img src="~/assets/Grow-Trees-On-the-path-to-environment-sustainability.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                    </div>
-                                    <div class="col-3 p-1">
-                                        <img src="~/assets/Nourish-the-Children-in--African-country.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="row p-1">
-                                    <div class="col-3 p-1">
-                                        <img src="~/assets/Nourish-the-Children-in--African-country.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                    </div>
-                                    <div class="col-3 p-1">
-                                        <img src="~/assets/Plantation-and-Afforestation-programme.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                    </div>
-                                    <div class="col-3 p-1">
-                                        <img src="~/assets/CSR-initiative-stands-for-Coffee--and-Farmer-Equity.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                    </div>
-                                    <div class="col-3 p-1">
-                                        <img src="~/assets/Plantation-and-Afforestation-programme.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
+                            @for (int i = 0; i < totalItems; i += 4)
+                            {
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <div class="row p-1">
+                                        @for (int j = i; j < i + 4 && j < totalItems; j++)
+                                        {
+                                            <div class="col-3 p-1">
+                                                @if (j < Model.ShareStory.Photos.Count)
+                                                {
+                                                    <img src="@Model.ShareStory.Photos[j]" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
+                                                }
+                                                else if (j < totalItems)
+                                                {
+                                                    int videoIndex = j - Model.ShareStory.Photos.Count;
+                                                    if (videoIndex % 2 == 0)
+                                                    {
+                                                        <img src="~/assets/videoplayer3.jpg" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" data-vpath="@Model.ShareStory.VideoUrl[videoIndex]" width="175" height="120" role="img" onclick="displayVideo(this)">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/assets/videoplayer2.jpg" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" data-vpath="@Model.ShareStory.VideoUrl[videoIndex]" width="175" height="120" role="img" onclick="displayVideo(this)">
+                                                    }
+
+                                                    @*<iframe src="@Model.ShareStory.VideoUrl[videoIndex]" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%;"></iframe>*@
+                                                }
+                                            </div>
+                                        }
                                     </div>
                                 </div>
+                                }
                             </div>
-                        </div>
+                    
+
+
                         <button class="carousel-control-prev w-auto ps-2 pe-2 bg-black bg-opacity-50 mt-2 mb-2" type="button" data-bs-target="#carousel-bottom" data-bs-slide="prev">
                             <img src="~/assets/left1.png" aria-hidden="true" />
                             <span class="visually-hidden">Previous</span>
@@ -76,7 +81,7 @@
                         <span>@Model.Name</span>
                     </div>
                     <div class="storyViews bg-white border px-3 py-1 rounded-pill">
-                        <i class="bi bi-eye fst-normal"> &nbsp; 10000 Views</i>
+                        <i class="bi bi-eye fst-normal"> &nbsp; @Model.totalViews Views</i>
                     </div>
                 </div>
 
@@ -86,13 +91,19 @@
                     </p>
                 </div>
 
-                   <partial name="_ReccommendBtn" model="Model.Users" />
+                   <div class="row align-items-center">
+                       <div class="col-8">
+                           <partial name="_ReccommendBtn"  model="Model.Users" />
+                       </div>
+                       <div class="col-4">
+                        <button class="btn-primary form-control bg-white border-orange p-2 rounded-pill text-orange" id="storydetailbtn-tomission" data-missionid=@Model.ShareStory.MissionId>
+                            Open Mission &nbsp; &nbsp; <i class="bi bi-arrow-right"></i>
+                        </button>
+                       </div>
+                   </div>
+                   
                 <div class="d-flex justify-content-between">
-                    @*<button class="w-md-25 btn form-control bg-white text-orange border-orange p-2 rounded-pill">
-                        <span>
-                           Open Mission  &nbsp; &nbsp; <i class="bi bi-arrow-right"></i>
-                        </span>
-                    </button>*@
+                   
                 </div>
 
             </div>
@@ -118,6 +129,6 @@
 
 
 
-
-
-
+<input type="hidden" id="name-input" value="@Model.Name" />
+<input type="hidden" id="storytitle-input" value="@Model.ShareStory.StoryTitle" />
+<input type="hidden" id="missionid-input" value="@Model.ShareStory.MissionId" />

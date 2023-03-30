@@ -22,6 +22,12 @@ getTotalCount();
 $(document).ready(function () {
     gridListRecommend()
 
+    $("#storydetailbtn-tomission").on('click', function () {
+        let mid = $(this).attr("data-missionid");
+        console.log("chiragbhai jovo to missionid shu aayu : " + mid)
+        window.location.href = '/MissionListing/VolunteeringMissionPage?missionId=' + mid;
+    });
+
     $("#file-preview").find("img").each(function () {
         sources.push($(this).attr("src"));
     });
@@ -375,9 +381,15 @@ $(document).ready(function () {
         console.log(result);
         //let missionTitle = $("#list-group-in-reccoworker").attr('data-missiontitle');
         //let missionTheme = $("#list-group-in-reccoworker").attr('data-missiontheme');
-        let storyTitle = $("#list-group-in-reccoworker").attr('data-storytitle');
-        let username = $("#list-group-in-reccoworker").attr('data-name');
+        //let storyTitle = $("#list-group-in-reccoworker").attr('data-storytitle');
+        //let username = $("#list-group-in-reccoworker").attr('data-name');
 
+        let username = $('#name-input').val();
+        let storyTitle = $('#storytitle-input').val();
+
+
+        console.log("Story Tt",storyTitle)
+        console.log("User name",username)
         let queryStr = window.location.search;
         let urlParams = new URLSearchParams(queryStr);
         let storyId = urlParams.get("storyId")
@@ -387,9 +399,14 @@ $(document).ready(function () {
 
         let subject = " Reccommendation to join " + storyTitle;
         //console.log("The type of  missions skills is " + typeof (missionSkills));
-        var currentUrl = window.location.href;
         console.log(currentUrl);
-        let missionLink = "https://localhost:44383/?returnUrl=" + currentUrl;
+        var currentUrl = window.location.href;
+        //let storyLink = `https://localhost:44383/?returnUrl=${currentUrl}&missionId=${missionId}&storyId=${storyId}&userId=${userId}`;
+
+        let encodedUrl = encodeURIComponent(currentUrl);
+        let storyLink = `https://localhost:44383/?returnUrl=${encodedUrl}&missionId=${missionId}&storyId=${storyId}&userId=${userId}`;
+
+        console.log(storyLink);
         let body = `<!DOCTYPE html>
                     <html>
 
@@ -401,7 +418,7 @@ $(document).ready(function () {
 
                     <body>
                       <div style="margin: 0 auto; max-width: 900px; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5em; color: #555;">
-                        <div style="background-color: aqua; padding: 30px; border-radius: 10px; box-shadow: 0 50px 100px rgba(3, 0, 0, 0.5);">
+                        <div style="background-color: #c780e1; padding: 30px; border-radius: 10px; box-shadow: 0 50px 100px rgba(3, 0, 0, 0.5);">
                           <h1 style="text-align: center;">Recommendation for a Volunteer Mission</h1>
                           <p>Hello,</p>
                           <p>We would like to recommend a volunteer mission for you:</p>
@@ -410,7 +427,7 @@ $(document).ready(function () {
                             <p style="margin-top: 20px;"><strong>Written By:</strong> ${username}</p>
                             <p style="margin-top: 20px;">Please click the button below to view the mission:</p>
                             <p style="text-align: center; margin-top: 30px;">
-                              <a href="${missionLink}" style="display: inline-block; padding: 10px 20px; background-color: #0053b3; color: #fff; text-decoration: none; border-radius: 5px;">View Mission</a>
+                              <a href="${storyLink}" style="display: inline-block; padding: 10px 20px; background-color: #0053b3; color: #fff; text-decoration: none; border-radius: 5px;">View Story</a>
                             </p>
                           </div>
                           <p style="margin-top: 30px;">Thank you,</p>

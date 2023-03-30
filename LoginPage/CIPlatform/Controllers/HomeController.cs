@@ -208,6 +208,7 @@ namespace CIPlatform.Controllers
             message.IsBodyHtml = true;
             client.Send(message);
 
+            //TempData["story"]
         }
 
 

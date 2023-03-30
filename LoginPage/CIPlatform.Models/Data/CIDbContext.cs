@@ -824,6 +824,11 @@ namespace CIPlatform.Models.Data
                     .HasColumnName("updated_at");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.Property(e => e.Views)
+                   .IsRequired()
+                   .HasDefaultValue(0);
+
             });
 
             modelBuilder.Entity<StoryInvite>(entity =>
