@@ -77,6 +77,9 @@ $(document).ready(function () {
             },
             success: function (response) {
                 console.log(response);
+
+
+
                 //$("body").html(response); // We do not need to append the data evrytime just change the window location
                 //window.location.href = "/StoryListing/StoryListing";
             },

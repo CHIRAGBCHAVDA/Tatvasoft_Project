@@ -1,13 +1,13 @@
 ﻿@inject IHttpContextAccessor HttpContextAccessor
-<div class="header container">
+<div class="header">
     <nav class="navbar navbar-expand-sm navbar-lightt">
         <div class="container-fluid">
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"><i class="bi bi-list"></i></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarText">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center d-flex-column">
+            <div class="collapse navbar-collapse w-75" id="navbarText">
+                <ul class="navbar-nav w-100 mb-2 mb-lg-0 align-items-center d-flex-column justify-content-end">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" asp-action="StoryListing" asp-controller="StoryListing">Stories</a>
                     </li>
@@ -31,8 +31,15 @@
 
                 </ul>
             </div>
-            <div class="navbar-img d-flex">
-                <img src="@HttpContextAccessor.HttpContext.Session.GetString("userImage")" class="rounded-circle mx-2" style="height:40px;width:40px" alt="">
+            <div class="navbar-img d-flex w-100 justify-content-center">
+                @if (HttpContextAccessor.HttpContext.Session.GetString("userImage") != null)
+                {
+                    <img src="@HttpContextAccessor.HttpContext.Session.GetString("userImage")" class="rounded-circle mx-2" style="height:40px;width:40px" alt="">
+                }
+                else
+                {
+                    <img src="~/assets/user1.png" class="rounded-circle mx-2" style="height:40px;width:40px" alt="">
+                }
                 <div class="dropdown">
 
                     <a class="btn btn-secondary bg-white text-white  border border-0 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">

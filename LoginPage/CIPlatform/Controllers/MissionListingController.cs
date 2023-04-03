@@ -248,9 +248,21 @@ namespace CIPlatform.Controllers
         #endregion
         
         
-        [HttpPost]
-        public int addRmFav(long mId)
+        public class BaseResponseModel
         {
+            public string Msg { get; set; }
+            public bool Status { get; set; }
+            public dynamic Data { get; set; } //instead of int directly use Data send 1 from here
+            //standard to work with API
+        }
+
+        [HttpPost]
+        public int addRmFav(long mId) 
+        {
+            //Pass the model instead of Int 
+
+
+
             long uid = long.Parse(HttpContext.Session.GetString("userId"));
             var getFromFav = _db.FavouriteMissions.Where(m => m.MissionId == mId && m.UserId == uid).FirstOrDefault();
             if (getFromFav != null && getFromFav.DeletedAt == null)

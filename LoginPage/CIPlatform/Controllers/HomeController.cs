@@ -17,12 +17,12 @@ namespace CIPlatform.Controllers
     {
         //private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
-        private EmailSender _emailSender;
+        //private  EmailSender _emailSender;
 
-        public HomeController(IUnitOfWork unitOfWork, EmailSender emailSender)
+        public HomeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _emailSender = emailSender;
+            //_emailSender = emailSender;
         }
 
         [HttpPost]
@@ -37,7 +37,7 @@ namespace CIPlatform.Controllers
                 User a = _unitOfWork.User.Update(getUser, resetcode);
                 var subject = "Password Reset Request";
                 var body = "Hi " + getUser.FirstName + ", <br/> You recently requested to reset your password for your account. Click the link below to reset it. " + " <br/><br/><a href='" + link + "'>" + link + "</a> <br/><br/>" + "If you did not request a password reset, please ignore this email or reply to let us know.<br/><br/> Thank you";
-                _emailSender.SendEmail(getUser.Email, body, subject);
+                EmailSender.SendEmail(getUser.Email, body, subject);
                 TempData["mail-success"] = "Reset password link has been sent to your email id.";
             }
             else if (getUser == null)

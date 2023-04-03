@@ -1,0 +1,144 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container-fluid">
+
+    <div class="main-wrapper">
+        <partial name="_Header" />
+        <hr />
+
+        <div class="row mt-5 container m-auto">
+
+            <div class="d-flex col-lg-3 flex-column align-items-center border py-3 px-5 user-edit-page">
+                <img src="~/assets/user-img-large.png" class="rounded-circle user-img-left" />
+                <p class="mt-3 mb-0">User Name</p>
+                <a href="#" class="fst-normal text-decoration-none text-secondary ">Change Password</a>
+            </div>
+
+            <div class="ms-lg-3 col-lg-8">
+
+                <div class="mb-5">
+                    <div class="border-bottom">
+                        <span class="user-basic-information fw-normal h3 border-bottom border-dark ">Basic Information</span>
+                    </div>
+                    <div class="user-basic-info-form my-3 text-secondary">
+                        <div class="d-flex mb-3">
+                            <div class="w-100 me-3">
+                                <label for="name" class="form-label">Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                                <div class="invalid-feedback">Please enter your name.</div>
+                            </div>
+                            <div class="w-100">
+                                <label for="surname" class="form-label">Surname<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="surname" placeholder="Enter your surname" required>
+                                <div class="invalid-feedback">Please enter your name.</div>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <div class="w-100 me-3">
+                                <label for="eid" class="form-label">Employee ID</label>
+                                <input type="text" class="form-control" id="eid" placeholder="Enter your employee id" required>
+                                <div class="invalid-feedback">Please enter your Employee ID</div>
+                            </div>
+                            <div class="w-100">
+                                <label for="manager" class="form-label">Manager</label>
+                                <input type="text" class="form-control" id="manager" placeholder="Enter your manager details" required>
+                                <div class="invalid-feedback">Please enter your Manager Details</div>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <div class="w-100 me-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title" placeholder="Enter your designation" required>
+                                <div class="invalid-feedback">Please enter your Employee ID</div>
+                            </div>
+                            <div class="w-100">
+                                <label for="dept" class="form-label">Department</label>
+                                <input type="text" class="form-control" id="dept" placeholder="Enter your department" required>
+                                <div class="invalid-feedback">Please enter your Manager Details</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="myprofile" class="form-label">My Profile <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="myprofile" rows="3" placeholder="Enter your profile details..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="whyIVol" class="form-label">Why I Volunteer  ?</label>
+                            <textarea class="form-control" id="whyIVol" rows="3" placeholder="Enter your comments..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="my-5">
+                    <div class="border-bottom">
+                        <span class="user-address-information fw-normal h3 border-bottom border-dark ">Address Information</span>
+                    </div>
+                    <div class="user-address-info-form mt-3 text-secondary">
+                        <div class="d-flex mb-3">
+                            <div class="w-100 me-3">
+                                <label for="user-city" class="form-label">City</label>
+                                <input type="text" class="form-control" id="user-city" placeholder="Enter your city">
+                                <div class="invalid-feedback">Please enter your name.</div>
+                            </div>
+                            <div class="w-100">
+                                <label for="user-country" class="form-label">Country<span class="text-danger">*</span></label>
+                                <select id="user-country" class="form-select">
+                                    <option>Select your conutry</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="my-5">
+                    <div class="border-bottom">
+                        <span class="user-professional-information fw-normal h3 border-bottom border-dark ">Professional Information</span>
+                    </div>
+                    <div class="user-professional-info-form mt-3 text-secondary">
+                        <div class="d-flex mb-3">
+                            <div class="w-100">
+                                <label for="user-availability" class="form-label">Availability</label>
+                                <select id="user-availability" class="form-select">
+                                    <option>Select your availability</option>
+                                </select>
+                            </div>
+                             <div class="w-100 me-3">
+                                <label for="user-linkedin" class="form-label">LinkedIn</label>
+                                <input type="text" class="form-control" id="user-linkedin" placeholder="Enter your linkedin URL">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="my-5">
+                    <div class="border-bottom">
+                        <span class="user-skill-information fw-normal h3 border-bottom border-dark ">My Skills</span>
+                    </div>
+                    <div class="user-skill-info-form my-3 text-secondary border border-secondary ps-3">
+                        Drawing <br/>
+                        Boating <br/>
+                        Sewing <br/>
+                        Cooking <br/>
+                        Woodworking <br/>
+                        Knitting <br/>
+                        Photography <br/>
+                        Gardening <br/>
+                        Yoga <br/>
+                        Dancing <br/>
+                    </div>
+                    <button class="btn btn-primary bg-white border-secondary rounded-pill px-4 text-secondary" id="addskills-useredit">Add Skills</button>
+
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <button class="btn btn-primary bg-white rounded-pill px-4 text-orange border-orange" id="save-useredit">Save</button>
+                </div>
+                
+
+            </div>
+        </div>
+
+    </div>
+</div>

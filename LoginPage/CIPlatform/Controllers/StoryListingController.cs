@@ -183,8 +183,8 @@ namespace CIPlatform.Controllers
                 var story = _unitOfWork.StoryRepo.getStoryBySID(storyId);
                 var storyMedia = _unitOfWork.StoryRepo.storyMedia(storyId);
 
-                story.Views++;
-                _db.Update(story);
+                story.Views = story.Views+1;
+                _db.Stories.Update(story);
                 _db.SaveChanges();
 
                 ShareStoryViewModel shareStr = new ShareStoryViewModel()

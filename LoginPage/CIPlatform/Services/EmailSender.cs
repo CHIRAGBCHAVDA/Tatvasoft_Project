@@ -3,9 +3,9 @@ using System.Net.Mail;
 
 namespace CIPlatform.Services
 {
-    public class EmailSender
+    public static class EmailSender
     {
-        public void SendEmail(string email, string body, string subject)
+        public static void SendEmail(string email, string body, string subject)
         {
              var client = new SmtpClient("smtp.gmail.com", 587);
             client.UseDefaultCredentials = false;

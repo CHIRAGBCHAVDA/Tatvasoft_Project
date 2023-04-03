@@ -282,3 +282,23 @@ background-image: url("../assets/left.png");
 .fs-13{
     font-size:13px;
 }
+
+.user-edit-page{
+    max-height:315px;
+    justify-content:center;
+}
+
+
+.user-edit-page .user-img-left {
+    height: 150px;
+    width: 150px;
+}
+
+.user-skill-info-form{
+    height:150px;
+    overflow-y:auto;
+}
+
+    .user-skill-info-form::-webkit-scrollbar {
+        width: 0px;
+    }

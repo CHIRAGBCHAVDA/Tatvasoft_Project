@@ -19,7 +19,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-builder.Services.AddScoped<EmailSender>();
+//builder.Services.AddScoped(typeof(EmailSender));
 
 
 var app = builder.Build();
