@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace CIPlatform.Models
 {
@@ -14,10 +13,7 @@ namespace CIPlatform.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
-        [JsonIgnore]
-        public User User { get; set; }
-
-        [JsonIgnore]
-        public Mission Mission { get; set; } // Navigation property for Mission entity
+        public virtual Mission Mission { get; set; } = null!;
+        public virtual User User { get; set; } = null!;
     }
 }

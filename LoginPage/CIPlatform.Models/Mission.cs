@@ -8,6 +8,8 @@ namespace CIPlatform.Models
         public Mission()
         {
             Comments = new HashSet<Comment>();
+            FavouriteMissions = new HashSet<FavouriteMission>();
+            MissionRatings = new HashSet<MissionRating>();
         }
 
         public long MissionId { get; set; }
@@ -27,7 +29,6 @@ namespace CIPlatform.Models
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
-
         public int? AvailableSeats { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }

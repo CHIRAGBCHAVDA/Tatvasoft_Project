@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "T/UViUDuT5cdCbnq3XWOqyBAzhm7RfuTdGUExMv6bJA=",
+  "Hash": "b3d/RedbqliEee0ASXhdNYjsEyM8Ofm1ifeuTmQj0fU=",
   "Source": "CIPlatform",
   "BasePath": "_content/CIPlatform",
   "Mode": "Default",
@@ -2021,6 +2021,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\StoryListing.js"
+    },
+    {
+      "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\js\\UserEdit.js",
+      "SourceId": "CIPlatform",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\",
+      "BasePath": "_content/CIPlatform",
+      "RelativePath": "js/UserEdit.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\UserEdit.js"
     },
     {
       "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",

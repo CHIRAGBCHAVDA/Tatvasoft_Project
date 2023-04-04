@@ -268,7 +268,7 @@ background-image: url("../assets/left.png");
 }
 
 .card-to-scale{
-    height:670px;
+    max-height:670px;
 }
 
 
@@ -302,3 +302,11 @@ background-image: url("../assets/left.png");
     .user-skill-info-form::-webkit-scrollbar {
         width: 0px;
     }
+
+#changePasswordButton:disabled,
+#changePasswordButton[disabled] {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    border-color: #F88634 !important;
+    color: #F88634 !important;
+}

@@ -1,6 +1,7 @@
 ﻿using System;
 
 using CIPlatform.Models;
+using CIPlatform.Models.ViewDataModels;
 
 namespace CIPlatform.DataAccess.Repository.IRepository
 {
@@ -11,5 +12,7 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         User Update(User getUser, string token);
         User getUserByUID(long userId);
         List<User> GetAllUsers();
+        UserDetailViewModel GetUserDetailViewModel(long userId);
+
     }
 }

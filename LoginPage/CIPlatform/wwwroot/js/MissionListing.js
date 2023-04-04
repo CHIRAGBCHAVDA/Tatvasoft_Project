@@ -187,6 +187,13 @@ $(document).ready(function () {
             }
         });
     });
+
+
+    $('#sortingMission').change(function () {
+        selectedOption = $(this).val();
+        console.log("The value of sorting is : " + selectedOption);// Get the selected option value
+        getFilter(); // Call the sortMissions function with the selected option
+    });
 });
 
 function gridListRecommend() {

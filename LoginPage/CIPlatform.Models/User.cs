@@ -10,10 +10,12 @@ namespace CIPlatform.Models
         public User()
         {
             Comments = new HashSet<Comment>();
+            FavouriteMissions = new HashSet<FavouriteMission>();
+            MissionRatings = new HashSet<MissionRating>();
+            UserSkills = new HashSet<UserSkill>();
         }
 
         public long UserId { get; set; }
-
         [Required]
         public string FirstName { get; set; }
         public string? LastName { get; set; }
@@ -24,13 +26,12 @@ namespace CIPlatform.Models
         public string Email { get; set; } = null!;
         [Required]
         [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%&*?])[A-Za-z\d!@#$%&*?]{6}$",
-            ErrorMessage ="The Password must be atleast of 6 characters long and contain atleast 1 digit and 1 special character.")]
+            ErrorMessage = "The Password must be atleast of 6 characters long and contain atleast 1 digit and 1 special character.")]
         public string Password { get; set; } = null!;
 
         [NotMapped]
         [Compare("Password", ErrorMessage = "Confirm password must be matched with Password!!")]
         public string ConfirmPassword { get; set; }
-
         public string? Token { get; set; }
         public long PhoneNumber { get; set; }
         public string? Avatar { get; set; }
@@ -46,13 +47,14 @@ namespace CIPlatform.Models
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
-
         public DateTime? TokenCreatedAt { get; set; }
+        public string? ManagerDetails { get; set; }
+        public byte? AvailabilityId { get; set; }
 
+        public virtual Availability? Availability { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<FavouriteMission> FavouriteMissions { get; set; }
         public virtual ICollection<MissionRating> MissionRatings { get; set; }
-
-
+        public virtual ICollection<UserSkill> UserSkills { get; set; }
     }
 }

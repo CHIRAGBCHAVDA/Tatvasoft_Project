@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using CIPlatform.Models;
 
-namespace CIPlatform.Models.Data
+namespace CIPlatform.Models
 {
     public partial class CIDbContext : DbContext
     {
@@ -31,7 +30,7 @@ namespace CIPlatform.Models.Data
         public virtual DbSet<MissionApplication> MissionApplications { get; set; } = null!;
         public virtual DbSet<MissionDocument> MissionDocuments { get; set; } = null!;
         public virtual DbSet<MissionInvite> MissionInvites { get; set; } = null!;
-        public virtual DbSet<MissionMedia> MissionMedia { get; set; } = null!;
+        public virtual DbSet<MissionMedium> MissionMedia { get; set; } = null!;
         public virtual DbSet<MissionRating> MissionRatings { get; set; } = null!;
         public virtual DbSet<MissionSkill> MissionSkills { get; set; } = null!;
         public virtual DbSet<MissionTheme> MissionThemes { get; set; } = null!;
@@ -51,7 +50,7 @@ namespace CIPlatform.Models.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=PCI41\\SQL2017;DataBase=CIDb;User ID=sa;Password=Tatva@123;Trust Server Certificate = true");
+                optionsBuilder.UseSqlServer("Data Source=PCI41\\SQL2017;DataBase=CIDb;User ID=sa;Password=Tatva@123;");
             }
         }
 
@@ -260,8 +259,6 @@ namespace CIPlatform.Models.Data
             modelBuilder.Entity<Comment>(entity =>
             {
                 entity.ToTable("comment");
-                entity.Property(e => e.CommentDescription).HasColumnType("text").HasColumnName("comment_description");
-
 
                 entity.Property(e => e.CommentId).HasColumnName("comment_id");
 
@@ -269,11 +266,14 @@ namespace CIPlatform.Models.Data
                     .HasColumnName("approval_status_id")
                     .HasDefaultValueSql("((1))");
 
+                entity.Property(e => e.CommentDescription)
+                    .HasColumnType("text")
+                    .HasColumnName("comment_description");
+
                 entity.Property(e => e.CreatedAt)
-                    //.IsRowVersion()
-                    //.IsConcurrencyToken()
-                    .HasColumnType("DateTime")
-                    .HasColumnName("created_at");
+                    .HasColumnType("datetime")
+                    .HasColumnName("created_at")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.DeletedAt)
                     .HasColumnType("datetime")
@@ -284,7 +284,6 @@ namespace CIPlatform.Models.Data
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
-
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
@@ -337,63 +336,41 @@ namespace CIPlatform.Models.Data
                     .HasColumnName("updated_at");
             });
 
-            //modelBuilder.Entity<FavouriteMission>(entity =>
-            //{
-            //    entity.ToTable("favourite_mission");
-
-            //    entity.Property(e => e.FavouriteMissionId).HasColumnName("favourite_mission_id");
-
-            //    entity.Property(e => e.CreatedAt)
-            //        .HasColumnType("datetime")
-            //        .HasColumnName("created_at")
-            //        .HasDefaultValueSql("(getdate())");
-
-            //    entity.Property(e => e.DeletedAt)
-            //        .HasColumnType("datetime")
-            //        .HasColumnName("deleted_at");
-
-            //    entity.Property(e => e.MissionId).HasColumnName("mission_id");
-
-            //    entity.Property(e => e.UpdatedAt)
-            //        .HasColumnType("datetime")
-            //        .HasColumnName("updated_at");
-
-            //    entity.Property(e => e.UserId).HasColumnName("user_id");
-            //});
-
             modelBuilder.Entity<FavouriteMission>(entity =>
             {
                 entity.ToTable("favourite_mission");
 
-                entity.HasKey(e => e.FavouriteMissionId);
-
                 entity.Property(e => e.FavouriteMissionId).HasColumnName("favourite_mission_id");
 
                 entity.Property(e => e.CreatedAt)
-                    .HasColumnName("created_at")
-                    .HasDefaultValueSql("GETDATE()");
-
-                entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
-                    .HasColumnName("updated_at");
+                    .HasColumnName("created_at")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.DeletedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("deleted_at");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
-
-                entity.HasOne(e => e.User)
-                    .WithMany(u => u.FavouriteMissions)
-                    .HasForeignKey(e => e.UserId);
-
                 entity.Property(e => e.MissionId).HasColumnName("mission_id");
 
-                entity.HasOne(e => e.Mission)
-                    .WithMany(m => m.FavouriteMissions)
-                    .HasForeignKey(e => e.MissionId);
-            });
+                entity.Property(e => e.UpdatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("updated_at");
 
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.Mission)
+                    .WithMany(p => p.FavouriteMissions)
+                    .HasForeignKey(d => d.MissionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__favourite__missi__4C6B5938");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.FavouriteMissions)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__favourite__user___4B7734FF");
+            });
 
             modelBuilder.Entity<GoalMission>(entity =>
             {
@@ -580,7 +557,7 @@ namespace CIPlatform.Models.Data
                     .HasColumnName("updated_at");
             });
 
-            modelBuilder.Entity<MissionMedia>(entity =>
+            modelBuilder.Entity<MissionMedium>(entity =>
             {
                 entity.HasKey(e => e.MissionMediaId)
                     .HasName("PK__mission___848A78E87EACC3F1");
@@ -637,6 +614,7 @@ namespace CIPlatform.Models.Data
                     .HasColumnType("datetime")
                     .HasColumnName("deleted_at");
 
+                entity.Property(e => e.MissionId).HasColumnName("mission_id");
 
                 entity.Property(e => e.Rating).HasColumnName("rating");
 
@@ -645,15 +623,18 @@ namespace CIPlatform.Models.Data
                     .HasColumnName("updated_at");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
-                entity.HasOne(e => e.User)
-                    .WithMany(m => m.MissionRatings)
-                    .HasForeignKey(e => e.UserId);
 
-                entity.Property(e => e.MissionId).HasColumnName("mission_id");
+                entity.HasOne(d => d.Mission)
+                    .WithMany(p => p.MissionRatings)
+                    .HasForeignKey(d => d.MissionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__mission_r__missi__531856C7");
 
-                entity.HasOne(e => e.Mission)
-                    .WithMany(m => m.MissionRatings)
-                    .HasForeignKey(e => e.MissionId);
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.MissionRatings)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_User_id");
             });
 
             modelBuilder.Entity<MissionSkill>(entity =>
@@ -826,9 +807,8 @@ namespace CIPlatform.Models.Data
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.Property(e => e.Views)
-                   .IsRequired()
-                   .HasDefaultValue(0);
-
+                    .HasColumnName("views")
+                    .HasDefaultValueSql("((0))");
             });
 
             modelBuilder.Entity<StoryInvite>(entity =>
@@ -964,6 +944,8 @@ namespace CIPlatform.Models.Data
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
+                entity.Property(e => e.AvailabilityId).HasColumnName("availability_id");
+
                 entity.Property(e => e.Avatar)
                     .HasMaxLength(2048)
                     .IsUnicode(false)
@@ -1012,6 +994,11 @@ namespace CIPlatform.Models.Data
                     .IsUnicode(false)
                     .HasColumnName("linked_in_url");
 
+                entity.Property(e => e.ManagerDetails)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("manager_details");
+
                 entity.Property(e => e.Password)
                     .HasMaxLength(255)
                     .IsUnicode(false)
@@ -1037,6 +1024,10 @@ namespace CIPlatform.Models.Data
                     .IsUnicode(false)
                     .HasColumnName("token");
 
+                entity.Property(e => e.TokenCreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("token_created_at");
+
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
@@ -1044,16 +1035,18 @@ namespace CIPlatform.Models.Data
                 entity.Property(e => e.WhyIVolunteer)
                     .HasColumnType("text")
                     .HasColumnName("why_i_volunteer");
+
+                entity.HasOne(d => d.Availability)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.AvailabilityId)
+                    .HasConstraintName("FK__user__availabili__625A9A57");
             });
 
             modelBuilder.Entity<UserSkill>(entity =>
             {
-                entity.HasKey(e => e.SkillId)
-                    .HasName("PK__user_ski__FBBA837940476E0B");
-
                 entity.ToTable("user_skill");
 
-                entity.Property(e => e.SkillId).HasColumnName("skill_id");
+                entity.Property(e => e.UserSkillId).HasColumnName("user_skill_id");
 
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
@@ -1064,10 +1057,7 @@ namespace CIPlatform.Models.Data
                     .HasColumnType("datetime")
                     .HasColumnName("deleted_at");
 
-                entity.Property(e => e.SkillName)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("skill_name");
+                entity.Property(e => e.SkillId).HasColumnName("skill_id");
 
                 entity.Property(e => e.Status)
                     .HasColumnName("status")
@@ -1076,6 +1066,18 @@ namespace CIPlatform.Models.Data
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.Skill)
+                    .WithMany(p => p.UserSkills)
+                    .HasForeignKey(d => d.SkillId)
+                    .HasConstraintName("FK__user_skil__skill__74794A92");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserSkills)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK__user_skil__user___73852659");
             });
 
             OnModelCreatingPartial(modelBuilder);
