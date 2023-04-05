@@ -63,6 +63,7 @@ namespace CIPlatform.DataAccess.Repository
             var user = _db.Users.FirstOrDefault(user => user.UserId == userId);
             var City = _db.Cities.FirstOrDefault(city => city.CityId == user.CityId);
             var Countries = _db.Countries.AsEnumerable();
+            var AllSkills = _db.Skills.ToList();
             var dictOfSkill = new Dictionary<long, string>();
             var userSkills = _db.UserSkills.Where(skill => skill.UserId==user.UserId).Select(skill => skill.Skill).ToList();
             foreach(var skill in userSkills)
@@ -89,7 +90,8 @@ namespace CIPlatform.DataAccess.Repository
                 Skills = dictOfSkill,
                 LinkedIn = user.LinkedInUrl,
                 Availabilities = Availabilities.ToList(),
-                Availability = user.Availability.Name
+                Availability = user.Availability.Name,
+                AllSkills = AllSkills
             };
 
             return userDetailViewModel;

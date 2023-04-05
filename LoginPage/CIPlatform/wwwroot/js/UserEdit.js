@@ -76,6 +76,56 @@
 
     });
 
+    $('#toRightSkills').on('click', function () {
+        $(".selected-skills-list").html("");
+        var LeftSelectedSkills = document.querySelectorAll(".left-skill-check:checked");
+        var userSkills = [];
+        for (var skill of LeftSelectedSkills) {
+            var UserSkillItem = {
+                SkillId: parseInt(skill.id.toString().split('-')[1]),
+                SkillName: skill.nextElementSibling.innerHTML
+            };
+            userSkills.push(UserSkillItem);
+            $(".selected-skills-list").append(`
+                                <div class="form-check">
+                                    <input class="btn-check form-check-input right-skill-check" type="checkbox" value="${UserSkillItem.SkillId}" id="skillcheckboxright-${UserSkillItem.SkillId}">
+                                    <label class="form-check-label" for="skillcheckboxright-${UserSkillItem.SkillId}">
+                                        ${UserSkillItem.SkillName}
+                                    </label>
+                                </div>`);
+        }
+    });
+ 
+    $('#toLeftSkills').on('click', function () {
+        var RightSelectedSkills = document.querySelectorAll(".right-skill-check:checked");
+        for (var item of RightSelectedSkills) {
+            debugger;
+            var SkillId = "skillcheckbox-" + item.id.toString().split('-')[1];
+            document.getElementById(SkillId).checked = false;
+            document.getElementById(item.id).nextElementSibling.remove();
+            document.getElementById(item.id).remove();
+        }
+    });
+
+
+
+
+    //for checkbox background in skills
+    $('input[type="checkbox"]:checked').each(function () {
+        $(this).parent('.form-check').addClass('bg-secondary');
+    });
+    
+    //$(".left-skill-check,.right-skill-check").on('change' ,function () {
+    //    $(this).parent('.form-check').toggleClass('bg-secondary');
+    //});
+    $(".checkbox-list").on('change', '.left-skill-check', function () {
+        $(this).parent('.form-check').toggleClass('bg-secondary');
+    });
+    $(".checkbox-list").on('change', '.right-skill-check', function () {
+        $(this).parent('.form-check').toggleClass('bg-secondary');
+    });
+
+    //for validating password
     function validatePassword() {
         console.log("Validate pwd");
         const newPwdInput = document.getElementById('newpwd');

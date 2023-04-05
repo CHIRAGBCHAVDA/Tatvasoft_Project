@@ -16,7 +16,7 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         public bool deleteStory(long storyId);
 
         public List<Mission> getAppliedMissions(long userId);
-        public ShareStoryViewModel? getDraftedStory(long userId);
+        public ShareStoryViewModel? getDraftedStory(long userId, long? missionId);
         public long draftStorybyUser(string storyMissionName, string storyTitle, DateTime storyDate, string story, string? storyVideoUrl, string[]? srcs);
         public bool storeNewStory(long userId, long missionId);
 

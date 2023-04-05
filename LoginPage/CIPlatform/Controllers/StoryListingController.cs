@@ -95,8 +95,21 @@ namespace CIPlatform.Controllers
         public IActionResult ShareStory()
         {
             long ui = long.Parse(HttpContext.Session.GetString("userId"));
-            var toReturnAsModel = _unitOfWork.StoryRepo.getDraftedStory(ui);
+            var toReturnAsModel = _unitOfWork.StoryRepo.getDraftedStory(ui,null);
             if(toReturnAsModel != null)
+            {
+                ViewData["MissionId"] = toReturnAsModel.MissionId;
+                return View(toReturnAsModel);
+            }
+
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ShareStory(long missionId)
+        {
+            long ui = long.Parse(HttpContext.Session.GetString("userId"));
+            var toReturnAsModel = _unitOfWork.StoryRepo.getDraftedStory(ui,missionId);
+            if (toReturnAsModel != null)
             {
                 ViewData["MissionId"] = toReturnAsModel.MissionId;
                 return View(toReturnAsModel);
@@ -119,11 +132,23 @@ namespace CIPlatform.Controllers
         }
         #region Draft and Save Story
 
+        //[HttpPost]
+        //public IActionResult draftStory(string storyMissionName,string storyTitle,DateTime storyDate,string story,string? storyVideoUrl,string[]? srcs)
+        //{
+        //    long SmissionId = _unitOfWork.StoryRepo.draftStorybyUser(storyMissionName, storyTitle, storyDate, story, storyVideoUrl, srcs);
+        //    if (SmissionId>0)
+        //    {
+        //        return RedirectToAction("StoryListing", "StoryListing");
+        //    }
+        //    return RedirectToAction("ShareStory", "StoryListing");
+        //}
+
         [HttpPost]
-        public IActionResult draftStory(string storyMissionName,string storyTitle,DateTime storyDate,string story,string? storyVideoUrl,string[]? srcs)
+        public IActionResult newStory()
         {
-            long SmissionId = _unitOfWork.StoryRepo.draftStorybyUser(storyMissionName, storyTitle, storyDate, story, storyVideoUrl, srcs);
-            if (SmissionId>0)
+            var draftedS = _unitOfWork.StoryRepo.getDraftedStory(long.Parse(HttpContext.Session.GetString("userId")),null);
+            bool sid = _unitOfWork.StoryRepo.storeNewStory(long.Parse(HttpContext.Session.GetString("userId")), draftedS.MissionId);
+            if (sid)
             {
                 return RedirectToAction("StoryListing", "StoryListing");
             }
@@ -131,17 +156,11 @@ namespace CIPlatform.Controllers
         }
 
         [HttpPost]
-        public IActionResult newStory()
+        public IActionResult draftStory(long missionId)
         {
-            var draftedS = _unitOfWork.StoryRepo.getDraftedStory(long.Parse(HttpContext.Session.GetString("userId")));
-            bool sid = _unitOfWork.StoryRepo.storeNewStory(long.Parse(HttpContext.Session.GetString("userId")), draftedS.MissionId);
-            if (sid)
-            {
-                return RedirectToAction("StoryListing", "StoryListing");
-            }
-            return RedirectToAction("ShareStory", "StoryListing");
-
             
+
+            return RedirectToAction("StoryListing", "StoryListing");
         }
 
         #endregion

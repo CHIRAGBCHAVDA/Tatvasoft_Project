@@ -273,6 +273,20 @@ namespace CIPlatform.DataAccess.Repository
             
         }
 
+        public void draftStoryByMission(long missionId)
+        {
+            var storyByMID = _db.Stories.FirstOrDefault(story => story.MissionId == missionId);
+            var storyTitle = storyByMID.Title;
+            var storyDate = storyByMID.CreatedAt;
+            var story = storyByMID.Description;
+            var media = _db.StoryMedia.Where(s => s.StoryId == storyByMID.StoryId);
+            var videoUrlList = media.Where(m => m.Path.Equals("vid")).Select(m => m.Path).ToList();
+            var videoUrl = String.Join(",", videoUrlList);
+            var srcs = media.Where(m => m.Path.Equals("img")).Select(m => m.Path).ToArray();
+
+            var temp = draftStorybyUser(missionId.ToString(), storyTitle, storyDate, story, videoUrl, srcs);
+        }
+
 
         public bool deleteStory(long storyId)
         {
@@ -297,9 +311,18 @@ namespace CIPlatform.DataAccess.Repository
             }
         }
 
-        public ShareStoryViewModel getDraftedStory(long userId)
+        public ShareStoryViewModel getDraftedStory(long userId,long?missionId)
         {
-            var checkIfDrafted = _db.Stories.Where(st => st.UserId == userId && st.StoryStatusId==1).FirstOrDefault();
+            var checkIfDrafted = new Story();
+            if (missionId != null)
+            {
+             checkIfDrafted = _db.Stories.Where(st => st.UserId == userId && st.StoryStatusId==1 && st.MissionId==missionId).FirstOrDefault();
+            }
+            else
+            {
+                 checkIfDrafted = _db.Stories.Where(st => st.UserId == userId && st.StoryStatusId == 1).FirstOrDefault();
+
+            }
             if (checkIfDrafted != null)
             {
                 var checkIfVideo = _db.StoryMedia.Where(sm => sm.StoryId == checkIfDrafted.StoryId && sm.Type=="vid" && sm.DeletedAt==null).ToList();

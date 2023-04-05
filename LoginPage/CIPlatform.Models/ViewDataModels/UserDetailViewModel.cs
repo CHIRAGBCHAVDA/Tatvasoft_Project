@@ -26,7 +26,7 @@ namespace CIPlatform.Models.ViewDataModels
         public List<Availability> Availabilities { get; set; } = new List<Availability>();
         public string Availability { get; set; } = string.Empty;
         public string LinkedIn { get; set; } = string.Empty;
-
+        public List<Skill> AllSkills { get; set; } = new List<Skill>();
 
     }
 }

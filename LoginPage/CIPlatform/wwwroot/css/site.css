@@ -310,3 +310,10 @@ background-image: url("../assets/left.png");
     border-color: #F88634 !important;
     color: #F88634 !important;
 }
+
+::-webkit-scrollbar {
+    display: none;
+}
+/*.form-check-input:checked + .form-check {
+    background-color: grey !important;
+}*/

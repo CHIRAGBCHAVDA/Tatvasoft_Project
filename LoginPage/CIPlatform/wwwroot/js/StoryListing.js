@@ -469,13 +469,14 @@ $(document).ready(function () {
         // Make an AJAX request to fetch more data based on the selected mission ID
         $.ajax({
             type: "post",
-            url: "/StoryListing/getDrafted",
+            url: "/StoryListing/ShareStory",
             data: { missionId: selectedMissionId },
-            success: function (data) {
-                // Handle the response data
+            success: function (result) {
+                console.log("MALI DRAFT STORY MALI?!");
+                $("body").html(result);
             },
             error: function (xhr, status, error) {
-                // Handle any errors
+                console.log(error);
             }
         });
     });
