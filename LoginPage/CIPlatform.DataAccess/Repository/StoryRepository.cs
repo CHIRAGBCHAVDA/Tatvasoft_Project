@@ -71,6 +71,7 @@ namespace CIPlatform.DataAccess.Repository
             return toReturn.ToList();
         }
 
+        //storyMissionName is missionId in story table
         public long draftStorybyUser(string storyMissionName, string storyTitle, DateTime storyDate, string story, string? storyVideoUrl, string[]? srcs)
         {
             var ifAlreadyDrafted = _db.Stories.Where(s => s.MissionId==long.Parse(storyMissionName) && s.UserId==long.Parse(_httpContext.Session.GetString("userId")) && s.StoryStatusId==1).FirstOrDefault();

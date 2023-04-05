@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CIPlatform.Models
 {
@@ -14,8 +15,11 @@ namespace CIPlatform.Models
         public DateTime? DeletedAt { get; set; }
         public string CommentDescription { get; set; } = null!;
 
+        [JsonIgnore]
         public virtual ApprovalStatus ApprovalStatus { get; set; } = null!;
+        [JsonIgnore]
         public virtual Mission Mission { get; set; } = null!;
+        [JsonIgnore]
         public virtual User User { get; set; } = null!;
     }
 }
