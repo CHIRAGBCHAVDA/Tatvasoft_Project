@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿
+$(document).ready(function () {
     $("#user-edit-formtag").submit(function (e) {
         e.preventDefault();
         var name = $("#useredit-name").val();
@@ -9,7 +10,7 @@
         var dept = $("#useredit-dept").val();
         var myprofile = $("#useredit-myprofile").val();
         var whyIVol = $("#useredit-whyIVol").val();
-        var cityId = $("#user-city").val();
+        var cityId = $("#user-city option:selected").attr("data-cityid");
         var CountryId = $("#user-country option:selected").attr("data-countryid");
         var userAvailabillity = $("#user-availability option:selected").attr("data-availabilityid");
         var userLinkedin = $("#user-linkedin").val();
@@ -22,6 +23,7 @@
             var skillId = $(this).data('skillid');
             skillIds.push(skillId);
         });
+        console.log(skillIds);
 
         $.ajax({
             type: "POST",
@@ -43,12 +45,36 @@
             },
             success: function (result) {
                 console.log("Code executed successfully");
+                if (result.statusCode == 200) {
+                    toastr.success(result.message);
+                } else {
+                    toastr.error(result.message);
+                }
             },
             error: function (xhr, status, error) {
                 console.log(error);
             }
         });
 
+    });
+
+    $("#user-country").on('change', function () {
+        var countryId = $(this).val();
+        $.ajax({
+            url: "/User/GetCities",
+            type: "POST",
+            data: { countryId: countryId },
+            success: function (data) {
+                var cityDropdown = $("#user-city");
+                cityDropdown.empty();
+                $.each(data, function (i, city) {
+                    cityDropdown.append($("<option/>").val(city.cityId).text(city.name).attr("data-cityid", city.cityId));
+                });
+            },
+            error: function () {
+                alert("Error occurred while getting cities.");
+            }
+        });
     });
 
     const confirmPwdInput = $('#cnewpwd');
@@ -68,6 +94,12 @@
             },
             success: function (result) {
                 console.log(result);
+                if (result.statusCode === 200) {
+                    $(".btn-close").click();
+                    toastr.success(result.message);
+                } else {
+                    toastr.error(result.message);
+                }
             },
             error: function (xhr, status, error) {
                 console.log(error);
@@ -99,14 +131,24 @@
     $('#toLeftSkills').on('click', function () {
         var RightSelectedSkills = document.querySelectorAll(".right-skill-check:checked");
         for (var item of RightSelectedSkills) {
-            debugger;
-            var SkillId = "skillcheckbox-" + item.id.toString().split('-')[1];
+            var SkillId = "skillcheckbox-" + item.id.toString().split('right-')[1];
             document.getElementById(SkillId).checked = false;
             document.getElementById(item.id).nextElementSibling.remove();
-            document.getElementById(item.id).remove();
+            document.getElementById(SkillId).parentElement.classList.remove('bg-secondary');
+            document.getElementById(item.id).parentElement.remove();
         }
     });
 
+    $("#addskills-save-useredit").on('click', function () {
+        var RightSelectedSkills = document.querySelectorAll(".left-skill-check:checked");
+        var htmlToDiv = "";
+        for (var item of RightSelectedSkills) {
+            var key = item.id.toString().split('-')[1];
+            var name = item.nextElementSibling.textContent.trim();
+            htmlToDiv += `<span data-skillid="${key}" class="me-3">${name}</span>`
+        }
+        $("#skillDivInUserEdit").html(htmlToDiv);
+    });
 
 
 

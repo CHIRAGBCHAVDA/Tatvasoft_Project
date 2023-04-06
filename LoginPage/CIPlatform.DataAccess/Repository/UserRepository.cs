@@ -2,6 +2,7 @@
 using CIPlatform.DataAccess.Repository.IRepository;
 using CIPlatform.Models;
 using CIPlatform.Models.ViewDataModels;
+using System.Linq;
 
 namespace CIPlatform.DataAccess.Repository
 {
@@ -63,6 +64,7 @@ namespace CIPlatform.DataAccess.Repository
             var user = _db.Users.FirstOrDefault(user => user.UserId == userId);
             var City = _db.Cities.FirstOrDefault(city => city.CityId == user.CityId);
             var Countries = _db.Countries.AsEnumerable();
+            var Cities = _db.Cities.AsEnumerable();
             var AllSkills = _db.Skills.ToList();
             var dictOfSkill = new Dictionary<long, string>();
             var userSkills = _db.UserSkills.Where(skill => skill.UserId==user.UserId).Select(skill => skill.Skill).ToList();
@@ -91,31 +93,112 @@ namespace CIPlatform.DataAccess.Repository
                 LinkedIn = user.LinkedInUrl,
                 Availabilities = Availabilities.ToList(),
                 Availability = user.Availability.Name,
-                AllSkills = AllSkills
+                AllSkills = AllSkills,
+                Country = user.CountryId,
+                Cities = Cities.ToList()
             };
 
             return userDetailViewModel;
         }
 
-        //public UserDetailViewModel getUserDetail(long UserId)
-        //{
-        //    var user = getUserByUID(UserId);
-        //    var City = _db.Cities.FirstOrDefault(city => city.CityId==user.CityId);
-        //    var Country = _db.Countries.FirstOrDefault(country => country.CountryId == City.CountryId);
-        //    var userDetailViewModel = new UserDetailViewModel()
-        //    {
-        //        UserId = UserId,
-        //        FirstName = user.FirstName,
-        //        LastName = user.LastName,
-        //        EmployeeId = user.EmployeeId,
-        //        Department = user.Department,
-        //        MyProfile = user.ProfileText,
-        //        WhyIVolunteer = user.WhyIVolunteer,
-        //        CityId = user.CityId,
-        //        City = City.Name,
+        public BaseResponseViewModel ChangeUserPassword(long userId,string oldPassword, string newPassword)
+        {
+            var user = _db.Users.FirstOrDefault(user => user.UserId==userId);
+            BaseResponseViewModel baseResponse = new BaseResponseViewModel();
+            if(BCrypt.Net.BCrypt.Verify(oldPassword, user.Password))
+            {
+                user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+                _db.Users.Update(user);
+                _db.SaveChanges();
+                baseResponse.Success = true;
+                baseResponse.Message = "Password has been changed successfully";
+                baseResponse.StatusCode = 200;
+            }
+            else
+            {
+                baseResponse.Success = false;
+                baseResponse.Message = "Old password is incorrect!!";
+                baseResponse.StatusCode = 404;
+            }
+
+            return baseResponse;
+        }
+
+        public BaseResponseViewModel SaveUserDetails(long userId, UserEditQueryParams userEditQueryParams)
+        {
+            BaseResponseViewModel baseResponse;
+            try
+            {
+
+                var user = _db.Users.FirstOrDefault(user => user.UserId == userId);
+                user.FirstName = userEditQueryParams.name;
+                user.LastName = userEditQueryParams.surname;
+                user.EmployeeId = userEditQueryParams.eid.ToString();
+                user.ManagerDetails = userEditQueryParams.manager;
+                user.Title = userEditQueryParams.title;
+                user.Department = userEditQueryParams.dept;
+                user.ProfileText = userEditQueryParams.myprofile;
+                user.WhyIVolunteer = userEditQueryParams.whyIVol;
+                user.CityId = userEditQueryParams.cityId;
+                user.CountryId = userEditQueryParams.CountryId;
+                user.AvailabilityId = (byte?)userEditQueryParams.userAvailabillity;
+                user.LinkedInUrl = userEditQueryParams.userLinkedin;
+
+                _db.Users.Update(user);
+
+                var userSkills = _db.UserSkills.Where(userSkills => userSkills.UserId == userId).ToList();
+
+                foreach (var userSkill in userSkills)
+                {
+                    if (Array.IndexOf(userEditQueryParams.skillIds, userSkill.SkillId) < 0)
+                    {
+                        userSkill.DeletedAt = DateTime.Now;
+                        _db.UserSkills.Update(userSkill);
+                    }
+                }
+
+                foreach (var skillId in userEditQueryParams.skillIds)
+                {
+                    if (!userSkills.Any(userSkill => userSkill.SkillId == skillId))
+                    {
+                        var newSkill = new UserSkill()
+                        {
+                            SkillId = skillId,
+                            UserId = userId,
+                            Status = 1
+                        };
+                        _db.UserSkills.Add(newSkill);
+                    }
+                }
+
+                _db.SaveChanges();
+
+                 baseResponse = new BaseResponseViewModel()
+                {
+                    StatusCode = 200,
+                    Success = true,
+                    Message = "User Details has been updated"
+                };
+            }
+            catch(Exception ex)
+            {
+                 baseResponse = new BaseResponseViewModel()
+                {
+                    StatusCode = 500,
+                    Success = false,
+                    Message = "User Details could not updated"
+                };
+            }
+            return baseResponse;
+
+        }
+
+        public List<City> GetCities(long countryId)
+        {
+            var cities = _db.Cities.Where(city => city.CountryId == countryId).ToList();
+            return cities;
+        }
 
 
-        //    };
-        //}  
     }
 }

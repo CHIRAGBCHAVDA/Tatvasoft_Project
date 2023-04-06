@@ -13,6 +13,10 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         User getUserByUID(long userId);
         List<User> GetAllUsers();
         UserDetailViewModel GetUserDetailViewModel(long userId);
+        BaseResponseViewModel ChangeUserPassword(long userId,string oldPassword,string newPassword);
+
+        BaseResponseViewModel SaveUserDetails(long userId, UserEditQueryParams userEditQueryParams);
+        List<City> GetCities(long countryId);
 
     }
 }

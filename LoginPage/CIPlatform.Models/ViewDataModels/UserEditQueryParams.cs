@@ -20,7 +20,7 @@ namespace CIPlatform.Models.ViewDataModels
         public long CountryId { get; set; }
         public long userAvailabillity { get; set; }
         public string userLinkedin { get; set; } = string.Empty;
-        public int[] skillIds { get; set; } = new int[0];
+        public long[] skillIds { get; set; } = new long[0];
 
     }
 }
