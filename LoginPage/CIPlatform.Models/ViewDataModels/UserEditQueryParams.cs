@@ -21,6 +21,7 @@ namespace CIPlatform.Models.ViewDataModels
         public long userAvailabillity { get; set; }
         public string userLinkedin { get; set; } = string.Empty;
         public long[] skillIds { get; set; } = new long[0];
+        public string? Avatar { get; set; } = string.Empty;
 
     }
 }

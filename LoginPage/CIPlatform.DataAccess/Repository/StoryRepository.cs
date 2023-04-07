@@ -26,7 +26,7 @@ namespace CIPlatform.DataAccess.Repository
 
         public List<StoryListingViewModel> getAllStories()
         {
-            var stories = from s in _db.Stories join m in _db.Missions on s.MissionId equals m.MissionId
+            var stories = from s in _db.Stories where s.StoryStatusId == 3 join m in _db.Missions on s.MissionId equals m.MissionId
                           join u in _db.Users on s.UserId equals u.UserId
                           join mt in _db.MissionThemes on m.MissionThemeId equals mt.MissionThemeId
                           join c in _db.Cities on m.CityId equals c.CityId
@@ -372,7 +372,7 @@ namespace CIPlatform.DataAccess.Repository
         {
             try
             {
-                var sql = $"UPDATE story SET story_status_id = 2 WHERE user_id = {userId} AND mission_id = {missionId} AND story_status_id = 1";
+                var sql = $"UPDATE story SET story_status_id = 3 WHERE user_id = {userId} AND mission_id = {missionId} AND story_status_id = 1";
                 _db.Database.ExecuteSqlRaw(sql);
                 return true;
             }

@@ -2,6 +2,7 @@
 using CIPlatform.DataAccess.Repository.IRepository;
 using CIPlatform.Models;
 using CIPlatform.Models.ViewDataModels;
+using Microsoft.AspNetCore.Http;
 using System.Linq;
 
 namespace CIPlatform.DataAccess.Repository
@@ -10,10 +11,12 @@ namespace CIPlatform.DataAccess.Repository
     {
         private readonly CiplatformContext _db;
         public UserDetailViewModel userDetailViewModel;
+        private HttpContext _httpContext;
 
-        public UserRepository(CiplatformContext db) : base(db)
+        public UserRepository(CiplatformContext db, HttpContext httpContext) : base(db)
         {
             _db = db;
+            _httpContext = httpContext;
         }
 
         public User login(string email,string password)
@@ -105,7 +108,13 @@ namespace CIPlatform.DataAccess.Repository
         {
             var user = _db.Users.FirstOrDefault(user => user.UserId==userId);
             BaseResponseViewModel baseResponse = new BaseResponseViewModel();
-            if(BCrypt.Net.BCrypt.Verify(oldPassword, user.Password))
+            if (BCrypt.Net.BCrypt.Verify(newPassword, user.Password))
+            {
+                baseResponse.Success = false;
+                baseResponse.Message = "New Password can not be same as Older one";
+                baseResponse.StatusCode = 500;
+            } 
+            else if (BCrypt.Net.BCrypt.Verify(oldPassword, user.Password))
             {
                 user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
                 _db.Users.Update(user);
@@ -114,6 +123,7 @@ namespace CIPlatform.DataAccess.Repository
                 baseResponse.Message = "Password has been changed successfully";
                 baseResponse.StatusCode = 200;
             }
+            
             else
             {
                 baseResponse.Success = false;
@@ -143,6 +153,7 @@ namespace CIPlatform.DataAccess.Repository
                 user.CountryId = userEditQueryParams.CountryId;
                 user.AvailabilityId = (byte?)userEditQueryParams.userAvailabillity;
                 user.LinkedInUrl = userEditQueryParams.userLinkedin;
+                user.Avatar = userEditQueryParams.Avatar;
 
                 _db.Users.Update(user);
 
@@ -172,8 +183,10 @@ namespace CIPlatform.DataAccess.Repository
                 }
 
                 _db.SaveChanges();
+                _httpContext.Session.Remove("userImage");
+                _httpContext.Session.SetString("userImage", user.Avatar);
 
-                 baseResponse = new BaseResponseViewModel()
+                baseResponse = new BaseResponseViewModel()
                 {
                     StatusCode = 200,
                     Success = true,

@@ -948,8 +948,7 @@ namespace CIPlatform.Data
                 entity.Property(e => e.AvailabilityId).HasColumnName("availability_id");
 
                 entity.Property(e => e.Avatar)
-                    .HasMaxLength(2048)
-                    .IsUnicode(false)
+                    .HasColumnType("text")
                     .HasColumnName("avatar");
 
                 entity.Property(e => e.CityId).HasColumnName("city_id");

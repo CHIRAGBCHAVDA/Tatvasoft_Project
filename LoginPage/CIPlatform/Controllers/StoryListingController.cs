@@ -101,7 +101,7 @@ namespace CIPlatform.Controllers
                 ViewData["MissionId"] = toReturnAsModel.MissionId;
                 return View(toReturnAsModel);
             }
-
+        
             return View();
         }
         [HttpPost]
@@ -114,8 +114,12 @@ namespace CIPlatform.Controllers
                 ViewData["MissionId"] = toReturnAsModel.MissionId;
                 return View(toReturnAsModel);
             }
+            else
+            {
+                ViewData["MissionId"] = missionId;
+                return View();
+            }
 
-            return View();
         }
 
 
@@ -132,16 +136,16 @@ namespace CIPlatform.Controllers
         }
         #region Draft and Save Story
 
-        //[HttpPost]
-        //public IActionResult draftStory(string storyMissionName,string storyTitle,DateTime storyDate,string story,string? storyVideoUrl,string[]? srcs)
-        //{
-        //    long SmissionId = _unitOfWork.StoryRepo.draftStorybyUser(storyMissionName, storyTitle, storyDate, story, storyVideoUrl, srcs);
-        //    if (SmissionId>0)
-        //    {
-        //        return RedirectToAction("StoryListing", "StoryListing");
-        //    }
-        //    return RedirectToAction("ShareStory", "StoryListing");
-        //}
+        [HttpPost]
+        public IActionResult draftStory(string storyMissionName, string storyTitle, DateTime storyDate, string story, string? storyVideoUrl, string[]? srcs)
+        {
+            long SmissionId = _unitOfWork.StoryRepo.draftStorybyUser(storyMissionName, storyTitle, storyDate, story, storyVideoUrl, srcs);
+            if (SmissionId > 0)
+            {
+                return RedirectToAction("StoryListing", "StoryListing");
+            }
+            return RedirectToAction("ShareStory", "StoryListing");
+        }
 
         [HttpPost]
         public IActionResult newStory()
@@ -155,13 +159,13 @@ namespace CIPlatform.Controllers
             return RedirectToAction("ShareStory", "StoryListing");
         }
 
-        [HttpPost]
-        public IActionResult draftStory(long missionId)
-        {
+        //[HttpPost]
+        //public IActionResult draftStory(long missionId)
+        //{
             
 
-            return RedirectToAction("StoryListing", "StoryListing");
-        }
+        //    return RedirectToAction("StoryListing", "StoryListing");
+        //}
 
         #endregion
 

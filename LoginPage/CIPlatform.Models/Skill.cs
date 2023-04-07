@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CIPlatform.Models
 {
@@ -16,7 +17,7 @@ namespace CIPlatform.Models
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<UserSkill> UserSkills { get; set; }
     }
 }

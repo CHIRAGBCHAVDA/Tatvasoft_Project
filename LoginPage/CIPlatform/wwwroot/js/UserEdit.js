@@ -1,5 +1,7 @@
 ﻿
 $(document).ready(function () {
+    var userImgSrc = "";
+
     $("#user-edit-formtag").submit(function (e) {
         e.preventDefault();
         var name = $("#useredit-name").val();
@@ -14,6 +16,7 @@ $(document).ready(function () {
         var CountryId = $("#user-country option:selected").attr("data-countryid");
         var userAvailabillity = $("#user-availability option:selected").attr("data-availabilityid");
         var userLinkedin = $("#user-linkedin").val();
+        var avatar = userImgSrc;
 
         var skillSpans = $('.user-skill-info-form span');
         // Create an empty array to store the skill ids
@@ -41,7 +44,8 @@ $(document).ready(function () {
                 CountryId: CountryId,
                 userAvailabillity: userAvailabillity,
                 userLinkedin: userLinkedin,
-                skillIds: skillIds
+                skillIds: skillIds,
+                avatar : avatar
             },
             success: function (result) {
                 console.log("Code executed successfully");
@@ -50,6 +54,14 @@ $(document).ready(function () {
                 } else {
                     toastr.error(result.message);
                 }
+
+                $.ajax({
+                    url: '/User/GetHeader',
+                    success: function (result) {
+                        $('#user-header').html(result);
+                    }
+                });
+
             },
             error: function (xhr, status, error) {
                 console.log(error);
@@ -186,6 +198,34 @@ $(document).ready(function () {
             this.setCustomValidity(errorText);
         }
     }
+
+    //for user image change
+    try {
+        const avatarUpload = document.querySelector('#avatar-upload');
+        const userImage = document.querySelector('.user-img-left');
+
+        avatarUpload.addEventListener('change', function () {
+            const file = avatarUpload.files[0];
+            const reader = new FileReader();
+
+            reader.addEventListener('load', function () {
+                userImage.src = reader.result;
+                userImgSrc = userImage.src;
+            });
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+
+        userImage.addEventListener('click', function (e) {
+            e.preventDefault();
+            avatarUpload.click();
+        });
+    } catch (error) {
+        console.error(error);
+    }
+
 });
 
 

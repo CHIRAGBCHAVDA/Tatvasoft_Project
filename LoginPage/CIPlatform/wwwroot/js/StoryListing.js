@@ -55,7 +55,8 @@ $(document).ready(function () {
 
 
 
-    $('#storySaveBtn').on('click',function (e) {
+    $('#storySaveBtn').on('click', function (e) {
+        debugger;
         e.preventDefault();
         var storyMissionName = $("#storyMissionName").val();
         var storyTitle = $("#storyTitle").val();
@@ -220,7 +221,6 @@ $(document).ready(function () {
 
 
     $(".storyDeleteIcon").on('click', function () {
-        debugger
         var storyId = $(this).attr("data-storyid");
         $.ajax({
             type: 'POST',
@@ -382,11 +382,7 @@ $(document).ready(function () {
         result = result.replace(/,\s*$/, "");
 
         console.log(result);
-        //let missionTitle = $("#list-group-in-reccoworker").attr('data-missiontitle');
-        //let missionTheme = $("#list-group-in-reccoworker").attr('data-missiontheme');
-        //let storyTitle = $("#list-group-in-reccoworker").attr('data-storytitle');
-        //let username = $("#list-group-in-reccoworker").attr('data-name');
-
+   
         let username = $('#name-input').val();
         let storyTitle = $('#storytitle-input').val();
 
@@ -474,6 +470,7 @@ $(document).ready(function () {
             success: function (result) {
                 console.log("MALI DRAFT STORY MALI?!");
                 $("body").html(result);
+                //$("#storyMissionName").val() = selectedMissionId;
             },
             error: function (xhr, status, error) {
                 console.log(error);

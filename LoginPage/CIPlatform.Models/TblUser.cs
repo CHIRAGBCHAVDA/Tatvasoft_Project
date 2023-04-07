@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 
 namespace CIPlatform.Models;
@@ -20,7 +21,7 @@ public partial class TblUser
     public string Password { get; set; } = null!;
 
     [NotMapped]
-    [Compare("Password",ErrorMessage ="Confirm password must be matched with Password!!")]
+    [Compare("Password", ErrorMessage = "Confirm password must be matched with Password!!")]
     public string? ConfirmPassword { get; set; }
 
     [Required(ErrorMessage = "You must provide a phone number")]
@@ -53,10 +54,13 @@ public partial class TblUser
     public DateTime? UpdatedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+    [JsonIgnore]
 
     public virtual TblCity? City { get; set; }
+    [JsonIgnore]
 
     public virtual TblCountry? Country { get; set; }
+    [JsonIgnore]
 
     public virtual Status? StatusNavigation { get; set; }
 

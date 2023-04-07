@@ -12,7 +12,7 @@ namespace CIPlatform.DataAccess.Repository
         public UnitOfWork(CiplatformContext db,IHttpContextAccessor httpContext)
         {
             _db = db;
-            User = new UserRepository(_db);
+            User = new UserRepository(_db,httpContext.HttpContext);
             Country = new Repository<Country>(_db);
             City = new Repository<City>(_db);
             Skill = new Repository<Skill>(_db);

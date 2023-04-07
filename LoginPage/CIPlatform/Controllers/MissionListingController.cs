@@ -173,7 +173,14 @@ namespace CIPlatform.Controllers
 
                 var relatedMission = missionListingCards.Where(m => m.MissionTheme.Equals(missionDetail.MissionTheme)).ToList();
                 missionDetailsViewModel.myRelatedMission = relatedMission;
-                ViewBag.missionTitle = myuser.myMission.mission.Title;
+                try
+                {
+                    ViewBag.missionTitle = myuser.myMission.mission.Title;
+                }
+                catch(Exception ex)
+                {
+                    ViewBag.missionTitle = ex.Message;
+                }
 
                 var cui = from c in _db.Comments
                           join u in _db.Users on c.UserId equals u.UserId

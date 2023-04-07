@@ -48,5 +48,10 @@ namespace CIPlatform.Controllers
             var cities = _unitOfWork.User.GetCities(countryId);
             return Json(cities);
         }
+
+        public PartialViewResult GetHeader()
+        {
+            return PartialView("_Header");
+        }
     }
 }

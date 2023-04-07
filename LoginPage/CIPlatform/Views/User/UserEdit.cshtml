@@ -8,13 +8,18 @@
 <div class="container-fluid">
 
     <div class="main-wrapper">
-        <partial name="_Header" />
+        <div id="user-header">
+            <partial name="_Header" />
+        </div>
         <hr />
 
         <form id="user-edit-formtag">
             <div class="row mt-5 container m-auto">
                 <div class="d-flex col-lg-3 flex-column align-items-center border py-3 px-5 user-edit-page">
-                    <img src="@Model.Avatar" class="rounded-circle user-img-left" />
+                    <label for="avatar-upload">
+                        <img src="@Model.Avatar" class="rounded-circle user-img-left" />
+                    </label>
+                    <input type="file" id="avatar-upload" style="display: none;">
                     <p class="mt-3 mb-0">@Model.FirstName @Model.LastName</p>
                     <a href="#"
                        class="fst-normal text-decoration-none text-secondary"
