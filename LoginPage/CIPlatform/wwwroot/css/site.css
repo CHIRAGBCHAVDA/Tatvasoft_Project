@@ -317,3 +317,17 @@ background-image: url("../assets/left.png");
 /*.form-check-input:checked + .form-check {
     background-color: grey !important;
 }*/
+
+
+.form-control:invalid {
+    border-color: #dc3545;
+}
+
+    .form-control:invalid:focus {
+        border-color: #dc3545;
+        box-shadow: none;
+    }
+
+    .form-control:invalid + .invalid-feedback {
+        display: block;
+    }

@@ -226,6 +226,34 @@ $(document).ready(function () {
         console.error(error);
     }
 
+    $("#contactUs-form").submit(function (e) {
+        e.preventDefault();
+        var UserId = $("#contactUs-UserID").val();
+        var Subject = $("#contactus-subject").val();
+        var Message = $("#contactus-message").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/User/ContactUs",
+            data: {
+                userId: UserId,
+                subject: Subject,
+                message:Message
+            },
+            success: function (result) {
+                if (result.success) {
+                    toastr.success(result.message);
+                }
+                else {
+                    toastr.error(result.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+
 });
 
 

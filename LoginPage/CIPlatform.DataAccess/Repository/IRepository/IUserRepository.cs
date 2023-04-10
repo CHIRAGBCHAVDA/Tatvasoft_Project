@@ -17,6 +17,6 @@ namespace CIPlatform.DataAccess.Repository.IRepository
 
         BaseResponseViewModel SaveUserDetails(long userId, UserEditQueryParams userEditQueryParams);
         List<City> GetCities(long countryId);
-
+        public BaseResponseViewModel newContactUsEntry(long userId, string subject, string message);
     }
 }

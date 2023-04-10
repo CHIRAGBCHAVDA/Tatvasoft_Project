@@ -53,5 +53,12 @@ namespace CIPlatform.Controllers
         {
             return PartialView("_Header");
         }
+
+        [HttpPost]
+        public IActionResult ContactUs(long userId, string subject, string message)
+        {
+            var baseResponse = _unitOfWork.User.newContactUsEntry(userId, subject, message);
+            return Json(baseResponse);
+        }
     }
 }

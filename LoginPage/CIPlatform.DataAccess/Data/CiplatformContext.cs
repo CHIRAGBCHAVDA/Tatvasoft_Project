@@ -24,6 +24,7 @@ namespace CIPlatform.Data
         public virtual DbSet<City> Cities { get; set; } = null!;
         public virtual DbSet<CmsPage> CmsPages { get; set; } = null!;
         public virtual DbSet<Comment> Comments { get; set; } = null!;
+        public virtual DbSet<ContactU> ContactUs { get; set; } = null!;
         public virtual DbSet<Country> Countries { get; set; } = null!;
         public virtual DbSet<FavouriteMission> FavouriteMissions { get; set; } = null!;
         public virtual DbSet<GoalMission> GoalMissions { get; set; } = null!;
@@ -305,6 +306,37 @@ namespace CIPlatform.Data
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_user_userId__userId");
+            });
+
+            modelBuilder.Entity<ContactU>(entity =>
+            {
+                entity.HasKey(e => e.ContcatId)
+                    .HasName("PK__contact___05B926F5E5CB7D04");
+
+                entity.ToTable("contact_us");
+
+                entity.Property(e => e.ContcatId).HasColumnName("contcat_id");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("created_at")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Message)
+                    .HasColumnType("text")
+                    .HasColumnName("message");
+
+                entity.Property(e => e.Subject)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("subject");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.ContactUs)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK__contact_u__user___00DF2177");
             });
 
             modelBuilder.Entity<Country>(entity =>

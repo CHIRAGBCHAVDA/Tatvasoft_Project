@@ -212,5 +212,11 @@ namespace CIPlatform.Controllers
         }
 
 
+        public IActionResult PolicyPage()
+        {
+            return View();
+        }
+
+
     }
 }

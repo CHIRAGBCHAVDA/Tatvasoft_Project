@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace CIPlatform.Models
 {
@@ -32,11 +31,8 @@ namespace CIPlatform.Models
         public DateTime? DeletedAt { get; set; }
         public int? AvailableSeats { get; set; }
 
-        [JsonIgnore]
         public virtual ICollection<Comment> Comments { get; set; }
-        [JsonIgnore]
         public virtual ICollection<FavouriteMission> FavouriteMissions { get; set; }
-        [JsonIgnore]
         public virtual ICollection<MissionRating> MissionRatings { get; set; }
     }
 }

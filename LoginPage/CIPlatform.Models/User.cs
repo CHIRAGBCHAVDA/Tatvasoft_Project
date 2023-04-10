@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace CIPlatform.Models
 {
@@ -11,6 +10,7 @@ namespace CIPlatform.Models
         public User()
         {
             Comments = new HashSet<Comment>();
+            ContactUs = new HashSet<ContactU>();
             FavouriteMissions = new HashSet<FavouriteMission>();
             MissionRatings = new HashSet<MissionRating>();
             UserSkills = new HashSet<UserSkill>();
@@ -52,15 +52,11 @@ namespace CIPlatform.Models
         public string? ManagerDetails { get; set; }
         public byte? AvailabilityId { get; set; }
 
-        [JsonIgnore]
         public virtual Availability? Availability { get; set; }
-        [JsonIgnore]
         public virtual ICollection<Comment> Comments { get; set; }
-        [JsonIgnore]
+        public virtual ICollection<ContactU> ContactUs { get; set; }
         public virtual ICollection<FavouriteMission> FavouriteMissions { get; set; }
-        [JsonIgnore]
         public virtual ICollection<MissionRating> MissionRatings { get; set; }
-        [JsonIgnore]
         public virtual ICollection<UserSkill> UserSkills { get; set; }
     }
 }

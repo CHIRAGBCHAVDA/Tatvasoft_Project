@@ -98,7 +98,8 @@ namespace CIPlatform.DataAccess.Repository
                 Availability = user.Availability.Name,
                 AllSkills = AllSkills,
                 Country = user.CountryId,
-                Cities = Cities.ToList()
+                Cities = Cities.ToList(),
+                Email = user.Email
             };
 
             return userDetailViewModel;
@@ -210,6 +211,34 @@ namespace CIPlatform.DataAccess.Repository
         {
             var cities = _db.Cities.Where(city => city.CountryId == countryId).ToList();
             return cities;
+        }
+
+        public BaseResponseViewModel newContactUsEntry(long userId, string subject, string message)
+        {
+            BaseResponseViewModel baseResponse = new BaseResponseViewModel();
+            try
+            {
+                ContactU newContactus = new ContactU()
+                {
+                    UserId = userId,
+                    Subject = subject,
+                    Message = message
+                };
+
+                _db.ContactUs.Add(newContactus);
+                _db.SaveChanges();
+
+                baseResponse.Success = true;
+                baseResponse.Message = "Thanks for reaching us out...!";
+                baseResponse.StatusCode = 200;
+            }
+            catch(Exception ex)
+            {
+                baseResponse.Success = false;
+                baseResponse.Message = "Some error filling the form...!";
+                baseResponse.StatusCode = 500;
+            }
+            return baseResponse;
         }
 
 

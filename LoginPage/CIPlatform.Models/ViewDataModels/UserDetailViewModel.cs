@@ -15,6 +15,7 @@ namespace CIPlatform.Models.ViewDataModels
         public string FirstName { get; set; }
         [Required(ErrorMessage ="Surname is required")]
         public string LastName { get; set; } = string.Empty;
+        public string? Email { get; set; } = string.Empty;
         public string? EmployeeId { get; set; } = string.Empty;
         public string? Manager { get; set; } = string.Empty;
         public string? Title { get; set; } = string.Empty;
