@@ -8,6 +8,7 @@ namespace CIPlatform.Models
         public ApprovalStatus()
         {
             Comments = new HashSet<Comment>();
+            Timesheets = new HashSet<Timesheet>();
         }
 
         public byte ApprovalStatusId { get; set; }
@@ -17,5 +18,6 @@ namespace CIPlatform.Models
         public DateTime? DeletedAt { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Timesheet> Timesheets { get; set; }
     }
 }

@@ -7,6 +7,7 @@ namespace CIPlatform.Models
     {
         public Skill()
         {
+            MissionSkills = new HashSet<MissionSkill>();
             UserSkills = new HashSet<UserSkill>();
         }
 
@@ -17,6 +18,7 @@ namespace CIPlatform.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
+        public virtual ICollection<MissionSkill> MissionSkills { get; set; }
         public virtual ICollection<UserSkill> UserSkills { get; set; }
     }
 }

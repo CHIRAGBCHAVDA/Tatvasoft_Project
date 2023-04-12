@@ -1,12 +1,9 @@
 ﻿using CIPlatform.Data;
-using CIPlatform.DataAccess.Repository;
 using CIPlatform.DataAccess.Repository.IRepository;
 using CIPlatform.Models;
 using CIPlatform.Models.ViewDataModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
-using System.Linq;
 
 namespace CIPlatform.Controllers
 {
@@ -14,7 +11,7 @@ namespace CIPlatform.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly CiplatformContext _db;
-        public List<MissionListingCard>? missionListingCards, getMs, getFilterMs;
+        public IQueryable<MissionListingCard>? missionListingCards, getMs, getFilterMs;
         public static int a;
         public MissionDetailsViewModel? missionDetailsViewModel;
         public static long currentMissionId;
@@ -45,7 +42,7 @@ namespace CIPlatform.Controllers
 
                 if (missionListingCards != null)
                 {
-                    ViewBag.totalMissions = missionListingCards.Count;
+                    ViewBag.totalMissions = missionListingCards.Count();
                 }
 
                 return View(Model);
@@ -64,12 +61,12 @@ namespace CIPlatform.Controllers
         }
         public PartialViewResult GetGridView()
         {
-            return PartialView("_GridMissionLayout", missionListingCards);
+            return PartialView("_GridMissionLayout", missionListingCards.ToList());
         }
 
         public PartialViewResult GetListView()
         {
-            return PartialView("_ListMissionLayout", missionListingCards);
+            return PartialView("_ListMissionLayout", missionListingCards.ToList());
         }
         #endregion 
 
@@ -81,23 +78,23 @@ namespace CIPlatform.Controllers
         {
             if (countryId != null && countryId.Length > 0)
             {
-                getFilterMs = missionListingCards.Where(m => countryId.Contains(m.mission.CountryId.ToString())).ToList();
+                getFilterMs = missionListingCards.Where(m => countryId.Contains(m.mission.CountryId.ToString()));
             }
             if (cityName != null && cityName.Length > 0)
             {
-                getFilterMs = getFilterMs.Where(m => cityName.Contains(m.City)).ToList();
+                getFilterMs = getFilterMs.Where(m => cityName.Contains(m.City));
             }
             if (themeId != null && themeId.Length > 0)
             {
-                getFilterMs = getFilterMs.Where(m => themeId.Contains(m.MissionTheme)).ToList();
+                getFilterMs = getFilterMs.Where(m => themeId.Contains(m.MissionTheme));
             }
             if (skillId != null && skillId.Length > 0)
             {
-                getFilterMs = getFilterMs.Where(m => m.Skills.Intersect(skillId).Any()).ToList();
+                getFilterMs = getFilterMs.Where(m => m.Skills.Intersect(skillId).Any());
             }
             if (!string.IsNullOrEmpty(searchKeyword))
             {
-                getFilterMs = getFilterMs.Where(m => m.mission.Title.Contains(searchKeyword) || m.mission.Description.Contains(searchKeyword)).ToList();
+                getFilterMs = getFilterMs.Where(m => m.mission.Title.Contains(searchKeyword) || m.mission.Description.Contains(searchKeyword));
             }
 
             if (getFilterMs != null)
@@ -105,40 +102,40 @@ namespace CIPlatform.Controllers
                 switch (sortBy)
                 {
                     case 1:
-                        getFilterMs = getFilterMs.OrderByDescending(m => m.mission.StartDate).ToList();
+                        getFilterMs = getFilterMs.OrderByDescending(m => m.mission.StartDate);
                         break;
                     case 2:
-                        getFilterMs = getFilterMs.OrderBy(m => m.mission.StartDate).ToList();
+                        getFilterMs = getFilterMs.OrderBy(m => m.mission.StartDate);
                         break;
                     case 3:
-                        getFilterMs = getFilterMs.OrderByDescending(m => m.mission.AvailableSeats).ToList();
+                        getFilterMs = getFilterMs.OrderByDescending(m => m.mission.AvailableSeats);
                         break;
                     case 4:
-                        getFilterMs = getFilterMs.OrderBy(m => m.mission.AvailableSeats).ToList();
+                        getFilterMs = getFilterMs.OrderBy(m => m.mission.AvailableSeats);
                         break;
                     default:
-                        getFilterMs = getFilterMs.OrderByDescending(m => m.mission.StartDate).ToList();
+                        getFilterMs = getFilterMs.OrderByDescending(m => m.mission.StartDate);
                         break;
                 }
             }
 
-            if (getFilterMs == null || getFilterMs.Count == 0)
+            if (getFilterMs == null || getFilterMs.Count() == 0)
             {
-                a = getFilterMs.Count;
+                a = getFilterMs.Count();
                 return PartialView("_MissionNotFound");
             }
 
-            a = getFilterMs.Count;
+            a = getFilterMs.Count();
 
-            getFilterMs = getFilterMs.Skip((pageNum - 1) * 3).Take(3).ToList();
+            var toReturn = getFilterMs.Skip((pageNum - 1) * 3).Take(3);
 
             if (flag == 1)
             {
-                return PartialView("_GridMissionLayout", getFilterMs);
+                return PartialView("_GridMissionLayout", toReturn.ToList());
             }
             else
             {
-                return PartialView("_ListMissionLayout", getFilterMs);
+                return PartialView("_ListMissionLayout", toReturn.ToList());
             }
 
         }
@@ -157,15 +154,19 @@ namespace CIPlatform.Controllers
             if (HttpContext.Session.GetString("email") != null)
             {
                 currentMissionId = missionId;
-                var missionDetail = missionListingCards.Where(m => m.mission.MissionId == missionId).FirstOrDefault();
-                missionDetailsViewModel = new MissionDetailsViewModel();
 
-                var tempMr = _db.MissionRatings.Where(m => m.UserId == long.Parse(HttpContext.Session.GetString("userId")) && m.MissionId == missionId).FirstOrDefault();
+                var missionDetail = missionListingCards.FirstOrDefault(m => m.mission.MissionId == missionId);
+                missionDetailsViewModel = new MissionDetailsViewModel();
+                var tempMr = missionDetail.rating.FirstOrDefault(m => m.UserId == long.Parse(HttpContext.Session.GetString("userId")) && m.MissionId == missionId);
                 var Rating = tempMr != null ? tempMr.Rating : 0;
+                var missiontemp = missionDetail.mission.MissionApplications.Where(mission => mission.MissionId == missionId && mission.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault();
+                var b = missionDetail.mission.MissionApplications.Where(mission => mission.MissionId == missionId && mission.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault() != null ? true : false;
+
                 myMissionAndUser myuser = new myMissionAndUser()
                 {
                     myMission = missionDetail,
-                    Users = _db.Users.Where(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList(),
+                    Users = GetListOfUserRecommendation(),
+
                     IsApplied = _db.MissionApplications.Where(m => m.MissionId == missionId && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault() != null ? true : false,
                     ratedByUser = (long)Rating
                 };
@@ -177,7 +178,7 @@ namespace CIPlatform.Controllers
                 {
                     ViewBag.missionTitle = myuser.myMission.mission.Title;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     ViewBag.missionTitle = ex.Message;
                 }
@@ -210,6 +211,7 @@ namespace CIPlatform.Controllers
             }
             else return RedirectToAction("Index", "Home");
         }
+
         #region commented togglefav
         //[HttpPost]
         //public IActionResult ToggleFav(int mID, bool favFlag)
@@ -253,18 +255,10 @@ namespace CIPlatform.Controllers
 
         //}
         #endregion
-        
-        
-        public class BaseResponseModel
-        {
-            public string Msg { get; set; }
-            public bool Status { get; set; }
-            public dynamic Data { get; set; } //instead of int directly use Data send 1 from here
-            //standard to work with API
-        }
 
+        #region ADD or REMOVE Favourite
         [HttpPost]
-        public int addRmFav(long mId) 
+        public int addRmFav(long mId)
         {
             //Pass the model instead of Int 
 
@@ -303,13 +297,17 @@ namespace CIPlatform.Controllers
             }
             return 404;
         }
+        #endregion
 
+        #region TO GET THE LIST OF USER FOR RECOMMENDATION
         public List<User> GetListOfUserRecommendation()
         {
             var usersList = _unitOfWork.User.GetAll(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList();
-             return usersList;
+            return usersList;
         }
+        #endregion
 
+        #region TO POST THE COMMENT
         [HttpPost]
         public IActionResult postTheComment(string comment)
         {
@@ -321,7 +319,9 @@ namespace CIPlatform.Controllers
 
             return PartialView("_CommentVolMission", newcui);
         }
+        #endregion
 
+        #region TO APPLY FOR THE MISSION
         public IActionResult applyMission(long missionId)
         {
             var UserId = long.Parse(HttpContext.Session.GetString("userId"));
@@ -338,7 +338,9 @@ namespace CIPlatform.Controllers
 
             return PartialView("_VolunteerMissionRightUpper", myuser);
         }
+        #endregion
 
+        #region ADD RATING
         [HttpPost]
         public void addRating(int rate)
         {
@@ -367,5 +369,6 @@ namespace CIPlatform.Controllers
             //_unitOfWork.Save();
 
         }
+        #endregion
     }
 }

@@ -157,13 +157,13 @@
     color: #F88634;
 }
 .bg-orange {
-    background-color: #F88634;
+    background-color: #F88634 !important;
 }
 .border-orange {
-    border: 1px solid #F88634;
+    border: 1px solid #F88634 !important;
 }
 .text-orange {
-    color: #F88634;
+    color: #F88634 !important;
 }
 /*#grid:hover {
     background: #e6e6e6;
@@ -331,3 +331,9 @@ background-image: url("../assets/left.png");
     .form-control:invalid + .invalid-feedback {
         display: block;
     }
+.volunteersHoursTbl th,tr,td, .volunteersGoalsTbl table * {
+    border: none !important;
+}
+.volunteersHoursTbl th, .volunteersGoalsTbl table th{
+    font-weight:400;
+}

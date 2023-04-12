@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CIPlatform.Models
+namespace CIPlatform.Models.ViewDataModels
 {
-    public partial class Timesheet
+    public class TimeBasedTimesheetViewModel
     {
         public long TimesheetId { get; set; }
-        public long UserId { get; set; }
         public long MissionId { get; set; }
+        public string MissionName { get; set; } = string.Empty;
         public TimeSpan? Time { get; set; }
-        public int? Action { get; set; }
         public DateTime DateVolunteered { get; set; }
         public string? Notes { get; set; }
         public byte ApprovalStatusId { get; set; }
@@ -17,8 +19,5 @@ namespace CIPlatform.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
-        public virtual ApprovalStatus ApprovalStatus { get; set; } = null!;
-        public virtual Mission Mission { get; set; } = null!;
-        public virtual User User { get; set; } = null!;
     }
 }

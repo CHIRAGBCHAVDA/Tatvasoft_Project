@@ -12,7 +12,12 @@ namespace CIPlatform.Models
             Comments = new HashSet<Comment>();
             ContactUs = new HashSet<ContactU>();
             FavouriteMissions = new HashSet<FavouriteMission>();
+            MissionApplications = new HashSet<MissionApplication>();
             MissionRatings = new HashSet<MissionRating>();
+            Stories = new HashSet<Story>();
+            StoryInviteFromUsers = new HashSet<StoryInvite>();
+            StoryInviteToUsers = new HashSet<StoryInvite>();
+            Timesheets = new HashSet<Timesheet>();
             UserSkills = new HashSet<UserSkill>();
         }
 
@@ -32,7 +37,7 @@ namespace CIPlatform.Models
 
         [NotMapped]
         [Compare("Password", ErrorMessage = "Confirm password must be matched with Password!!")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; } = null!;
         public string? Token { get; set; }
         public long PhoneNumber { get; set; }
         public string? Avatar { get; set; }
@@ -53,10 +58,17 @@ namespace CIPlatform.Models
         public byte? AvailabilityId { get; set; }
 
         public virtual Availability? Availability { get; set; }
+        public virtual City City { get; set; } = null!;
+        public virtual Country Country { get; set; } = null!;
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<ContactU> ContactUs { get; set; }
         public virtual ICollection<FavouriteMission> FavouriteMissions { get; set; }
+        public virtual ICollection<MissionApplication> MissionApplications { get; set; }
         public virtual ICollection<MissionRating> MissionRatings { get; set; }
+        public virtual ICollection<Story> Stories { get; set; }
+        public virtual ICollection<StoryInvite> StoryInviteFromUsers { get; set; }
+        public virtual ICollection<StoryInvite> StoryInviteToUsers { get; set; }
+        public virtual ICollection<Timesheet> Timesheets { get; set; }
         public virtual ICollection<UserSkill> UserSkills { get; set; }
     }
 }

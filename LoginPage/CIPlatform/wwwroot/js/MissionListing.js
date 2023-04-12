@@ -1,13 +1,13 @@
 ﻿
 
 
-var selectedCountries = [];
-var selectedCities = [];
-var selectedThemes = [];
-var selectedSkills = [];
-var selectedOption = 1;
-var flag = 1;
-var searchKeyword = "";
+let selectedCountries = [];
+let selectedCities = [];
+let selectedThemes = [];
+let selectedSkills = [];
+let selectedOption = 1;
+let flag = 1;
+let searchKeyword = "";
 
 
 getTotalCount();
@@ -36,6 +36,7 @@ $(document).ready(function () {
             var index = selectedCountries.indexOf(countryId);
             if (index == -1) {
                 selectedCountries.push($(this).val());
+                
             }
         }
 
@@ -49,8 +50,8 @@ $(document).ready(function () {
                     var cityItem = $('.city-item[data-country="' + value.countryId + '"]');
                     cityItem.show();
                     cityItem.find('.city-checkbox[value="' + value.cityId + '"][data-country="' + value.countryId + '"]').show();
-                    getBadge();
                 });
+                getBadge();
             },
             error: function () {
                 alert("An error occurred while fetching cities.");
@@ -59,39 +60,39 @@ $(document).ready(function () {
     });
 
     
-    $('.city-checkbox').change(function () {
-        var cityId = $(this).next().text();
-        if (!$(this).prop('checked')) {
-            $('.city-checkbox[value="' + cityId + '"]').prop('checked', false);
-            var index = selectedCities.indexOf(cityId);
-            if (index > -1 && !$(this).prop('checked')) {
-                selectedCities.splice(index);
-                getFilter();
-            }
-        } else {
-            var index = selectedCities.indexOf(cityId.trim());
-            if (index == -1) {
-                selectedCities.push(cityId.trim());
-            }
-        }
-    });
+    //$('.city-checkbox').change(function () {
+    //    var cityId = $(this).next().text();
+    //    if (!$(this).prop('checked')) {
+    //        $('.city-checkbox[value="' + cityId + '"]').prop('checked', false);
+    //        var index = selectedCities.indexOf(cityId);
+    //        if (index > -1 && !$(this).prop('checked')) {
+    //            selectedCities.splice(index);
+    //            getFilter();
+    //        }
+    //    } else {
+    //        var index = selectedCities.indexOf(cityId.trim());
+    //        if (index == -1) {
+    //            selectedCities.push(cityId.trim());
+    //        }
+    //    }
+    //});
 
-    $('.theme-checkbox').change(function () {
-        var themeName = $(this).next().text().trim();
-        if (!$(this).prop('checked')) {
-            $('.theme-checkbox[value="' + themeName.trim() + '"]').prop('checked', false);
-            var index = selectedThemes.indexOf(themeName);
-            if (index > -1 && !$(this).prop('checked')) {
-                selectedThemes.splice(index);
-                getFilter();
-            }
-        } else {
-            var index = selectedThemes.indexOf(themeName);
-            if (index == -1) { 
-                selectedThemes.push(themeName.trim());
-            }
-        }
-    });
+    //$('.theme-checkbox').change(function () {
+    //    var themeName = $(this).next().text().trim();
+    //    if (!$(this).prop('checked')) {
+    //        $('.theme-checkbox[value="' + themeName.trim() + '"]').prop('checked', false);
+    //        var index = selectedThemes.indexOf(themeName);
+    //        if (index > -1 && !$(this).prop('checked')) {
+    //            selectedThemes.splice(index);
+    //            getFilter();
+    //        }
+    //    } else {
+    //        var index = selectedThemes.indexOf(themeName);
+    //        if (index == -1) { 
+    //            selectedThemes.push(themeName.trim());
+    //        }
+    //    }
+    //});
 
     $("#search-query").keyup(function () {
         searchMissions();
@@ -164,9 +165,6 @@ $(document).ready(function () {
                     </body>
 
                     </html>
-
-
-
                 `;
         //body += "https://localhost:44383/?returnUrl=" + currentUrl;
 
@@ -181,6 +179,8 @@ $(document).ready(function () {
             },
             success: function () {
                 console.log("Mail is sent...");
+                toastr.success("Recommendation has been sent..!!");
+                return;
             },
             error: function (xhr, status, error) {
                 console.log(error);
@@ -218,7 +218,6 @@ function gridListRecommend() {
                             </li>`
             });
             newHtml += `</ul>`;
-            debugger
             $('.grid_list_modal_body').html(newHtml);
         },
         complete: function (data) {
@@ -300,7 +299,9 @@ $('#sortingMission').change(function () {
     getFilter(); // Call the sortMissions function with the selected option
 });
 
-getFilter();
+getFilter(1);
+
+
 function searchMissions() {
     searchKeyword = document.getElementById("search-query").value;
     console.log(searchKeyword)
@@ -311,7 +312,7 @@ function searchMissions() {
 function getBadge() {
 
     $('.city-checkbox:checked').each(function () {
-        var index = selectedThemes.indexOf($(this).next().text().trim());
+        var index = selectedCities.indexOf($(this).next().text().trim());
         if (index == -1) {
             selectedCities.push($(this).next().text());
         }
@@ -349,7 +350,6 @@ function getBadge() {
                 },
             }));
             $('.filter-badge').append(badge);
-            getFilter();
         }
     });
 
@@ -379,7 +379,6 @@ function getBadge() {
             }));
             console.log("You have reached to city badge append");
             $('.filter-badge').append(badge);
-            getFilter();
         }
     });
 
@@ -403,7 +402,7 @@ function getBadge() {
                 },
             }));
             $('.filter-badge').append(badge);
-            getFilter();
+        
         }
     });
 
@@ -428,9 +427,10 @@ function getBadge() {
                 },
             }));
             $('.filter-badge').append(badge);
-            getFilter();
         }
     });
+    getFilter();
+
 }
 
 function getFilter(pg) {
@@ -562,7 +562,7 @@ function postTheComment() {
             f.innerHTML = result;
             console.log("*************************************************\n +  " + result)
             //$("#commentMissionDiv").html(result);
-            $('#comment-area-volmission').val() = "";
+            $('#comment-area-volmission').val("");
 
         },
         error: function (xhr, status, error) {

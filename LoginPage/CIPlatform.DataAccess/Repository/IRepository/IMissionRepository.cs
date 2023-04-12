@@ -10,7 +10,7 @@ namespace CIPlatform.DataAccess.Repository.IRepository
 {
     public interface IMissionRepository
     {
-        public List<MissionListingCard> getMissions();
+        public IQueryable<MissionListingCard> getMissions();
         public List<CommentUserInfo> CommentByMissionUserId(long missionId);
         public void AddComment(string comment, long missionId,long userId);
 

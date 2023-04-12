@@ -18,5 +18,9 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         BaseResponseViewModel SaveUserDetails(long userId, UserEditQueryParams userEditQueryParams);
         List<City> GetCities(long countryId);
         public BaseResponseViewModel newContactUsEntry(long userId, string subject, string message);
+        public List<MissionIdNameTypeViewModel> getMissionsByUserId(long userId);
+        public BaseResponseViewModel addTimeSheetHourData(AddHourVolunteerParams addHour,long userId);
+        public List<TimeBasedTimesheetViewModel> GetTimeBasedTimesheets(long userId);
+        public List<GoalBasedTimesheetViewModel> GetGoalBasedTimesheets(long userId);
     }
 }

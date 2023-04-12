@@ -60,5 +60,37 @@ namespace CIPlatform.Controllers
             var baseResponse = _unitOfWork.User.newContactUsEntry(userId, subject, message);
             return Json(baseResponse);
         }
+
+
+        public IActionResult VolunteeringTimesheet()
+        {
+            var userId = long.Parse(HttpContext.Session.GetString("userId"));
+            var customTimesheet = new CustomTimesheetViewModel()
+            {
+                GoalBasedTimesheets = _unitOfWork.User.GetGoalBasedTimesheets(userId),
+                TimeBasedTimesheets = _unitOfWork.User.GetTimeBasedTimesheets(userId)
+            };
+            return View(customTimesheet);
+        }
+
+        [HttpPost]
+        public IActionResult getMissionApplicationsByUserId(long userId)
+        {
+            var toReturn = _unitOfWork.User.getMissionsByUserId(userId);
+            return Json(toReturn);
+        }
+
+        [HttpPost]
+        public IActionResult AddHourVolunteer(AddHourVolunteerParams addHourParams)
+        {
+            var baseResponse = _unitOfWork.User.addTimeSheetHourData(addHourParams, long.Parse(HttpContext.Session.GetString("userId")));
+            if (baseResponse.Success)
+            {
+                var userId = long.Parse(HttpContext.Session.GetString("userId"));
+                TempData["hour-add-success"] = baseResponse.Message;
+                return PartialView("_TimeBasedTimesheet", _unitOfWork.User.GetTimeBasedTimesheets(userId));
+            }
+            return null;
+        }
     }
 }

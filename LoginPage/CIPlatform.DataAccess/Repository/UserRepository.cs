@@ -241,6 +241,88 @@ namespace CIPlatform.DataAccess.Repository
             return baseResponse;
         }
 
+        public List<MissionIdNameTypeViewModel> getMissionsByUserId(long userId)
+        {
+            var user = getUserByUID(userId);
+            var toReturn = _db.Users.Where(user => user.UserId == userId)
+                            .SelectMany(user => user.MissionApplications.Select(missonApplication => new MissionIdNameTypeViewModel()
+                            {
+                                MissionId = missonApplication.MissionId,
+                                MissionName = missonApplication.Mission.Title,
+                                IsGoalBased = missonApplication.Mission.MissionTypeId == 1 ? true : false
+                            }));
+
+            return toReturn.ToList();
+        }
+
+        public BaseResponseViewModel addTimeSheetHourData(AddHourVolunteerParams addHour,long userId)
+        {
+            BaseResponseViewModel baseResponse = new BaseResponseViewModel();
+            Timesheet timesheet = new Timesheet()
+            {
+                UserId = userId,
+                MissionId = addHour.MissionId,
+                Time = addHour.FormattedTime,
+                Action = 0,
+                DateVolunteered = addHour.VolunteeredDate,
+                Notes = addHour.Message,
+                ApprovalStatusId = 2,
+                CreatedAt = DateTime.Now,
+            };
+
+            try
+            {
+                _db.Timesheets.Add(timesheet);
+                _db.SaveChanges();
+                baseResponse.Success = true;
+                baseResponse.Message = "New Data has been added in the Timesheet..!!";
+                baseResponse.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                baseResponse.Success = false;
+                baseResponse.Message = "New Data could not be added in the Timesheet..!!";
+                baseResponse.StatusCode = 500;
+            }
+            return baseResponse;
+        }
+
+        public List<TimeBasedTimesheetViewModel> GetTimeBasedTimesheets(long userId)
+        {
+            var toReturn = _db.Users.Where(user => user.UserId == userId)
+                .SelectMany(user => user.Timesheets.Select(TimeBased => new TimeBasedTimesheetViewModel()
+                {
+                    TimesheetId = TimeBased.TimesheetId,
+                    MissionId = TimeBased.MissionId,
+                    MissionName = TimeBased.Mission.Title,
+                    Time = TimeBased.Time,
+                    DateVolunteered = TimeBased.DateVolunteered,
+                    Notes = TimeBased.Notes,
+                    ApprovalStatusId = TimeBased.ApprovalStatusId,
+                    CreatedAt = TimeBased.CreatedAt,
+                    UpdatedAt = TimeBased.UpdatedAt,
+                    DeletedAt = TimeBased.DeletedAt
+                }));
+            return toReturn.ToList();
+        }
+        public List<GoalBasedTimesheetViewModel> GetGoalBasedTimesheets(long userId)
+        {
+            var toReturn = _db.Users.Where(user => user.UserId == userId)
+               .SelectMany(user => user.Timesheets.Select(GoalBased => new GoalBasedTimesheetViewModel()
+               {
+                   TimesheetId = GoalBased.TimesheetId,
+                   MissionId = GoalBased.MissionId,
+                   MissionName = GoalBased.Mission.Title,
+                   Action = GoalBased.Action,
+                   DateVolunteered = GoalBased.DateVolunteered,
+                   Notes = GoalBased.Notes,
+                   ApprovalStatusId = GoalBased.ApprovalStatusId,
+                   CreatedAt = GoalBased.CreatedAt,
+                   UpdatedAt = GoalBased.UpdatedAt,
+                   DeletedAt = GoalBased.DeletedAt
+               }));
+            return toReturn.ToList();
+        }
 
     }
 }

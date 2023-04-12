@@ -495,6 +495,29 @@ namespace CIPlatform.Data
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
+
+                entity.HasOne(d => d.Availability)
+                    .WithMany(p => p.Missions)
+                    .HasForeignKey(d => d.AvailabilityId)
+                    .HasConstraintName("FK_mission_availability");
+
+                entity.HasOne(d => d.City)
+                    .WithMany(p => p.Missions)
+                    .HasForeignKey(d => d.CityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_mission_city");
+
+                entity.HasOne(d => d.Country)
+                    .WithMany(p => p.Missions)
+                    .HasForeignKey(d => d.CountryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_mission_country");
+
+                entity.HasOne(d => d.MissionTheme)
+                    .WithMany(p => p.Missions)
+                    .HasForeignKey(d => d.MissionThemeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_mission_mission_theme");
             });
 
             modelBuilder.Entity<MissionApplication>(entity =>
@@ -525,6 +548,18 @@ namespace CIPlatform.Data
                     .HasColumnName("updated_at");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.Mission)
+                    .WithMany(p => p.MissionApplications)
+                    .HasForeignKey(d => d.MissionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_mission_application_mission");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.MissionApplications)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_mission_application_user");
             });
 
             modelBuilder.Entity<MissionDocument>(entity =>
@@ -630,6 +665,12 @@ namespace CIPlatform.Data
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
+
+                entity.HasOne(d => d.Mission)
+                    .WithMany(p => p.MissionMedia)
+                    .HasForeignKey(d => d.MissionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_mission_media_mission");
             });
 
             modelBuilder.Entity<MissionRating>(entity =>
@@ -692,6 +733,17 @@ namespace CIPlatform.Data
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
+
+                entity.HasOne(d => d.Mission)
+                    .WithMany(p => p.MissionSkills)
+                    .HasForeignKey(d => d.MissionId)
+                    .HasConstraintName("FK_mission_skill_mission1");
+
+                entity.HasOne(d => d.Skill)
+                    .WithMany(p => p.MissionSkills)
+                    .HasForeignKey(d => d.SkillId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_mission_skill_mission");
             });
 
             modelBuilder.Entity<MissionTheme>(entity =>
@@ -842,6 +894,18 @@ namespace CIPlatform.Data
                 entity.Property(e => e.Views)
                     .HasColumnName("views")
                     .HasDefaultValueSql("((0))");
+
+                entity.HasOne(d => d.Mission)
+                    .WithMany(p => p.Stories)
+                    .HasForeignKey(d => d.MissionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_story_mission");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Stories)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_story_user");
             });
 
             modelBuilder.Entity<StoryInvite>(entity =>
@@ -868,6 +932,24 @@ namespace CIPlatform.Data
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
+
+                entity.HasOne(d => d.FromUser)
+                    .WithMany(p => p.StoryInviteFromUsers)
+                    .HasForeignKey(d => d.FromUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_story_invite_user");
+
+                entity.HasOne(d => d.Story)
+                    .WithMany(p => p.StoryInvites)
+                    .HasForeignKey(d => d.StoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_story_invite_story");
+
+                entity.HasOne(d => d.ToUser)
+                    .WithMany(p => p.StoryInviteToUsers)
+                    .HasForeignKey(d => d.ToUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_story_invite_user1");
             });
 
             modelBuilder.Entity<StoryMedium>(entity =>
@@ -902,6 +984,12 @@ namespace CIPlatform.Data
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
+
+                entity.HasOne(d => d.Story)
+                    .WithMany(p => p.StoryMedia)
+                    .HasForeignKey(d => d.StoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_story_media_story");
             });
 
             modelBuilder.Entity<StoryStatus>(entity =>
@@ -969,6 +1057,24 @@ namespace CIPlatform.Data
                     .HasColumnName("updated_at");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.ApprovalStatus)
+                    .WithMany(p => p.Timesheets)
+                    .HasForeignKey(d => d.ApprovalStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_timesheet_approval_status");
+
+                entity.HasOne(d => d.Mission)
+                    .WithMany(p => p.Timesheets)
+                    .HasForeignKey(d => d.MissionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_timesheet_mission");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Timesheets)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_timesheet_user");
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -1072,6 +1178,18 @@ namespace CIPlatform.Data
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.AvailabilityId)
                     .HasConstraintName("FK__user__availabili__625A9A57");
+
+                entity.HasOne(d => d.City)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.CityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_user_city");
+
+                entity.HasOne(d => d.Country)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.CountryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_user_country");
             });
 
             modelBuilder.Entity<UserSkill>(entity =>

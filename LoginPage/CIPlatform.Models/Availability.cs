@@ -7,6 +7,7 @@ namespace CIPlatform.Models
     {
         public Availability()
         {
+            Missions = new HashSet<Mission>();
             Users = new HashSet<User>();
         }
 
@@ -16,6 +17,7 @@ namespace CIPlatform.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
+        public virtual ICollection<Mission> Missions { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }
 }

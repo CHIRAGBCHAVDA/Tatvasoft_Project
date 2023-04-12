@@ -8,6 +8,8 @@ namespace CIPlatform.Models
         public Country()
         {
             Cities = new HashSet<City>();
+            Missions = new HashSet<Mission>();
+            Users = new HashSet<User>();
         }
 
         public long CountryId { get; set; }
@@ -18,5 +20,7 @@ namespace CIPlatform.Models
         public DateTime? DeletedAt { get; set; }
 
         public virtual ICollection<City> Cities { get; set; }
+        public virtual ICollection<Mission> Missions { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

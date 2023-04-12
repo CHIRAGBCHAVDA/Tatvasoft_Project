@@ -23,37 +23,48 @@ namespace CIPlatform.DataAccess.Repository
             _httpContext = httpContext;
 
         }
-        public List<MissionListingCard> getMissions()
+        public IQueryable<MissionListingCard> getMissions()
         {
             string myUserId = _httpContext.Session.GetString("userId");
 
-            var missionListingCard = from M in _db.Missions
-                                     join C in _db.Cities on M.CityId equals C.CityId
-                                     join Tm in _db.MissionThemes on M.MissionThemeId equals Tm.MissionThemeId
-                                     join favMissionTbl in (from F in _db.FavouriteMissions
-                                                            where F.UserId.ToString() == myUserId
-                                                            select F) on M.MissionId equals favMissionTbl.MissionId into favMissionSubTbl
-                                     from favMission in favMissionSubTbl.DefaultIfEmpty()
-                                     select new MissionListingCard()
-                                     {
-                                         mission = M,
-                                         City = C.Name,
-                                         MissionTheme = Tm.Title,
-                                         Skills = (List<string>)(from ms in _db.MissionSkills
-                                                                 join s in _db.Skills on ms.SkillId equals s.SkillId
-                                                                 where ms.MissionId == M.MissionId
-                                                                 select s.SkillName),
+            var missionListingCard = _db.Missions.Select(mission => new MissionListingCard()
+            {
+                mission = mission,
+                City = mission.City.Name,
+                MissionTheme = mission.MissionTheme.Title,
+                Skills = mission.MissionSkills.Select(missionSkills => missionSkills.Skill.SkillName),
+                ImageLink = mission.MissionMedia.Select(m => m.MediaPath).ToString(),
+                rating = mission.MissionRatings,
+                favourite = mission.FavouriteMissions.First()
+            });
 
-                                         ImageLink = (from ImgLink in _db.MissionMedia
-                                                      where ImgLink.MissionId == M.MissionId
-                                                      select ImgLink.MediaPath).FirstOrDefault(),
+            //var missionListingCard = from M in _db.Missions
+            //                         join C in _db.Cities on M.CityId equals C.CityId
+            //                         join Tm in _db.MissionThemes on M.MissionThemeId equals Tm.MissionThemeId
+            //                         join favMissionTbl in (from F in _db.FavouriteMissions
+            //                                                where F.UserId.ToString() == myUserId
+            //                                                select F) on M.MissionId equals favMissionTbl.MissionId into favMissionSubTbl
+            //                         from favMission in favMissionSubTbl.DefaultIfEmpty()
+            //                         select new MissionListingCard()
+            //                         {
+            //                             mission = M,
+            //                             City = C.Name,
+            //                             MissionTheme = Tm.Title,
+            //                             Skills = (List<string>)(from ms in _db.MissionSkills
+            //                                                     join s in _db.Skills on ms.SkillId equals s.SkillId
+            //                                                     where ms.MissionId == M.MissionId
+            //                                                     select s.SkillName),
 
-                                         rating = _db.MissionRatings.Where(m => m.MissionId == M.MissionId).ToList(),
+            //                             ImageLink = (from ImgLink in _db.MissionMedia
+            //                                          where ImgLink.MissionId == M.MissionId
+            //                                          select ImgLink.MediaPath).FirstOrDefault(),
 
-                                         favourite = favMission,
-                                     };
+            //                             rating = _db.MissionRatings.Where(m => m.MissionId == M.MissionId).ToList(),
 
-            return missionListingCard.ToList();
+            //                             favourite = favMission,
+            //                         };
+
+            return missionListingCard;
         }
 
         public List<string> getSkills(long id)

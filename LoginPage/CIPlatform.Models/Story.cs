@@ -5,6 +5,12 @@ namespace CIPlatform.Models
 {
     public partial class Story
     {
+        public Story()
+        {
+            StoryInvites = new HashSet<StoryInvite>();
+            StoryMedia = new HashSet<StoryMedium>();
+        }
+
         public long StoryId { get; set; }
         public long UserId { get; set; }
         public long MissionId { get; set; }
@@ -16,5 +22,10 @@ namespace CIPlatform.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
         public long? Views { get; set; }
+
+        public virtual Mission Mission { get; set; } = null!;
+        public virtual User User { get; set; } = null!;
+        public virtual ICollection<StoryInvite> StoryInvites { get; set; }
+        public virtual ICollection<StoryMedium> StoryMedia { get; set; }
     }
 }
