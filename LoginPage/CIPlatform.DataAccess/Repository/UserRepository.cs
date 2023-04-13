@@ -290,7 +290,7 @@ namespace CIPlatform.DataAccess.Repository
         public List<TimeBasedTimesheetViewModel> GetTimeBasedTimesheets(long userId)
         {
             var toReturn = _db.Users.Where(user => user.UserId == userId)
-                .SelectMany(user => user.Timesheets.Select(TimeBased => new TimeBasedTimesheetViewModel()
+                .SelectMany(user => user.Timesheets.Where(tb => tb.Time!=null).Select(TimeBased => new TimeBasedTimesheetViewModel()
                 {
                     TimesheetId = TimeBased.TimesheetId,
                     MissionId = TimeBased.MissionId,
@@ -308,7 +308,7 @@ namespace CIPlatform.DataAccess.Repository
         public List<GoalBasedTimesheetViewModel> GetGoalBasedTimesheets(long userId)
         {
             var toReturn = _db.Users.Where(user => user.UserId == userId)
-               .SelectMany(user => user.Timesheets.Select(GoalBased => new GoalBasedTimesheetViewModel()
+               .SelectMany(user => user.Timesheets.Where(tb => tb.Time == null).Select(GoalBased => new GoalBasedTimesheetViewModel()
                {
                    TimesheetId = GoalBased.TimesheetId,
                    MissionId = GoalBased.MissionId,
@@ -324,5 +324,140 @@ namespace CIPlatform.DataAccess.Repository
             return toReturn.ToList();
         }
 
+        public BaseResponseViewModel editTimeSheetHourData(EditHourVolunteerParams editHour)
+        {
+            BaseResponseViewModel baseResponse = new BaseResponseViewModel();
+            var oldTimesheet = _db.Timesheets.First(timesheet => timesheet.TimesheetId == editHour.TimesheetId);
+            oldTimesheet.MissionId = editHour.MissionId;
+            oldTimesheet.Time = editHour.FormattedTime;
+            oldTimesheet.Action = 0;
+            oldTimesheet.DateVolunteered = editHour.VolunteeredDate;
+            oldTimesheet.Notes = editHour.Message;
+            oldTimesheet.ApprovalStatusId = 2;
+            oldTimesheet.UpdatedAt = DateTime.Now;
+
+
+            try
+            {
+                _db.Timesheets.Update(oldTimesheet);
+                _db.SaveChanges();
+                baseResponse.Success = true;
+                baseResponse.Message = "Timesheet has been updates successfully...!!";
+                baseResponse.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                baseResponse.Success = false;
+                baseResponse.Message = "Timesheet could not be updated..!!";
+                baseResponse.StatusCode = 500;
+            }
+            return baseResponse;
+
+        }
+
+        public BaseResponseViewModel deleteTimeSheetHourData(long TimesheetId)
+        {
+            BaseResponseViewModel baseResponse = new BaseResponseViewModel();
+            try
+            {
+                var oldTimesheet = _db.Timesheets.First(timesheet => timesheet.TimesheetId == TimesheetId);
+                _db.Timesheets.Remove(oldTimesheet);
+                _db.SaveChanges();
+                baseResponse.Success = true;
+                baseResponse.Message = "Timesheet has been deleted successfully...!!";
+                baseResponse.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                baseResponse.Success = false;
+                baseResponse.Message = "Timesheet could not be deleted..!!";
+                baseResponse.StatusCode = 500;
+            }
+            return baseResponse;
+        }
+
+
+
+        public BaseResponseViewModel addTimeSheetGoalData(AddGoalVolunteerParams addGoal, long userId)
+        {
+            BaseResponseViewModel baseResponse = new BaseResponseViewModel();
+            Timesheet timesheet = new Timesheet()
+            {
+                UserId = userId,
+                MissionId = addGoal.MissionId,
+                Action = addGoal.Action,
+                DateVolunteered = addGoal.VolunteeredDate,
+                Notes = addGoal.Message,
+                ApprovalStatusId = 2,
+                CreatedAt = DateTime.Now,
+            };
+
+            try
+            {
+                _db.Timesheets.Add(timesheet);
+                _db.SaveChanges();
+                baseResponse.Success = true;
+                baseResponse.Message = "New Data has been added in the Timesheet..!!";
+                baseResponse.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                baseResponse.Success = false;
+                baseResponse.Message = "New Data could not be added in the Timesheet..!!";
+                baseResponse.StatusCode = 500;
+            }
+            return baseResponse;
+
+        }
+
+        public BaseResponseViewModel editTimeSheetGoalData(EditGoalVolunteerParams editGoal)
+        {
+
+            BaseResponseViewModel baseResponse = new BaseResponseViewModel();
+            var oldTimesheet = _db.Timesheets.First(timesheet => timesheet.TimesheetId == editGoal.TimesheetId);
+            oldTimesheet.MissionId = editGoal.MissionId;
+            oldTimesheet.Action = editGoal.Action;
+            oldTimesheet.DateVolunteered = editGoal.VolunteeredDate;
+            oldTimesheet.Notes = editGoal.Message;
+            oldTimesheet.ApprovalStatusId = 2;
+            oldTimesheet.UpdatedAt = DateTime.Now;
+            try
+            {
+                _db.Timesheets.Update(oldTimesheet);
+                _db.SaveChanges();
+                baseResponse.Success = true;
+                baseResponse.Message = "Timesheet has been updates successfully...!!";
+                baseResponse.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                baseResponse.Success = false;
+                baseResponse.Message = "Timesheet could not be updated..!!";
+                baseResponse.StatusCode = 500;
+            }
+            return baseResponse;
+
+        }
+        public BaseResponseViewModel deleteTimeSheetGoalData(long TimesheetId)
+        {
+
+            BaseResponseViewModel baseResponse = new BaseResponseViewModel();
+            try
+            {
+                var oldTimesheet = _db.Timesheets.First(timesheet => timesheet.TimesheetId == TimesheetId);
+                _db.Timesheets.Remove(oldTimesheet);
+                _db.SaveChanges();
+                baseResponse.Success = true;
+                baseResponse.Message = "Timesheet has been deleted successfully...!!";
+                baseResponse.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                baseResponse.Success = false;
+                baseResponse.Message = "Timesheet could not be deleted..!!";
+                baseResponse.StatusCode = 500;
+            }
+            return baseResponse;
+        }
     }
 }

@@ -20,7 +20,19 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         public BaseResponseViewModel newContactUsEntry(long userId, string subject, string message);
         public List<MissionIdNameTypeViewModel> getMissionsByUserId(long userId);
         public BaseResponseViewModel addTimeSheetHourData(AddHourVolunteerParams addHour,long userId);
+        
+        public BaseResponseViewModel editTimeSheetHourData(EditHourVolunteerParams editHour);
+        public BaseResponseViewModel deleteTimeSheetHourData(long TimesheetId);
+
         public List<TimeBasedTimesheetViewModel> GetTimeBasedTimesheets(long userId);
         public List<GoalBasedTimesheetViewModel> GetGoalBasedTimesheets(long userId);
+
+        public BaseResponseViewModel addTimeSheetGoalData(AddGoalVolunteerParams addGoal, long userId);
+
+        public BaseResponseViewModel editTimeSheetGoalData(EditGoalVolunteerParams editGoal);
+
+        public BaseResponseViewModel deleteTimeSheetGoalData(long TimesheetId);
+
+
     }
 }

@@ -1,14 +1,19 @@
-﻿@*
+﻿@using CIPlatform.Models.ViewDataModels
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
 @{
+    var uid = 1;
 }
-<div class="">
+@model List<GoalBasedTimesheetViewModel>
+
+<div class="mb-lg-0 mb-3">
     <div class="border p-2">
         <div class="mt-5">
             <div class="d-flex justify-content-between">
-                <h4 class="fw-lighter">Volunteering Goals</h4>
-                <button class="btn bg-white text-orange rounded-pill px-3 border-orange" data-bs-toggle="modal" data-bs-target="#volGoalsForm"><i class="bi bi-plus-lg"></i> Add</button>
+                <h4 class="fw-lighter">Volunteering Hours</h4>
+                <button id="addVolGoalBtn" data-uid="@uid" class="btn bg-white text-orange rounded-pill px-3 border-orange" data-bs-toggle="modal" data-bs-target="#volGoalForm"><i class="bi bi-plus-lg"></i> Add</button>
             </div>
             <div class="mt-4 volunteersGoalsTbl">
                 <table class="table border-none">
@@ -21,97 +26,110 @@
                         </tr>
                     </thead>
                     <tbody class="fw-lighter">
-                        <tr>
-                            <td>Plantation Programme</td>
-                            <td>22/02/2022</td>
-                            <td>0</td>
-                            <td> <a href="" class=""  data-bs-toggle="modal" data-bs-target="#EditvolGoalsForm"><i class="bi text-orange bi-pencil-square me-2"></i></a> <a href=""> <i class="text-secondary bi bi-trash"></i></a></td>
-                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            
+                            <tr>
+                                <td>@item.MissionName</td>
+                                <td>@item.DateVolunteered.ToString().Substring(0,11)</td>
+                                <td>@item.Action</td>
+                                <td>
+                                    <a href="" class="fst-normal text-decoration-none" id="goalBasedEditAnchortag" data-bs-toggle="modal" data-bs-target="#EditvolGoalForm"
+                                   data-mission-name="@item.MissionName"
+                                   data-date-volunteered="@item.DateVolunteered.ToString().Substring(0,11)"
+                                    data-message="@item.Notes"
+                                    data-timesheetid="@item.TimesheetId"
+                                    data-userid="@uid"
+                                    data-mid="@item.MissionId"
+                                    data-act = "@item.Action">
+                                        <i class="bi text-orange bi-pencil-square me-2"></i>
+                                    </a>
+                                    <a href="" id="deleteGoalbasedTimesheet" data-timesheetid="@item.TimesheetId">
+                                        <i class="text-secondary bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
                        
                     </tbody>
                 </table>
+
             </div>
+
         </div>
     </div>
 </div>
 
 
-
-<div class="modal fade" id="volGoalsForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-4 fw-semibold" id="exampleModalLabel">Please input below Volunteering Hours</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form action="">
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="volMission" class="form-label">Mission</label>
-          <select class="form-select" id="volMission" aria-label="Default select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>      
+<div class="modal fade" id="volGoalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-3 fw-light" id="exampleModalLabel">Please input below Volunteering Hours</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="volGoalSubmitForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="GoalvolMission" class="form-label">Mission</label>
+                        <select class="form-select" id="GoalvolMission" aria-label="Default select example">
+                            <option selected>Open this select menu</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="GoalvolAction" class="form-label">Actions</label>
+                        <input type="number" id="GoalvolAction" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="GoaldateVolunteered" class="form-label">Date Volunteered</label>
+                        <input type="date" id="GoaldateVolunteered" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="GoalvolMessage" class="form-label">Message</label>
+                        <textarea class="form-control" id="GoalvolMessage" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="mainGoalBasedCancel" class="btn bg-white border-dark text-dark rounded-pill px-3" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn bg-white text-orange border-orange px-3 rounded-pill">Submit</button>
+                </div>
+            </form>
         </div>
-        <div class="mb-3">
-          <label for="volAction" class="form-label">Actions</label>
-          <input type="number" id="volAction" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label for="dateVolunteered" class="form-label">Date Volunteered</label>
-         <input type="date" id="dateVolunteered" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label for="volMessage" class="form-label">Message</label>
-          <textarea class="form-control" id="volMessage" rows="3"></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn bg-white border-dark text-dark rounded-pill px-3" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn bg-white text-orange border-orange px-3 rounded-pill">Submit</button>
-      </div>
-    </form>
     </div>
-  </div>
 </div>
 
-
-<div class="modal fade" id="EditvolGoalsForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="EditvolGoalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-4 fw-semibold" id="exampleModalLabel">Please input below Volunteering Hours</h1>
+        <h1 class="modal-title fs-4 fw-semibold" id="exampleModalLabel">Please input below Volunteering Actions</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="">
+      <form action="" id="EditvolGoalSubmitForm">
       <div class="modal-body">
         <div class="mb-3">
-          <label for="volMission" class="form-label">Mission</label>
-          <select class="form-select" id="volMission" aria-label="Default select example">
+          <label for="EditGoalvolMission" class="form-label">Mission</label>
+          <select class="form-select" id="EditGoalvolMission" aria-label="Default select example">
             <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
           </select>      
         </div>
         <div class="mb-3">
-          <label for="volAction" class="form-label">Actions</label>
-          <input type="number" id="volAction" class="form-control">
+          <label for="EditGoalvolAction" class="form-label">Actions</label>
+          <input type="number" id="EditGoalvolAction" class="form-control">
         </div>
         <div class="mb-3">
-          <label for="dateVolunteered" class="form-label">Date Volunteered</label>
-         <input type="date" id="dateVolunteered" class="form-control">
+          <label for="EditGoaldateVolunteered" class="form-label">Date Volunteered</label>
+         <input type="date" id="EditGoaldateVolunteered" class="form-control">
         </div>
         <div class="mb-3">
-          <label for="volMessage" class="form-label">Message</label>
-          <textarea class="form-control" id="volMessage" rows="3"></textarea>
+          <label for="EditGoalvolMessage" class="form-label">Message</label>
+          <textarea class="form-control" id="EditGoalvolMessage" rows="3"></textarea>
         </div>
       </div>
+      <input type="hidden" id="EditGoalTimesheetId" />
       <div class="modal-footer">
-        <button type="button" class="btn bg-white border-dark text-dark rounded-pill px-3" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn bg-white text-orange border-orange px-3 rounded-pill">Submit</button>
+        <button type="button" id="EditmainGoalBasedCancel" class="btn bg-white border-dark text-dark rounded-pill px-3" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn bg-white text-orange border-orange px-3 rounded-pill">Submit</button>
       </div>
     </form>
     </div>

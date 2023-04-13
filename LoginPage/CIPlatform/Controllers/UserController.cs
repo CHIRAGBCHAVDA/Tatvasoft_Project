@@ -92,5 +92,71 @@ namespace CIPlatform.Controllers
             }
             return null;
         }
+
+        [HttpPost]
+        public IActionResult EditHourVolunteer(EditHourVolunteerParams Editparams)
+        {
+            var baseResponse = _unitOfWork.User.editTimeSheetHourData(Editparams);
+            if (baseResponse.Success)
+            {
+                var userId = long.Parse(HttpContext.Session.GetString("userId"));
+                TempData["hour-update-success"] = baseResponse.Message;
+                return PartialView("_TimeBasedTimesheet", _unitOfWork.User.GetTimeBasedTimesheets(userId));
+            }
+            return null;
+        }
+        [HttpPost]
+        public IActionResult DeleteHourVolunteer(long TimesheetId)
+        {
+            var baseResponse = _unitOfWork.User.deleteTimeSheetHourData(TimesheetId);
+            if (baseResponse.Success)
+            {
+                var userId = long.Parse(HttpContext.Session.GetString("userId"));
+                TempData["hour-delete-success"] = baseResponse.Message;
+                return PartialView("_TimeBasedTimesheet", _unitOfWork.User.GetTimeBasedTimesheets(userId));
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public IActionResult AddGoalVolunteer(AddGoalVolunteerParams addGoalParams)
+        {
+            var baseResponse = _unitOfWork.User.addTimeSheetGoalData(addGoalParams, long.Parse(HttpContext.Session.GetString("userId")));
+            if (baseResponse.Success)
+            {
+                var userId = long.Parse(HttpContext.Session.GetString("userId"));
+                TempData["hour-add-success"] = baseResponse.Message;
+                return PartialView("_GoalBasedTimesheet", _unitOfWork.User.GetGoalBasedTimesheets(userId));
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public IActionResult EditGoalVolunteer(EditGoalVolunteerParams Editparams)
+        {
+            var baseResponse = _unitOfWork.User.editTimeSheetGoalData(Editparams);
+            if (baseResponse.Success)
+            {
+                var userId = long.Parse(HttpContext.Session.GetString("userId"));
+                TempData["hour-update-success"] = baseResponse.Message;
+                return PartialView("_GoalBasedTimesheet", _unitOfWork.User.GetGoalBasedTimesheets(userId));
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public IActionResult DeleteGoalVolunteer(long TimesheetId)
+        {
+            var baseResponse = _unitOfWork.User.deleteTimeSheetGoalData(TimesheetId);
+            if (baseResponse.Success)
+            {
+                var userId = long.Parse(HttpContext.Session.GetString("userId"));
+                TempData["hour-delete-success"] = baseResponse.Message;
+                return PartialView("_GoalBasedTimesheet", _unitOfWork.User.GetGoalBasedTimesheets(userId));
+            }
+            return null;
+        }
+
+
     }
 }

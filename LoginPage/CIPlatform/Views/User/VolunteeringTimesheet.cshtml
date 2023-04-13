@@ -3,6 +3,9 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @model CustomTimesheetViewModel
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 @{
     var uid = 1;
 }
@@ -20,7 +23,7 @@
                 <div class="col-lg-6" id="volTimesheetTimeBased">
                     <partial name="_TimeBasedTimesheet" model="Model.TimeBasedTimesheets" />
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" id="volTimesheetGoalBased">
                     <partial name="_GoalBasedTimesheet" model="Model.GoalBasedTimesheets" />
                 </div>
             </div>
