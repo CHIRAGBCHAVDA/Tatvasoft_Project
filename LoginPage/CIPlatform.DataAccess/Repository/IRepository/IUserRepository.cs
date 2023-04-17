@@ -33,6 +33,6 @@ namespace CIPlatform.DataAccess.Repository.IRepository
 
         public BaseResponseViewModel deleteTimeSheetGoalData(long TimesheetId);
 
-
+        public DateTime getAppliedDateByMissionId(long userId, long missionId);
     }
 }

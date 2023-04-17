@@ -8,11 +8,65 @@
 }
 @model List<GoalBasedTimesheetViewModel>
 
+<script>
+    $(document).ready(function () {
+    $('.sort-link').click(function () {
+             var sort = $(this).data('sort');
+        var order = $(this).data('order');
+        if (order == 'asc') {
+            $(this).data('order', 'desc');
+            $(this).find('.bi').removeClass('bi-arrow-up').addClass('bi-arrow-down');
+        } else {
+            $(this).data('order', 'asc');
+            $(this).find('.bi').removeClass('bi-arrow-down').addClass('bi-arrow-up');
+        }
+
+
+        // Get the table body
+        var tableBody = $(this).closest('table').find('tbody');
+        
+        // Get the rows of the table body
+        var rows = tableBody.find('tr').get();
+        
+        // Sort the rows based on the Action column
+        rows.sort(function (a, b) {
+            var actionA = $(a).find('td:eq(2)').text();
+            var actionB = $(b).find('td:eq(2)').text();
+            
+            // Convert the action values to numbers for comparison
+            actionA = parseFloat(actionA);
+            actionB = parseFloat(actionB);
+            
+            // Sort in ascending order
+            return actionA - actionB;
+        });
+        
+        // Reverse the sorted rows if the sort icon is already sorted in ascending order
+        if ($(this).hasClass('sorted-asc')) {
+            rows.reverse();
+        }
+        
+        // Clear the table body and add the sorted rows
+        tableBody.empty();
+        $.each(rows, function (index, row) {
+            tableBody.append(row);
+        });
+        
+        // Toggle the sort icon class
+        $(this).toggleClass('sorted-asc');
+    });
+});
+
+</script>
+
+
+
+
 <div class="mb-lg-0 mb-3">
     <div class="border p-2">
         <div class="mt-5">
             <div class="d-flex justify-content-between">
-                <h4 class="fw-lighter">Volunteering Hours</h4>
+                <h4 class="fw-lighter">Volunteering Goals</h4>
                 <button id="addVolGoalBtn" data-uid="@uid" class="btn bg-white text-orange rounded-pill px-3 border-orange" data-bs-toggle="modal" data-bs-target="#volGoalForm"><i class="bi bi-plus-lg"></i> Add</button>
             </div>
             <div class="mt-4 volunteersGoalsTbl">
@@ -21,14 +75,17 @@
                         <tr>
                             <th scope="col">Mission</th>
                             <th scope="col">Date</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">
+                                Action <a href="#" class="sort-link" data-sort="action" data-order="asc">
+                                    <span class="bi bi-arrow-up"></span>
+                                </a>
+                            </th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody class="fw-lighter">
                         @foreach (var item in Model)
                         {
-                            
                             <tr>
                                 <td>@item.MissionName</td>
                                 <td>@item.DateVolunteered.ToString().Substring(0,11)</td>
@@ -41,7 +98,8 @@
                                     data-timesheetid="@item.TimesheetId"
                                     data-userid="@uid"
                                     data-mid="@item.MissionId"
-                                    data-act = "@item.Action">
+                                    data-act = "@item.Action"
+                                    data-userapplied-date="@item.UserAppliedDate">
                                         <i class="bi text-orange bi-pencil-square me-2"></i>
                                     </a>
                                     <a href="" id="deleteGoalbasedTimesheet" data-timesheetid="@item.TimesheetId">
@@ -71,18 +129,21 @@
             <form id="volGoalSubmitForm">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="GoalvolMission" class="form-label">Mission</label>
-                        <select class="form-select" id="GoalvolMission" aria-label="Default select example">
+                        <label for="GoalvolMission" class="form-label">Mission<span class="text-danger">*</span> </label>
+                        <select class="form-select" id="GoalvolMission" aria-label="Default select example" required="">
                             <option selected>Open this select menu</option>
                         </select>
+                        <div class="invalid-feedback">Please select the mission</div>
                     </div>
                     <div class="mb-3">
-                        <label for="GoalvolAction" class="form-label">Actions</label>
-                        <input type="number" id="GoalvolAction" class="form-control">
+                        <label for="GoalvolAction" class="form-label">Actions<span class="text-danger">*</span> </label>
+                        <input type="number" id="GoalvolAction" class="form-control" required="">
+                        <div class="invalid-feedback">This field is required</div>
                     </div>
                     <div class="mb-3">
-                        <label for="GoaldateVolunteered" class="form-label">Date Volunteered</label>
-                        <input type="date" id="GoaldateVolunteered" class="form-control">
+                        <label for="GoaldateVolunteered" class="form-label">Date Volunteered<span class="text-danger">*</span> </label>
+                        <input type="date"  id="GoaldateVolunteered" class="form-control" required="">
+                         <div class="invalid-feedback">Select the date you volunteered on</div>
                     </div>
                     <div class="mb-3">
                         <label for="GoalvolMessage" class="form-label">Message</label>
@@ -108,17 +169,19 @@
       <form action="" id="EditvolGoalSubmitForm">
       <div class="modal-body">
         <div class="mb-3">
-          <label for="EditGoalvolMission" class="form-label">Mission</label>
+          <label for="EditGoalvolMission" class="form-label">Mission<span class="text-danger">*</span></label>
           <select class="form-select" id="EditGoalvolMission" aria-label="Default select example">
             <option selected>Open this select menu</option>
-          </select>      
+          </select>
+        <div class="invalid-feedback">Please select the mission</div>
         </div>
         <div class="mb-3">
-          <label for="EditGoalvolAction" class="form-label">Actions</label>
+          <label for="EditGoalvolAction" class="form-label">Actions<span class="text-danger">*</span></label>
           <input type="number" id="EditGoalvolAction" class="form-control">
+          <div class="invalid-feedback">This field is required</div>
         </div>
         <div class="mb-3">
-          <label for="EditGoaldateVolunteered" class="form-label">Date Volunteered</label>
+          <label for="EditGoaldateVolunteered" class="form-label">Date Volunteered<span class="text-danger">*</span></label>
          <input type="date" id="EditGoaldateVolunteered" class="form-control">
         </div>
         <div class="mb-3">

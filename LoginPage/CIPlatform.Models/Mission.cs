@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CIPlatform.Models
 {
@@ -46,6 +47,7 @@ namespace CIPlatform.Models
         public virtual ICollection<MissionMedium> MissionMedia { get; set; }
         public virtual ICollection<MissionRating> MissionRatings { get; set; }
         public virtual ICollection<MissionSkill> MissionSkills { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Story> Stories { get; set; }
         public virtual ICollection<Timesheet> Timesheets { get; set; }
     }

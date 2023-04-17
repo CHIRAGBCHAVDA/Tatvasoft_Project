@@ -48,7 +48,8 @@
                                     data-message="@item.Notes"
                                     data-timesheetid="@item.TimesheetId"
                                     data-userid="@uid"
-                                    data-mid="@item.MissionId">
+                                    data-mid="@item.MissionId"
+                                    data-userapplied-date="@item.UserAppliedDate">
                                         <i class="bi text-orange bi-pencil-square me-2"></i>
                                     </a>
                                     <a href="" id="deleteTimebasedTimesheet" data-timesheetid="@item.TimesheetId">
@@ -79,22 +80,26 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="volMission" class="form-label">Mission</label>
-                        <select class="form-select" id="volMission" aria-label="Default select example">
+                        <select class="form-select" id="volMission" aria-label="Default select example" required="">
                             <option selected>Open this select menu</option>
+                            <div class="invalid-feedback">Please select the mission</div>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="dateVolunteered" class="form-label">Date Volunteered</label>
-                        <input type="date" id="dateVolunteered" class="form-control">
+                        <input type="date" id="dateVolunteered" class="form-control" required="">
+                        <div class="invalid-feedback">Select the date you volunteered on</div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
                         <div class="volHours w-50 me-2">
                             <label for="volHrs" class="form-label">Hours</label>
-                            <input type="number" id="volHrs" class="form-control">
+                            <input type="number" id="volHrs" class="form-control" required="">
+                            <div class="invalid-feedback">This field is required</div>
                         </div>
                         <div class="volMins w-50">
                             <label for="volMins" class="form-label">Mins</label>
-                            <input type="number" id="volMins" class="form-control">
+                            <input type="number" id="volMins" class="form-control" required="">
+                            <div class="invalid-feedback">This field is required</div>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -122,23 +127,27 @@
             <form id="EditvolHrsSubmitForm">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="EditvolMission" class="form-label">Mission</label>
-                        <select class="form-select" id="EditvolMission" aria-label="Default select example">
+                        <label for="EditvolMission" class="form-label">Mission<span class="text-danger">*</span> </label>
+                        <select class="form-select" id="EditvolMission" aria-label="Default select example" required="">
                             <option selected>Open this select menu</option>
+                            <div class="invalid-feedback">Please select the mission</div>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="EditdateVolunteered" class="form-label">Date Volunteered</label>
-                        <input type="date" id="EditdateVolunteered" class="form-control">
+                        <label for="EditdateVolunteered" class="form-label">Date Volunteered<span class="text-danger">*</span> </label>
+                        <input type="date" id="EditdateVolunteered" class="form-control" required="">
+                        <div class="invalid-feedback">Select the date you volunteered on</div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
                         <div class="volHours w-50 me-2">
-                            <label for="EditvolHrs" class="form-label">Hours</label>
-                            <input type="number" id="EditvolHrs" class="form-control">
+                            <label for="EditvolHrs" class="form-label">Hours<span class="text-danger">*</span> </label>
+                            <input type="number" id="EditvolHrs" class="form-control" required="">
+                            <div class="invalid-feedback">This field is required</div>
                         </div>
                         <div class="volMins w-50">
-                            <label for="EditvolMins" class="form-label">Mins</label>
-                            <input type="number" id="EditvolMins" class="form-control">
+                            <label for="EditvolMins" class="form-label">Mins <span class="text-danger">*</span> </label>
+                            <input type="number" id="EditvolMins" class="form-control" required="">
+                            <div class="invalid-feedback">This field is required</div>
                         </div>
                     </div>
                     <div class="mb-3">

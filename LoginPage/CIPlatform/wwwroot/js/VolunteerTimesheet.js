@@ -1,4 +1,8 @@
-﻿$(document).ready(function () {
+﻿let userAppliedDate = new Date();
+
+
+
+$(document).ready(function () {
 
     $(document).on('click', 'a[data-bs-target="#EditvolHrsForm"]', function (e) {
         e.preventDefault();
@@ -14,12 +18,21 @@
         var userId = $(this).data("userid");
         var mid = $(this).data("mid");
 
+        userAppliedDate = $(this).data("userapplied-date");
+        let appliedDate = userAppliedDate.substring(0, 11).split("-")[0];
+        let appliedMonth = userAppliedDate.substring(0, 11).split("-")[1];
+        let appliedYr = userAppliedDate.substring(0, 11).split("-")[2];
+        let finalAppliedStr = appliedYr.trim() + "-" + appliedMonth.trim() + "-" + appliedDate.trim();
+        let todaysDate = new Date().toISOString().slice(0, 10);
+        console.log("User applied date", userAppliedDate);
+
+        $("#EditdateVolunteered").attr('min', finalAppliedStr);
+        $("#EditdateVolunteered").attr('max', todaysDate);
+
+
         $.ajax({
             type: "POST",
             url: "/User/getMissionApplicationsByUserId",
-            data: {
-                userId: userId
-            },
             success: function (result) {
                 $("#EditvolMission").empty();
                 $.each(result, function (index, value) {
@@ -57,9 +70,9 @@
         $.ajax({
             type: "POST",
             url: "/User/getMissionApplicationsByUserId",
-            data: {
-                userId:userId
-            },
+            //data: {
+            //    userId:userId
+            //},
             success: function (result) {
                 $("#volMission").empty();
                 $.each(result, function (index, value) {
@@ -92,6 +105,17 @@
         dateObj.setHours(hrs);
         dateObj.setMinutes(mins);
         let formattedTime = dateObj.toLocaleTimeString('en-US', { hour12: false });
+
+
+        
+        if (!(parseInt(hrs) >= 0 && parseInt(hrs) <= 23)) {
+            toastr.error("Hours must be between the 0 to 23");
+            return;
+        }
+        if (!(parseInt(mins) >= 0 && parseInt(mins) <= 59)) {
+            toastr.error("Mins must be between 0 to 59");
+            return;
+        }
 
         $.ajax({
             type: "POST",
@@ -128,6 +152,16 @@
         dateObj.setHours(hrs);
         dateObj.setMinutes(mins);
         let formattedTime = dateObj.toLocaleTimeString('en-US', { hour12: false });
+
+
+        if (!(parseInt(hrs) >= 0 && parseInt(hrs) <= 23)) {
+            toastr.error("Hours must be between the 0 to 23");
+            return;
+        }
+        if (!(parseInt(mins) >= 0 && parseInt(mins) <= 59)) {
+            toastr.error("Mins must be between 0 to 59");
+            return;
+        }
 
         $.ajax({
             type: "POST",
@@ -174,7 +208,62 @@
         });
     });
 
-    
+    $(document).on("change", "#volMission", function () {
+        let mid = $(this).val();
+        console.log("Changed mission to mid : ", mid);
+        $.ajax({
+            type: "post",
+            url: "/User/getAppliedDateByMissionId",
+            data: {
+                MissionId: mid
+            },
+            success: function (userAppliedDateNew) {
+                console.log(userAppliedDateNew);
+                userAppliedDate = userAppliedDateNew;
+                let appliedYr = userAppliedDateNew.substring(0, 11).split("-")[0].substring(0, 4);
+                let appliedMonth = userAppliedDateNew.substring(0, 11).split("-")[1].substring(0, 2);
+                let appliedDate = userAppliedDateNew.substring(0, 11).split("-")[2].substring(0, 2);
+                let finalAppliedStr = appliedYr.trim() + "-" + appliedMonth.trim() + "-" + appliedDate.trim();
+                let todaysDate = new Date().toISOString().slice(0, 10);
+                $("#dateVolunteered").attr('min', finalAppliedStr);
+                $("#dateVolunteered").attr('max', todaysDate);
+                console.log(finalAppliedStr);
+                console.log(todaysDate);
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+
+    $(document).on("change", "#EditvolMission", function () {
+        let mid = $(this).val();
+        console.log("Changed mission to mid : ", mid);
+        $.ajax({
+            type: "post",
+            url: "/User/getAppliedDateByMissionId",
+            data: {
+                MissionId: mid
+            },
+            success: function (userAppliedDateNew) {
+                userAppliedDate = userAppliedDateNew;
+                let appliedDate = userAppliedDateNew.substring(0, 11).split("-")[0];
+                let appliedMonth = userAppliedDateNew.substring(0, 11).split("-")[1];
+                let appliedYr = userAppliedDateNew.substring(0, 11).split("-")[2];
+                let finalAppliedStr = appliedYr.trim() + "-" + appliedMonth.trim() + "-" + appliedDate.trim();
+                let todaysDate = new Date().toISOString().slice(0, 10);
+                $("#EditdateVolunteered").attr('min', finalAppliedStr);
+                $("#EditdateVolunteered").attr('max', todaysDate);
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+
+
+
+
 
     /*******************************************       Goal Based area         *******************************************************************/
 
@@ -184,9 +273,6 @@
         $.ajax({
             type: "POST",
             url: "/User/getMissionApplicationsByUserId",
-            data: {
-                userId: userId
-            },
             success: function (result) {
                 $("#GoalvolMission").empty();
                 $.each(result, function (index, value) {
@@ -214,7 +300,20 @@
         let date = $('#GoaldateVolunteered').val();
         let action = $("#GoalvolAction").val();
         let message = $("#GoalvolMessage").val();
-       
+
+
+        let newdate = formatDate(new Date(date));
+        let newUserApplied = new Date(userAppliedDate).toLocaleDateString();
+        let today = formatDate(new Date());
+        console.log("lets solve \n newdate >= newUserApplied && newdate <= today \n ", newdate, newUserApplied, today);
+        if (newdate >= newUserApplied && newdate <= today) {
+            console.log("yes you're right");
+        } else {
+            toastr.error("Date must be between user applied date and today's date..!!");
+            return;
+        }
+
+
 
         $.ajax({
             type: "POST",
@@ -226,10 +325,9 @@
                 Message: message
             },
             success: function (result) {
-                console.log(result);
-                $("#mainGoalBasedCancel").click();
-                $("#volTimesheetGoalBased").html(result);
                 $("#addVolGoalBtn").click();
+                $("#volTimesheetGoalBased").html(result);
+                $("#mainGoalBasedCancel").click();
                 toastr.success("New Goal Based Timesheet data has been added..!!");
             },
             error: function (xhr, status, error) {
@@ -251,6 +349,15 @@
         var userId = $(this).data("userid");
         var mid = $(this).data("mid");
         var action = $(this).data("act");
+        userAppliedDate = $(this).data("userapplied-date");
+        let appliedDate = userAppliedDate.substring(0, 11).split("-")[0];
+        let appliedMonth = userAppliedDate.substring(0, 11).split("-")[1];
+        let appliedYr = userAppliedDate.substring(0, 11).split("-")[2];
+        let finalAppliedStr = appliedYr.trim() + "-" + appliedMonth.trim() + "-" + appliedDate.trim();
+        let todaysDate = new Date().toISOString().slice(0, 10);
+        console.log("User applied date", userAppliedDate);
+
+
         console.log(missionName
             , dateVolunteered
             , formattedDate
@@ -260,14 +367,14 @@
             , mid
             , action
         );
+        $("#EditGoaldateVolunteered").attr('min', finalAppliedStr);
+        $("#EditGoaldateVolunteered").attr('max', todaysDate);
+
 
 
         $.ajax({
             type: "POST",
             url: "/User/getMissionApplicationsByUserId",
-            data: {
-                userId: userId
-            },
             success: function (result) {
                 $("#EditGoalvolMission").empty();
                 $.each(result, function (index, value) {
@@ -302,11 +409,37 @@
     $(document).on("submit", "#EditvolGoalSubmitForm", function (e) {
         e.preventDefault();
         let missionId = $("#EditGoalvolMission :selected").attr('data-mid');
-        let date = $('#EditGoaldateVolunteered').val();
         let action = parseInt($("#EditGoalvolAction").val());
         let message = $("#EditGoalvolMessage").val();
         let timesheetId = $("#EditGoalTimesheetId").val();
+        let date = $('#EditGoaldateVolunteered').val();
 
+        //let newdate = new Date(date).toLocaleDateString();
+        //let newUserApplied = new Date(userAppliedDate).toLocaleDateString()
+        //let today = new Date().toLocaleDateString();
+        //if (newdate >= newUserApplied && newdate <= today) {
+        //    console.log("yes youre right");
+        //}
+        //else {
+        //    toastr.error("Date must be between user applied date and today's date..!!");
+        //    return;
+        //}
+
+        let newdate = formatDate(new Date(date));
+        let newUserApplied = new Date(userAppliedDate).toLocaleDateString();
+        let today = formatDate(new Date());
+        console.log("lets solve \n newdate >= newUserApplied && newdate <= today \n ", newdate, newUserApplied, today);
+        if (newdate >= newUserApplied && newdate <= today) {
+            console.log("yes you're right");
+        } else {
+            toastr.error("Date must be between user applied date and today's date..!!");
+            return;
+        }
+
+      
+
+
+        console.log("Lets check the date : ", userAppliedDate);
         $.ajax({
             type: "POST",
             url: "/User/EditGoalVolunteer",
@@ -318,7 +451,6 @@
                 Message: message,
             },
             success: function (result) {
-                console.log(result);
                 $("#EditmainGoalBasedCancel").click();
                 $("#volTimesheetGoalBased").html(result);
                 toastr.success("Timesheet has been updated..!!");
@@ -351,4 +483,68 @@
             }
         });
     });
+
+
+    $(document).on("change", "#GoalvolMission", function () {
+        let mid = $(this).val();
+        console.log("Changed mission to mid : ", mid);
+        $.ajax({
+            type: "post",
+            url: "/User/getAppliedDateByMissionId",
+            data: {
+                MissionId: mid
+            },
+            success: function (userAppliedDateNew) {
+                console.log(userAppliedDateNew);
+                userAppliedDate = userAppliedDateNew;
+                let appliedYr = userAppliedDateNew.substring(0, 11).split("-")[0].substring(0,4);
+                let appliedMonth = userAppliedDateNew.substring(0, 11).split("-")[1].substring(0,2);
+                let appliedDate = userAppliedDateNew.substring(0, 11).split("-")[2].substring(0,2);
+                let finalAppliedStr = appliedYr.trim() + "-" + appliedMonth.trim() + "-" + appliedDate.trim();
+                let todaysDate = new Date().toISOString().slice(0, 10);
+                $("#GoaldateVolunteered").attr('min', finalAppliedStr);
+                $("#GoaldateVolunteered").attr('max', todaysDate);
+                console.log(finalAppliedStr);
+                console.log(todaysDate);
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+
+    $(document).on("change", "#EditGoalvolMission", function () {
+        let mid = $(this).val();
+        console.log("Changed mission to mid : ", mid);
+        $.ajax({
+            type: "post",
+            url: "/User/getAppliedDateByMissionId",
+            data: {
+                MissionId : mid
+            },
+            success: function (userAppliedDateNew) {
+                userAppliedDate = userAppliedDateNew;
+                let appliedDate = userAppliedDateNew.substring(0, 11).split("-")[0];
+                let appliedMonth = userAppliedDateNew.substring(0, 11).split("-")[1];
+                let appliedYr = userAppliedDateNew.substring(0, 11).split("-")[2];
+                let finalAppliedStr = appliedYr.trim() + "-" + appliedMonth.trim() + "-" + appliedDate.trim();
+                let todaysDate = new Date().toISOString().slice(0, 10);
+                $("#EditGoaldateVolunteered").attr('min', finalAppliedStr);
+                $("#EditGoaldateVolunteered").attr('max', todaysDate);
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+
 });
+
+
+
+function formatDate(date) {
+    let year = date.getFullYear();
+    let month = ('0' + (date.getMonth() + 1)).slice(-2);
+    let day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+}

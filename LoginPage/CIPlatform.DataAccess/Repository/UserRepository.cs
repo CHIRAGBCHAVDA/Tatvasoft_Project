@@ -292,6 +292,7 @@ namespace CIPlatform.DataAccess.Repository
             var toReturn = _db.Users.Where(user => user.UserId == userId)
                 .SelectMany(user => user.Timesheets.Where(tb => tb.Time!=null).Select(TimeBased => new TimeBasedTimesheetViewModel()
                 {
+                    UserAppliedDate = TimeBased.Mission.MissionApplications.Select(ma => ma.AppliedAt).First(),
                     TimesheetId = TimeBased.TimesheetId,
                     MissionId = TimeBased.MissionId,
                     MissionName = TimeBased.Mission.Title,
@@ -310,6 +311,7 @@ namespace CIPlatform.DataAccess.Repository
             var toReturn = _db.Users.Where(user => user.UserId == userId)
                .SelectMany(user => user.Timesheets.Where(tb => tb.Time == null).Select(GoalBased => new GoalBasedTimesheetViewModel()
                {
+                   UserAppliedDate = GoalBased.Mission.MissionApplications.Select(ma => ma.AppliedAt).First(),
                    TimesheetId = GoalBased.TimesheetId,
                    MissionId = GoalBased.MissionId,
                    MissionName = GoalBased.Mission.Title,
@@ -458,6 +460,14 @@ namespace CIPlatform.DataAccess.Repository
                 baseResponse.StatusCode = 500;
             }
             return baseResponse;
+        }
+        public DateTime getAppliedDateByMissionId(long userId, long missionId)
+        {
+            //var user = _db.Users.First(user => user.UserId == userId);
+            var toReturn = _db.MissionApplications.Where(ma => ma.MissionId == missionId && ma.UserId == userId)
+                .Select(ma => ma.AppliedAt).First();
+
+            return toReturn;
         }
     }
 }

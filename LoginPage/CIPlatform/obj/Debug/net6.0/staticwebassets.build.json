@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "LpHXbqYLftuvGzqlO3sXHQdEjQHRpsJvPyKqchGrRFo=",
+  "Hash": "vE6xODs47ObU7m+yJiqrD1MBwffvrQYdZEVWA2W++Ec=",
   "Source": "CIPlatform",
   "BasePath": "_content/CIPlatform",
   "Mode": "Default",
@@ -850,6 +850,23 @@
       "OriginalItemSpec": "wwwroot\\assets\\hours.png"
     },
     {
+      "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\assets\\icons8-goal-100.png",
+      "SourceId": "CIPlatform",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\",
+      "BasePath": "_content/CIPlatform",
+      "RelativePath": "assets/icons8-goal-100.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\icons8-goal-100.png"
+    },
+    {
       "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\assets\\image.png",
       "SourceId": "CIPlatform",
       "SourceType": "Discovered",
@@ -1137,6 +1154,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\mission.png"
+    },
+    {
+      "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\assets\\missionsvg.svg",
+      "SourceId": "CIPlatform",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\",
+      "BasePath": "_content/CIPlatform",
+      "RelativePath": "assets/missionsvg.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\missionsvg.svg"
     },
     {
       "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\assets\\my-story.png",

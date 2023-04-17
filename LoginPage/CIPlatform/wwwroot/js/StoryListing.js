@@ -35,11 +35,14 @@ $(document).ready(function () {
         type: "post",
         url: "/StoryListing/getAppliedMission",
         success: function (data) {
+            console.log(data);
             $.each(data, function (i, mission) {
                 $('#storyMissionName').append($('<option>', {
                     value: mission.missionId,
                     text: mission.title
                 }));
+                console.log("mid:", mission.missionId);
+                console.log("title:",mission.title);
                 if (viewdataMissionId == mission.missionId) {
                     console.log(viewdataMissionId);
                     $("#storyMissionName option[value='" + mission.missionId + "']").prop("selected", true);

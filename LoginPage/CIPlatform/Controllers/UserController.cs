@@ -74,8 +74,9 @@ namespace CIPlatform.Controllers
         }
 
         [HttpPost]
-        public IActionResult getMissionApplicationsByUserId(long userId)
+        public IActionResult getMissionApplicationsByUserId()
         {
+            var userId = long.Parse(HttpContext.Session.GetString("userId"));
             var toReturn = _unitOfWork.User.getMissionsByUserId(userId);
             return Json(toReturn);
         }
@@ -157,6 +158,12 @@ namespace CIPlatform.Controllers
             return null;
         }
 
-
+        [HttpPost]
+        public DateTime getAppliedDateByMissionId(long MissionId)
+        {
+            var userId = long.Parse(HttpContext.Session.GetString("userId"));
+            var UserAppliedDate = _unitOfWork.User.getAppliedDateByMissionId(userId, MissionId);
+            return UserAppliedDate;
+        }
     }
 }

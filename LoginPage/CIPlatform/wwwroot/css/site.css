@@ -337,3 +337,89 @@ background-image: url("../assets/left.png");
 .volunteersHoursTbl th, .volunteersGoalsTbl table th{
     font-weight:400;
 }
+
+.admin-nav .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #F88634 !important;
+    background-color: white !important;
+}
+.admin-nav .nav-pills .nav-link.active i {
+    color: #F88634 !important;
+}
+
+.font-24{
+    font-size:24px;
+}
+.font-18{
+    font-size:18px;
+}
+.user-table table thead th{
+    font-weight:400 !important;
+}
+.user-table table tr{
+    border-bottom:1px solid grey !important;
+}
+.user-table .pagination-nav .page-item{
+    margin-left:15px;
+}
+.user-table .pagination-nav .page-item a{
+    text-decoration:none !important;
+    font-weight:200;
+    color:black;
+}
+
+
+.cms-table table thead th {
+    font-weight: 400 !important;
+}
+
+.cms-table table tr {
+    border-bottom: 1px solid grey !important;
+}
+
+.cms-table .pagination-nav .page-item {
+    margin-left: 15px;
+}
+
+    .cms-table .pagination-nav .page-item a {
+        text-decoration: none !important;
+        font-weight: 200;
+        color: black;
+    }
+
+
+
+.mission-table table thead th {
+    font-weight: 400 !important;
+}
+
+.mission-table table tr {
+    border-bottom: 1px solid grey !important;
+}
+
+.mission-table .pagination-nav .page-item {
+    margin-left: 15px;
+}
+
+    .mission-table .pagination-nav .page-item a {
+        text-decoration: none !important;
+        font-weight: 200;
+        color: black;
+    }
+
+.missionapplication-table table thead th {
+    font-weight: 400 !important;
+}
+
+.missionapplication-table table tr {
+    border-bottom: 1px solid grey !important;
+}
+
+.missionapplication-table .pagination-nav .page-item {
+    margin-left: 15px;
+}
+
+    .missionapplication-table .pagination-nav .page-item a {
+        text-decoration: none !important;
+        font-weight: 200;
+        color: black;
+    }
