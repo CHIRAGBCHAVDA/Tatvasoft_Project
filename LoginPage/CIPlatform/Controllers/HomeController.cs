@@ -10,6 +10,7 @@ using System.Net.Mail;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using CIPlatform.Services;
+using CIPlatform.Models.ViewDataModels;
 
 namespace CIPlatform.Controllers
 {
@@ -139,9 +140,9 @@ namespace CIPlatform.Controllers
 
         [HttpPost, ActionName("Registration")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult RegistrationPOST(User obj)
+        public IActionResult RegistrationPOST(UserRegistrationViewModel obj)
         {
-            User getTemp = _unitOfWork.User.GetFirstOrDefault(u => u.Email == obj.Email);
+            User getTemp = _unitOfWork.User.GetFirstOrDefault(u => u.Email == obj.EmailAddress);
             if (obj.Password != null && getTemp == null)
             {
                 _unitOfWork.User.Register(obj);

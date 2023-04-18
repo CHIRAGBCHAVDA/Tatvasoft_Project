@@ -1,0 +1,138 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using CIPlatform.Models.AdminViewModels
+@model PageList<AdminMissionVM>
+
+<div  id="v-pills-mission" >
+    <div class="mission-header border-bottom border-light">
+        <span class="h2 border-bottom border-dark">Mission</span>
+    </div>
+    <div class="d-flex search-mission-and-add mt-3 justify-content-between">
+        <div class="search-mission d-flex align-items-center border ps-3">
+            <img src="/assets/search.png" alt="" style="height:14px">&nbsp;&nbsp;
+            <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-query">
+        </div>
+        <div class="mission-add">
+            <button class="btn bg-white text-orange border-orange px-3 rounded-pill"> <i class="bi bi-plus"></i> Add </button>
+        </div>
+    </div>
+    <div class="mission-table mt-4">
+        <table class="table" style="">
+            <thead>
+                <tr>
+                    <th scope="col">Mission Title</th>
+                    <th scope="col">Mission Type</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Records)
+                {
+                    <tr>
+                        <td>@item.MissionTitle</td>
+                        @if (item.MissionTypeId == 1)
+                        {
+                            <td class="">Time</td>
+                        }
+                        else
+                        {
+                            <td class="">Goal</td>
+                        }
+                        <td>@item.StartDate.ToString().Substring(0,11)</td>
+                        <td>@item.EndDate.ToString().Substring(0,11)</td>
+                        <td>
+                            <a href="" class="fst-normal text-decoration-none">
+                                <i class="bi text-orange bi-pencil-square me-2"></i>
+                            </a>
+                            <a href="" id="deleteTimebasedTimesheet">
+                                <i class="text-secondary bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+@*
+                <tr>
+                    <td>A Latin professor at Hampden-Sydney</td>
+                    <td class="">Time</td>
+                    <td>01/08/2020</td>
+                    <td>08/08/2020</td>
+                    <td>
+                        <a href="" class="fst-normal text-decoration-none">
+                            <i class="bi text-orange bi-pencil-square me-2"></i>
+                        </a>
+                        <a href="" id="deleteTimebasedTimesheet">
+                            <i class="text-secondary bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>A Latin professor at Hampden-Sydney</td>
+                    <td class="">Time</td>
+                    <td>01/08/2020</td>
+                    <td>08/08/2020</td>
+                    <td>
+                        <a href="" class="fst-normal text-decoration-none">
+                            <i class="bi text-orange bi-pencil-square me-2"></i>
+                        </a>
+                        <a href="" id="deleteTimebasedTimesheet">
+                            <i class="text-secondary bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>A Latin professor at Hampden-Sydney</td>
+                    <td class="">Time</td>
+                    <td>01/08/2020</td>
+                    <td>08/08/2020</td>
+                    <td>
+                        <a href="" class="fst-normal text-decoration-none">
+                            <i class="bi text-orange bi-pencil-square me-2"></i>
+                        </a>
+                        <a href="" id="deleteTimebasedTimesheet">
+                            <i class="text-secondary bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>*@
+
+
+
+            </tbody>
+        </table>
+
+        <div class="pagination-nav d-flex flex-row-reverse w-100">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item d-flex">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true"><<</span>
+                        </a>
+                    </li>
+                    <li class="page-item d-flex">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true"><</span>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item d-flex">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">></span>
+                        </a>
+                    </li>
+                    <li class="page-item d-flex">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">>></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</div>

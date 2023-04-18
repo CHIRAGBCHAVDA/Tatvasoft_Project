@@ -31,11 +31,17 @@ namespace CIPlatform.DataAccess.Repository
 
         }
 
-        public void Register(User user)
+        public void Register(UserRegistrationViewModel user)
         {
             string pwd = BCrypt.Net.BCrypt.HashPassword(user.Password);
             user.Password = pwd;
-            _db.Add(user);
+            var newUser = new User()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+
+            }
+            _db.Users.Add(user);
         }
 
         public User Update(User user,string token)

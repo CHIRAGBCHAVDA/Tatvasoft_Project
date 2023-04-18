@@ -1,53 +1,51 @@
 ﻿@inject IHttpContextAccessor HttpContextAccessor
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+@using CIPlatform.Models.AdminViewModels
+@model PageList<AdminUserVM>
 
+<script src="~/js/Admin.js"></script>
 
 <div class="container-fluid">
 
     <div class="d-flex admin-nav align-items-start">
-        <div class="nav flex-column nav-pills bg-orange me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="min-width:350px;height:100vh">
-            <button class="nav-link mx-4 text-start text-white font-18 active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-user" type="button" role="tab" aria-controls="v-pills-user" aria-selected="true"><i class="bi bi-person-fill text-white"></i>  &nbsp; User</button>
-            <button class="nav-link mx-4 text-start text-white font-18" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-cmspage" type="button" role="tab" aria-controls="v-pills-cmspage" aria-selected="false"><i class="font-24 bi bi-file-earmark-text-fill text-white"></i>  &nbsp; CMS Page</button>
-            <button class="nav-link mx-4 text-start text-white font-18" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-mission" type="button" role="tab" aria-controls="v-pills-mission" aria-selected="false">
+        <div class="nav flex-column nav-pills bg-orange me-3" id="v-pills-tab" aria-orientation="vertical" style="min-width:350px;height:100vh">
+            <button class="nav-link mx-4 text-start text-white font-18 admin-sidebar-btn" id="v-pills-user-tab" type="button" ><i class="bi bi-person-fill text-white"></i>  &nbsp; User</button>
+            <button class="nav-link mx-4 text-start text-white font-18 admin-sidebar-btn" id="v-pills-cms-tab" type="button"><i class="font-24 bi bi-file-earmark-text-fill text-white"></i>  &nbsp; CMS Page</button>
+            <button class="nav-link mx-4 text-start text-white font-18 admin-sidebar-btn" id="v-pills-mission-tab" type="button">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
                      height="24pt" width="24pt" viewBox="0 0 100.000000 100.000000"
                      preserveAspectRatio="xMidYMid meet">
-                    <metadata>
-                        Created by potrace 1.10, written by Peter Selinger 2001-2011
-                    </metadata>
-                    <g transform="translate(0.000000,100.000000) scale(0.100000,-0.100000)"
-direction                  height fill="currentcolor" stroke="none">
-                        <path d="M400 949 c-70 -14 -163 -66 -223 -126 -105 -105 -153 -252 -129 -395
-                        50 -299 372 -470 647 -344 68 31 165 122 205 191 74 129 77 303 9 437 -19 37
-                        -22 39 -36 25 -14 -14 -13 -20 7 -61 143 -296 -121 -644 -446 -589 -279 48
-                        -433 346 -310 598 108 220 397 302 599 169 44 -29 48 -60 12 -94 -23 -21 -26
-                        -22 -42 -8 -51 45 -107 63 -193 63 -100 -1 -160 -24 -225 -90 -66 -65 -89
-                        -125 -90 -225 0 -78 3 -90 34 -148 38 -70 69 -100 145 -140 44 -23 63 -27 136
-                        -27 73 0 92 4 136 27 76 40 107 70 145 140 30 57 33 71 34 148 0 69 -5 94 -24
-                        133 -22 44 -25 47 -39 33 -14 -14 -14 -19 2 -53 27 -57 31 -130 12 -198 -32
-                        -110 -148 -195 -266 -195 -150 0 -280 130 -280 280 0 118 85 234 195 266 74
-                        21 145 14 214 -20 28 -15 51 -30 51 -34 0 -5 -15 -22 -33 -40 l-33 -32 -39 20
-                        c-51 26 -100 25 -155 -2 -132 -67 -132 -249 0 -315 134 -69 278 40 256 192 -7
-                        44 -8 46 -25 30 -14 -12 -17 -26 -14 -58 5 -51 -20 -97 -69 -127 -117 -71
-                        -259 71 -188 188 44 71 144 94 199 45 9 -7 -63 -73 -80 -73 -39 0 -51 -52 -17
-                        -74 22 -14 51 2 56 30 2 10 58 74 125 142 93 93 128 122 147 122 17 0 44 17
-                        80 50 l54 50 -42 0 -42 0 0 43 -1 42 -37 -42 -37 -42 -55 34 c-93 58 -211 77
-                        -330 54z m440 -119 c0 -13 -7 -20 -20 -20 -23 0 -26 10 -8 28 18 18 28 15 28
-                        -8z" />
-                    </g>
+                        <metadata>
+                            Created by potrace 1.10, written by Peter Selinger 2001-2011
+                        </metadata>
+                        <g transform="translate(0.000000,100.000000) scale(0.100000,-0.100000)"
+                           direction height fill="currentcolor" stroke="none">
+                            <path d="M400 949 c-70 -14 -163 -66 -223 -126 -105 -105 -153 -252 -129 -395
+                            50 -299 372 -470 647 -344 68 31 165 122 205 191 74 129 77 303 9 437 -19 37
+                            -22 39 -36 25 -14 -14 -13 -20 7 -61 143 -296 -121 -644 -446 -589 -279 48
+                            -433 346 -310 598 108 220 397 302 599 169 44 -29 48 -60 12 -94 -23 -21 -26
+                            -22 -42 -8 -51 45 -107 63 -193 63 -100 -1 -160 -24 -225 -90 -66 -65 -89
+                            -125 -90 -225 0 -78 3 -90 34 -148 38 -70 69 -100 145 -140 44 -23 63 -27 136
+                            -27 73 0 92 4 136 27 76 40 107 70 145 140 30 57 33 71 34 148 0 69 -5 94 -24
+                            133 -22 44 -25 47 -39 33 -14 -14 -14 -19 2 -53 27 -57 31 -130 12 -198 -32
+                            -110 -148 -195 -266 -195 -150 0 -280 130 -280 280 0 118 85 234 195 266 74
+                            21 145 14 214 -20 28 -15 51 -30 51 -34 0 -5 -15 -22 -33 -40 l-33 -32 -39 20
+                            c-51 26 -100 25 -155 -2 -132 -67 -132 -249 0 -315 134 -69 278 40 256 192 -7
+                            44 -8 46 -25 30 -14 -12 -17 -26 -14 -58 5 -51 -20 -97 -69 -127 -117 -71
+                            -259 71 -188 188 44 71 144 94 199 45 9 -7 -63 -73 -80 -73 -39 0 -51 -52 -17
+                            -74 22 -14 51 2 56 30 2 10 58 74 125 142 93 93 128 122 147 122 17 0 44 17
+                            80 50 l54 50 -42 0 -42 0 0 43 -1 42 -37 -42 -37 -42 -55 34 c-93 58 -211 77
+                            -330 54z m440 -119 c0 -13 -7 -20 -20 -20 -23 0 -26 10 -8 28 18 18 28 15 28
+                            -8z" />
+                        </g>
                 </svg>
 
                 &nbsp; Mission
             </button>
-            <button class="nav-link mx-4 text-start text-white font-18" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-missiontheme" type="button" role="tab" aria-controls="v-pills-missiontheme" aria-selected="false"><i class="font-24 bi bi-columns text-white"></i>  &nbsp; Mission Theme</button>
-            <button class="nav-link mx-4 text-start text-white font-18" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-missionskills" type="button" role="tab" aria-controls="v-pills-missionskills" aria-selected="false"><i class="font-24 bi bi-tools text-white"></i> &nbsp; Mission skills</button>
-            <button class="nav-link mx-4 text-start text-white font-18" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-missionapplication" type="button" role="tab" aria-controls="v-pills-missionapplication" aria-selected="false"><i class="font-24 bi bi-folder-fill text-white"></i>  &nbsp; Mission Application</button>
-            <button class="nav-link mx-4 text-start text-white font-18" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-story" type="button" role="tab" aria-controls="v-pills-story" aria-selected="false"><i class="font-24 bi bi-bookmark-star-fill text-white"></i>  &nbsp; Story</button>
-            <button class="nav-link mx-4 text-start text-white font-18" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-bannermanagement" type="button" role="tab" aria-controls="v-pills-bannermanagement" aria-selected="false"><i class="font-24 bi bi-aspect-ratio-fill text-white"></i> &nbsp; Banner Management</button>
+            <button class="nav-link mx-4 text-start text-white font-18 admin-sidebar-btn" id="v-pills-missiontheme-tab" type="button"><i class="font-24 bi bi-columns text-white"></i>  &nbsp; Mission Theme</button>
+            <button class="nav-link mx-4 text-start text-white font-18 admin-sidebar-btn" id="v-pills-missionskills-tab" type="button"><i class="font-24 bi bi-tools text-white"></i> &nbsp; Mission skills</button>
+            <button class="nav-link mx-4 text-start text-white font-18 admin-sidebar-btn" id="v-pills-missionapplication-tab" type="button"><i class="font-24 bi bi-folder-fill text-white"></i>  &nbsp; Mission Application</button>
+            <button class="nav-link mx-4 text-start text-white font-18 admin-sidebar-btn" id="v-pills-story-tab" type="button"><i class="font-24 bi bi-bookmark-star-fill text-white"></i>  &nbsp; Story</button>
+            <button class="nav-link mx-4 text-start text-white font-18 admin-sidebar-btn" id="v-pills-bannermanagement-tab" type="button"><i class="font-24 bi bi-aspect-ratio-fill text-white"></i> &nbsp; Banner Management</button>
         </div>
         <div class="d-flex flex-column w-100">
             <div class="d-flex justify-content-between align-items-center shadow p-3 mb-5 bg-body rounded">
@@ -83,473 +81,36 @@ direction                  height fill="currentcolor" stroke="none">
             </div>
 
             <div class="tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <div class="user-header border-bottom border-light">
-                        <span class="h2 border-bottom border-dark">User</span>
-                    </div>
-                    <div class="d-flex search-user-and-add mt-3 justify-content-between">
-                        <div class="search-user d-flex align-items-center border ps-3">
-                            <img src="/assets/search.png" alt="" style="height:14px">&nbsp;&nbsp;
-                            <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-query">
-                        </div>
-                        <div class="user-add">
-                            <button class="btn bg-white text-orange border-orange px-3 rounded-pill"> <i class="bi bi-plus"></i> Add </button>
-                        </div>
-                    </div>
-                    <div class="user-table mt-4">
-                        <table class="table" style="">
-                            <thead>
-                                <tr>
-                                    <th scope="col">First Name</th>
-                                    <th scope="col">Last Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Employee Id</th>
-                                    <th scope="col">Department</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Adam</td>
-                                    <td>Baldwin</td>
-                                    <td>Adam@badam.com</td>
-                                    <td>13548987564</td>
-                                    <td>HR</td>
-                                    <td class="text-success">Active</td>
-                                    <td>
-                                        <a href="" class="fst-normal text-decoration-none">
-                                            <i class="bi text-orange bi-pencil-square me-2"></i>
-                                        </a>
-                                        <a href="" id="deleteTimebasedTimesheet">
-                                            <i class="text-secondary bi bi-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                <div class="admin-main-wrapper">
+                    <partial name="_AdminUser" model="Model" />
+                </div>
 
-                                <tr>
-                                    <td>Adam</td>
-                                    <td>Baldwin</td>
-                                    <td>Adam@badam.com</td>
-                                    <td>13548987564</td>
-                                    <td>HR</td>
-                                    <td class="text-success">Active</td>
-                                    <td>
-                                        <a href="" class="fst-normal text-decoration-none">
-                                            <i class="bi text-orange bi-pencil-square me-2"></i>
-                                        </a>
-                                        <a href="" id="deleteTimebasedTimesheet">
-                                            <i class="text-secondary bi bi-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                @*<div class="admin-cms-wrapper">
+                    <partial name="_AdminCms" model="Model.AdminCmsViewModel" />
+                </div>
 
-                                <tr>
-                                    <td>Adam</td>
-                                    <td>Baldwin</td>
-                                    <td>Adam@badam.com</td>
-                                    <td>13548987564</td>
-                                    <td>HR</td>
-                                    <td class="text-success">Active</td>
-                                    <td>
-                                        <a href="" class="fst-normal text-decoration-none">
-                                            <i class="bi text-orange bi-pencil-square me-2"></i>
-                                        </a>
-                                        <a href="" id="deleteTimebasedTimesheet">
-                                            <i class="text-secondary bi bi-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <div class="pagination-nav d-flex flex-row-reverse w-100">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true"><<</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true"><</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">></span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">>></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-
-                        </div>
-                    </div>
-
-
+                <div class="admin-mission-wrapper">
+                    <partial name="_AdminMission" model="Model.AdminMissionViewModel" />
                 </div>
 
 
-
-                <div class="tab-pane fade" id="v-pills-cmspage" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
-                    <div class="cms-header border-bottom border-light">
-                        <span class="h2 border-bottom border-dark">CMS Page</span>
-                    </div>
-                    <div class="d-flex search-cms-and-add mt-3 justify-content-between">
-                        <div class="search-user d-flex align-items-center border ps-3">
-                            <img src="/assets/search.png" alt="" style="height:14px">&nbsp;&nbsp;
-                            <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-query">
-                        </div>
-                        <div class="user-add">
-                            <button class="btn bg-white text-orange border-orange px-3 rounded-pill"> <i class="bi bi-plus"></i> Add </button>
-                        </div>
-                    </div>
-                    <div class="cms-table mt-4">
-                        <table class="table" style="">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>A Latin professor at Hampden-Sydney College in Virginia,</td>
-                                    <td class="text-success">Active</td>
-                                    <td>
-                                        <a href="" class="fst-normal text-decoration-none">
-                                            <i class="bi text-orange bi-pencil-square me-2"></i>
-                                        </a>
-                                        <a href="" id="deleteTimebasedTimesheet">
-                                            <i class="text-secondary bi bi-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>A Latin professor at Hampden-Sydney College in Virginia,</td>
-                                    <td class="text-success">Active</td>
-                                    <td>
-                                        <a href="" class="fst-normal text-decoration-none">
-                                            <i class="bi text-orange bi-pencil-square me-2"></i>
-                                        </a>
-                                        <a href="" id="deleteTimebasedTimesheet">
-                                            <i class="text-secondary bi bi-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>A Latin professor at Hampden-Sydney College in Virginia,</td>
-                                    <td class="text-success">Active</td>
-                                    <td>
-                                        <a href="" class="fst-normal text-decoration-none">
-                                            <i class="bi text-orange bi-pencil-square me-2"></i>
-                                        </a>
-                                        <a href="" id="deleteTimebasedTimesheet" data-bs-toggle="modal" data-bs-target="#cms-delete-modal">
-                                            <i class="text-secondary bi bi-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-
-
-                                
-                            </tbody>
-                        </table>
-
-                        <div class="pagination-nav d-flex flex-row-reverse w-100">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true"><<</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true"><</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">></span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">>></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-
-                        </div>
-                    </div>
-
-                   @* <div class="cms-add-view mt-3">
-                        <div class="cms-add-header w-100 fw-bold border">
-                            <h3 class="p-3  bg-light border-bottom">Add</h3>
-                            <div class="my-3 ms-4">
-                                <label class="form-label fw-lighter" for="cms-add-title">Title</label>
-                                <input type="text" id="cms-add-title" class="form-control" />
-                            </div>
-                            <div class="mb-3 ms-4">
-                                <label class="form-label fw-lighter" for="cms-add-desc">Description</label>
-                                <textarea class="ck-editor" id="cms-add-desc" style="height:600px">
-
-                                </textarea>
-                                <script>
-                                    CKEDITOR.replace( 'cms-add-desc', {
-                                    customConfig: '/js/temp.js'
-                                    });
-                                </script>
-                            </div>
-                            <div class="my-3 ms-4">
-                                <label class="form-label fw-lighter" for="cms-add-slug">Slug</label>
-                                <input type="text" id="cms-add-slug" class="form-control" />
-                            </div>
-                            <div class="my-3 mb-5 ms-4">
-                                <label class="form-label fw-lighter" for="cms-add-status">Slug</label>
-                                <select class="form-select" id="cms-add-status">
-                                    <option>Active</option>
-                                    <option>Inactive</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="d-flex w-100 justify-content-end cms-add-btns mt-3">
-                            <button class="btn bg-white text-dark border border-dark rounded-pill px-3 me-2">Cancel</button>
-                            <button class="btn bg-white text-orange bg-white border-orange rounded-pill px-3">Save</button>
-                        </div>
-                    </div>*@
-                </div>
-
-                <div class="tab-pane fade" id="v-pills-mission" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">
-                    <div class="mission-header border-bottom border-light">
-                        <span class="h2 border-bottom border-dark">Mission</span>
-                    </div>
-                    <div class="d-flex search-mission-and-add mt-3 justify-content-between">
-                        <div class="search-mission d-flex align-items-center border ps-3">
-                            <img src="/assets/search.png" alt="" style="height:14px">&nbsp;&nbsp;
-                            <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-query">
-                        </div>
-                        <div class="mission-add">
-                            <button class="btn bg-white text-orange border-orange px-3 rounded-pill"> <i class="bi bi-plus"></i> Add </button>
-                        </div>
-                    </div>
-                    <div class="mission-table mt-4">
-                        <table class="table" style="">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Mission Title</th>
-                                    <th scope="col">Mission Type</th>
-                                    <th scope="col">Start Date</th>
-                                    <th scope="col">End Date</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>A Latin professor at Hampden-Sydney</td>
-                                    <td class="">Time</td>
-                                    <td>01/08/2020</td>
-                                    <td>08/08/2020</td>
-                                    <td>
-                                        <a href="" class="fst-normal text-decoration-none">
-                                            <i class="bi text-orange bi-pencil-square me-2"></i>
-                                        </a>
-                                        <a href="" id="deleteTimebasedTimesheet">
-                                            <i class="text-secondary bi bi-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>A Latin professor at Hampden-Sydney</td>
-                                    <td class="">Time</td>
-                                    <td>01/08/2020</td>
-                                    <td>08/08/2020</td>
-                                    <td>
-                                        <a href="" class="fst-normal text-decoration-none">
-                                            <i class="bi text-orange bi-pencil-square me-2"></i>
-                                        </a>
-                                        <a href="" id="deleteTimebasedTimesheet">
-                                            <i class="text-secondary bi bi-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                     <td>A Latin professor at Hampden-Sydney</td>
-                                    <td class="">Time</td>
-                                    <td>01/08/2020</td>
-                                    <td>08/08/2020</td>
-                                    <td>
-                                        <a href="" class="fst-normal text-decoration-none">
-                                            <i class="bi text-orange bi-pencil-square me-2"></i>
-                                        </a>
-                                        <a href="" id="deleteTimebasedTimesheet">
-                                            <i class="text-secondary bi bi-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-
-
-                                
-                            </tbody>
-                        </table>
-
-                        <div class="pagination-nav d-flex flex-row-reverse w-100">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true"><<</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true"><</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">></span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">>></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-
-                        </div>
-                    </div>
-
-                </div>
                 <div class="tab-pane fade" id="v-pills-missiontheme" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit inventore ducimus, sunt illo porro explicabo repellendus ea? Tempora reiciendis provident reprehenderit perferendis corrupti nihil sequi, obcaecati aspernatur ducimus even Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, velit? iet, hic porro ab alias velit?</div>
                 <div class="tab-pane fade" id="v-pills-missionskills" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit inventore ducimus, sunt illo porro explicabo repellendus ea? Tempora reiciendis provident reprehenderit perferendis corrupti nihil sequi, obcaecati aspernatur ducimus even Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, velit? iet, hic porro ab alias velit?</div>
-                <div class="tab-pane fade" id="v-pills-missionapplication" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">
-                    <div class="missionapplication-header border-bottom border-light">
-                        <span class="h2 border-bottom border-dark">Mission Application</span>
-                    </div>
-                    <div class="d-flex search-missionapplication-and-add mt-3 justify-content-between">
-                        <div class="search-missionapplication d-flex align-items-center border ps-3">
-                            <img src="/assets/search.png" alt="" style="height:14px">&nbsp;&nbsp;
-                            <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-query">
-                        </div>
-                    </div>
-                    <div class="missionapplication-table mt-4">
-                        <table class="table" style="">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Mission Title</th>
-                                    <th scope="col">Mission Id</th>
-                                    <th scope="col">User Id</th>
-                                    <th scope="col">User Name</th>
-                                    <th scope="col">Applied Date</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>A Latin professor at Hampden-Sydney</td>
-                                    <td class="">4567894</td>
-                                    <td class="">987854</td>
-                                    <td class="">Andrew Johnson</td>
-                                    <td>01/08/2020</td>
-                                    <td>
-                                        <a href="" class="fst-normal text-decoration-none">
-                                            <i class="bi bi-check-circle text-success"></i>
-                                        </a>
-                                        <a href="" id="deleteTimebasedTimesheet">
-                                            <i class="bi bi-x-circle text-danger"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>A Latin professor at Hampden-Sydney</td>
-                                    <td class="">4567894</td>
-                                    <td class="">987854</td>
-                                    <td class="">Andrew Johnson</td>
-                                    <td>01/08/2020</td>
-                                    <td>
-                                        <a href="" class="fst-normal text-decoration-none">
-                                            <i class="bi bi-check-circle text-success"></i>
-                                        </a>
-                                        <a href="" id="deleteTimebasedTimesheet">
-                                            <i class="bi bi-x-circle text-danger"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                     <td>A Latin professor at Hampden-Sydney</td>
-                                    <td class="">4567894</td>
-                                    <td class="">987854</td>
-                                    <td class="">Andrew Johnson</td>
-                                    <td>01/08/2020</td>
-                                    <td>
-                                        <a href="" class="fst-normal text-decoration-none">
-                                            <i class="bi bi-check-circle text-success"></i>
-                                        </a>
-                                        <a href="" id="deleteTimebasedTimesheet">
-                                            <i class="bi bi-x-circle text-danger"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-
-
-                                
-                            </tbody>
-                        </table>
-
-                        <div class="pagination-nav d-flex flex-row-reverse w-100">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true"><<</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true"><</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">></span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item d-flex">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">>></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-
-                        </div>
+                
+                <div class="admin-missionapplication-wrapper">
+                    <partial name="_AdminMissionApplication" model="Model.AdminMissionApplicationViewModel" />
                 </div>
-                <div class="tab-pane fade" id="v-pills-story" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit inventore ducimus, sunt illo porro explicabo repellendus ea? Tempora reiciendis provident reprehenderit perferendis corrupti nihil sequi, obcaecati aspernatur ducimus even Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, velit? iet, hic porro ab alias velit?</div>
-                <div class="tab-pane fade" id="v-pills-bannermanagement" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit inventore ducimus, sunt illo porro explicabo repellendus ea? Tempora reiciendis provident reprehenderit perferendis corrupti nihil sequi, obcaecati aspernatur ducimus even Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, velit? iet, hic porro ab alias velit?</div>
+                
+               
+                <div class="admin-story-wrapper">
+                    <partial name="_AdminStory" model="Model.AdminStoryViewModel" />
+                </div>
+
+                
+                </div>
+                <div class="tab-pane fade" id="v-pills-bannermanagement" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit inventore ducimus, sunt illo porro explicabo repellendus ea? Tempora reiciendis provident reprehenderit perferendis corrupti nihil sequi, obcaecati aspernatur ducimus even Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, velit? iet, hic porro ab alias velit?
+                </div>*@
             </div>
 
         </div>

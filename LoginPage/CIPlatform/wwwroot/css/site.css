@@ -423,3 +423,22 @@ background-image: url("../assets/left.png");
         font-weight: 200;
         color: black;
     }
+
+
+.story-table table thead th {
+    font-weight: 400 !important;
+}
+
+.story-table table tr {
+    border-bottom: 1px solid grey !important;
+}
+
+.story-table .pagination-nav .page-item {
+    margin-left: 15px;
+}
+
+    .story-table .pagination-nav .page-item a {
+        text-decoration: none !important;
+        font-weight: 200;
+        color: black;
+    }

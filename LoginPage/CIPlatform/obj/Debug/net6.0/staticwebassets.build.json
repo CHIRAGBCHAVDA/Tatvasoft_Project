@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vE6xODs47ObU7m+yJiqrD1MBwffvrQYdZEVWA2W++Ec=",
+  "Hash": "/w2Tra8/yBks9Y95BWIZksHjOVFPMKIbyAJkEKdt0KU=",
   "Source": "CIPlatform",
   "BasePath": "_content/CIPlatform",
   "Mode": "Default",
@@ -1989,6 +1989,23 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
+      "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\js\\Admin.js",
+      "SourceId": "CIPlatform",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\",
+      "BasePath": "_content/CIPlatform",
+      "RelativePath": "js/Admin.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\Admin.js"
+    },
+    {
       "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\js\\CkConfig.js",
       "SourceId": "CIPlatform",
       "SourceType": "Discovered",
@@ -2055,6 +2072,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\StoryListing.js"
+    },
+    {
+      "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\js\\temp.js",
+      "SourceId": "CIPlatform",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\",
+      "BasePath": "_content/CIPlatform",
+      "RelativePath": "js/temp.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\temp.js"
     },
     {
       "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\js\\tempJS.js",

@@ -19,6 +19,7 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         IMissionRepository MissionRepo { get; }
         IStoryRepository StoryRepo { get; }
 
+        IAdminRepository AdminRepo { get; }
 
 
         void Save(); 
