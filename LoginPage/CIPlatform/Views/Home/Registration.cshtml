@@ -1,4 +1,4 @@
-﻿@model CIPlatform.Models.User
+﻿@model CIPlatform.Models.ViewDataModels.UserRegistrationViewModel
 @{
     ViewData["Title"] = "Registration Page";
 }
@@ -91,16 +91,16 @@
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                         <div class=" mb-3">
-                            <label asp-for="PhoneNumber" for="exampleFormControlInput3" class="form-label"
+                            <label asp-for="MobileNumber" for="exampleFormControlInput3" class="form-label"
                                 id="forgot-password-email-label">Phone Number</label>
-                            <input asp-for="PhoneNumber" type="tel" class="form-control" id="exampleFormControlInput3">
-                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            <input asp-for="MobileNumber" type="tel" class="form-control" id="exampleFormControlInput3">
+                            <span asp-validation-for="MobileNumber" class="text-danger"></span>
                         </div>
                         <div class=" mb-3">
-                            <label asp-for="Email" for="exampleFormControlInput4" class="form-label"
+                            <label asp-for="EmailAddress" for="exampleFormControlInput4" class="form-label"
                                 id="forgot-password-email-label">Email Address</label>
-                            <input asp-for="Email" type="email" class="form-control" id="exampleFormControlInput4">
-                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <input asp-for="EmailAddress" type="email" class="form-control" id="exampleFormControlInput4">
+                            <span asp-validation-for="EmailAddress" class="text-danger"></span>
                         </div>
                         <div class=" mb-3">
                             <label asp-for="Password" for="exampleFormControlInput5" class="form-label"

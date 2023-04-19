@@ -10,13 +10,16 @@
     <div class="user-header border-bottom border-light">
         <span class="h2 border-bottom border-dark">User</span>
     </div>
+    <div>
+
+    </div>
     <div class="d-flex search-user-and-add mt-3 justify-content-between">
         <div class="search-user d-flex align-items-center border ps-3">
             <img src="/assets/search.png" alt="" style="height:14px">&nbsp;&nbsp;
             <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-query">
         </div>
         <div class="user-add">
-            <button class="btn bg-white text-orange border-orange px-3 rounded-pill"> <i class="bi bi-plus"></i> Add </button>
+            <button class="btn bg-white text-orange border-orange px-3 rounded-pill" id="admin-user-add" data-bs-toggle="modal" data-bs-target="#myModal-0"> <i class="bi bi-plus"></i> Add </button>
         </div>
     </div>
     <div class="user-table mt-4">
@@ -50,66 +53,27 @@
                             <td class="text-danger">Inactive</td>
                         }
                         <td>
-                            <a href="" class="fst-normal text-decoration-none">
-                                <i class="bi text-orange bi-pencil-square me-2"></i>
+                            <a href="" class="fst-normal edit-user-btn text-decoration-none" data-bs-toggle="modal" data-bs-target="#myModal-@item.UserId"  data-userid="@item.UserId"
+                           data-firstname="@item.FirstName"
+                           data-lastname="@item.LastName"
+                           data-email="@item.Email"
+                           data-employeeid="@item.EmployeeId"
+                           data-department="@item.Department"
+                           data-status="@item.Status"
+                           data-avatar="@item.Avatar"
+                           data-cityid="@item.CityId"
+                           data-countryid="@item.CountryId"
+                           data-profiletext="@item.ProfileText">
+                                <i class="bi text-orange bi-pencil-square me-2">
+                                </i>
                             </a>
-                            <a href="" id="deleteTimebasedTimesheet">
+                                    <partial name="_AdminUserEditForm" model="@item" />
+                            <a href="">
                                 <i class="text-secondary bi bi-trash"></i>
                             </a>
                         </td>
                     </tr>
                 }
-              @*  <tr>
-                    <td>Adam</td>
-                    <td>Baldwin</td>
-                    <td>Adam@badam.com</td>
-                    <td>13548987564</td>
-                    <td>HR</td>
-                    <td class="text-success">Active</td>
-                    <td>
-                        <a href="" class="fst-normal text-decoration-none">
-                            <i class="bi text-orange bi-pencil-square me-2"></i>
-                        </a>
-                        <a href="" id="deleteTimebasedTimesheet">
-                            <i class="text-secondary bi bi-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Adam</td>
-                    <td>Baldwin</td>
-                    <td>Adam@badam.com</td>
-                    <td>13548987564</td>
-                    <td>HR</td>
-                    <td class="text-success">Active</td>
-                    <td>
-                        <a href="" class="fst-normal text-decoration-none">
-                            <i class="bi text-orange bi-pencil-square me-2"></i>
-                        </a>
-                        <a href="" id="deleteTimebasedTimesheet">
-                            <i class="text-secondary bi bi-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Adam</td>
-                    <td>Baldwin</td>
-                    <td>Adam@badam.com</td>
-                    <td>13548987564</td>
-                    <td>HR</td>
-                    <td class="text-success">Active</td>
-                    <td>
-                        <a href="" class="fst-normal text-decoration-none">
-                            <i class="bi text-orange bi-pencil-square me-2"></i>
-                        </a>
-                        <a href="" id="deleteTimebasedTimesheet">
-                            <i class="text-secondary bi bi-trash"></i>
-                        </a>
-                    </td>
-                </tr>*@
-
             </tbody>
         </table>
 
@@ -145,3 +109,140 @@
         </div>
     </div>
 </div>
+
+<partial name="_AdminUserEditForm" model="new AdminUserVM()" />
+
+
+@*<div class="modal fade" id="admin-user-addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false" data-bs-backdrop="false" data-bs-keyboard="false" style="height:fit-content">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="">
+            <div class="modal-body">
+              <div class="m-auto w-75">
+                <div class="d-flex mt-3 w-100">
+                    <div class="pe-3 ps-3 align-self-center">
+                        <label for="ProfileImgUpload"><img id="img" src="@(@Model.Avatar!=null?@Model.Avatar:"/Images/user-default.png")" class="update-profile-image" /></label>
+                        <input type="file" id="ProfileImgUpload" class="d-none" />
+                        <input type="hidden" asp-for="Avatar" id="ProfileImg" />
+                        <input type="hidden" asp-for="UserId"/>
+                    </div>
+                    <div class="d-flex flex-column ms-3 w-100">
+                        <div class="d-flex w-100">
+                            <div class="w-50 pe-3">
+                                <div>First Name</div>
+                                <div><input type="text" asp-for="FirstName" class="form-control me-3 mt-1" placeholder="Enter name"/></div>
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="w-50 pe-3">
+                                 <div>Last Name</div>
+                                <div><input type="text" asp-for="LastName" class="form-control mt-1" placeholder="Enter surname"/></div>
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="w-100 pe-3 mt-2">
+                            <div>Email</div>
+                            <div><input type="text" asp-for="Email" class="form-control mt-1" placeholder="Enter Email"/></div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex w-100 mt-1">
+                    <div class="w-50 pe-3">
+                        <div>Country</div>
+                        <div>
+                            <select class="form-select mt-1" asp-for="CountryID" id="Countries">
+                                <option value="">Select Country</option>
+                                @foreach (var country in Model.Countries)
+                                {
+                                    <option value="@country.CountryId" selected="@(country.CountryId == Model.CountryID)">@country.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <span asp-validation-for="CountryID" class="text-danger"></span>
+                    </div>
+                    <div class="w-50 pe-3">
+                        <div>City</div>
+                        <div>
+                            <select class="form-select mt-1" asp-for="CityId" id="Cities">
+                                <option value="">Select City</option>
+                                @foreach (var city in Model.Cities)
+                                {
+                                    <option value="@city.CityId" selected="@(city.CityId == Model.CityId)">@city.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <span asp-validation-for="CityId" class="text-danger"></span>
+                    </div>
+                    <div class="w-50 pe-3">
+                        <div>Status</div>
+                        <div>
+                            <select class="form-select mt-1" asp-for="Status">
+                                @if(@Model.Status == 0)
+                                {
+                                    <option value="0" selected>InActive</option>
+                                    <option value="1">Active</option>
+                                }
+                                else
+                                {
+                                    <option value="0" selected>InActive</option>
+                                    <option value="1" selected>Active</option>
+                                }
+
+                            </select>
+                        </div>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="d-flex w-100 mt-3">
+                    <div class="w-50 pe-3">
+                        <div>Employee Id</div>
+                        <div><input type="text" asp-for="EmployeeId" class="form-control me-3 mt-1" placeholder="Enter Employee ID"/></div>
+                        <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                    </div>
+                    <div class="w-50 pe-3">
+                        <div>Deaprtment</div>
+                        <div><input type="text" asp-for="Department" class="form-control me-3 mt-1" placeholder="Enter Department"/></div>
+                        <span asp-validation-for="Department" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="w-100 mt-3 pe-3">
+                    <div>My Profile</div>
+                    <textarea rows=4 asp-for="ProfileText" placeholder="Enter Profile Text..." class="form-control mt-1"></textarea>
+                    <span asp-validation-for="ProfileText" class="text-danger"></span>
+                </div>
+                @if(Model.UserId==0)
+                {
+                    <div class="d-flex w-100 mt-3">
+                        <div class="w-50 pe-3">
+                            <div>Password</div>
+                            <div><input type="text" asp-for="Password" class="form-control me-3 mt-1" placeholder="Enter Password"/></div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="w-50 pe-3">
+                            <div>Confirm Password</div>
+                            <div><input type="text" asp-for="ConfirmPassword" class="form-control me-3 mt-1" placeholder="Enter Confirm Password"/></div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+                
+            </div> 
+            <div class="d-flex justify-content-end w-75 mt-3 m-auto pe-3 mb-3">
+                <button type="submit" class="btn btn-outline-orange ps-3 pe-3 rounded-pill">Submit</button>
+            </div>
+
+                
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>*@
+    

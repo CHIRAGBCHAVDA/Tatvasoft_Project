@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace CIPlatform.Models
 {
@@ -23,7 +22,7 @@ namespace CIPlatform.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
         public long? Views { get; set; }
-        [JsonIgnore]
+
         public virtual Mission Mission { get; set; } = null!;
         public virtual User User { get; set; } = null!;
         public virtual ICollection<StoryInvite> StoryInvites { get; set; }

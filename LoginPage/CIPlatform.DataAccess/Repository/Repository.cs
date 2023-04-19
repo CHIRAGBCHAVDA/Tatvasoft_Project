@@ -1,5 +1,6 @@
 ﻿using CIPlatform.Data;
 using CIPlatform.DataAccess.Repository.IRepository;
+using CIPlatform.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,18 @@ namespace CIPlatform.DataAccess.Repository
             IQueryable<T> query = dbSet;
             query = query.Where(filter);
             return query;
+        }
+
+        public List<City> GetAllCity()
+        {
+            var cities = _db.Cities.ToList();
+            return cities;
+        }
+
+        public List<Country> GetAllCountry()
+        {
+            var countries = _db.Countries.ToList();
+            return countries;
         }
 
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter)

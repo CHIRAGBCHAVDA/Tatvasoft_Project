@@ -103,14 +103,14 @@ namespace CIPlatform.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(User user, string? returnUrl)
+        public IActionResult Index(string Email,string Password, string? returnUrl)
         {
-            User dbUser = _unitOfWork.User.login(user.Email, user.Password);
+            User dbUser = _unitOfWork.User.login(Email, Password);
 
             if (dbUser != null)
             {
                 HttpContext.Session.SetString("username", dbUser.FirstName + " " + dbUser.LastName);
-                HttpContext.Session.SetString("email", user.Email);
+                HttpContext.Session.SetString("email", Email);
                 HttpContext.Session.SetString("userId", dbUser.UserId.ToString());
 
                 if (dbUser.Avatar != null)

@@ -21,14 +21,13 @@ namespace CIPlatform.DataAccess.Repository
 
         public User login(string email,string password)
         {
-            User dbUser = _db.Users.FirstOrDefault(u => u.Email == email);
+            var dbUser = _db.Users.FirstOrDefault(u => u.Email.Equals(email));
             if (dbUser != null && BCrypt.Net.BCrypt.Verify(password, dbUser.Password))
             {
                 return dbUser;
             }
-            
-            return null;
 
+            return null;
         }
 
         public void Register(UserRegistrationViewModel user)
@@ -39,9 +38,14 @@ namespace CIPlatform.DataAccess.Repository
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-
-            }
-            _db.Users.Add(user);
+                Email = user.EmailAddress,
+                Password = pwd,
+                PhoneNumber = user.MobileNumber,
+                CityId = 2,
+                CountryId = 2,
+                Status = true
+            };
+            _db.Users.Add(newUser);
         }
 
         public User Update(User user,string token)
@@ -71,21 +75,46 @@ namespace CIPlatform.DataAccess.Repository
         public UserDetailViewModel GetUserDetailViewModel(long userId)
         {
             var user = _db.Users.FirstOrDefault(user => user.UserId == userId);
-            var City = _db.Cities.FirstOrDefault(city => city.CityId == user.CityId);
+            //var City = _db.Cities.FirstOrDefault(city => city.CityId == user.CityId);
             var Countries = _db.Countries.AsEnumerable();
             var Cities = _db.Cities.AsEnumerable();
             var AllSkills = _db.Skills.ToList();
             var dictOfSkill = new Dictionary<long, string>();
-            var userSkills = _db.UserSkills.Where(skill => skill.UserId==user.UserId).Select(skill => skill.Skill).ToList();
-            foreach(var skill in userSkills)
+            var userSkills = _db.UserSkills.Where(skill => skill.UserId == user.UserId).Select(skill => skill.Skill).ToList();
+            foreach (var skill in userSkills)
             {
-                dictOfSkill.Add(skill.SkillId,skill.SkillName);
+                dictOfSkill.Add(skill.SkillId, skill.SkillName);
             }
             var Availabilities = _db.Availabilities.AsEnumerable();
 
-            UserDetailViewModel userDetailViewModel = new UserDetailViewModel()
+            //UserDetailViewModel userDetailViewModel = new UserDetailViewModel()
+            //{
+            //UserId = userId,
+            //    Avatar = user.Avatar,
+            //    FirstName = user.FirstName,
+            //    LastName = user.LastName,
+            //    EmployeeId = user.EmployeeId,
+            //    Manager = user.ManagerDetails,
+            //    Title = user.Title,
+            //    Department = user.Department,
+            //    MyProfile = user.ProfileText,
+            //    WhyIVolunteer = user.WhyIVolunteer,
+            //    CityId = user.CityId,
+            //    City = City.Name,
+            //    Countries = Countries.ToList(),
+            //    Skills = dictOfSkill,
+            //    LinkedIn = user.LinkedInUrl,
+            //    Availabilities = Availabilities.ToList(),
+            //    Availability = string.IsNullOrEmpty(user.Availability.Name) ? "" : user.Availability.Name,
+            //    AllSkills = AllSkills,
+            //    Country = user.CountryId,
+            //    Cities = Cities.ToList(),
+            //    Email = user.Email
+            //};
+
+            var userQuery = _db.Users.Where(u => u.UserId == userId).Select(user=> new UserDetailViewModel()
             {
-                UserId = userId,
+                UserId = user.UserId,
                 Avatar = user.Avatar,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -96,19 +125,19 @@ namespace CIPlatform.DataAccess.Repository
                 MyProfile = user.ProfileText,
                 WhyIVolunteer = user.WhyIVolunteer,
                 CityId = user.CityId,
-                City = City.Name,
+                City = user.City.Name,
                 Countries = Countries.ToList(),
                 Skills = dictOfSkill,
                 LinkedIn = user.LinkedInUrl,
                 Availabilities = Availabilities.ToList(),
-                Availability = user.Availability.Name,
+                Availability = string.IsNullOrEmpty(user.Availability.Name) ? "" : user.Availability.Name,
                 AllSkills = AllSkills,
                 Country = user.CountryId,
                 Cities = Cities.ToList(),
                 Email = user.Email
-            };
+            });
 
-            return userDetailViewModel;
+            return userQuery.FirstOrDefault();
         }
 
         public BaseResponseViewModel ChangeUserPassword(long userId,string oldPassword, string newPassword)

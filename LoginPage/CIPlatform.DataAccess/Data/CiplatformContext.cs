@@ -1142,7 +1142,10 @@ namespace CIPlatform.Data
                     .IsUnicode(false)
                     .HasColumnName("password");
 
-                entity.Property(e => e.PhoneNumber).HasColumnName("phone_number");
+                entity.Property(e => e.PhoneNumber)
+                    .HasMaxLength(11)
+                    .IsUnicode(false)
+                    .HasColumnName("phone_number");
 
                 entity.Property(e => e.ProfileText)
                     .HasColumnType("text")

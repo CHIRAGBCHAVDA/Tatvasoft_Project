@@ -14,5 +14,6 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         public PageList<AdminMissionVM> GetMissionData();
         public PageList<AdminMissionApplicationVM> GetMissionApplicationData();
         public PageList<AdminStoryVM> GetStoryData();
+
     }
 }

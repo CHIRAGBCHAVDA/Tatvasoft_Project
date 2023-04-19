@@ -1,0 +1,156 @@
+﻿@using CIPlatform.Models.AdminViewModels
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model AdminUserVM
+
+ <div class="modal fade" id="myModal-@Model.UserId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false" data-bs-backdrop="false" data-bs-keyboard="false" style="height:fit-content">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel-@Model.UserId">Modal Title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="admin-user-editForm-@Model.UserId">
+            <div class="modal-body">
+              <div class="m-auto w-75">
+                <div class="d-flex mt-3 w-100">
+                    <div class="pe-5 align-self-center">
+                                <label for="avatar-upload">
+                                    <img src="@Model.Avatar-@Model.UserId" id="admin-user-editImg-@Model.UserId" class="rounded-circle user-img-left" />
+                                </label>
+                                <input type="file" id="avatar-upload-@Model.UserId" style="display: none;">
+                                <input type="hidden" asp-for="UserId" value="@Model.UserId" id="admin-userEdit-userid-@Model.UserId"/>
+                    </div>
+                    <div class="d-flex flex-column ms-3 w-100">
+                        <div class="d-flex w-100">
+                            <div class="w-50 pe-3">
+                                <div>First Name</div>
+                                <div><input type="text" asp-for="FirstName" id="FN-@Model.UserId"  class="form-control me-3 mt-1" placeholder="Enter name"/></div>
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="w-50 pe-3">
+                                 <div>Last Name</div>
+                                <div><input type="text" asp-for="LastName" id="LN-@Model.UserId"  class="form-control mt-1" placeholder="Enter surname"/></div>
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="w-100 pe-3 mt-2">
+                            <div>Email</div>
+                            <div><input type="text" asp-for="Email" id="Email-@Model.UserId" class="form-control mt-1" placeholder="Enter Email"/></div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex w-100 mt-1">
+                    <div class="w-50 pe-3">
+                        <div>Country</div>
+                        <div>
+                            <select class="form-select mt-1" asp-for="CountryId" id="CID-@Model.UserId">
+                                <option value="">Select Country</option>
+                                @foreach (var country in Model.Countries)
+                                {
+                                    <option value="@country.CountryId" selected="@(country.CountryId == Model.CountryId)">@country.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <span asp-validation-for="CountryId" class="text-danger"></span>
+                    </div>
+                    <div class="w-50 pe-3">
+                        <div>City</div>
+                        <div>
+                            <select class="form-select mt-1" asp-for="CityId" id="CITYID-@Model.UserId">
+                                <option value="">Select City</option>
+                                @foreach (var city in Model.Cities)
+                                {
+                                    <option value="@city.CityId" selected="@(city.CityId == Model.CityId)">@city.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <span asp-validation-for="CityId" class="text-danger"></span>
+                    </div>
+                    <div class="w-50 pe-3">
+                        <div>Status</div>
+                        <div>
+                            <select class="form-select mt-1" asp-for="Status" id="Status-@Model.UserId" >
+                                @if((bool)@Model.Status)
+                                {
+                                    <option value="false" selected>InActive</option>
+                                    <option value="true">Active</option>
+                                }
+                                else
+                                {
+                                    <option value="false">InActive</option>
+                                    <option value="true" selected>Active</option>
+                                }
+
+                            </select>
+                        </div>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="d-flex w-100 mt-3">
+                    <div class="w-50 pe-3">
+                        <div>Employee Id</div>
+                        <div><input type="text" asp-for="EmployeeId" id="EID-@Model.UserId" class="form-control me-3 mt-1" placeholder="Enter Employee ID"/></div>
+                        <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                    </div>
+                    <div class="w-50 pe-3">
+                        <div>Deaprtment</div>
+                        <div><input type="text" asp-for="Department" id="DEPT-@Model.UserId"  class="form-control me-3 mt-1" placeholder="Enter Department"/></div>
+                        <span asp-validation-for="Department" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="w-100 mt-3 pe-3">
+                    <div>My Profile</div>
+                    <textarea rows=4 asp-for="ProfileText" id="PT-@Model.UserId" placeholder="Enter Profile Text..." class="form-control mt-1"></textarea>
+                    <span asp-validation-for="ProfileText" class="text-danger"></span>
+                </div>
+                        @if (@Model.UserId == 0)
+                        {
+                            <div class="d-flex w-100 mt-3">
+                                <div class="w-50 pe-3">
+                                    <div>Password</div>
+                                    <div><input type="text" asp-for="Password" class="form-control me-3 mt-1" placeholder="Enter Password" /></div>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="w-50 pe-3">
+                                    <div>Confirm Password</div>
+                                    <div><input type="text" asp-for="ConfirmPassword" class="form-control me-3 mt-1" placeholder="Enter Confirm Password" /></div>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                        }
+
+            </div> 
+            <div class="d-flex justify-content-end w-75 mt-3 m-auto pe-3 mb-3 modal-footer">
+                <button type="submit" class="btn border-orange bg-white text-orange ps-3 pe-3 rounded-pill" data-userid="@Model.UserId" onclick="UpdateUser(this)">Submit</button>
+            </div>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+
+
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+
+@*
+id="admin-userEdit-Firstname"
+id="admin-userEdit-Lastname"
+id="admin-userEdit-email"
+id="Countries"
+id="Cities"
+id="admin-userEdit-Status"
+id="admin-userEdit-EmployeeId"
+id="admin-userEdit-Department"
+id="admin-userEdit-Profiletext"
+id="admin-userEdit-submitBtn"
+*@

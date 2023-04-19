@@ -1,5 +1,7 @@
 ﻿using CIPlatform.Data;
 using CIPlatform.DataAccess.Repository.IRepository;
+using CIPlatform.Models;
+using CIPlatform.Models.AdminViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CIPlatform.Controllers
@@ -48,6 +50,66 @@ namespace CIPlatform.Controllers
         {
             var storyData = _unitOfWork.AdminRepo.GetStoryData();
             return PartialView("_AdminStory",storyData);
+        }
+
+        [HttpPost]
+        public bool UserEditFormPost(AdminUserVM userEditParams)
+        {
+            if (userEditParams.UserId == 0)
+            {
+                var user = new User()
+                {
+                    FirstName = userEditParams.FirstName,
+                    LastName = userEditParams.LastName,
+                    Department = userEditParams.Department,
+                    Email = userEditParams.Email,
+                    EmployeeId = userEditParams.EmployeeId,
+                    CityId = userEditParams.CityId,
+                    CountryId = userEditParams.CountryId,
+                    Status = userEditParams.Status,
+                    Avatar = userEditParams.Avatar,
+                    ProfileText = userEditParams.ProfileText,
+                    Password = userEditParams.Password
+                };
+
+                _db.Users.Add(user);
+                _db.SaveChanges();
+                return true;
+
+            }
+            else if (userEditParams.UserId != 0)
+            {
+                var user = _unitOfWork.User.getUserByUID(userEditParams.UserId);
+                user.FirstName = userEditParams.FirstName;
+                user.LastName = userEditParams.LastName;
+                user.Department = userEditParams.Department;
+                user.Email = userEditParams.Email;
+                user.EmployeeId = userEditParams.EmployeeId;
+                user.CityId = userEditParams.CityId;
+                user.CountryId = userEditParams.CountryId;
+                user.Status = userEditParams.Status;
+                user.Avatar = userEditParams.Avatar;
+                user.ProfileText = userEditParams.ProfileText;
+
+                _db.Users.Update(user);
+                _db.SaveChanges();
+                return true;
+            }
+
+
+
+            //return PartialView("_AdminUser", _unitOfWork.AdminRepo.GetUserData());
+            return false;
+        }
+
+        public List<Country> GetAllCountries()
+        {
+            return _unitOfWork.Country.GetAllCountry();
+        }
+
+        public List<City> GetAllCities()
+        {
+            return _unitOfWork.City.GetAllCity();
         }
 
     }

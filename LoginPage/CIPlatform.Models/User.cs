@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CIPlatform.Models
 {
@@ -22,24 +20,12 @@ namespace CIPlatform.Models
         }
 
         public long UserId { get; set; }
-        [Required]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
         public string? LastName { get; set; }
-
-        [Required]
-        [EmailAddress]
-        //[Unique(ErrorMessage = "This email address is already in use.")]
         public string Email { get; set; } = null!;
-        [Required]
-        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%&*?])[A-Za-z\d!@#$%&*?]{6}$",
-            ErrorMessage = "The Password must be atleast of 6 characters long and contain atleast 1 digit and 1 special character.")]
         public string Password { get; set; } = null!;
-
-        [NotMapped]
-        [Compare("Password", ErrorMessage = "Confirm password must be matched with Password!!")]
-        public string ConfirmPassword { get; set; } = null!;
         public string? Token { get; set; }
-        public long PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = null!;
         public string? Avatar { get; set; }
         public string? WhyIVolunteer { get; set; }
         public string? EmployeeId { get; set; }

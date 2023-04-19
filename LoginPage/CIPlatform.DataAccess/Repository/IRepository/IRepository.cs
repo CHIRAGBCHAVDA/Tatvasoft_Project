@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;  
 using System.Text;
 using System.Threading.Tasks;
+using CIPlatform.Models;
 
 namespace CIPlatform.DataAccess.Repository.IRepository
 {
@@ -15,6 +16,8 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         List<T> GetAll();
         IEnumerable<T> GetAll(Expression<Func<T, bool>> filter);
        
+        List<City> GetAllCity();
+        List<Country> GetAllCountry();
          
     }
 }

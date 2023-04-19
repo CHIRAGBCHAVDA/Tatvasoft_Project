@@ -21,7 +21,7 @@ namespace CIPlatform.Models.ViewDataModels
         public string? Title { get; set; } = string.Empty;
         public string? Department { get; set; } = string.Empty;
         [Required(ErrorMessage ="Please write few words about yourself")] 
-        public string MyProfile { get; set; } = string.Empty;
+        public string? MyProfile { get; set; } = string.Empty;
         public string? WhyIVolunteer { get; set; } = string.Empty;
         public long? CityId { get; set; }
         public string? City { get; set; } = string.Empty;

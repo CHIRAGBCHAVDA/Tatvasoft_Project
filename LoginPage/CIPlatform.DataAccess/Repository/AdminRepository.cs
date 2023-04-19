@@ -103,6 +103,8 @@ namespace CIPlatform.DataAccess.Repository
 
         public PageList<AdminUserVM> GetUserData()
         {
+            var CountryList = _db.Countries.ToList();
+            var CityList = _db.Cities.ToList();
             var userRecords = _db.Users.Select(user => new AdminUserVM()
             {
                 UserId = user.UserId,
@@ -111,7 +113,13 @@ namespace CIPlatform.DataAccess.Repository
                 Department = user.Department,
                 Email = user.Email,
                 EmployeeId = user.EmployeeId,
-                Status = user.Status
+                Status = user.Status,
+                Avatar = user.Avatar,
+                CityId = user.CityId,
+                CountryId = user.CountryId,
+                ProfileText = user.ProfileText,
+                Countries = CountryList,
+                Cities = CityList,
             });
 
             var userData = new PageList<AdminUserVM>()
