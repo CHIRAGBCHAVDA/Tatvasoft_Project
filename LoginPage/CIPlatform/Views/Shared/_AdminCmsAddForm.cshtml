@@ -1,0 +1,60 @@
+﻿@using CIPlatform.Models.AdminViewModels
+@model AdminCmsVM
+
+    <div class="modal fade" id="cmsAddModal-@Model.CMSId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel-@Model.CMSId">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="adminCmsAddEditForm-@Model.CMSId">
+                <div class="modal-body">
+                    <div class="cms-add-view mt-3">
+                        <div class="cms-add-header w-100 fw-bold border">
+                            <h3 class="p-3  bg-light border-bottom">Add</h3>
+                            <div class="my-3 ms-4">
+                                <label  asp-for="Title" class="form-label fw-lighter" for="cms-add-title">Title</label>
+                                <input asp-for="Title" type="text" id="cms-add-title-@Model.CMSId" class="form-control" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3 ms-4">
+                                <label asp-for="Description" class="form-label fw-lighter" for="cms-add-desc">Description</label>
+                                <textarea asp-for="Description" class="ck-editor" id="cms-add-desc-@Model.CMSId" style="height:600px">
+
+                                </textarea>
+                                <span class="text-danger" asp-validation-for="Description"></span>
+                                <script>
+                                    CKEDITOR.replace( `cms-add-desc-${@Model.CMSId}`, {
+                                    customConfig: '/js/temp.js'
+                                    });
+                                </script>
+                            </div>
+                            <div class="my-3 ms-4">
+                                <label class="form-label fw-lighter" for="cms-add-slug" asp-for="Slug">Slug</label>
+                                <input type="text" id="cms-add-slug-@Model.CMSId" class="form-control" asp-for="Slug" />
+                                <span class="text-danger" asp-validation-for="Slug"></span>
+                            </div>
+                            <div class="my-3 mb-5 ms-4">
+                                <label class="form-label fw-lighter" asp-for="Status" for="cms-add-status">Status</label>
+                                <select class="form-select" asp-for="Status" id="cms-add-status-@Model.CMSId">
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
+                                <span class="text-danger" asp-validation-for="Status"></span>
+
+                                <input type="hidden" value="@Model.CMSId" id="mycmsid-@Model.CMSId" asp-for="CMSId" />
+                            </div>
+                        </div>
+
+                        <div class="d-flex w-100 justify-content-end cms-add-btns mt-3">
+                            <button type="button" class="btn bg-white text-dark border border-dark rounded-pill px-3 me-2" data-bs-dismiss="modal" id="cms-modal-dismiss-@Model.CMSId">Cancel</button>
+                            <button type="submit" class="btn bg-white text-orange bg-white border-orange rounded-pill px-3" data-cmsid="@Model.CMSId" onclick="adminAddCMS(this)">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>

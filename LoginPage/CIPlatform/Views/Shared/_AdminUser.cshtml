@@ -16,10 +16,10 @@
     <div class="d-flex search-user-and-add mt-3 justify-content-between">
         <div class="search-user d-flex align-items-center border ps-3">
             <img src="/assets/search.png" alt="" style="height:14px">&nbsp;&nbsp;
-            <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-query">
+            <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-user-query">
         </div>
         <div class="user-add">
-            <button class="btn bg-white text-orange border-orange px-3 rounded-pill" id="admin-user-add" data-bs-toggle="modal" data-bs-target="#myModal-0"> <i class="bi bi-plus"></i> Add </button>
+            <button class="btn bg-white text-orange border-orange px-3 rounded-pill" id="admin-user-add" data-bs-toggle="modal" data-bs-target="#myModal"> <i class="bi bi-plus"></i> Add </button>
         </div>
     </div>
     <div class="user-table mt-4">
@@ -35,70 +35,41 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var item in Model.Records)
-                {
-                    <tr>
-                        <td>@item.FirstName</td>
-                        <td>@item.LastName</td>
-                        <td>@item.Email</td>
-                        <td>@item.EmployeeId</td>
-                        <td>@item.Department</td>
-                         @if ((bool)item.Status)
-                        {
-                            <td class="text-success">Active</td>
-                        }
-                        else
-                        {
-                            <td class="text-danger">Inactive</td>
-                        }
-                        <td>
-                            <a href="" class="fst-normal edit-user-btn text-decoration-none" data-bs-toggle="modal" data-bs-target="#myModal-@item.UserId"  data-userid="@item.UserId"
-                           data-firstname="@item.FirstName"
-                           data-lastname="@item.LastName"
-                           data-email="@item.Email"
-                           data-employeeid="@item.EmployeeId"
-                           data-department="@item.Department"
-                           data-status="@item.Status"
-                           data-avatar="@item.Avatar"
-                           data-cityid="@item.CityId"
-                           data-countryid="@item.CountryId"
-                           data-profiletext="@item.ProfileText">
-                                <i class="bi text-orange bi-pencil-square me-2">
-                                </i>
-                            </a>
-                                    <partial name="_AdminUserEditForm" model="@item" />
-                            <a href="">
-                                <i class="text-secondary bi bi-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                }
+            <tbody class="admin-user-table-body-wrapper">
+                <partial name="_AdminUserTablePartial" model="Model.Records" />
             </tbody>
         </table>
+
+         @{
+            double d = Model.Count/ 10.0;
+            double pages = Math.Ceiling(d);
+        }
+
 
         <div class="pagination-nav d-flex flex-row-reverse w-100">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    <li class="page-item d-flex">
+                    <li class="page-item-user d-flex">
                         <a class="page-link" href="#" aria-label="Previous">
                             <span aria-hidden="true"><<</span>
                         </a>
                     </li>
-                    <li class="page-item d-flex">
+                    <li class="page-item-user d-flex">
                         <a class="page-link" href="#" aria-label="Previous">
                             <span aria-hidden="true"><</span>
                         </a>
                     </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item d-flex">
+                    @for (int i = 1; i <= @pages; i++)
+                    {
+                        <li class="page-item-user" id="@i"><a class="page-link">@i</a></li>
+                    }
+
+                    <li class="page-item-user d-flex">
                         <a class="page-link" href="#" aria-label="Next">
                             <span aria-hidden="true">></span>
                         </a>
                     </li>
-                    <li class="page-item d-flex">
+                    <li class="page-item-user d-flex">
                         <a class="page-link" href="#" aria-label="Next">
                             <span aria-hidden="true">>></span>
                         </a>
@@ -110,7 +81,7 @@
     </div>
 </div>
 
-<partial name="_AdminUserEditForm" model="new AdminUserVM()" />
+<partial name="_AdminUserAddForm" model="new AdminUserAddViewModel()" />
 
 
 @*<div class="modal fade" id="admin-user-addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false" data-bs-backdrop="false" data-bs-keyboard="false" style="height:fit-content">

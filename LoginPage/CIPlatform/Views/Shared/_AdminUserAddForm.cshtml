@@ -1,12 +1,7 @@
 ﻿@using CIPlatform.Models.AdminViewModels
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model AdminUserVM
+@model AdminUserAddViewModel
 
- <div class="modal fade" id="myModal-@Model.UserId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false" data-bs-backdrop="false" data-bs-keyboard="false" style="height:fit-content">
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false" data-bs-backdrop="false" data-bs-keyboard="false" style="height:fit-content">
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
@@ -48,12 +43,12 @@
                     <div class="w-50 pe-3">
                         <div>Country</div>
                         <div>
-                            <select class="form-select mt-1" asp-for="CountryId" id="CID-@Model.UserId">
+                            <select class="form-select mt-1" asp-for="CountryId">
                                 <option value="">Select Country</option>
-                                @foreach (var country in Model.Countries)
+                               @* @foreach (var country in Model.Countries)
                                 {
                                     <option value="@country.CountryId" selected="@(country.CountryId == Model.CountryId)">@country.Name</option>
-                                }
+                                }*@
                             </select>
                         </div>
                         <span asp-validation-for="CountryId" class="text-danger"></span>
@@ -61,12 +56,12 @@
                     <div class="w-50 pe-3">
                         <div>City</div>
                         <div>
-                            <select class="form-select mt-1" asp-for="CityId" id="CITYID-@Model.UserId">
+                            <select class="form-select mt-1" asp-for="CityId">
                                 <option value="">Select City</option>
-                                @foreach (var city in Model.Cities)
+                                @*@foreach (var city in Model.Cities)
                                 {
                                     <option value="@city.CityId" selected="@(city.CityId == Model.CityId)">@city.Name</option>
-                                }
+                                }*@
                             </select>
                         </div>
                         <span asp-validation-for="CityId" class="text-danger"></span>
@@ -108,6 +103,22 @@
                     <textarea rows=4 asp-for="ProfileText" id="PT-@Model.UserId" placeholder="Enter Profile Text..." class="form-control mt-1"></textarea>
                     <span asp-validation-for="ProfileText" class="text-danger"></span>
                 </div>
+                        @if (@Model.UserId == 0)
+                        {
+                            <div class="d-flex w-100 mt-3">
+                                <div class="w-50 pe-3">
+                                    <div>Password</div>
+                                    <div><input type="text" asp-for="Password" class="form-control me-3 mt-1" placeholder="Enter Password" /></div>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="w-50 pe-3">
+                                    <div>Confirm Password</div>
+                                    <div><input type="text" asp-for="ConfirmPassword" class="form-control me-3 mt-1" placeholder="Enter Confirm Password" /></div>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                        }
+
             </div> 
             <div class="d-flex justify-content-end w-75 mt-3 m-auto pe-3 mb-3 modal-footer">
                 <button type="submit" class="btn border-orange bg-white text-orange ps-3 pe-3 rounded-pill" data-userid="@Model.UserId" onclick="UpdateUser(this)">Submit</button>
@@ -123,18 +134,3 @@
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
-
-
-
-@*
-id="admin-userEdit-Firstname"
-id="admin-userEdit-Lastname"
-id="admin-userEdit-email"
-id="Countries"
-id="Cities"
-id="admin-userEdit-Status"
-id="admin-userEdit-EmployeeId"
-id="admin-userEdit-Department"
-id="admin-userEdit-Profiletext"
-id="admin-userEdit-submitBtn"
-*@

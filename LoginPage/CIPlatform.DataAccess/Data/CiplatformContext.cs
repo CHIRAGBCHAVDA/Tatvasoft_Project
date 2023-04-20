@@ -17,6 +17,7 @@ namespace CIPlatform.Data
         {
         }
 
+
         public virtual DbSet<Admin> Admins { get; set; } = null!;
         public virtual DbSet<ApprovalStatus> ApprovalStatuses { get; set; } = null!;
         public virtual DbSet<Availability> Availabilities { get; set; } = null!;

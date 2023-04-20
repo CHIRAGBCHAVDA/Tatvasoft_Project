@@ -80,7 +80,7 @@ namespace CIPlatform.DataAccess.Repository
             var Cities = _db.Cities.AsEnumerable();
             var AllSkills = _db.Skills.ToList();
             var dictOfSkill = new Dictionary<long, string>();
-            var userSkills = _db.UserSkills.Where(skill => skill.UserId == user.UserId).Select(skill => skill.Skill).ToList();
+            var userSkills = _db.UserSkills.Where(skill => skill.UserId == user.UserId && skill.DeletedAt==null).Select(skill => skill.Skill).ToList();
             foreach (var skill in userSkills)
             {
                 dictOfSkill.Add(skill.SkillId, skill.SkillName);
@@ -189,7 +189,7 @@ namespace CIPlatform.DataAccess.Repository
                 user.CountryId = userEditQueryParams.CountryId;
                 user.AvailabilityId = (byte?)userEditQueryParams.userAvailabillity;
                 user.LinkedInUrl = userEditQueryParams.userLinkedin;
-                user.Avatar = userEditQueryParams.Avatar;
+                user.Avatar = userEditQueryParams.Avatar==null?user.Avatar:userEditQueryParams.Avatar;
 
                 _db.Users.Update(user);
 
@@ -219,8 +219,11 @@ namespace CIPlatform.DataAccess.Repository
                 }
 
                 _db.SaveChanges();
-                _httpContext.Session.Remove("userImage");
-                _httpContext.Session.SetString("userImage", user.Avatar);
+                if (!string.IsNullOrEmpty(user.Avatar))
+                {
+                    _httpContext.Session.Remove("userImage");
+                    _httpContext.Session.SetString("userImage", user.Avatar);
+                }
 
                 baseResponse = new BaseResponseViewModel()
                 {

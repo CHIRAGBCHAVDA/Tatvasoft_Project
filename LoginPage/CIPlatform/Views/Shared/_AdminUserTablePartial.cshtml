@@ -1,0 +1,41 @@
+﻿@using CIPlatform.Models.AdminViewModels
+@model List<AdminUserVM>
+
+     @foreach (var item in Model)
+{
+    <tr>
+        <td>@item.FirstName</td>
+        <td>@item.LastName</td>
+        <td>@item.Email</td>
+        <td>@item.EmployeeId</td>
+        <td>@item.Department</td>
+        @if ((bool)item.Status)
+        {
+            <td class="text-success">Active</td>
+        }
+        else
+        {
+            <td class="text-danger">Inactive</td>
+        }
+        <td>
+            <a href="" class="fst-normal edit-user-btn text-decoration-none" data-bs-toggle="modal" data-bs-target="#myModal-@item.UserId" data-userid="@item.UserId"
+           data-firstname="@item.FirstName"
+           data-lastname="@item.LastName"
+           data-email="@item.Email"
+           data-employeeid="@item.EmployeeId"
+           data-department="@item.Department"
+           data-status="@item.Status"
+           data-avatar="@item.Avatar"
+           data-cityid="@item.CityId"
+           data-countryid="@item.CountryId"
+           data-profiletext="@item.ProfileText">
+                <i class="bi text-orange bi-pencil-square me-2">
+                </i>
+            </a>
+            <partial name="_AdminUserEditForm" model="@item" />
+            <a href="">
+                <i class="text-secondary bi bi-trash"></i>
+            </a>
+        </td>
+    </tr>
+}

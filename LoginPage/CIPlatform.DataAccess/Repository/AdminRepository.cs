@@ -1,5 +1,6 @@
 ﻿using CIPlatform.Data;
 using CIPlatform.DataAccess.Repository.IRepository;
+using CIPlatform.Models;
 using CIPlatform.Models.AdminViewModels;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -29,7 +30,7 @@ namespace CIPlatform.DataAccess.Repository
                 Title = cms.Title,
                 Description = cms.Desciption,
                 Slug = cms.Slug,
-                Status = cms.Status
+                Status = (bool)cms.Status
             });
             var cmsData = new PageList<AdminCmsVM>()
             {
@@ -130,6 +131,78 @@ namespace CIPlatform.DataAccess.Repository
 
             return userData;
         }
+        public IQueryable<AdminUserVM> getAllUserdata()
+        {
+            var CountryList = _db.Countries.ToList();
+            var CityList = _db.Cities.ToList();
+
+            var userRecords = _db.Users.Select(user => new AdminUserVM()
+            {
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Department = user.Department,
+                Email = user.Email,
+                EmployeeId = user.EmployeeId,
+                Status = user.Status,
+                Avatar = user.Avatar,
+                CityId = user.CityId,
+                CountryId = user.CountryId,
+                ProfileText = user.ProfileText,
+                Countries = CountryList,
+                Cities = CityList,
+            });
+            return userRecords;
+        }
+
+        public IQueryable<AdminCmsVM> getAllCmsdata()
+        {
+            var cmsRecords = _db.CmsPages.Select(cms => new AdminCmsVM()
+            {
+                CMSId = cms.CmsPageId,
+                Title = cms.Title,
+                Description = cms.Desciption,
+                Slug = cms.Slug,
+                Status = (bool)cms.Status
+            });
+
+            return cmsRecords;
+        }
+
+
+        public CmsPage getCmsById(long cmsId)
+        {
+            var cms = _db.CmsPages.FirstOrDefault(cmsPage => cmsPage.CmsPageId == cmsId);
+            return cms;
+        }
+        public bool updateCms(CmsPage cms)
+        {
+            try
+            {
+                _db.CmsPages.Update(cms);
+                _db.SaveChanges();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool AddCms(CmsPage cms)
+        {
+            try
+            {
+                _db.CmsPages.Add(cms);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
     }
+
 }

@@ -59,6 +59,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkNtcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_AdminCmsAddForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkNtc0FkZEZvcm0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_AdminCmsTablePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkNtc1RhYmxlUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_AdminMission.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbk1pc3Npb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -75,8 +83,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pblVzZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_AdminUserAddForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pblVzZXJBZGRGb3JtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_AdminUserEditForm.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pblVzZXJFZGl0Rm9ybS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_AdminUserTablePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pblVzZXJUYWJsZVBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Tatvasoft_Project/LoginPage/CIPlatform/Views/Shared/_CarouselMobileView.cshtml]

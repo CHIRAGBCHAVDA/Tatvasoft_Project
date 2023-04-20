@@ -1,4 +1,5 @@
-﻿using CIPlatform.Models.AdminViewModels;
+﻿using CIPlatform.Models;
+using CIPlatform.Models.AdminViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,12 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         public PageList<AdminMissionVM> GetMissionData();
         public PageList<AdminMissionApplicationVM> GetMissionApplicationData();
         public PageList<AdminStoryVM> GetStoryData();
+        public IQueryable<AdminUserVM> getAllUserdata();
 
+        public CmsPage getCmsById(long cmsId);
+        public bool updateCms(CmsPage cms);
+        public bool AddCms(CmsPage cms);
+
+        public IQueryable<AdminCmsVM> getAllCmsdata();
     }
 }

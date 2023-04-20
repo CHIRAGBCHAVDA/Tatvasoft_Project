@@ -8,10 +8,10 @@ namespace CIPlatform.Models.AdminViewModels
 {
     public class AdminCmsVM
     {
-        public long CMSId { get; set; }
+        public long? CMSId { get; set; } = 0;
         public string Title { get; set; }
         public string Description { get; set; }
         public string Slug { get; set; }
-        public bool? Status { get; set; }
+        public bool? Status { get; set; } = null;
     }
 }

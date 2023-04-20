@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CIPlatform.Models.AdminViewModels
 {
-    internal class UserEditFormPostParams
+    public class UserEditFormPostParams
     {
+
     }
 }

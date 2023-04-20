@@ -1,0 +1,27 @@
+﻿@using CIPlatform.Models.AdminViewModels
+@model List<AdminCmsVM>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Title</td>
+        @if ((bool)item.Status)
+        {
+            <td class="text-success">Active</td>
+        }
+        else
+        {
+            <td class="text-danger">Inactive</td>
+        }
+        <td>
+            <a href="" class="fst-normal text-decoration-none" data-bs-toggle="modal" data-bs-target="#cmsAddModal-@item.CMSId">
+                <i class="bi text-orange bi-pencil-square me-2"></i>
+            </a>
+            <partial name="_AdminCmsAddForm" model="@item" />
+
+            <a href="" id="deleteTimebasedTimesheet">
+                <i class="text-secondary bi bi-trash"></i>
+            </a>
+        </td>
+    </tr>
+}

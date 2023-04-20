@@ -11,7 +11,7 @@ namespace CIPlatform.Models.AdminViewModels
     {
         public long UserId { get; set; }
         [Required(ErrorMessage ="This field is required")]
-        public string FirstName { get; set; } = string.Empty;
+        public string FirstName { get; set; }
         [Required(ErrorMessage ="This field is required")]
         public string? LastName { get; set; } = string.Empty;
         [Required(ErrorMessage ="This field is required")]
@@ -24,12 +24,12 @@ namespace CIPlatform.Models.AdminViewModels
         public long CountryId { get; set; }
         public string? ProfileText { get; set; } = string.Empty;
 
-        [Required(ErrorMessage ="Enter A valid Password")]
-        public string Password { get; set; }
+        //[Required(ErrorMessage ="Enter A valid Password")]
+        //public string Password { get; set; }
 
-        [Required(ErrorMessage ="This Field is required")]
-        [Compare("Password",ErrorMessage ="Password and Confirm Password must be matched")]
-        public string ConfirmPassword { get; set; }
+        //[Required(ErrorMessage ="This Field is required")]
+        //[Compare("Password",ErrorMessage ="Password and Confirm Password must be matched")]
+        //public string ConfirmPassword { get; set; }
 
         public List<Country> Countries { get; set; } = new List<Country>();
         public List<City> Cities { get; set; } = new List<City>();

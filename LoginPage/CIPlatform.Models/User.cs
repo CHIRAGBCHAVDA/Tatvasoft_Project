@@ -25,7 +25,7 @@ namespace CIPlatform.Models
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string? Token { get; set; }
-        public string PhoneNumber { get; set; } = null!;
+        public string? PhoneNumber { get; set; }
         public string? Avatar { get; set; }
         public string? WhyIVolunteer { get; set; }
         public string? EmployeeId { get; set; }
