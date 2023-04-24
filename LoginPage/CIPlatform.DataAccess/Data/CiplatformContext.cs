@@ -433,6 +433,12 @@ namespace CIPlatform.Data
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
+
+                entity.HasOne(d => d.Mission)
+                    .WithMany(p => p.GoalMissions)
+                    .HasForeignKey(d => d.MissionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_goal_mission_mission");
             });
 
             modelBuilder.Entity<Mission>(entity =>
@@ -477,6 +483,10 @@ namespace CIPlatform.Data
                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("organization_name");
+
+                entity.Property(e => e.RegistrationDeadline)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Registration_deadline");
 
                 entity.Property(e => e.ShortDescription)
                     .HasColumnType("text")
@@ -652,8 +662,7 @@ namespace CIPlatform.Data
                     .HasColumnName("media_name");
 
                 entity.Property(e => e.MediaPath)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
+                    .HasColumnType("text")
                     .HasColumnName("media_path");
 
                 entity.Property(e => e.MediaType)

@@ -9,6 +9,7 @@ namespace CIPlatform.Models
         {
             Comments = new HashSet<Comment>();
             FavouriteMissions = new HashSet<FavouriteMission>();
+            GoalMissions = new HashSet<GoalMission>();
             MissionApplications = new HashSet<MissionApplication>();
             MissionMedia = new HashSet<MissionMedium>();
             MissionRatings = new HashSet<MissionRating>();
@@ -35,6 +36,7 @@ namespace CIPlatform.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
         public int? AvailableSeats { get; set; }
+        public DateTime? RegistrationDeadline { get; set; }
 
         public virtual Availability? Availability { get; set; }
         public virtual City City { get; set; } = null!;
@@ -42,6 +44,7 @@ namespace CIPlatform.Models
         public virtual MissionTheme MissionTheme { get; set; } = null!;
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<FavouriteMission> FavouriteMissions { get; set; }
+        public virtual ICollection<GoalMission> GoalMissions { get; set; }
         public virtual ICollection<MissionApplication> MissionApplications { get; set; }
         public virtual ICollection<MissionMedium> MissionMedia { get; set; }
         public virtual ICollection<MissionRating> MissionRatings { get; set; }

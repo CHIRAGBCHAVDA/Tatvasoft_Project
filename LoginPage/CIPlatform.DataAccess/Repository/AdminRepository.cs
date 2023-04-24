@@ -50,7 +50,7 @@ namespace CIPlatform.DataAccess.Repository
                 MissionTitle = missionApplication.Mission.Title,
                 AppliedDate = missionApplication.AppliedAt,
                 UserId = missionApplication.UserId,
-                UserName = missionApplication.User.FirstName+missionApplication.User.LastName
+                UserName = missionApplication.User.FirstName + missionApplication.User.LastName
             });
 
             var missionApplicationData = new PageList<AdminMissionApplicationVM>()
@@ -64,13 +64,39 @@ namespace CIPlatform.DataAccess.Repository
 
         public PageList<AdminMissionVM> GetMissionData()
         {
+            var Countries = _db.Countries;
+            var Cities = _db.Cities;
+            var Availabilities = _db.Availabilities;
+            var Skills = _db.Skills;
+            var missionThemes = _db.MissionThemes;
+
             var missionRecords = _db.Missions.Select(mission => new AdminMissionVM()
             {
                 MissionId = mission.MissionId,
                 MissionTitle = mission.Title,
+                MissionThemeId = mission.MissionThemeId,
+                MissionThemes = missionThemes.ToList(),
                 MissionTypeId = mission.MissionTypeId,
+                CountryId = mission.CountryId,
+                CityId = mission.CityId,
+                AvailableSeats = mission.AvailableSeats,
+                RegistrationDeadline = mission.RegistrationDeadline,
+                Countries = Countries.ToList(),
+                Cities = Cities.ToList(),
+                Availabilities = Availabilities.ToList(),
+                Skills = Skills.ToList(),
+                Goal = mission.GoalMissions.FirstOrDefault().GoalValue,
+                GoalObjective = mission.GoalMissions.FirstOrDefault().GoalObjectiveText,
+                AvailabilityId = (byte)mission.AvailabilityId,
+                Status = mission.Status,
+                OrganizationName = mission.OrganizationName,
+                OrganizationDetail = mission.OrganizationDetail,
+                ShortDescription = mission.ShortDescription,
+                LongDescription = mission.Description,
+                VideoUrl = mission.MissionMedia.AsQueryable().Where(media => media.MediaType.Equals("vid")).Select(url => url.MediaPath).ToList(),
+                Photos = mission.MissionMedia.AsQueryable().Where(media => media.MediaType.Equals("img")).Select(src => src.MediaPath).ToList(),
                 StartDate = mission.StartDate,
-                EndDate =mission.EndDate
+                EndDate = mission.EndDate,
             });
 
             var missionData = new PageList<AdminMissionVM>()
@@ -89,7 +115,7 @@ namespace CIPlatform.DataAccess.Repository
                 StoryId = story.StoryId,
                 MissionId = story.MissionId,
                 StoryTitle = story.Title,
-                FullName = story.User.FirstName+story.User.LastName,
+                FullName = story.User.FirstName + story.User.LastName,
                 MissionTitle = story.Mission.Title
             });
 
@@ -183,7 +209,7 @@ namespace CIPlatform.DataAccess.Repository
                 _db.SaveChanges();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -203,6 +229,242 @@ namespace CIPlatform.DataAccess.Repository
             }
         }
 
+        public List<MissionSkill> getMissionSkills(long missionId)
+        {
+            var missionSkills = _db.MissionSkills.Where(skill => skill.MissionId == missionId);
+            return missionSkills.ToList();
+        }
+
+        public bool AddNewMission(AdminMissionVM missionModel)
+        {
+            try
+            {
+
+                Mission newMission = new Mission()
+                {
+                    MissionThemeId = missionModel.MissionThemeId,
+                    CityId = missionModel.CityId,
+                    CountryId = missionModel.CountryId,
+                    Title = missionModel.MissionTitle,
+                    ShortDescription = missionModel.ShortDescription,
+                    Description = missionModel.LongDescription,
+                    StartDate = missionModel.StartDate,
+                    EndDate = missionModel.EndDate,
+                    MissionTypeId = missionModel.MissionTypeId,
+                    Status = missionModel.Status,
+                    OrganizationName = missionModel.OrganizationName,
+                    OrganizationDetail = missionModel.OrganizationDetail,
+                    AvailabilityId = missionModel.AvailabilityId,
+                    CreatedAt = DateTime.Now,
+                    AvailableSeats = missionModel.AvailableSeats,
+                    RegistrationDeadline = missionModel.RegistrationDeadline,
+                };
+                _db.Missions.Add(newMission);
+                _db.SaveChanges();
+
+                foreach (var skillId in missionModel.skillids)
+                {
+                    MissionSkill newMissionSkill = new MissionSkill()
+                    {
+                        MissionId = newMission.MissionId,
+                        SkillId = skillId,
+                        CreatedAt = DateTime.Now
+                    };
+                    _db.MissionSkills.Add(newMissionSkill);
+                }
+                _db.SaveChanges();
+                var counter = 0;
+                foreach (var img in missionModel.missionphotos)
+                {
+                    MissionMedium newMedia = new MissionMedium()
+                    {
+                        MissionId = newMission.MissionId,
+                        MediaName = "MissionId" + missionModel.MissionId + "Media" + counter,
+                        MediaType = "img",
+                        MediaPath = img,
+                        Default = true,
+                        CreatedAt = DateTime.Now,
+                    };
+                    counter++;
+                    _db.MissionMedia.Add(newMedia);
+                }
+                foreach (var vid in missionModel.videourls)
+                {
+                    MissionMedium newMedia = new MissionMedium()
+                    {
+                        MissionId = newMission.MissionId,
+                        MediaName = "MissionId" + missionModel.MissionId + "Media" + counter,
+                        MediaType = "vid",
+                        MediaPath = vid,
+                        Default = true,
+                        CreatedAt = DateTime.Now,
+                    };
+                    counter++;
+                    _db.MissionMedia.Add(newMedia);
+                }
+
+
+                if (missionModel.files != null && missionModel.files.Count() > 0)
+                {
+                    var fileFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "MissionFiles");
+                    if (!Directory.Exists(fileFolder))
+                    {
+                        Directory.CreateDirectory(fileFolder);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < missionModel.files.Count(); i++)
+                        {
+                            var fileName = newMission.MissionId + " - " + missionModel.files[i].FileName;
+                            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "MissionFiles", fileName);
+
+                            if (!File.Exists(filePath))
+                            {
+                                missionModel.files[i].CopyTo(new FileStream(fileName, FileMode.Create));
+                                MissionDocument newMissionDoc = new MissionDocument()
+                                {
+                                    MissionId = newMission.MissionId,
+                                    DocumentName = fileName,
+                                    DoucmentType = "pdf",
+                                    DocumentPath = filePath,
+                                    CreatedAt = DateTime.Now
+                                };
+
+                                _db.MissionDocuments.Add(newMissionDoc);
+                            }
+                        }
+                    }
+                }
+
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool EditMission(AdminMissionVM missionModel)
+        {
+            try
+            {
+                var oldMission = _db.Missions.FirstOrDefault(mission => mission.MissionId == missionModel.MissionId);
+                oldMission.Title = missionModel.MissionTitle;
+                oldMission.MissionThemeId = missionModel.MissionThemeId;
+                oldMission.CityId = missionModel.CityId;
+                oldMission.CountryId = missionModel.CountryId;
+                oldMission.ShortDescription = missionModel.ShortDescription;
+                oldMission.Description = missionModel.LongDescription;
+                oldMission.StartDate = missionModel.StartDate;
+                oldMission.EndDate = missionModel.EndDate;
+                oldMission.MissionTypeId = missionModel.MissionTypeId;
+                oldMission.Status = missionModel.Status;
+                oldMission.OrganizationName = missionModel.OrganizationName;
+                oldMission.OrganizationDetail = missionModel.OrganizationDetail;
+                oldMission.AvailabilityId = missionModel.AvailabilityId;
+                oldMission.UpdatedAt = DateTime.Now;
+                oldMission.AvailableSeats = missionModel.AvailableSeats;
+                oldMission.RegistrationDeadline = missionModel.RegistrationDeadline;
+
+                _db.Missions.Update(oldMission);
+                _db.SaveChanges();
+
+
+                var oldMissionImg = _db.MissionMedia.Where(media => media.MissionId == oldMission.MissionId).ToList();
+                _db.MissionMedia.RemoveRange(oldMissionImg);
+
+
+                var counter = 0;
+                foreach (var img in missionModel.missionphotos)
+                {
+                    MissionMedium newMedia = new MissionMedium()
+                    {
+                        MissionId = missionModel.MissionId,
+                        MediaName = "MissionId" + missionModel.MissionId + "Media" + counter,
+                        MediaType = "img",
+                        MediaPath = img,
+                        Default = true,
+                        CreatedAt = DateTime.Now,
+                    };
+                    counter++;
+                    _db.MissionMedia.Add(newMedia);
+                }
+                foreach (var vid in missionModel.videourls)
+                {
+                    MissionMedium newMedia = new MissionMedium()
+                    {
+                        MissionId = missionModel.MissionId,
+                        MediaName = "MissionId" + missionModel.MissionId + "Media" + counter,
+                        MediaType = "vid",
+                        MediaPath = vid,
+                        Default = true,
+                        CreatedAt = DateTime.Now,
+                    };
+                    counter++;
+                    _db.MissionMedia.Add(newMedia);
+                }
+
+                var oldMissionFiles = _db.MissionDocuments.Where(document => document.MissionId == oldMission.MissionId).ToList();
+                _db.MissionDocuments.RemoveRange(oldMissionFiles);
+
+                if (missionModel.files != null && missionModel.files.Count() > 0)
+                {
+                    var fileFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "MissionFiles");
+                    if (!Directory.Exists(fileFolder))
+                    {
+                        Directory.CreateDirectory(fileFolder);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < missionModel.files.Count(); i++)
+                        {
+                            var fileName = missionModel.MissionId + " - " + missionModel.files[i].FileName;
+                            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "MissionFiles", fileName);
+
+                            if (!File.Exists(filePath))
+                            {
+                                missionModel.files[i].CopyTo(new FileStream(fileName, FileMode.Create));
+                                MissionDocument newMissionDoc = new MissionDocument()
+                                {
+                                    MissionId = missionModel.MissionId,
+                                    DocumentName = fileName,
+                                    DoucmentType = "pdf",
+                                    DocumentPath = filePath,
+                                    CreatedAt = DateTime.Now
+                                };
+
+                                _db.MissionDocuments.Add(newMissionDoc);
+                            }
+                        }
+                    }
+                }
+
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
+        }
+        public AdminMissionAddButtonDataModel GetAddMissionButtonDataModel()
+        {
+            
+
+            var toReturn = new AdminMissionAddButtonDataModel()
+            {
+                MissionThemes = _db.MissionThemes.ToList(),
+                Availabilities = _db.Availabilities.ToList(),
+                Cities = _db.Cities.ToList(),
+                Countries = _db.Countries.ToList(),
+                Skills = _db.Skills.ToList()
+            };
+
+            return toReturn;
+        }
     }
 
 }

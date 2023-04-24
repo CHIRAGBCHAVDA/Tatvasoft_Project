@@ -215,6 +215,41 @@ namespace CIPlatform.Controllers
             return PartialView("_AdminCmsTablePartial", toAppendDataModel);
         }
 
+        [HttpPost]
+        public IActionResult getMissionSkills(long missionId)
+        {
+            return Json(_unitOfWork.AdminRepo.getMissionSkills(missionId));
+        }
 
+        [HttpPost]
+        public IActionResult AddEditMission(AdminMissionVM missionModel)
+        {
+
+            if (missionModel.MissionId == 0)
+            {
+                //add
+                var isSuccess = _unitOfWork.AdminRepo.AddNewMission(missionModel);
+                
+
+            }
+            else
+            {
+
+                //edit
+                var isSuccess = _unitOfWork.AdminRepo.EditMission(missionModel);
+
+            }
+
+
+
+            return null;
+        }
+
+        [HttpPost]
+        public AdminMissionAddButtonDataModel getThemeCountryCityAvailabiltySkills()
+        {
+            AdminMissionAddButtonDataModel toReturn = _unitOfWork.AdminRepo.GetAddMissionButtonDataModel();
+            return toReturn;
+        }
     }
 }

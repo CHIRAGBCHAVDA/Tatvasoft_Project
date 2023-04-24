@@ -8,16 +8,6 @@ var flag = 1;
 var searchKeyword = "";
 var sources = [];
 
-
-//const cloudinary = require('cloudinary').v2;
-//cloudinary.config({
-//    cloud_name: 'dtgjan6zj',
-//    api_key: '778668586946964',
-//    api_secret: 'DVRogEOZ8x8Vdq2xsIi-o2PucH4'
-//});
-
-
-
 getTotalCount();
 $(document).ready(function () {
     gridListRecommend()

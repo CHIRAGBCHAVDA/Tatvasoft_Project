@@ -74,8 +74,7 @@ namespace CIPlatform.Controllers
         #region Filter mission and Count
 
         [HttpPost]
-        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId, string? searchKeyword, [DefaultValue(1)] int sortBy, [DefaultValue(1)] int flag, [DefaultValue(1)] int pageNum)
-        {
+        public ActionResult filterMission(string[] countryId, string[] cityName, string[] themeId, string[] skillId, string? searchKeyword, [DefaultValue(1)] int sortBy, [DefaultValue(1)] int flag, [DefaultValue(1)] int pageNum){
             if (countryId != null && countryId.Length > 0)
             {
                 getFilterMs = missionListingCards.Where(m => countryId.Contains(m.mission.CountryId.ToString()));

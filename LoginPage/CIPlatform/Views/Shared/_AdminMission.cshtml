@@ -16,7 +16,7 @@
             <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-query">
         </div>
         <div class="mission-add">
-            <button class="btn bg-white text-orange border-orange px-3 rounded-pill"> <i class="bi bi-plus"></i> Add </button>
+            <button class="btn bg-white text-orange border-orange px-3 rounded-pill" data-bs-toggle="modal" id="AdminAddMissionButton-0" data-bs-target="#AdminAddEditModal-0"> <i class="bi bi-plus"></i> Add </button>
         </div>
     </div>
     <div class="mission-table mt-4">
@@ -46,9 +46,10 @@
                         <td>@item.StartDate.ToString().Substring(0,11)</td>
                         <td>@item.EndDate.ToString().Substring(0,11)</td>
                         <td>
-                            <a href="" class="fst-normal text-decoration-none">
+                            <a href="" class="fst-normal text-decoration-none" data-bs-toggle="modal" data-bs-target="#AdminAddEditModal-@item.MissionId" onclick="getMissionSkills(this)" data-missionid="@item.MissionId">
                                 <i class="bi text-orange bi-pencil-square me-2"></i>
                             </a>
+                            <partial name="_AdminMissionAddForm" model="@item" />
                             <a href="" id="deleteTimebasedTimesheet">
                                 <i class="text-secondary bi bi-trash"></i>
                             </a>
@@ -136,3 +137,5 @@
         </div>
     </div>
 </div>
+
+<partial name="_AdminMissionAddForm" model="new AdminMissionVM()" />

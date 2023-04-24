@@ -1,5 +1,8 @@
 ﻿
+
 var searchKeyword = "";
+var sources = [];
+var pdfs = [];
 
 $(document).ready(function () {
     getUserFilter(1);
@@ -148,6 +151,55 @@ $(document).ready(function () {
         GetAllCities();
         GetAllCountries();
     });
+
+
+
+
+    try {
+        $(document).on('change', '.file-upload',async function () {
+            console.log("File uplpoad function called");
+            var files = $(this)[0].files;
+            
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+
+                var src = await new Promise((resolve, reject) => {
+                    reader.onload = () => {
+                        resolve(reader.result);
+                    };
+
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+
+                if (file.type.includes('image')) {
+                    $(this).closest('.input-group').next('.file-preview').append('<div class="col-auto"><div class="position-relative"><img class="img-thumbnail" style="width: 150px; height: 150px;" src="' + src + '"><button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button></div></div>');
+                    sources.push(src);
+                }else {
+                    alert("Please upload a supported file type (image or video).");
+                }
+            }
+
+            console.log("Sources array: ", sources);
+        });
+
+
+        $(document).on('click', '.file-preview .btn-close', function () {
+            var imageSrc = $(this).siblings('img').attr('src'); // get the src of the image
+            var index = sources.indexOf(imageSrc); // get the index of the image src in the sources array
+            if (index !== -1) {
+                sources.splice(index, 1); // remove the image src from the sources array
+            }
+            $(this).closest('.col-auto').remove();
+            console.log("Sources array: ", sources);
+
+        });
+
+    } catch (e) {
+        console.log(e);
+    }
 
 });
 
@@ -312,3 +364,126 @@ function adminAddCMS(e) {
     });
 
 }
+
+function getMissionSkills(e) {
+    var missionId = parseInt($(e).attr("data-missionid"));
+    var form = $(`#AdminAddEditForm-${missionId}`);
+    $.ajax({
+        type: "post",
+        url: "/Admin/getMissionSkills",
+        data: { missionId: missionId },
+        success: function (result) {
+            console.log(result);
+            for (var i = 0; i < result.length; i++) {
+                var missionSkill = result[i];
+                var inputId = 'mission-skill-' + missionSkill.missionId + '-' + missionSkill.skillId;
+                $(`#${inputId}`).prop('checked', true);
+            }
+            
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+var files = [];
+$(document).on("change", ".admin-files", function () {
+    for (var i = 0; i < this.files.length; i++)
+    {
+        files.push(this.files[i]);
+    }
+});
+function AdminAddEditMission(e) {
+    console.log("HERE FROM MIISSION");
+    var missionId = parseInt($(e).attr("data-missionid"));
+
+    console.log("Printing the sources array in form submit method",sources);
+    let skillIds = [];
+    let temp = $(`#AdminAddEditForm-${missionId} .form-check-input:checked`);
+    temp.map(function () {
+        skillIds.push(parseInt(this.id.toString().split("-")[3]));
+    });
+
+    console.log("Mission Id",missionId);
+    var form = document.getElementById(`AdminAddEditForm-${missionId}`);
+    console.log(form);
+
+    var videourls = $(`#videourl-${missionId}`).val().toString().split(",");
+    console.log("Video urls are : ",videourls);
+    
+    var formData = new FormData(form);
+    for (var i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+    }
+    for (var i = 0; i < skillIds.length; i++) {
+        formData.append("skillids", skillIds[i]);
+    }
+    for (var i = 0; i < sources.length; i++) {
+        formData.append("missionphotos", sources[i]);
+    }
+    for (var i = 0; i < videourls.length; i++) {
+        formData.append("videourls", videourls[i]);
+    }
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AddEditMission",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+               
+            },
+            error: function (xhr, status, error) {
+                
+                console.log(error);
+                return;
+            }
+    });
+}
+
+
+$(document).on("click", "#AdminAddMissionButton-0", function () {
+    debugger
+    $.ajax({
+        type: "post",
+        url: "/Admin/getThemeCountryCityAvailabiltySkills",
+        complete: function (result) {
+            console.clear();
+            console.log(result);
+            console.log(result.responseJSON.missionThemes);
+
+            result.responseJSON.missionThemes.forEach(function (theme) {
+                $("#missionthemeid-0").append(`<option value=${theme.missionThemeId}> ${theme.title}</option>`)
+            });
+
+            result.responseJSON.cities.forEach(function (city){
+                $("#cityid-0").append(`<option value=${city.cityId}> ${city.name}</option>`)
+            });
+
+            result.responseJSON.countries.forEach(function(country){
+                $("#countryid-0").append(`<option value=${country.countryId}> ${country.name}</option>`)
+            });
+
+            result.responseJSON.availabilities.forEach(function(availability){
+                $("#availabilityid-0").append(`<option value=${availability.availabilityId}> ${availability.name}</option>`)
+            });
+
+            var skillsContainer = $("#skills-container-0");
+            skillsContainer.empty();
+            // Add new checkboxes for each skill in the result list
+            $.each(result.skills, function (index, item) {
+                var checkboxHtml = '<div class="form-check ms-2 col">' +
+                    '<input class="form-check-input" type="checkbox" id="mission-skill-0' + '-' + item.skillId + '">' +
+                    '<label class="form-check-label" for="mission-skill-0' + '-' + item.skillId + '">' + item.skillName + '</label>' +
+                    '</div>';
+                skillsContainer.append(checkboxHtml);
+            });
+
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+
+});

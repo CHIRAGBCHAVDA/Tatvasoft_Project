@@ -32,9 +32,9 @@ namespace CIPlatform.Models.ViewDataModels
         public List<City>? Cities { get; set; } = new List<City>();
         public Dictionary<long, string>? Skills { get; set; } = new Dictionary<long, string>();
         public List<Availability>? Availabilities { get; set; } = new List<Availability>();
+        public List<Skill>? AllSkills { get; set; } = new List<Skill>();
         public string? Availability { get; set; } = string.Empty;
         public string? LinkedIn { get; set; } = string.Empty;
-        public List<Skill>? AllSkills { get; set; } = new List<Skill>();
 
     }
 }

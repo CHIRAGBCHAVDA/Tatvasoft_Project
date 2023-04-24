@@ -22,5 +22,9 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         public bool AddCms(CmsPage cms);
 
         public IQueryable<AdminCmsVM> getAllCmsdata();
+        public List<MissionSkill> getMissionSkills(long missionId);
+        public bool AddNewMission(AdminMissionVM missionModel);
+        public bool EditMission(AdminMissionVM missionModel);
+        public AdminMissionAddButtonDataModel GetAddMissionButtonDataModel();
     }
 }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "/w2Tra8/yBks9Y95BWIZksHjOVFPMKIbyAJkEKdt0KU=",
+  "Hash": "U6FPWTSqtjkkLhde58+3517j+rKKwj1crGLLxta+Hzg=",
   "Source": "CIPlatform",
   "BasePath": "_content/CIPlatform",
   "Mode": "Default",
@@ -136,6 +136,23 @@
       "OriginalItemSpec": "wwwroot\\assets\\Already-volunteered.png"
     },
     {
+      "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\assets\\Animal-welfare-&-save-birds-campaign - Copy.png",
+      "SourceId": "CIPlatform",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\",
+      "BasePath": "_content/CIPlatform",
+      "RelativePath": "assets/Animal-welfare-&-save-birds-campaign - Copy.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\Animal-welfare-&-save-birds-campaign - Copy.png"
+    },
+    {
       "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\assets\\Animal-welfare-&-save-birds-campaign.png",
       "SourceId": "CIPlatform",
       "SourceType": "Discovered",
@@ -204,6 +221,23 @@
       "OriginalItemSpec": "wwwroot\\assets\\bell.png"
     },
     {
+      "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\assets\\bell-big - Copy.png",
+      "SourceId": "CIPlatform",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\",
+      "BasePath": "_content/CIPlatform",
+      "RelativePath": "assets/bell-big - Copy.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\bell-big - Copy.png"
+    },
+    {
       "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\assets\\bell-big.png",
       "SourceId": "CIPlatform",
       "SourceType": "Discovered",
@@ -219,6 +253,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\bell-big.png"
+    },
+    {
+      "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\assets\\bin - Copy.png",
+      "SourceId": "CIPlatform",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\",
+      "BasePath": "_content/CIPlatform",
+      "RelativePath": "assets/bin - Copy.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\bin - Copy.png"
     },
     {
       "Identity": "D:\\Tatvasoft_Project\\LoginPage\\CIPlatform\\wwwroot\\assets\\bin.png",

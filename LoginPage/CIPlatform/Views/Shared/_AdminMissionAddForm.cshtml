@@ -1,0 +1,306 @@
+﻿@using CIPlatform.Models.AdminViewModels
+@model AdminMissionVM
+
+<div class="modal fade" id="AdminAddEditModal-@Model.MissionId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Mission Add/Edit</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="AdminAddEditForm-@Model.MissionId">
+          <div class="row">
+              <div class="col-md-6 mb-3">
+                  <label asp-for="MissionTitle"  class="form-label">Mission Title</label>
+                  <input asp-for="MissionTitle" id="missiontitle-@Model.MissionId" type="text" class="form-control" />
+                  <span asp-validation-for="MissionTitle" class="text-danger"></span>
+              </div>
+              <div class="col-md-6 mb-3">
+                  <label asp-for="MissionTypeId"class="form-label">Mission Type</label>
+                  <select asp-for="MissionTypeId" id="missiontypeid-@Model.MissionId" class="form-select">
+                      <option value="">-- Select Type --</option>
+                      <option value="1">Time Based</option>
+                      <option value="2">Goal Based</option>
+                  </select>
+                  <span asp-validation-for="MissionTypeId" class="text-danger"></span>
+              </div>
+          </div>
+          <div class="row">
+               <div class="col mb-3">
+                  <label asp-for="MissionThemeId"  class="form-label">Mission Theme</label>
+                  <select asp-for="MissionThemeId" id="missionthemeid-@Model.MissionId" class="form-select">
+                      <option value="">-- Select Theme --</option>
+                      @foreach (var theme in Model.MissionThemes)
+                      {
+                          <option value="@theme.MissionThemeId">@theme.Title</option>
+                      }
+                  </select>
+                  <span asp-validation-for="MissionThemeId" class="text-danger"></span>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-6 mb-3">
+                  <label asp-for="CountryId"class="form-label">Select Country</label>
+                  <select asp-for="CountryId" id="countryid-@Model.MissionId" class="form-select">
+                      <option value="">-- Select Country --</option>
+                      @foreach (var country in Model.Countries)
+                      {
+                          <option value="@country.CountryId">@country.Name</option>
+                      }
+                  </select>
+                  <span asp-validation-for="CountryId" class="text-danger"></span>
+              </div>
+              <div class="col-md-6 mb-3">
+                  <label asp-for="CityId"class="form-label">Select City</label>
+                  <select asp-for="CityId" id="cityid-@Model.MissionId" class="form-select">
+                      <option value="">-- Select City --</option>
+                      @foreach (var city in Model.Cities)
+                      {
+                          <option value="@city.CityId">@city.Name</option>
+                      }
+                  </select>
+                  <span asp-validation-for="CityId" class="text-danger"></span>
+              </div>
+          </div>
+
+            @if (Model.MissionTypeId == 1)
+            {
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="AvailableSeats" class="form-label">Available Seats</label>
+                        <input asp-for="AvailableSeats" id="availableseats-@Model.MissionId" type="number" class="form-control" />
+                        <span asp-validation-for="AvailableSeats" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="RegistrationDeadline" class="form-label">Registration Deadline</label>
+                        <input asp-for="RegistrationDeadline" id="registrationdeadline-@Model.MissionId" type="date" class="form-control" />
+                        <span asp-validation-for="RegistrationDeadline" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+            }
+            else if (Model.MissionTypeId == 2)
+            {
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Goal" class="form-label">Goal</label>
+                        <input asp-for="Goal" id="goal-@Model.MissionId" type="number" class="form-control" />
+                        <span asp-validation-for="Goal" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="GoalObjective" class="form-label">Goal Objective</label>
+                        <input asp-for="GoalObjective" id="goalobjective-@Model.MissionId" type="text" class="form-control" />
+                        <span asp-validation-for="GoalObjective" class="text-danger"></span>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="AvailableSeats" class="form-label">Available Seats</label>
+                        <input asp-for="AvailableSeats" id="availableseats-@Model.MissionId" type="number" class="form-control" />
+                        <span asp-validation-for="AvailableSeats" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="RegistrationDeadline" class="form-label">Registration Deadline</label>
+                        <input asp-for="RegistrationDeadline" id="registrationdeadline-@Model.MissionId" type="date" class="form-control" />
+                        <span asp-validation-for="RegistrationDeadline" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Goal" class="form-label">Goal</label>
+                        <input asp-for="Goal" id="goal-@Model.MissionId" type="number" class="form-control" />
+                        <span asp-validation-for="Goal" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="GoalObjective" class="form-label">Goal Objective</label>
+                        <input asp-for="GoalObjective" id="goalobjective-@Model.MissionId" type="text" class="form-control" />
+                        <span asp-validation-for="GoalObjective" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="AvailabilityId"class="form-label">Select Availability</label>
+                <select asp-for="AvailabilityId" id="availabilityid-@Model.MissionId" class="form-select">
+                    <option value="">-- Select Availability --</option>
+                    @foreach (var availability in Model.Availabilities)
+                    {
+                        <option value="@availability.AvailabilityId">@availability.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Status" class="form-label">Select Status</label>
+                <select asp-for="Status" id="status-@Model.MissionId" class="form-select">
+                    <option value="">-- Select Status --</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+          <div class="mb-3">
+              <label asp-for="OrganizationName"class="form-label">Organization Name</label>
+              <input asp-for="OrganizationName" id="organizationname-@Model.MissionId" type="text" class="form-control" />
+              <span asp-validation-for="OrganizationName" class="text-danger"></span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="mb-3">
+              <label asp-for="OrganizationDetail"class="form-label">Organization Detail</label>
+              <textarea asp-for="OrganizationDetail" id="organizationdetail-@Model.MissionId" class="form-control"></textarea>
+              <span asp-validation-for="OrganizationDetail" class="text-danger"></span>
+          </div>
+        </div>
+
+       
+
+        <div class="row">
+          <div class="col-md-12 mb-3">
+              <label asp-for="ShortDescription"class="form-label">Short Description</label>
+              <textarea asp-for="ShortDescription" id="shortdescription-@Model.MissionId" class="form-control"></textarea>
+              <span asp-validation-for="ShortDescription" class="text-danger"></span>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-12 mb-3">
+              <label asp-for="LongDescription"class="form-label">Mission Details</label>
+              <textarea asp-for="LongDescription" id="longdescription-@Model.MissionId" class="form-control"></textarea>
+              <span asp-validation-for="LongDescription" class="text-danger"></span>
+
+                            <script>
+                                CKEDITOR.replace( `longdescription-${@Model.MissionId}`, {
+                                customConfig: '/js/temp.js'
+                                });
+                            </script>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-12 mb-3">
+              <label asp-for="VideoUrl"class="form-label">Video Url</label>
+                            
+              @if(@Model.VideoUrl!=null)
+              {
+                    var temp = string.Join(",", @Model.VideoUrl);
+
+                    @*<input asp-for="@String.Join(",", @Model.VideoUrl)" id="videourl-@Model.MissionId"  type="text" class="form-control" />
+                    <span asp-validation-for="VideoUrl" class="text-danger"></span>*@
+
+                     <input id="videourl-@Model.MissionId" value="@temp" type="text" class="form-control" />
+                                <span asp-validation-for="VideoUrl" class="text-danger"></span>
+                }
+                else
+                {
+                    <input id="videourl-@Model.MissionId" value="" type="text" class="form-control" />
+                    <span asp-validation-for="VideoUrl" class="text-danger"></span>
+                                
+                }
+
+                            
+          </div>
+      </div>
+      <div class="row">
+         @* <div class="col-md-12 mb-3">
+              <label asp-for="Photos"class="form-label">Photos</label>
+              <input asp-for="Photos" id="photos-@Model.MissionId" class="form-control" />
+              <span asp-validation-for="Photos" class="text-danger"></span>
+          </div>*@
+
+
+
+                        <div class="input-group mb-3 mt-4">
+                            <label asp-for="Photos" class="form-label">Upload your Photos</label>
+                            <input asp-for="Photos" type="file" class="form-control file-upload" id="photos-@Model.MissionId" multiple style="display: none;">
+                            <label for="photos-@Model.MissionId" class="input-group-text form-label w-100 bg-white" id="file-label">
+                                <span class="m-auto p-3">
+                                    <i class="bi bi-plus-lg fs-1"></i> <br />
+                                    <p class="">Drag and Drop photos and videos here</p>
+                                </span>
+                            </label>
+                        </div>
+
+                    <div class="row g-2 file-preview" >
+                        @*id="file-preview"*@
+                        @if (Model!=null  && Model.Photos != null)
+                        {
+                            foreach(var i in Model.Photos)
+                            {
+                                <div class="col-auto">
+                                    <div class="position-relative">
+                                        <img class="img-thumbnail" style="width: 150px; height: 150px;" src="@i">
+                                        <button type="button" class="btn-close bg-dark position-absolute top-0 end-0" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            }
+                            
+                        }
+                    </div>
+                    </div>
+                                            <div class="mb-3">
+                            <label for="files-@Model.MissionId" class="form-label">Upload Relevant Files</label>
+                            <input class="form-control admin-files" type="file" id="files-@Model.MissionId" multiple>
+                        </div>
+
+                        <input type="hidden" asp-for="MissionId" />
+
+
+
+
+      <div class="row my-3 container px-2" >
+          <label class="form-label">Skills</label>
+
+          <div id="skills-container-@Model.MissionId"></div>
+              @foreach (var item in Model.Skills)
+              {
+                            <div class="form-check ms-2 col">
+                                <input class="form-check-input" type="checkbox" id="mission-skill-@Model.MissionId-@item.SkillId" >
+                                <label class="form-check-label" for="mission-skill-@Model.MissionId-@item.SkillId">@item.SkillName</label>
+                            </div>
+              }
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label asp-for="StartDate"class="form-label">Start Date</label>
+          <input asp-for="StartDate" id="startdate-@Model.MissionId" type="date" class="form-control" />
+          <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label asp-for="EndDate"class="form-label">End Date</label>
+          <input asp-for="EndDate" id="enddate-@Model.MissionId" type="date" class="form-control" />
+          <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+      </div>
+
+
+      <div class="flex text-end mb-3">
+        <button type="button" class="btn bg-white text-dark border-dark rounded-pill px-3"  data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+        <button type="button" class="btn bg-white text-orange border-orange rounded-pill px-3" data-missionid="@Model.MissionId" onclick="AdminAddEditMission(this)">Submit</button>
+      </div>
+
+        </form>
+      
+
+        
+      </div>
+    </div>
+  </div>
+</div>
