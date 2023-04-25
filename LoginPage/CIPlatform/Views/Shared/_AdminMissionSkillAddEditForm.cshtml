@@ -1,0 +1,48 @@
+﻿@using CIPlatform.Models.AdminViewModels
+@model AdminSkillsViewModel
+
+    <div class="modal fade" id="missionSkillsAddEditModal-@Model.SkillId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel-@Model.SkillId">Skills ADD/EDIT</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="adminMissionSkillAddEditForm-@Model.SkillId">
+                <div class="modal-body">
+                    <div class="missionskill-add-view mt-3">
+                        <div class="missionskill-add-header w-100 fw-bold border">
+                            <h3 class="p-3  bg-light border-bottom">Add</h3>
+                            <div class="my-3 ms-4">
+                                <label  asp-for="SkillName" class="form-label fw-lighter" for="missionskill-add-title-@Model.SkillId">Skill Name</label>
+                                <input asp-for="SkillName" type="text" id="missionskill-add-title-@Model.SkillId" class="form-control" />
+                                <span asp-validation-for="SkillName" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="my-3 mb-5 ms-4">
+                                <label class="form-label fw-lighter" asp-for="Status" for="missionskill-add-status-@Model.SkillId">Status</label>
+                                <select class="form-select" asp-for="Status" id="missionskill-add-status-@Model.SkillId">
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+                                <span class="text-danger" asp-validation-for="Status"></span>
+
+                                <input type="hidden" value="@Model.SkillId" id="myMissionskill-@Model.SkillId" asp-for="SkillId" />
+                            </div>
+                        </div>
+
+                        <div class="d-flex w-100 justify-content-end cms-add-btns mt-3">
+                            <button type="button" class="dismiss-modal-button btn bg-white  text-dark border border-dark rounded-pill px-3 me-2" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn bg-white text-orange bg-white border-orange rounded-pill px-3" data-missionskillid="@Model.SkillId" onclick="adminMissionSkillAddUpdate(this)">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

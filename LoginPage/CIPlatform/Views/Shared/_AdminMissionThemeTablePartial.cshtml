@@ -1,0 +1,29 @@
+﻿@using CIPlatform.Models.AdminViewModels
+@model List<AdminMissionThemeVM>
+
+     @foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Title</td>
+
+        @if (item.Status==1)
+        {
+            <td class="text-success">Active</td>
+        }
+        else
+        {
+            <td class="text-danger">Inactive</td>
+        }
+
+        <td>
+            <a href="" class="fst-normal edit-missiontheme-btn text-decoration-none" data-bs-toggle="modal" data-bs-target="#missionThemeAddEditModal-@item.MissionThemeId" data-missionthemeid="@item.MissionThemeId">
+                <i class="bi text-orange bi-pencil-square me-2">
+                </i>
+            </a>
+            <partial name="_AdminMissionThemeAddEditForm" model="@item" />
+            <a href="">
+                <i class="text-secondary bi bi-trash"></i>
+            </a>
+        </td>
+    </tr>
+}

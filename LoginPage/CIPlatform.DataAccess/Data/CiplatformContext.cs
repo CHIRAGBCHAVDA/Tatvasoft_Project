@@ -160,7 +160,9 @@ namespace CIPlatform.Data
             {
                 entity.ToTable("banner");
 
-                entity.Property(e => e.BannerId).HasColumnName("banner_id");
+                entity.Property(e => e.BannerId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("banner_id");
 
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
@@ -171,18 +173,17 @@ namespace CIPlatform.Data
                     .HasColumnType("datetime")
                     .HasColumnName("deleted_at");
 
+                entity.Property(e => e.Heading)
+                    .HasColumnType("text")
+                    .HasColumnName("heading");
+
                 entity.Property(e => e.Image)
-                    .HasMaxLength(512)
-                    .IsUnicode(false)
+                    .HasColumnType("text")
                     .HasColumnName("image");
 
-                entity.Property(e => e.SortOrder)
-                    .HasColumnName("sort_order")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.Text)
+                entity.Property(e => e.ShortDescription)
                     .HasColumnType("text")
-                    .HasColumnName("text");
+                    .HasColumnName("short_description");
 
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")

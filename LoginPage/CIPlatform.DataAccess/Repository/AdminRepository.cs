@@ -43,7 +43,7 @@ namespace CIPlatform.DataAccess.Repository
 
         public PageList<AdminMissionApplicationVM> GetMissionApplicationData()
         {
-            var missionApplicationRecords = _db.MissionApplications.Select(missionApplication => new AdminMissionApplicationVM()
+            var missionApplicationRecords = _db.MissionApplications.Where(application => application.ApprovalStatusId == 1).Select(missionApplication => new AdminMissionApplicationVM()
             {
                 MissionApplicationId = missionApplication.MissionApplicationId,
                 MissionId = missionApplication.MissionId,
@@ -55,11 +55,24 @@ namespace CIPlatform.DataAccess.Repository
 
             var missionApplicationData = new PageList<AdminMissionApplicationVM>()
             {
-                Records = missionApplicationRecords.ToList(),
+                Records = missionApplicationRecords.Skip(0).Take(10).ToList(),
                 Count = missionApplicationRecords.Count()
             };
-
             return missionApplicationData;
+        }
+
+        public IQueryable<AdminMissionApplicationVM> getAllMissionApplicationData()
+        {
+            var missionApplicationRecords = _db.MissionApplications.Where(application => application.ApprovalStatusId==1).Select(missionApplication => new AdminMissionApplicationVM()
+            {
+                MissionApplicationId = missionApplication.MissionApplicationId,
+                MissionId = missionApplication.MissionId,
+                MissionTitle = missionApplication.Mission.Title,
+                AppliedDate = missionApplication.AppliedAt,
+                UserId = missionApplication.UserId,
+                UserName = missionApplication.User.FirstName + missionApplication.User.LastName
+            });
+            return missionApplicationRecords;
         }
 
         public PageList<AdminMissionVM> GetMissionData()
@@ -110,7 +123,7 @@ namespace CIPlatform.DataAccess.Repository
 
         public PageList<AdminStoryVM> GetStoryData()
         {
-            var storyRecords = _db.Stories.Select(story => new AdminStoryVM()
+            var storyRecords = _db.Stories.Where(story => story.StoryStatusId == 2).Select(story => new AdminStoryVM()
             {
                 StoryId = story.StoryId,
                 MissionId = story.MissionId,
@@ -193,6 +206,18 @@ namespace CIPlatform.DataAccess.Repository
             });
 
             return cmsRecords;
+        }
+
+        public IQueryable<AdminMissionThemeVM> getAllMissionThemedata()
+        {
+            var missionThemeRecords = _db.MissionThemes.Select(theme => new AdminMissionThemeVM()
+            {
+                MissionThemeId = theme.MissionThemeId,
+                Status = theme.Status,
+                Title = theme.Title
+            });
+
+            return missionThemeRecords;
         }
 
 
@@ -465,6 +490,222 @@ namespace CIPlatform.DataAccess.Repository
 
             return toReturn;
         }
+
+        public PageList<AdminMissionThemeVM> GetMissionThemeData()
+        {
+            var missionThemes = _db.MissionThemes.Select(theme => new AdminMissionThemeVM()
+            {
+                MissionThemeId = theme.MissionThemeId,
+                Status = theme.Status,
+                Title = theme.Title
+            });
+            var toReturn = new PageList<AdminMissionThemeVM>()
+            {
+                Records = missionThemes.ToList(),
+                Count = missionThemes.Count()
+            };
+
+            return toReturn;
+        }
+
+        public bool AddNewMissionTheme(AdminMissionThemeVM missionThemeVM)
+        {
+            try
+            {
+                var newMissionTheme = new MissionTheme()
+                {
+                    Title = missionThemeVM.Title,
+                    Status = missionThemeVM.Status,
+                    CreatedAt = DateTime.Now,
+                };
+                _db.MissionThemes.Add(newMissionTheme);
+                _db.SaveChanges();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+        }
+        public bool EditMissionTheme(AdminMissionThemeVM missionThemeVM)
+        {
+            try
+            {
+                var missionTheme = _db.MissionThemes.FirstOrDefault(theme => theme.MissionThemeId == missionThemeVM.MissionThemeId);
+                missionTheme.Title = missionThemeVM.Title;
+                missionTheme.Status = missionThemeVM.Status;
+                missionTheme.UpdatedAt = DateTime.Now;
+
+                _db.MissionThemes.Update(missionTheme);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public PageList<AdminSkillsViewModel> GetSkillData()
+        {
+            var skills = _db.Skills.Select(skill => new AdminSkillsViewModel()
+            {
+                SkillId = skill.SkillId,
+                SkillName = skill.SkillName,
+                Status = skill.Status
+            });
+
+            var toReturn = new PageList<AdminSkillsViewModel>()
+            {
+                Records = skills.Skip(0).Take(10).ToList(),
+                Count = skills.Count()
+            };
+            return toReturn;
+        }
+
+        public IQueryable<AdminSkillsViewModel> getAllSkillData()
+        {
+            var skills = _db.Skills.Select(skill => new AdminSkillsViewModel()
+            {
+                SkillId = skill.SkillId,
+                SkillName = skill.SkillName,
+                Status = skill.Status
+            });
+
+            return skills;
+        }
+
+        public bool AddNewSkill(AdminSkillsViewModel skillModel)
+        {
+            try
+            {
+                var newSkill = new Skill()
+                {
+                    SkillName = skillModel.SkillName,
+                    Status = skillModel.Status,
+                    CreatedAt = DateTime.Now
+                };
+                _db.Skills.Add(newSkill);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool EditSkill(AdminSkillsViewModel skillModel)
+        {
+            try
+            {
+                var skill = _db.Skills.FirstOrDefault(skill => skill.SkillId == skillModel.SkillId);
+                skill.SkillName = skillModel.SkillName;
+                skill.Status = skillModel.Status;
+                skill.UpdatedAt = DateTime.Now;
+
+                _db.Skills.Update(skill);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool MissionApplicationApprove(long id)
+        {
+            try
+            {
+                var MissionApplication = _db.MissionApplications.FirstOrDefault(application => application.MissionApplicationId == id);
+                MissionApplication.ApprovalStatusId = 2;
+                _db.MissionApplications.Update(MissionApplication);
+                _db.SaveChanges();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+            
+        }
+
+        public bool MissionApplicationReject(long id)
+        {
+            try
+            {
+                var MissionApplication = _db.MissionApplications.FirstOrDefault(application => application.MissionApplicationId == id);
+                MissionApplication.ApprovalStatusId = 3;
+                _db.MissionApplications.Update(MissionApplication);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public IQueryable<AdminStoryVM> getAllStoryData()
+        {
+            var toReturn = _db.Stories.Where(story => story.StoryStatusId==2).Select(story => new AdminStoryVM()
+            {
+                StoryId = story.StoryId,
+                MissionId = story.MissionId,
+                StoryTitle = story.Title,
+                FullName = story.User.FirstName + story.User.LastName,
+                MissionTitle = story.Mission.Title
+            });
+
+            return toReturn;
+        }
+
+        public bool StoryApprove(long id)
+        {
+            try
+            {
+                var story = _db.Stories.FirstOrDefault(story => story.StoryId == id);
+                story.StoryStatusId = 3;
+                _db.Stories.Update(story);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+        }
+        public bool StoryReject(long id)
+        {
+            try
+            {
+                var story = _db.Stories.FirstOrDefault(story => story.StoryId == id);
+                story.StoryStatusId = 4;
+                _db.Stories.Update(story);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public IQueryable<AdminBannerViewModel> getBannerData()
+        {
+            var toReturn = _db.Banners.Select(banner => new AdminBannerViewModel()
+            {
+                BannerId = banner.BannerId,
+                Heading = banner.Heading,
+                Image = banner.Image,
+                ShortDescription = banner.ShortDescription
+            });
+
+            return toReturn;
+        }
+
     }
 
 }

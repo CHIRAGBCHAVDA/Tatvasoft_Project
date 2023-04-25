@@ -442,3 +442,46 @@ background-image: url("../assets/left.png");
         font-weight: 200;
         color: black;
     }
+
+
+
+
+
+
+.missiontheme-table table thead th {
+    font-weight: 400 !important;
+}
+
+.missiontheme-table table tr {
+    border-bottom: 1px solid grey !important;
+}
+
+.missiontheme-table .pagination-nav .page-item {
+    margin-left: 15px;
+}
+
+    .missiontheme-table .pagination-nav .page-item a {
+        text-decoration: none !important;
+        font-weight: 200;
+        color: black;
+    }
+
+
+
+.missionskills-table table thead th {
+    font-weight: 400 !important;
+}
+
+.missionskills-table table tr {
+    border-bottom: 1px solid grey !important;
+}
+
+.missionskills-table .pagination-nav .page-item {
+    margin-left: 15px;
+}
+
+    .missionskills-table .pagination-nav .page-item a {
+        text-decoration: none !important;
+        font-weight: 200;
+        color: black;
+    }

@@ -56,7 +56,7 @@
                         <h5 class="card-title">
                             @item.mission.Title
                         </h5>
-                        @{
+                        @if(item.mission.Description!=null){
                             string missionDescription = item.mission.Description.ToString();
                             int indexOfFirstBr = missionDescription.IndexOf("<br>");
                             string firstParagraph = "";
@@ -65,10 +65,11 @@
 
                                 firstParagraph += missionDescription.Substring(0, indexOfFirstBr);
                             }
-                        }
+                        
                         <p class="card-text">
                             @firstParagraph
                         </p>
+                        }
                         <div class="rating-img d-flex justify-content-between align-items-center">
                             <span class="fw-light fs">@item.mission.OrganizationName</span>
                             <div class="d-flex">

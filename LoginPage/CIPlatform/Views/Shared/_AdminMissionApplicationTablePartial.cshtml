@@ -1,0 +1,21 @@
+﻿@using CIPlatform.Models.AdminViewModels
+@model List<AdminMissionApplicationVM>
+
+ @foreach (var item in Model)
+{
+    <tr>
+        <td>@item.MissionTitle</td>
+        <td class="">@item.MissionId</td>
+        <td class="">@item.UserId</td>
+        <td class="">@item.UserName</td>
+        <td>@item.AppliedDate.ToString().Substring(0,11)</td>
+        <td>
+            <button class="btn bg-white border-0 p-0 m-0" data-missionapplicationid="@item.MissionApplicationId" class="fst-normal text-decoration-none" onclick="MissionApplicationApprove(this)">
+                <i class="bi bi-check-circle text-success"></i>
+            </button>
+            <button class="btn bg-white border-0 p-0 m-0" id="deleteTimebasedTimesheet" data-missionapplicationid="@item.MissionApplicationId" onclick="MissionApplicationReject(this)">
+                <i class="bi bi-x-circle text-danger"></i>
+            </button>
+        </td>
+    </tr>
+}

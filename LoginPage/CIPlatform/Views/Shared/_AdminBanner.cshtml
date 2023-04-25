@@ -1,0 +1,55 @@
+﻿@using CIPlatform.Models.AdminViewModels
+@model PageList<AdminBannerViewModel> 
+
+
+<div id="v-pills-banner" >
+    <div class="banner-header border-bottom border-light">
+        <span class="h2 border-bottom border-dark">Banner Management</span>
+    </div>
+    <div class="d-flex search-banner-and-add mt-3 justify-content-between">
+        <div class="search-banner d-flex align-items-center border ps-3">
+            <img src="/assets/search.png" alt="" style="height:14px">&nbsp;&nbsp;
+            <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-banner-query">
+        </div>
+    </div>
+    <div class="banner-table-wrapper mt-4">
+        <partial name="_AdminBannerTablePartial" model="@Model.Records" />
+    </div>
+        @{
+            double d = Model.Count / 10.0;
+            double pages = Math.Ceiling(d);
+        }
+
+        <div class="pagination-nav d-flex flex-row-reverse w-100">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item page-item-banner d-flex">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true"><<</span>
+                        </a>
+                    </li>
+                    <li class="page-item page-item-banner d-flex">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true"><</span>
+                        </a>
+                    </li>
+                   @for (int i = 1; i <= @pages; i++)
+                    {
+                        <li class="page-item page-item-banner" id="@i"><a class="page-link">@i</a></li>
+                    }
+                    <li class="page-item page-item-banner d-flex">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">></span>
+                        </a>
+                    </li>
+                    <li class="page-item page-item-banner d-flex">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">>></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</div>

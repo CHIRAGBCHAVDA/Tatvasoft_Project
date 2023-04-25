@@ -64,6 +64,40 @@ $(document).ready(function () {
                 });
                 break;
 
+            case "v-pills-missiontheme-tab":
+                $.ajax({
+                    type: "get",
+                    url: "/Admin/GetPartialMissionTheme",
+                    data: {
+
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        $(".admin-main-wrapper").html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+                break;
+
+            case "v-pills-missionskills-tab":
+                $.ajax({
+                    type: "get",
+                    url: "/Admin/GetPartialMissionSkill",
+                    data: {
+
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        $(".admin-main-wrapper").html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+                break;
+
             case "v-pills-missionapplication-tab":
                 $.ajax({
                     type: "get",
@@ -85,6 +119,23 @@ $(document).ready(function () {
                 $.ajax({
                     type: "get",
                     url: "/Admin/GetPartialStory",
+                    data: {
+
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        $(".admin-main-wrapper").html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+                break;
+
+            case "v-pills-bannermanagement-tab":
+                $.ajax({
+                    type: "get",
+                    url: "/Admin/GetPartialBanner",
                     data: {
 
                     },
@@ -119,6 +170,51 @@ $(document).ready(function () {
         $('.pagination .page-item-cms').removeClass('active');
         $(this).addClass('active');
         getCmsFilter($(this).attr('id'));
+    });
+
+    $(".admin-main-wrapper").on("keyup", "#search-missiontheme-query", function () {
+        searchMissionTheme();
+    });
+    $('.admin-main-wrapper').on('click', '.page-item-missiontheme', function () {
+        $('.pagination .page-item-missiontheme').removeClass('active');
+        $(this).addClass('active');
+        getMissionThemeFilter($(this).attr('id'));
+    });
+
+    $(".admin-main-wrapper").on("keyup", "#search-missionskills-query", function () {
+        searchMissionSkill();
+    });
+    $('.admin-main-wrapper').on('click', '.page-item-missionskill', function () {
+        $('.pagination .page-item-missionskill').removeClass('active');
+        $(this).addClass('active');
+        getMissionSkillFilter($(this).attr('id'));
+    });
+
+    $(".admin-main-wrapper").on("keyup", "#search-missionapplication-query", function () {
+        searchMissionApplication();
+    });
+    $('.admin-main-wrapper').on('click', '.page-item-missionapplication', function () {
+        $('.pagination .page-item-missionapplication').removeClass('active');
+        $(this).addClass('active');
+        getMissionApplicationFilter($(this).attr('id'));
+    });
+
+    $(".admin-main-wrapper").on("keyup", "#search-story-query", function () {
+        searchStory();
+    });
+    $('.admin-main-wrapper').on('click', '.page-item-story', function () {
+        $('.pagination .page-item-story').removeClass('active');
+        $(this).addClass('active');
+        getStoryFilter($(this).attr('id'));
+    });
+
+    $(".admin-main-wrapper").on("keyup", "#search-banner-query", function () {
+        searchBanner();
+    });
+    $('.admin-main-wrapper').on('click', '.page-item-banner', function () {
+        $('.pagination .page-item-banner').removeClass('active');
+        $(this).addClass('active');
+        getBannerFilter($(this).attr('id'));
     });
 
     try {
@@ -203,6 +299,8 @@ $(document).ready(function () {
 
 });
 
+
+
 function searchUsers() {
     searchKeyword = document.getElementById("search-user-query").value;
     console.log(searchKeyword)
@@ -212,6 +310,31 @@ function searchCms() {
     searchKeyword = document.getElementById("search-cms-query").value;
     console.log(searchKeyword);
     getCmsFilter();
+}
+function searchMissionTheme() {
+    searchKeyword = document.getElementById("search-missiontheme-query").value;
+    console.log(searchKeyword);
+    getMissionThemeFilter();
+}
+function searchMissionSkill() {
+    searchKeyword = document.getElementById("search-missionskills-query").value;
+    console.log(searchKeyword);
+    getMissionSkillFilter();
+}
+function searchMissionApplication() {
+    searchKeyword = document.getElementById("search-missionapplication-query").value;
+    console.log(searchKeyword);
+    getMissionApplicationFilter();
+}
+function searchStory() {
+    searchKeyword = document.getElementById("search-story-query").value;
+    console.log(searchKeyword);
+    getStoryFilter();
+}
+function searchBanner() {
+    searchKeyword = document.getElementById("search-banner-query").value;
+    console.log(searchKeyword);
+    getBannerFilter();
 }
 
 function getUserFilter(pg) {
@@ -223,6 +346,7 @@ function getUserFilter(pg) {
             searchKeyword: searchKeyword
         },
         success: function (result) {
+            console.log("IS HITTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
             $(".admin-user-table-body-wrapper").html(result);
         },
         error: function (xhr, status, error) {
@@ -247,6 +371,92 @@ function getCmsFilter(pg) {
         }
     });
 }
+
+
+function getMissionThemeFilter(pg) {
+    $.ajax({
+        type: "POST",
+        url: "/Admin/getMissionThemeFilter",
+        data: {
+            pageNum: pg,
+            searchKeyword: searchKeyword
+        },
+        success: function (result) {
+            $("#admin-missiontheme-table-body-wrapper").html(result);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+function getMissionSkillFilter(pg) {
+    $.ajax({
+        type: "POST",
+        url: "/Admin/getMissionSkillFilter",
+        data: {
+            pageNum: pg,
+            searchKeyword: searchKeyword
+        },
+        success: function (result) {
+            $("#admin-missionskills-table-body-wrapper").html(result);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function getMissionApplicationFilter(pg) {
+    $.ajax({
+        type: "POST",
+        url: "/Admin/getMissionApplicationFilter",
+        data: {
+            pageNum: pg,
+            searchKeyword: searchKeyword
+        },
+        success: function (result) {
+            $("#admin-missionapplication-table-body-wrapper").html(result);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function getStoryFilter(pg) {
+    $.ajax({
+        type: "POST",
+        url: "/Admin/getStoryFilter",
+        data: {
+            pageNum: pg,
+            searchKeyword: searchKeyword
+        },
+        success: function (result) {
+            $("#admin-story-table-body-wrapper").html(result);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function getBannerFilter(pg) {
+    $.ajax({
+        type: "POST",
+        url: "/Admin/getBannerFilter",
+        data: {
+            pageNum: pg,
+            searchKeyword: searchKeyword
+        },
+        success: function (result) {
+            $("#banner-table-wrapper").html(result);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
 
 function GetAllCities() {
     $.ajax({
@@ -318,7 +528,6 @@ function UpdateUser(e) {
 }
 
 function adminAddCMS(e) {
-    debugger
     var cmsId = parseInt($(e).attr("data-cmsid"));
     var form = document.getElementById(`adminCmsAddEditForm-${cmsId}`);
     let addEditUrl = "";
@@ -386,6 +595,7 @@ function getMissionSkills(e) {
         }
     });
 }
+
 var files = [];
 $(document).on("change", ".admin-files", function () {
     for (var i = 0; i < this.files.length; i++)
@@ -393,6 +603,7 @@ $(document).on("change", ".admin-files", function () {
         files.push(this.files[i]);
     }
 });
+
 function AdminAddEditMission(e) {
     console.log("HERE FROM MIISSION");
     var missionId = parseInt($(e).attr("data-missionid"));
@@ -439,12 +650,13 @@ function AdminAddEditMission(e) {
                 console.log(error);
                 return;
             }
-    });
+        });
 }
 
 
+
+//To get the country city theme availability and skills
 $(document).on("click", "#AdminAddMissionButton-0", function () {
-    debugger
     $.ajax({
         type: "post",
         url: "/Admin/getThemeCountryCityAvailabiltySkills",
@@ -471,8 +683,9 @@ $(document).on("click", "#AdminAddMissionButton-0", function () {
 
             var skillsContainer = $("#skills-container-0");
             skillsContainer.empty();
+            console.log("SKills dekhlo : ", result.responseJSON.skills);
             // Add new checkboxes for each skill in the result list
-            $.each(result.skills, function (index, item) {
+            $.each(result.responseJSON.skills, function (index, item) {
                 var checkboxHtml = '<div class="form-check ms-2 col">' +
                     '<input class="form-check-input" type="checkbox" id="mission-skill-0' + '-' + item.skillId + '">' +
                     '<label class="form-check-label" for="mission-skill-0' + '-' + item.skillId + '">' + item.skillName + '</label>' +
@@ -487,3 +700,126 @@ $(document).on("click", "#AdminAddMissionButton-0", function () {
     });
 
 });
+
+
+function adminMissionThemeAddUpdate(e) {
+    var missionThemeId = parseInt($(e).attr("data-missionthemeid"));
+    var form = document.getElementById(`adminMissionThemeAddEditForm-${missionThemeId}`);
+    var formData = new FormData(form);
+    
+    $.ajax({
+        type: "POST",
+        url: "/Admin/AddEditMissionTheme",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (result) {
+            console.log(result);
+            $(".dismiss-modal-button").click();
+            $("#admin-missiontheme-table-body-wrapper").html(result);
+            toastr.success("Changes has been Saved...!!");
+            
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+$(document).on("submit", 'form', function (e) {
+    e.preventDefault();
+});
+
+function adminMissionSkillAddUpdate(e) {
+    var skillId = parseInt($(e).attr("data-missionskillid"));
+    var form = document.getElementById(`adminMissionSkillAddEditForm-${skillId}`);
+    var formData = new FormData(form);
+
+    $.ajax({
+        type: "POST",
+        url: "/Admin/AddEditMissionSkill",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (result) {
+            console.log(result);
+            $(".dismiss-modal-button").click();
+            $("#admin-missionskills-table-body-wrapper").html(result);
+            toastr.success("Changes has been Saved...!!");
+
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function MissionApplicationApprove(e) {
+    var missionApplicationId = parseInt($(e).attr("data-missionapplicationid"));
+    $.ajax({
+        type: "POST",
+        url: "/Admin/MissionApplicationApprove",
+        data: {missionApplicationId : missionApplicationId},
+        success: function (result) {
+            console.log(result);
+            $("#admin-missionapplication-table-body-wrapper").html(result);
+            toastr.success("Mission Application Approved...!!");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function MissionApplicationReject(e) {
+    var missionApplicationId = parseInt($(e).attr("data-missionapplicationid"));
+    $.ajax({
+        type: "POST",
+        url: "/Admin/MissionApplicationReject",
+        data: { missionApplicationId: missionApplicationId },
+        success: function (result) {
+            console.log(result);
+            $("#admin-missionapplication-table-body-wrapper").html(result);
+            toastr.error("Mission Application Rejected...!!");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+
+function StoryApprove(e) {
+    var storyId = parseInt($(e).attr("data-storyid"));
+    $.ajax({
+        type: "POST",
+        url: "/Admin/StoryApprove",
+        data: { storyId: storyId},
+        success: function (result) {
+            console.log(result);
+            $("#admin-story-table-body-wrapper").html(result);
+            toastr.success("Story Request Approved...!!");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function StoryReject(e) {
+    var storyId = parseInt($(e).attr("data-storyid"));
+    $.ajax({
+        type: "POST",
+        url: "/Admin/StoryReject",
+        data: { storyId: storyId},
+        success: function (result) {
+            console.log(result);
+            $("#admin-story-table-body-wrapper").html(result);
+            toastr.error("Story Request Rejected...!!");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+

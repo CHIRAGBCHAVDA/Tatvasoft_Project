@@ -41,16 +41,40 @@ namespace CIPlatform.Controllers
             return PartialView("_AdminMission",missionData);
         }
 
+        public IActionResult GetPartialMissionTheme()
+        {
+            var missionThemedata = _unitOfWork.AdminRepo.GetMissionThemeData();
+            return PartialView("_AdminMissionTheme",missionThemedata);
+        }
+        public IActionResult GetPartialMissionSkill()
+        {
+            var missionSkillData = _unitOfWork.AdminRepo.GetSkillData();
+            return PartialView("_AdminSkills",missionSkillData);
+        }
+
         public IActionResult GetPartialMissionApplication()
         {
             var missionApplicationData = _unitOfWork.AdminRepo.GetMissionApplicationData();
             return PartialView("_AdminMissionApplication",missionApplicationData);
         }
+
         
         public IActionResult GetPartialStory()
         {
             var storyData = _unitOfWork.AdminRepo.GetStoryData();
             return PartialView("_AdminStory",storyData);
+        }
+
+        public IActionResult GetPartialBanner()
+        {
+            var bannerData = _unitOfWork.AdminRepo.getBannerData();
+            PageList<AdminBannerViewModel> toAppend = new PageList<AdminBannerViewModel>()
+            {
+                Records = bannerData.Skip(0).Take(10).ToList(),
+                Count = bannerData.Count()
+            };
+
+            return PartialView("_AdminBanner",toAppend);
         }
 
         [HttpPost]
@@ -216,6 +240,73 @@ namespace CIPlatform.Controllers
         }
 
         [HttpPost]
+        public IActionResult getMissionThemeFilter([DefaultValue(1)] int pageNum, string searchKeyword)
+        {
+            var missionthemeData = _unitOfWork.AdminRepo.getAllMissionThemedata();
+            if (!string.IsNullOrEmpty(searchKeyword))
+            {
+                missionthemeData = missionthemeData.Where(cms => cms.Title.ToLower().Contains(searchKeyword.ToLower()));
+            }
+
+            var toAppendDataModel = missionthemeData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            return PartialView("_AdminMissionThemeTablePartial", toAppendDataModel);
+        }
+
+        [HttpPost]
+        public IActionResult getMissionSkillFilter([DefaultValue(1)] int pageNum, string searchKeyword)
+        {
+            var missionSkillData = _unitOfWork.AdminRepo.getAllSkillData();
+            if (!string.IsNullOrEmpty(searchKeyword))
+            {
+                missionSkillData = missionSkillData.Where(cms => cms.SkillName.ToLower().Contains(searchKeyword.ToLower()));
+            }
+
+            var toAppendDataModel = missionSkillData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            return PartialView("_AdminMissionSkillTablePartial", toAppendDataModel);
+        }
+
+        [HttpPost]
+        public IActionResult getMissionApplicationFilter([DefaultValue(1)] int pageNum, string searchKeyword)
+        {
+            var missionApplicationData = _unitOfWork.AdminRepo.getAllMissionApplicationData();
+            if (!string.IsNullOrEmpty(searchKeyword))
+            {
+                missionApplicationData = missionApplicationData.Where(cms => cms.MissionTitle.ToLower().Contains(searchKeyword.ToLower()));
+            }
+
+            var toAppendDataModel = missionApplicationData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            return PartialView("_AdminMissionApplicationTablePartial", toAppendDataModel);
+        }
+
+        [HttpPost]
+        public IActionResult getStoryFilter([DefaultValue(1)] int pageNum, string searchKeyword)
+        {
+            var storyData = _unitOfWork.AdminRepo.getAllStoryData();
+            if (!string.IsNullOrEmpty(searchKeyword))
+            {
+                storyData = storyData.Where(cms => cms.StoryTitle.ToLower().Contains(searchKeyword.ToLower()));
+            }
+
+            var toAppendDataModel = storyData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            return PartialView("_AdminStoryTablePartial", toAppendDataModel);
+        }
+
+        [HttpPost]
+        public IActionResult getBannerFilter([DefaultValue(1)] int pageNum, string searchKeyword)
+        {
+            var bannerData = _unitOfWork.AdminRepo.getBannerData();
+            if (!string.IsNullOrEmpty(searchKeyword))
+            {
+                bannerData = bannerData.Where(banner => banner.Heading.Contains(searchKeyword));
+            }
+
+            var toAppendDataModel = bannerData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            return PartialView("_AdminBannerTablePartial", toAppendDataModel);
+        }
+
+
+
+        [HttpPost]
         public IActionResult getMissionSkills(long missionId)
         {
             return Json(_unitOfWork.AdminRepo.getMissionSkills(missionId));
@@ -251,5 +342,73 @@ namespace CIPlatform.Controllers
             AdminMissionAddButtonDataModel toReturn = _unitOfWork.AdminRepo.GetAddMissionButtonDataModel();
             return toReturn;
         }
+
+        [HttpPost]
+        public IActionResult AddEditMissionTheme(AdminMissionThemeVM missionThemeVM)
+        {
+            var isSuccess = false;
+            if (missionThemeVM.MissionThemeId == 0)
+            {
+                //add
+                isSuccess = _unitOfWork.AdminRepo.AddNewMissionTheme(missionThemeVM);
+            }
+            else
+            {
+                //edit
+                isSuccess = _unitOfWork.AdminRepo.EditMissionTheme(missionThemeVM);
+            }
+
+            return PartialView("_AdminMissionThemeTablePartial", _unitOfWork.AdminRepo.getAllMissionThemedata().ToList());
+        }
+
+        [HttpPost]
+        public IActionResult AddEditMissionSkill(AdminSkillsViewModel skillsViewModel)
+        {
+            if (skillsViewModel.SkillId == 0)
+            {
+                //add
+                var isSuccess = _unitOfWork.AdminRepo.AddNewSkill(skillsViewModel);
+            }
+            else
+            {
+                //edit
+                var isSuccess = _unitOfWork.AdminRepo.EditSkill(skillsViewModel);
+            }
+
+            return PartialView("_AdminMissionSkillTablePartial",_unitOfWork.AdminRepo.getAllSkillData().ToList());
+        }
+
+        [HttpPost]
+        public IActionResult MissionApplicationApprove(long missionApplicationId)
+        {
+            var isSuccess = _unitOfWork.AdminRepo.MissionApplicationApprove(missionApplicationId);
+            return PartialView("_AdminMissionApplicationTablePartial", _unitOfWork.AdminRepo.getAllMissionApplicationData().ToList());
+        }
+
+        [HttpPost]
+        public IActionResult MissionApplicationReject(long missionApplicationId)
+        {
+            var isSuccess = _unitOfWork.AdminRepo.MissionApplicationReject(missionApplicationId);
+            return PartialView("_AdminMissionApplicationTablePartial", _unitOfWork.AdminRepo.getAllMissionApplicationData().ToList());
+        }
+
+
+        [HttpPost]
+        public IActionResult StoryApprove(long storyId)
+        {
+            var isSuccess = _unitOfWork.AdminRepo.StoryApprove(storyId);
+            return PartialView("_AdminStoryTablePartial", _unitOfWork.AdminRepo.getAllStoryData().ToList());
+        }
+
+        [HttpPost]
+        public IActionResult StoryReject(long storyId)
+        {
+            var isSuccess = _unitOfWork.AdminRepo.StoryReject(storyId);
+            return PartialView("_AdminStoryTablePartial", _unitOfWork.AdminRepo.getAllStoryData().ToList());
+        }
+
+        
+
+
     }
 }

@@ -13,7 +13,7 @@
     <div class="d-flex search-missionapplication-and-add mt-3 justify-content-between">
         <div class="search-story d-flex align-items-center border ps-3">
             <img src="/assets/search.png" alt="" style="height:14px">&nbsp;&nbsp;
-            <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-query">
+            <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-story-query">
         </div>
     </div>
     <div class="story-table mt-4">
@@ -26,115 +26,39 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var item in Model.Records)
-                {
-                    <tr>
-                        <td>@item.StoryTitle</td>
-                        <td class="">@item.FullName</td>
-                        <td>@item.MissionTitle</td>
-                        <td>
-                            <a href="" id="" class="btn rounded-pill fst-normal text-decoration-none border-orange bg-white text-orange px-3 py-0 me-1">
-                                View
-                            </a>
-                            <a href="" class="fst-normal text-decoration-none">
-                                <i class="bi bi-check-circle text-success"></i>
-                            </a>
-                            <a href="" id="deleteTimebasedTimesheet">
-                                <i class="bi bi-x-circle text-danger"></i>
-                            </a>
-                            <a href="" id="deleteTimebasedTimesheet">
-                                <i class="text-secondary bi bi-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                }
-@*
-                <tr>
-                    <td>A Latin professor at Hampden-Sydney</td>
-                    <td class="">Andrew Johnson</td>
-                    <td>A Latin professor at Hampden-Sydney</td>
-                    <td>
-                        <a href="" id="" class="btn rounded-pill fst-normal text-decoration-none border-orange bg-white text-orange px-3 py-0 me-1">
-                            View
-                        </a>
-                        <a href="" class="fst-normal text-decoration-none">
-                            <i class="bi bi-check-circle text-success"></i>
-                        </a>
-                        <a href="" id="deleteTimebasedTimesheet">
-                            <i class="bi bi-x-circle text-danger"></i>
-                        </a>
-                        <a href="" id="deleteTimebasedTimesheet">
-                            <i class="text-secondary bi bi-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>A Latin professor at Hampden-Sydney</td>
-                    <td class="">Andrew Johnson</td>
-                    <td>A Latin professor at Hampden-Sydney</td>
-                    <td>
-                        <a href="" id="" class="btn rounded-pill fst-normal text-decoration-none border-orange bg-white text-orange px-3 py-0 me-1">
-                            View
-                        </a>
-                        <a href="" class="fst-normal text-decoration-none">
-                            <i class="bi bi-check-circle text-success"></i>
-                        </a>
-                        <a href="" id="deleteTimebasedTimesheet">
-                            <i class="bi bi-x-circle text-danger"></i>
-                        </a>
-                        <a href="" id="deleteTimebasedTimesheet">
-                            <i class="text-secondary bi bi-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>A Latin professor at Hampden-Sydney</td>
-                    <td class="">Andrew Johnson</td>
-                    <td>A Latin professor at Hampden-Sydney</td>
-                    <td>
-                        <a href="" id="" class="btn rounded-pill fst-normal text-decoration-none border-orange bg-white text-orange px-3 py-0 me-1">
-                            View
-                        </a>
-                        <a href="" class="fst-normal text-decoration-none">
-                            <i class="bi bi-check-circle text-success"></i>
-                        </a>
-                        <a href="" id="deleteTimebasedTimesheet">
-                            <i class="bi bi-x-circle text-danger"></i>
-                        </a>
-                        <a href="" id="deleteTimebasedTimesheet">
-                            <i class="text-secondary bi bi-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-*@
-
-
+            <tbody id="admin-story-table-body-wrapper">
+                <partial name="_AdminStoryTablePartial" model="Model.Records" />
             </tbody>
         </table>
+
+        @{
+            double d = Model.Count / 10.0;
+            double pages = Math.Ceiling(d);
+        }
 
         <div class="pagination-nav d-flex flex-row-reverse w-100">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    <li class="page-item d-flex">
+                    <li class="page-item page-item-story d-flex">
                         <a class="page-link" href="#" aria-label="Previous">
                             <span aria-hidden="true"><<</span>
                         </a>
                     </li>
-                    <li class="page-item d-flex">
+                    <li class="page-item page-item-story d-flex">
                         <a class="page-link" href="#" aria-label="Previous">
                             <span aria-hidden="true"><</span>
                         </a>
                     </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item d-flex">
+                   @for (int i = 1; i <= @pages; i++)
+                    {
+                        <li class="page-item page-item-story" id="@i"><a class="page-link">@i</a></li>
+                    }
+                    <li class="page-item page-item-story d-flex">
                         <a class="page-link" href="#" aria-label="Next">
                             <span aria-hidden="true">></span>
                         </a>
                     </li>
-                    <li class="page-item d-flex">
+                    <li class="page-item page-item-story d-flex">
                         <a class="page-link" href="#" aria-label="Next">
                             <span aria-hidden="true">>></span>
                         </a>
@@ -144,3 +68,4 @@
 
         </div>
     </div>
+</div>

@@ -266,7 +266,7 @@
       <div class="row my-3 container px-2" >
           <label class="form-label">Skills</label>
 
-          <div id="skills-container-@Model.MissionId"></div>
+          <div id="skills-container-@Model.MissionId" class="row"></div>
               @foreach (var item in Model.Skills)
               {
                             <div class="form-check ms-2 col">
@@ -292,8 +292,8 @@
 
 
       <div class="flex text-end mb-3">
-        <button type="button" class="btn bg-white text-dark border-dark rounded-pill px-3"  data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-        <button type="button" class="btn bg-white text-orange border-orange rounded-pill px-3" data-missionid="@Model.MissionId" onclick="AdminAddEditMission(this)">Submit</button>
+        <button type="button" class="btn bg-white text-dark border-dark rounded-pill px-3 dismiss-modal-button"  data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+        <button type="submit" class="btn bg-white text-orange border-orange rounded-pill px-3" data-missionid="@Model.MissionId" onclick="AdminAddEditMission(this)">Submit</button>
       </div>
 
         </form>
@@ -304,3 +304,8 @@
     </div>
   </div>
 </div>
+
+
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
