@@ -206,6 +206,14 @@ namespace CIPlatform.Controllers
                 ViewBag.missionSkill = string.Join(", ", myuser.myMission.Skills);
                 ViewBag.missionTheme = myuser.myMission.MissionTheme;
 
+                var myMissionMedia = _db.Missions.Where(m => m.MissionId == missionId).Select(mission=> mission.MissionMedia).First();
+                var photos = myMissionMedia.Where(media => media.MediaType.Equals("img")).Select(media => media.MediaPath);
+                var urls = myMissionMedia.Where(media => media.MediaType.Equals("vid")).Select(media => media.MediaPath);
+
+                missionDetailsViewModel.Photos = photos.ToList();
+                missionDetailsViewModel.Urls = urls.ToList();
+
+
                 return View(missionDetailsViewModel);
             }
             else return RedirectToAction("Index", "Home");

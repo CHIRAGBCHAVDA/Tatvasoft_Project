@@ -12,5 +12,8 @@ namespace CIPlatform.Models.ViewDataModels
         public List<MissionListingCard> myRelatedMission;
         public List<CommentUserInfo> commentUser;
         public List<RecentVolunteersViewModel> recentVolunteers;
+
+        public List<string> Photos { get; set; } = new List<string>();
+        public List<string> Urls { get; set; } = new List<string>();
     }
 }

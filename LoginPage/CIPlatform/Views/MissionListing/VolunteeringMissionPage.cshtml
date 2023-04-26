@@ -1,4 +1,8 @@
 ﻿@model CIPlatform.Models.ViewDataModels.MissionDetailsViewModel
+
+@{
+    int totalItems = Model.Photos.Count + Model.Urls.Count;
+}
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <div class="container-fluid">
@@ -15,53 +19,55 @@
                     <div class="d-sm-flex w-md-100 w-lg-50 flex-column d-none h-100">
 
 
-                        <img src="~/assets/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png" id="image-area" class="w-100 h-100" />
+                    <img src="~/assets/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png" id="image-area" class="w-100" style="height:576px" />
+                    <iframe src=""  id="video-area" style="height: 576px;display:none"></iframe>
 
-                        <div id="carousel-bottom" class="carousel slide">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active ">
+                    <div id="carousel-bottom" class="carousel slide">
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < totalItems; i += 4)
+                            {
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
                                     <div class="row p-1">
-                                        <div class="col-3 p-1">
-                                            <img src="~/assets/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                        </div>
-                                        <div class="col-3 p-1">
-                                            <img src="~/assets/Education-Supplies-for-Every--Pair-of-Shoes-Sold.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                        </div>
-                                        <div class="col-3 p-1">
-                                            <img src="~/assets/Grow-Trees-On-the-path-to-environment-sustainability.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                        </div>
-                                        <div class="col-3 p-1">
-                                            <img src="~/assets/Nourish-the-Children-in--African-country.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                        </div>
+                                        @for (int j = i; j < i + 4 && j < totalItems; j++)
+                                        {
+                                            <div class="col-3 p-1">
+                                                @if (j < Model.Photos.Count)
+                                                {
+                                                    <img src="@Model.Photos[j]" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
+                                                }
+                                                else if (j < totalItems)
+                                                {
+                                                    int videoIndex = j - Model.Photos.Count;
+                                                    if (videoIndex % 2 == 0)
+                                                    {
+                                                        <img src="~/assets/videoplayer3.jpg" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" data-vpath="@Model.Urls[videoIndex]" width="175" height="120" role="img" onclick="displayVideo(this)">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/assets/videoplayer2.jpg" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" data-vpath="@Model.Urls[videoIndex]" width="175" height="120" role="img" onclick="displayVideo(this)">
+                                                    }
+
+                                                    @*<iframe src="@Model.ShareStory.VideoUrl[videoIndex]" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%;"></iframe>*@
+                                                }
+                                            </div>
+                                        }
                                     </div>
                                 </div>
-                                <div class="carousel-item">
-                                    <div class="row p-1">
-                                        <div class="col-3 p-1">
-                                            <img src="~/assets/Nourish-the-Children-in--African-country.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                        </div>
-                                        <div class="col-3 p-1">
-                                            <img src="~/assets/Plantation-and-Afforestation-programme.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                        </div>
-                                        <div class="col-3 p-1">
-                                            <img src="~/assets/CSR-initiative-stands-for-Coffee--and-Farmer-Equity.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                        </div>
-                                        <div class="col-3 p-1">
-                                            <img src="~/assets/Plantation-and-Afforestation-programme.png" class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="175" height="120" role="img" onclick="display(this)">
-                                        </div>
-                                    </div>
-                                </div>
+                                }
                             </div>
-                            <button class="carousel-control-prev w-auto ps-2 pe-2 bg-black bg-opacity-50 mt-2 mb-2" type="button" data-bs-target="#carousel-bottom" data-bs-slide="prev">
-                                <img src="~/assets/left1.png" aria-hidden="true" />
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next w-auto ps-2 pe-2 bg-black bg-opacity-50  mt-2 mb-2" type="button" data-bs-target="#carousel-bottom" data-bs-slide="next">
-                                <img src="~/assets/right-arrow2.png" aria-hidden="true" />
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
+                    
+
+
+                        <button class="carousel-control-prev w-auto ps-2 pe-2 bg-black bg-opacity-50 mt-2 mb-2" type="button" data-bs-target="#carousel-bottom" data-bs-slide="prev">
+                            <img src="~/assets/left1.png" aria-hidden="true" />
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next w-auto ps-2 pe-2 bg-black bg-opacity-50  mt-2 mb-2" type="button" data-bs-target="#carousel-bottom" data-bs-slide="next">
+                            <img src="~/assets/right-arrow2.png" aria-hidden="true" />
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
+                </div>
 
                     <div class="w-100 d-xs-block d-sm-none">
                         <partial name="_CarouselMobileView" />
