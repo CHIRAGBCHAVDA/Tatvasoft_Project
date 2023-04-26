@@ -908,3 +908,114 @@ function readAsDataURL(file) {
         reader.readAsDataURL(file);
     });
 }
+
+
+
+function userDelete(e) {
+    var userId = parseInt($(e).attr("data-userid"));
+    $.ajax({
+        type: "POST",
+        url: "/Admin/DeleteUser",
+        data: { userId: userId},
+        success: function (result) {
+            console.log(result);
+            $(".admin-user-table-body-wrapper").html(result);
+            toastr.error("User Deleted Successfully...!!");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function cmsDelete(e) {
+    var cmsId = parseInt($(e).attr("data-cmsid"));
+    $.ajax({
+        type: "POST",
+        url: "/Admin/DeleteCms",
+        data: { cmsId: cmsId },
+        success: function (result) {
+            console.log(result);
+            $(".admin-cms-table-body-wrapper").html(result);
+            toastr.error("CMS Deleted Successfully...!!");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function missionDelete(e) {
+    var missionId = parseInt($(e).attr("data-missionid"));
+    $.ajax({
+        type: "POST",
+        url: "/Admin/DeleteMission",
+        data: { missionId: missionId },
+        success: function (result) {
+            console.log(result);
+            $(".admin-mission-table-wrapper").html(result);
+            toastr.error("Mission Deleted Successfully...!!");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function missionThemeDelete(e) {
+    var missionthemeId = parseInt($(e).attr("data-missionthemeid"));
+    $.ajax({
+        type: "POST",
+        url: "/Admin/DeleteMissionTheme",
+        data: { missionthemeId: missionthemeId },
+        success: function (result) {
+            console.log(result);
+            $("#admin-missiontheme-table-body-wrapper").html(result);
+            toastr.error("Mission Theme Deleted Successfully...!!");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+
+function missionSkillDelete(e) {
+    var missionskillId = parseInt($(e).attr("data-missionskillid"));
+    $.ajax({
+        type: "POST",
+        url: "/Admin/DeleteMissionSkill",
+        data: { missionskillId: missionskillId },
+        success: function (result) {
+            console.log(result);
+            $("#admin-missionskills-table-body-wrapper").html(result);
+            toastr.error("Skill Deleted Successfully...!!");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+
+function bannerDelete(e) {
+    var bannerId = parseInt($(e).attr("data-bannerid"));
+    $.ajax({
+        type: "POST",
+        url: "/Admin/DeleteBanner",
+        data: { bannerId: bannerId },
+        success: function (result) {
+            console.log(result);
+            $(".banner-table-wrapper").html(result);
+            toastr.error("Banner Deleted Successfully...!!");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+
+
+
+

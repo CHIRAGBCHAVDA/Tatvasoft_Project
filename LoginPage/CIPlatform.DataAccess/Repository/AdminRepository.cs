@@ -24,7 +24,7 @@ namespace CIPlatform.DataAccess.Repository
 
         public PageList<AdminCmsVM> GetCmsData()
         {
-            var cmsRecords = _db.CmsPages.Select(cms => new AdminCmsVM()
+            var cmsRecords = _db.CmsPages.Where(cms => cms.DeletedAt == null).Select(cms => new AdminCmsVM()
             {
                 CMSId = cms.CmsPageId,
                 Title = cms.Title,
@@ -83,7 +83,7 @@ namespace CIPlatform.DataAccess.Repository
             var Skills = _db.Skills;
             var missionThemes = _db.MissionThemes;
 
-            var missionRecords = _db.Missions.Select(mission => new AdminMissionVM()
+            var missionRecords = _db.Missions.Where(m => m.DeletedAt==null).Select(mission => new AdminMissionVM()
             {
                 MissionId = mission.MissionId,
                 MissionTitle = mission.Title,
@@ -145,7 +145,7 @@ namespace CIPlatform.DataAccess.Repository
         {
             var CountryList = _db.Countries.ToList();
             var CityList = _db.Cities.ToList();
-            var userRecords = _db.Users.Select(user => new AdminUserVM()
+            var userRecords = _db.Users.Where(user => user.DeletedAt == null).Select(user => new AdminUserVM()
             {
                 UserId = user.UserId,
                 FirstName = user.FirstName,
@@ -175,7 +175,7 @@ namespace CIPlatform.DataAccess.Repository
             var CountryList = _db.Countries.ToList();
             var CityList = _db.Cities.ToList();
 
-            var userRecords = _db.Users.Select(user => new AdminUserVM()
+            var userRecords = _db.Users.Where(user => user.DeletedAt==null).Select(user => new AdminUserVM()
             {
                 UserId = user.UserId,
                 FirstName = user.FirstName,
@@ -196,7 +196,7 @@ namespace CIPlatform.DataAccess.Repository
 
         public IQueryable<AdminCmsVM> getAllCmsdata()
         {
-            var cmsRecords = _db.CmsPages.Select(cms => new AdminCmsVM()
+            var cmsRecords = _db.CmsPages.Where(cms => cms.DeletedAt==null).Select(cms => new AdminCmsVM()
             {
                 CMSId = cms.CmsPageId,
                 Title = cms.Title,
@@ -210,7 +210,7 @@ namespace CIPlatform.DataAccess.Repository
 
         public IQueryable<AdminMissionThemeVM> getAllMissionThemedata()
         {
-            var missionThemeRecords = _db.MissionThemes.Select(theme => new AdminMissionThemeVM()
+            var missionThemeRecords = _db.MissionThemes.Where(mt => mt.DeletedAt==null).Select(theme => new AdminMissionThemeVM()
             {
                 MissionThemeId = theme.MissionThemeId,
                 Status = theme.Status,
@@ -493,7 +493,7 @@ namespace CIPlatform.DataAccess.Repository
 
         public PageList<AdminMissionThemeVM> GetMissionThemeData()
         {
-            var missionThemes = _db.MissionThemes.Select(theme => new AdminMissionThemeVM()
+            var missionThemes = _db.MissionThemes.Where(tm => tm.DeletedAt==null).Select(theme => new AdminMissionThemeVM()
             {
                 MissionThemeId = theme.MissionThemeId,
                 Status = theme.Status,
@@ -548,7 +548,7 @@ namespace CIPlatform.DataAccess.Repository
 
         public PageList<AdminSkillsViewModel> GetSkillData()
         {
-            var skills = _db.Skills.Select(skill => new AdminSkillsViewModel()
+            var skills = _db.Skills.Where(s => s.DeletedAt==null).Select(skill => new AdminSkillsViewModel()
             {
                 SkillId = skill.SkillId,
                 SkillName = skill.SkillName,
@@ -565,7 +565,7 @@ namespace CIPlatform.DataAccess.Repository
 
         public IQueryable<AdminSkillsViewModel> getAllSkillData()
         {
-            var skills = _db.Skills.Select(skill => new AdminSkillsViewModel()
+            var skills = _db.Skills.Where(s => s.DeletedAt == null).Select(skill => new AdminSkillsViewModel()
             {
                 SkillId = skill.SkillId,
                 SkillName = skill.SkillName,
@@ -695,7 +695,7 @@ namespace CIPlatform.DataAccess.Repository
 
         public IQueryable<AdminBannerViewModel> getBannerData()
         {
-            var toReturn = _db.Banners.Select(banner => new AdminBannerViewModel()
+            var toReturn = _db.Banners.Where(banner => banner.DeletedAt==null).Select(banner => new AdminBannerViewModel()
             {
                 BannerId = banner.BannerId,
                 Heading = banner.Heading,
@@ -756,7 +756,7 @@ namespace CIPlatform.DataAccess.Repository
             var Skills = _db.Skills;
             var missionThemes = _db.MissionThemes;
 
-            var missionRecords = _db.Missions.Select(mission => new AdminMissionVM()
+            var missionRecords = _db.Missions.Where(m => m.DeletedAt==null).Select(mission => new AdminMissionVM()
             {
                 MissionId = mission.MissionId,
                 MissionTitle = mission.Title,

@@ -21,9 +21,9 @@
                                 <i class="bi text-orange bi-pencil-square me-2"></i>
                             </a>
                             <partial name="_AdminMissionAddForm" model="@item" />
-                            <a href="" id="deleteTimebasedTimesheet">
+                            <button class="btn bg-white border-0 px-4 rounded-pill" id="deleteTimebasedTimesheet" data-missionid="@item.MissionId" onclick="missionDelete(this)">
                                 <i class="text-secondary bi bi-trash"></i>
-                            </a>
+                            </button>
                         </td>
                     </tr>
                 }

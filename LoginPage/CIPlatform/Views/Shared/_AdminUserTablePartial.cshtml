@@ -33,9 +33,9 @@
                 </i>
             </a>
             <partial name="_AdminUserEditForm" model="@item" />
-            <a href="">
+            <button class="btn bg-white border-0 px-4 rounded-pill" data-userid="@item.UserId" onclick="userDelete(this)">
                 <i class="text-secondary bi bi-trash"></i>
-            </a>
+            </button>
         </td>
     </tr>
 }

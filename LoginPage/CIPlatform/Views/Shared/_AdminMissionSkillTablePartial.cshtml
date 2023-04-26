@@ -21,9 +21,9 @@
                 </i>
             </a>
             <partial name="_AdminMissionSkillAddEditForm" model="@item" />
-            <a href="">
+            <button class="btn bg-white border-0 px-4 rounded-pill" data-missionskillid="@item.SkillId" onclick="missionSkillDelete(this)">
                 <i class="text-secondary bi bi-trash"></i>
-            </a>
+            </button>
         </td>
     </tr>
 }

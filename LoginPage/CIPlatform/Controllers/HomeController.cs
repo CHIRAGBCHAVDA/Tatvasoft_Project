@@ -133,7 +133,7 @@ namespace CIPlatform.Controllers
             }
             else
             {
-                TempData["Error"] = "User Id and Password is not Valid";
+                TempData["Error"] = "Either User Id and Password is not Valid or User has been deleted by the ADMIN";
                 return View();
             }
         }

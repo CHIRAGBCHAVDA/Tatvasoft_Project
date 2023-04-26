@@ -61,12 +61,12 @@ namespace CIPlatform.Controllers
         }
         public PartialViewResult GetGridView()
         {
-            return PartialView("_GridMissionLayout", missionListingCards.ToList());
+            return PartialView("_GridMissionLayout", missionListingCards.Skip(0).Take(3).ToList());
         }
 
         public PartialViewResult GetListView()
         {
-            return PartialView("_ListMissionLayout", missionListingCards.ToList());
+            return PartialView("_ListMissionLayout", missionListingCards.Skip(0).Take(3).ToList());
         }
         #endregion 
 
@@ -89,7 +89,7 @@ namespace CIPlatform.Controllers
             }
             if (skillId != null && skillId.Length > 0)
             {
-                getFilterMs = getFilterMs.Where(m => m.Skills.Intersect(skillId).Any());
+                getFilterMs = getFilterMs.Where(m => m.Skills.Any(s => skillId.Contains(s)));
             }
             if (!string.IsNullOrEmpty(searchKeyword))
             {
@@ -179,7 +179,7 @@ namespace CIPlatform.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.missionTitle = ex.Message;
+                    
                 }
 
                 var cui = from c in _db.Comments

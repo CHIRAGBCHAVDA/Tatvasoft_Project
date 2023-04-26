@@ -119,6 +119,8 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public bool UserAddFormPost(AdminUserAddViewModel userAddParams)
         {
+            string pwd = BCrypt.Net.BCrypt.HashPassword(userAddParams.Password);
+            
 
             if (ModelState.IsValid)
             {
@@ -134,7 +136,7 @@ namespace CIPlatform.Controllers
                     Status = userAddParams.Status,
                     Avatar = userAddParams.Avatar,
                     ProfileText = userAddParams.ProfileText,
-                    Password = userAddParams.Password
+                    Password = pwd
                 };
                 try
                 {
@@ -447,6 +449,72 @@ namespace CIPlatform.Controllers
                 var isSuccess = _unitOfWork.AdminRepo.EditBanner(bannerModel);
                 //edit
             }
+
+            return PartialView("_AdminBannerTablePartial", _unitOfWork.AdminRepo.getBannerData().Skip(0).Take(10).ToList());
+        }
+
+        [HttpPost]
+        public IActionResult DeleteUser(long userId)
+        {
+            var user = _db.Users.FirstOrDefault(user => user.UserId == userId);
+            user.DeletedAt = DateTime.Now;
+            _db.Users.Update(user);
+            _db.SaveChanges();
+
+            return PartialView("_AdminUserTablePartial",_unitOfWork.AdminRepo.getAllUserdata().Skip(0).Take(10).ToList());
+        }
+
+        [HttpPost]
+        public IActionResult DeleteCms(long cmsId)
+        {
+            var cms = _db.CmsPages.FirstOrDefault(cms => cms.CmsPageId== cmsId);
+            cms.DeletedAt = DateTime.Now;
+            _db.CmsPages.Update(cms);
+            _db.SaveChanges();
+
+            return PartialView("_AdminCmsTablePartial", _unitOfWork.AdminRepo.getAllCmsdata().Skip(0).Take(10).ToList());
+        }
+
+        [HttpPost]
+        public IActionResult DeleteMission(long missionId)
+        {
+            var mission = _db.Missions.FirstOrDefault(mission => mission.MissionId== missionId);
+            mission.DeletedAt = DateTime.Now;
+            _db.Missions.Update(mission);
+            _db.SaveChanges();
+
+            return PartialView("_AdminMissionTablePartial", _unitOfWork.AdminRepo.getAllMissionData().Skip(0).Take(10).ToList());
+        }
+
+        [HttpPost]
+        public IActionResult DeleteMissionTheme(long missionthemeId)
+        {
+            var missionTheme = _db.MissionThemes.FirstOrDefault(mission => mission.MissionThemeId == missionthemeId);
+            missionTheme.DeletedAt = DateTime.Now;
+            _db.MissionThemes.Update(missionTheme);
+            _db.SaveChanges();
+
+            return PartialView("_AdminMissionThemeTablePartial", _unitOfWork.AdminRepo.getAllMissionThemedata().Skip(0).Take(10).ToList());
+        }
+
+        [HttpPost]
+        public IActionResult DeleteMissionSkill(long missionskillId)
+        {
+            var missionSkill = _db.Skills.FirstOrDefault(skill => skill.SkillId== missionskillId);
+            missionSkill.DeletedAt = DateTime.Now;
+            _db.Skills.Update(missionSkill);
+            _db.SaveChanges();
+
+            return PartialView("_AdminMissionSkillTablePartial", _unitOfWork.AdminRepo.getAllSkillData().Skip(0).Take(10).ToList());
+        }
+
+        [HttpPost]
+        public IActionResult DeleteBanner(long bannerId)
+        {
+            var banner = _db.Banners.FirstOrDefault(banner => banner.BannerId== bannerId);
+            banner.DeletedAt = DateTime.Now;
+            _db.Banners.Update(banner);
+            _db.SaveChanges();
 
             return PartialView("_AdminBannerTablePartial", _unitOfWork.AdminRepo.getBannerData().Skip(0).Take(10).ToList());
         }

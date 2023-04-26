@@ -16,7 +16,7 @@
                                 <i class="bi text-success bi-pencil-square"></i>
                             </button>
                             <partial name="_AdminBannerAddEditModal" model="@item" />
-                            <button class="btn bg-white border-danger px-4 rounded-pill"> 
+                            <button class="btn bg-white border-0 px-4 rounded-pill" data-bannerid="@item.BannerId" onclick="bannerDelete(this)"> 
                                 <i class="bi bi-trash text-danger"></i>
                             </button>
                         </div>

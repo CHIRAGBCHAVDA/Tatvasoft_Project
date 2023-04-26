@@ -60,39 +60,39 @@ $(document).ready(function () {
     });
 
     
-    //$('.city-checkbox').change(function () {
-    //    var cityId = $(this).next().text();
-    //    if (!$(this).prop('checked')) {
-    //        $('.city-checkbox[value="' + cityId + '"]').prop('checked', false);
-    //        var index = selectedCities.indexOf(cityId);
-    //        if (index > -1 && !$(this).prop('checked')) {
-    //            selectedCities.splice(index);
-    //            getFilter();
-    //        }
-    //    } else {
-    //        var index = selectedCities.indexOf(cityId.trim());
-    //        if (index == -1) {
-    //            selectedCities.push(cityId.trim());
-    //        }
-    //    }
-    //});
+    $('.city-checkbox').change(function () {
+        var cityId = $(this).next().text();
+        if (!$(this).prop('checked')) {
+            $('.city-checkbox[value="' + cityId + '"]').prop('checked', false);
+            var index = selectedCities.indexOf(cityId);
+            if (index > -1 && !$(this).prop('checked')) {
+                selectedCities.splice(index);
+                getFilter();
+            }
+        } else {
+            var index = selectedCities.indexOf(cityId.trim());
+            if (index == -1) {
+                selectedCities.push(cityId.trim());
+            }
+        }
+    });
 
-    //$('.theme-checkbox').change(function () {
-    //    var themeName = $(this).next().text().trim();
-    //    if (!$(this).prop('checked')) {
-    //        $('.theme-checkbox[value="' + themeName.trim() + '"]').prop('checked', false);
-    //        var index = selectedThemes.indexOf(themeName);
-    //        if (index > -1 && !$(this).prop('checked')) {
-    //            selectedThemes.splice(index);
-    //            getFilter();
-    //        }
-    //    } else {
-    //        var index = selectedThemes.indexOf(themeName);
-    //        if (index == -1) { 
-    //            selectedThemes.push(themeName.trim());
-    //        }
-    //    }
-    //});
+    $('.theme-checkbox').change(function () {
+        var themeName = $(this).next().text().trim();
+        if (!$(this).prop('checked')) {
+            $('.theme-checkbox[value="' + themeName.trim() + '"]').prop('checked', false);
+            var index = selectedThemes.indexOf(themeName);
+            if (index > -1 && !$(this).prop('checked')) {
+                selectedThemes.splice(index);
+                getFilter();
+            }
+        } else {
+            var index = selectedThemes.indexOf(themeName);
+            if (index == -1) { 
+                selectedThemes.push(themeName.trim());
+            }
+        }
+    });
 
     $("#search-query").keyup(function () {
         searchMissions();
@@ -110,6 +110,8 @@ $(document).ready(function () {
 
     $("#1").addClass('active');
     $('.pagination').on('click', '.page-item', function () {
+        $('.pagination .page-item').removeClass('active');
+        $(this).addClass('active');
         getFilter($(this).attr('id'));
     });
 
@@ -275,7 +277,6 @@ $(document).on('change', function () {
         getBadge();
     });
     $('.theme-checkbox').on('change', function () {
-        debugger
         getBadge();
     });
     $('.skill-checkbox').on('change', function () {
@@ -384,7 +385,7 @@ function getBadge() {
     });
 
     $('.theme-checkbox:checked').each(function () {
-        debugger;
+        
         var title = $(this).val();
         if (selectedThemes.includes(title.toString())) {
             var badge = $('<div>', {
@@ -432,6 +433,8 @@ function getBadge() {
         }
     });
     getFilter();
+    getTotalCount();
+    getFilter();
 
 }
 
@@ -451,6 +454,7 @@ function getFilter(pg) {
         },
         success: function (result) {
             $("#partialView").html(result);
+            getTotalCount();
         },
         error: function (xhr, status, error) {
             console.log(error);

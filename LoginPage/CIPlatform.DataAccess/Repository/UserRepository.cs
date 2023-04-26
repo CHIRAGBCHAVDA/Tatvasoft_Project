@@ -22,7 +22,7 @@ namespace CIPlatform.DataAccess.Repository
         public User login(string email,string password)
         {
             var dbUser = _db.Users.FirstOrDefault(u => u.Email.Equals(email));
-            if (dbUser != null && BCrypt.Net.BCrypt.Verify(password, dbUser.Password))
+            if (dbUser != null && BCrypt.Net.BCrypt.Verify(password, dbUser.Password) && dbUser.DeletedAt==null)
             {
                 return dbUser;
             }

@@ -27,7 +27,7 @@ namespace CIPlatform.DataAccess.Repository
         {
             string myUserId = _httpContext.Session.GetString("userId");
 
-            var missionListingCard = _db.Missions.Select(mission => new MissionListingCard()
+            var missionListingCard = _db.Missions.Where(m => m.DeletedAt==null).Select(mission => new MissionListingCard()
             {
                 mission = mission,
                 City = mission.City.Name,

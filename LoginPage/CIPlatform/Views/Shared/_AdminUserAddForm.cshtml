@@ -13,8 +13,8 @@
               <div class="m-auto w-75">
                 <div class="d-flex mt-3 w-100">
                     <div class="pe-5 align-self-center">
-                                <label for="avatar-upload">
-                                    <img src="@Model.Avatar" id="admin-user-editImg-@Model.UserId" class="rounded-circle user-img-left" />
+                                <label for="avatar-upload-@Model.UserId" style="height:100px">
+                                    <img src="~/assets/user1.png" id="admin-user-editImg-@Model.UserId" class="rounded-circle user-img-left h-100" />
                                 </label>
                                 <input type="file" id="avatar-upload-@Model.UserId" style="display: none;">
                                 <input type="hidden" asp-for="UserId" value="@Model.UserId" id="admin-userEdit-userid-@Model.UserId"/>

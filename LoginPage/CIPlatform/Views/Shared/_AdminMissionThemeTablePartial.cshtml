@@ -21,9 +21,9 @@
                 </i>
             </a>
             <partial name="_AdminMissionThemeAddEditForm" model="@item" />
-            <a href="">
+            <button class="btn bg-white border-0 px-4 rounded-pill" data-missionthemeid="@item.MissionThemeId" onclick="missionThemeDelete(this)">
                 <i class="text-secondary bi bi-trash"></i>
-            </a>
+            </button>
         </td>
     </tr>
 }
