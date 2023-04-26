@@ -3,6 +3,8 @@ using CIPlatform.DataAccess.Repository.IRepository;
 using CIPlatform.Models;
 using CIPlatform.Models.AdminViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 
 namespace CIPlatform.Controllers
@@ -290,20 +292,49 @@ namespace CIPlatform.Controllers
             var toAppendDataModel = storyData.Skip((pageNum - 1) * 10).Take(10).ToList();
             return PartialView("_AdminStoryTablePartial", toAppendDataModel);
         }
-
+        
         [HttpPost]
         public IActionResult getBannerFilter([DefaultValue(1)] int pageNum, string searchKeyword)
         {
-            var bannerData = _unitOfWork.AdminRepo.getBannerData();
-            if (!string.IsNullOrEmpty(searchKeyword))
-            {
-                bannerData = bannerData.Where(banner => banner.Heading.Contains(searchKeyword));
-            }
+            //var bannerData = _unitOfWork.AdminRepo.getBannerData();
+            //if (!string.IsNullOrEmpty(searchKeyword))
+            //{
+            //    bannerData = bannerData.Where(banner => EF.Functions.Like(banner.Heading, "%" + searchKeyword + "%"));
+            //}
 
-            var toAppendDataModel = bannerData.Skip((pageNum - 1) * 10).Take(10).ToList();
-            return PartialView("_AdminBannerTablePartial", toAppendDataModel);
+            //var toAppendDataModel = bannerData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            //return PartialView("_AdminBannerTablePartial", toAppendDataModel);
+
+            try
+            {
+                var bannerData = _unitOfWork.AdminRepo.getBannerData().ToList();
+                if (!string.IsNullOrEmpty(searchKeyword))
+                {
+                    bannerData = bannerData.Where(banner => banner.Heading.ToString().Contains(searchKeyword)).ToList();
+                }
+
+                var toAppendDataModel = bannerData.Skip((pageNum - 1) * 10).Take(10).ToList();
+                return PartialView("_AdminBannerTablePartial", toAppendDataModel);
+            }
+            catch (SqlException ex)
+            {
+                // Log the exception or provide a more specific error message to the user
+                return BadRequest("An error occurred while retrieving the banner data.");
+            }
         }
 
+        [HttpPost]
+        public IActionResult getMissionFilter([DefaultValue(1)] int pageNum, string searchKeyword)
+        {
+            var missionData = _unitOfWork.AdminRepo.getAllMissionData();
+            if (!string.IsNullOrEmpty(searchKeyword))
+            {
+                missionData = missionData.Where(mission => mission.MissionTitle.ToLower().Contains(searchKeyword.ToLower()));
+            }
+
+            var toAppendDataModel = missionData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            return PartialView("_AdminMissionTablePartial", toAppendDataModel);
+        }
 
 
         [HttpPost]
@@ -320,18 +351,12 @@ namespace CIPlatform.Controllers
             {
                 //add
                 var isSuccess = _unitOfWork.AdminRepo.AddNewMission(missionModel);
-                
-
             }
             else
             {
-
                 //edit
                 var isSuccess = _unitOfWork.AdminRepo.EditMission(missionModel);
-
             }
-
-
 
             return null;
         }
@@ -408,7 +433,23 @@ namespace CIPlatform.Controllers
         }
 
         
+        [HttpPost]
+        public IActionResult AddEditBanner(AdminBannerViewModel bannerModel)
+        {
+            if (bannerModel.BannerId==0)
+            {
+                //add
+                var isSuccess = _unitOfWork.AdminRepo.AddBanner(bannerModel);
 
+            }
+            else
+            {
+                var isSuccess = _unitOfWork.AdminRepo.EditBanner(bannerModel);
+                //edit
+            }
+
+            return PartialView("_AdminBannerTablePartial", _unitOfWork.AdminRepo.getBannerData().Skip(0).Take(10).ToList());
+        }
 
     }
 }

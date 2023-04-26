@@ -485,3 +485,11 @@ background-image: url("../assets/left.png");
         font-weight: 200;
         color: black;
     }
+
+.admin-banner-card{
+    max-height:200px;
+}
+
+.admin-banner-card img{
+    height: 100px;
+}

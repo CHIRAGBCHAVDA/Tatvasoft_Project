@@ -17,7 +17,6 @@ namespace CIPlatform.Data
         {
         }
 
-
         public virtual DbSet<Admin> Admins { get; set; } = null!;
         public virtual DbSet<ApprovalStatus> ApprovalStatuses { get; set; } = null!;
         public virtual DbSet<Availability> Availabilities { get; set; } = null!;
@@ -160,9 +159,7 @@ namespace CIPlatform.Data
             {
                 entity.ToTable("banner");
 
-                entity.Property(e => e.BannerId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("banner_id");
+                entity.Property(e => e.BannerId).HasColumnName("banner_id");
 
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")

@@ -114,7 +114,7 @@ namespace CIPlatform.DataAccess.Repository
 
             var missionData = new PageList<AdminMissionVM>()
             {
-                Records = missionRecords.ToList(),
+                Records = missionRecords.Skip(0).Take(10).ToList(),
                 Count = missionRecords.Count()
             };
 
@@ -706,6 +706,86 @@ namespace CIPlatform.DataAccess.Repository
             return toReturn;
         }
 
+        public bool EditBanner(AdminBannerViewModel bannerModel)
+        {
+            try
+            {
+                var banner = _db.Banners.FirstOrDefault(banner => banner.BannerId == bannerModel.BannerId);
+                banner.Image = bannerModel.Image;
+                banner.Heading = bannerModel.Heading;
+                banner.ShortDescription = bannerModel.ShortDescription;
+                banner.UpdatedAt = DateTime.Now;
+
+                _db.Banners.Update(banner);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
+
+        public bool AddBanner(AdminBannerViewModel bannerModel)
+        {
+            try
+            {
+                var banner = new Banner()
+                {
+                    Image = bannerModel.Image,
+                    Heading = bannerModel.Heading,
+                    ShortDescription = bannerModel.ShortDescription,
+                    CreatedAt = DateTime.Now,
+                };
+                _db.Banners.Add(banner);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public IQueryable<AdminMissionVM> getAllMissionData()
+        {
+            var Countries = _db.Countries;
+            var Cities = _db.Cities;
+            var Availabilities = _db.Availabilities;
+            var Skills = _db.Skills;
+            var missionThemes = _db.MissionThemes;
+
+            var missionRecords = _db.Missions.Select(mission => new AdminMissionVM()
+            {
+                MissionId = mission.MissionId,
+                MissionTitle = mission.Title,
+                MissionThemeId = mission.MissionThemeId,
+                MissionThemes = missionThemes.ToList(),
+                MissionTypeId = mission.MissionTypeId,
+                CountryId = mission.CountryId,
+                CityId = mission.CityId,
+                AvailableSeats = mission.AvailableSeats,
+                RegistrationDeadline = mission.RegistrationDeadline,
+                Countries = Countries.ToList(),
+                Cities = Cities.ToList(),
+                Availabilities = Availabilities.ToList(),
+                Skills = Skills.ToList(),
+                Goal = mission.GoalMissions.FirstOrDefault().GoalValue,
+                GoalObjective = mission.GoalMissions.FirstOrDefault().GoalObjectiveText,
+                AvailabilityId = (byte)mission.AvailabilityId,
+                Status = mission.Status,
+                OrganizationName = mission.OrganizationName,
+                OrganizationDetail = mission.OrganizationDetail,
+                ShortDescription = mission.ShortDescription,
+                LongDescription = mission.Description,
+                VideoUrl = mission.MissionMedia.AsQueryable().Where(media => media.MediaType.Equals("vid")).Select(url => url.MediaPath).ToList(),
+                Photos = mission.MissionMedia.AsQueryable().Where(media => media.MediaType.Equals("img")).Select(src => src.MediaPath).ToList(),
+                StartDate = mission.StartDate,
+                EndDate = mission.EndDate,
+            });
+            return missionRecords;
+        }
     }
 
 }

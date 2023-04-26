@@ -1,0 +1,43 @@
+﻿@using CIPlatform.Models.AdminViewModels
+@model AdminBannerViewModel
+
+    <div class="modal fade" id="bannerAddEditModal-@Model.BannerId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel-@Model.BannerId">Add/Edit Banner</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="adminBannerAddEditForm-@Model.BannerId">
+                <div class="modal-body">
+                    <div class="banner-add-view mt-3">
+                        <div class="banner-add-header w-100 fw-bold border">
+                            <h3 class="p-3  bg-light border-bottom">Add</h3>
+                              <div class="mb-3 ms-4">
+                                <label asp-for="Image" for="files-@Model.BannerId" class="form-label">Upload Image</label>
+                                <input asp-for="Image" class="form-control admin-banner-files" type="file" id="files-@Model.BannerId">
+                              </div>
+                            <div class="my-3 ms-4">
+                                <label class="form-label fw-lighter" for="admin-banner-heading-@Model.BannerId" asp-for="Heading">Heading</label>
+                                <input type="text" id="admin-banner-heading-@Model.BannerId" class="form-control" asp-for="Heading" />
+                                <span class="text-danger" asp-validation-for="Heading"></span>
+                            </div>
+                             <div class="my-3 ms-4">
+                                <label class="form-label fw-lighter" for="admin-banner-description-@Model.BannerId" asp-for="ShortDescription">Short Description</label>
+                                <input type="text" id="admin-banner-description-@Model.BannerId" class="form-control" asp-for="ShortDescription" />
+                                <span class="text-danger" asp-validation-for="ShortDescription"></span>
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="BannerId" id="unique-@Model.BannerId" />
+                        <div class="d-flex w-100 justify-content-end admin-banner-add-btns mt-3">
+                            <button type="button" class="btn dismiss-modal-btn bg-white text-dark border border-dark rounded-pill px-3 me-2" data-bs-dismiss="modal" id="cms-modal-dismiss-@Model.BannerId">Cancel</button>
+                            <button type="submit" class="btn bg-white text-orange bg-white border-orange rounded-pill px-3" data-bannerid="@Model.BannerId" onclick="adminAddEditBanner(this)">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+    

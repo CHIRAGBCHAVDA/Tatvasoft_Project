@@ -12,5 +12,6 @@ namespace CIPlatform.Models.AdminViewModels
         public string Image { get; set; } = string.Empty;
         public string Heading { get; set; } = string.Empty;
         public string ShortDescription { get; set; } = string.Empty;
+        public string newimage { get; set; } = string.Empty;
     }
 }

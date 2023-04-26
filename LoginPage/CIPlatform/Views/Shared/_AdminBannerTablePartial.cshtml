@@ -3,18 +3,19 @@
 
 @foreach (var item in @Model)
         {
-            <div class="card mb-3">
+            <div class="card mb-3 admin-banner-card">
                 <div class="row g-0">
-                    <div class="col-4 p-4 border-end">
-                        <img src="@item.Image" class="h-100 w-100" />
+                    <div class="col-4 p-4 border-end text-center">
+                        <img src="@item.Image" class="" />
                     </div>
                     <div class="col-8">
                         <div class="card-body">
                             <h5 class="card-title">@item.Heading</h5>
                             <p class="card-text">@item.ShortDescription</p>            
-                            <button class="btn bg-white border-warning px-4 rounded-pill me-3"> 
+                            <button class="btn bg-white border-warning px-4 rounded-pill me-3" data-bannerid="@item.BannerId" data-bs-toggle="modal" data-bs-target="#bannerAddEditModal-@item.BannerId"> 
                                 <i class="bi text-success bi-pencil-square"></i>
-                            </button>         
+                            </button>
+                            <partial name="_AdminBannerAddEditModal" model="@item" />
                             <button class="btn bg-white border-danger px-4 rounded-pill"> 
                                 <i class="bi bi-trash text-danger"></i>
                             </button>

@@ -217,6 +217,16 @@ $(document).ready(function () {
         getBannerFilter($(this).attr('id'));
     });
 
+
+    $(".admin-main-wrapper").on("keyup", "#search-mission-query", function () {
+        searchMission();
+    });
+    $('.admin-main-wrapper').on('click', '.page-item-mission', function () {
+        $('.pagination .page-item-mission').removeClass('active');
+        $(this).addClass('active');
+        getMissionFilter($(this).attr('id'));
+    });
+
     try {
         const avatarUpload = document.querySelector('#avatar-upload');
         const userImage = document.querySelector('.user-img-left');
@@ -336,6 +346,11 @@ function searchBanner() {
     console.log(searchKeyword);
     getBannerFilter();
 }
+function searchMission() {
+    searchKeyword = document.getElementById("search-mission-query").value;
+    console.log(searchKeyword);
+    getMissionFilter();
+}
 
 function getUserFilter(pg) {
     $.ajax({
@@ -449,13 +464,31 @@ function getBannerFilter(pg) {
             searchKeyword: searchKeyword
         },
         success: function (result) {
-            $("#banner-table-wrapper").html(result);
+            $(".banner-table-wrapper").html(result);
         },
         error: function (xhr, status, error) {
             console.log(error);
         }
     });
 }
+
+function getMissionFilter(pg) {
+    $.ajax({
+        type: "POST",
+        url: "/Admin/getMissionFilter",
+        data: {
+            pageNum: pg,
+            searchKeyword: searchKeyword
+        },
+        success: function (result) {
+            $(".admin-mission-table-wrapper").html(result);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
 
 
 function GetAllCities() {
@@ -642,8 +675,9 @@ function AdminAddEditMission(e) {
             data: formData,
             processData: false,
             contentType: false,
-            success: function (result) {
-               
+            complete: function (result) {
+                $(".dismiss-modal-button").click();
+                toastr.success("Changes has been saved...!!");
             },
             error: function (xhr, status, error) {
                 
@@ -823,3 +857,54 @@ function StoryReject(e) {
     });
 }
 
+function adminAddEditBanner(e) {
+    var bannerId = parseInt($(e).attr("data-bannerid"));
+    console.log("Banner id isssssssssssssssssssssssssss ",bannerId);
+    var form = document.getElementById(`adminBannerAddEditForm-${bannerId}`);
+    var formData = new FormData(form);
+    console.log("hello from the form data : ", formData);
+    //set the image to img src
+    var imgSrc = "";
+    var fileInput = document.querySelector(`#files-${bannerId}`);
+    var file = fileInput.files[0];
+    readAsDataURL(file)
+        .then(function (imgSrc) {
+            console.log("The image src is : ", imgSrc);
+            formData.set("image", imgSrc.toString());
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/AddEditBanner",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    console.log(result);
+                    $(".dismiss-modal-btn").click();
+                    $(".banner-table-wrapper").html(result);
+                    toastr.success("Changes has been saved...!!");
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+
+    
+}
+
+function readAsDataURL(file) {
+    return new Promise(function (resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            resolve(event.target.result);
+        };
+        reader.onerror = function (event) {
+            reject(event.target.error);
+        };
+        reader.readAsDataURL(file);
+    });
+}

@@ -26,6 +26,7 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         public bool AddNewMission(AdminMissionVM missionModel);
         public bool EditMission(AdminMissionVM missionModel);
         public AdminMissionAddButtonDataModel GetAddMissionButtonDataModel();
+        public IQueryable<AdminMissionVM> getAllMissionData();
 
 
         public PageList<AdminMissionThemeVM> GetMissionThemeData();
@@ -50,6 +51,8 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         public bool StoryReject(long id);
 
         public IQueryable<AdminBannerViewModel> getBannerData();
+        public bool EditBanner(AdminBannerViewModel bannerModel);
+        public bool AddBanner(AdminBannerViewModel bannerModel);
 
 
 

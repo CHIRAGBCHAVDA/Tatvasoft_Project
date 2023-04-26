@@ -1,0 +1,29 @@
+﻿@using CIPlatform.Models.AdminViewModels
+@model List<AdminMissionVM>
+
+
+@foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MissionTitle</td>
+                        @if (item.MissionTypeId == 1)
+                        {
+                            <td class="">Time</td>
+                        }
+                        else
+                        {
+                            <td class="">Goal</td>
+                        }
+                        <td>@item.StartDate.ToString().Substring(0,11)</td>
+                        <td>@item.EndDate.ToString().Substring(0,11)</td>
+                        <td>
+                            <a href="" class="fst-normal text-decoration-none" data-bs-toggle="modal" data-bs-target="#AdminAddEditModal-@item.MissionId" onclick="getMissionSkills(this)" data-missionid="@item.MissionId">
+                                <i class="bi text-orange bi-pencil-square me-2"></i>
+                            </a>
+                            <partial name="_AdminMissionAddForm" model="@item" />
+                            <a href="" id="deleteTimebasedTimesheet">
+                                <i class="text-secondary bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }

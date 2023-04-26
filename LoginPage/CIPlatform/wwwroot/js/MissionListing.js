@@ -275,6 +275,7 @@ $(document).on('change', function () {
         getBadge();
     });
     $('.theme-checkbox').on('change', function () {
+        debugger
         getBadge();
     });
     $('.skill-checkbox').on('change', function () {
@@ -383,6 +384,7 @@ function getBadge() {
     });
 
     $('.theme-checkbox:checked').each(function () {
+        debugger;
         var title = $(this).val();
         if (selectedThemes.includes(title.toString())) {
             var badge = $('<div>', {
