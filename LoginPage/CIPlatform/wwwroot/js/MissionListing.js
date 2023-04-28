@@ -608,7 +608,6 @@ $(document).on('click', '#add-rm-fav-div', function () {
             mID: mID
         },
         success: function (result) {
-            debugger
             //$("#button-to-fav").html("");
             if (result == 0) {
                 console.log("ADD BUTTON IS ADDED RETURNED 1");

@@ -14,10 +14,10 @@
                 <div class="d-flex mt-3 w-100">
                     <div class="pe-5 align-self-center">
                                 <label for="avatar-upload-@Model.UserId" style="height:100px">
-                                    <img src="~/assets/user1.png" id="admin-user-editImg-@Model.UserId" class="rounded-circle user-img-left h-100" />
+                                    <img src="~/assets/user1.png" id="admin-user-editImg-@Model.UserId" style="height:100px;width:100px" class="rounded-circle user-img-left h-100" />
                                 </label>
-                                <input type="file" id="avatar-upload-@Model.UserId" style="display: none;">
-                                <input type="hidden" asp-for="UserId" value="@Model.UserId" id="admin-userEdit-userid-@Model.UserId"/>
+                                <input type="file" class="admin-user-image-input" data-userid="@Model.UserId" id="avatar-upload-@Model.UserId" style="display: none;">
+                                <input type="hidden" asp-for="UserId" value="@Model.UserId"  id="admin-userEdit-userid-@Model.UserId"/>
                     </div>
                     <div class="d-flex flex-column ms-3 w-100">
                         <div class="d-flex w-100">

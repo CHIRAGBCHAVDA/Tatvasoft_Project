@@ -111,7 +111,7 @@ namespace CIPlatform.DataAccess.Repository
                         }
 
                     }
-                    if (storyVideoUrl != "")
+                    if (storyVideoUrl != null)
                     {
                         var strArr = storyVideoUrl.Split(',');
                         foreach (var str in strArr)
@@ -216,7 +216,7 @@ namespace CIPlatform.DataAccess.Repository
                     }
 
                     
-                    if (storyVideoUrl != "")
+                    if (storyVideoUrl != null)
                     {
                         var strArr = storyVideoUrl.Split(',');
 

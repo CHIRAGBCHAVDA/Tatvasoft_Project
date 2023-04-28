@@ -101,8 +101,15 @@ namespace CIPlatform.DataAccess.Repository
             _db.Comments.Add(toAdd);
         }
 
-        public void ApplyMission(long missionId, long userId)
+        public bool ApplyMission(long missionId, long userId)
         {
+            var user = _db.Users.First(user => user.UserId == userId);
+            if (user.Status ==false)
+            {
+                return false;
+            }
+
+
             var checkIfExist = _db.MissionApplications.Where(mapp => mapp.UserId == userId && mapp.MissionId == missionId).FirstOrDefault();
             if (checkIfExist == null)
             {
@@ -115,8 +122,10 @@ namespace CIPlatform.DataAccess.Repository
                     CreatedAt = DateTime.Now
                 };
                 _db.MissionApplications.Add(missionApplication);
-
+                return true;
             }
+
+            return false;
         }
 
         public void UpdateRate(MissionRating missionRating)

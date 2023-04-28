@@ -9,7 +9,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="AdminAddEditForm-@Model.MissionId">
+        <form id="AdminAddEditForm-@Model.MissionId" class="admin-add-edit-form">
           <div class="row">
               <div class="col-md-6 mb-3">
                   <label asp-for="MissionTitle"  class="form-label">Mission Title</label>
@@ -279,7 +279,7 @@
       <div class="row">
         <div class="col-md-6 mb-3">
           <label asp-for="StartDate"class="form-label">Start Date</label>
-          <input asp-for="StartDate" id="startdate-@Model.MissionId" type="date" class="form-control" />
+          <input asp-for="StartDate" id="startdate-@Model.MissionId" type="date" class="form-control" onchange="setEndDateMin()" />
           <span asp-validation-for="StartDate" class="text-danger"></span>
         </div>
 
@@ -309,3 +309,12 @@
 
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+<script>
+    function setEndDateMin() {
+  var startDateInput = document.getElementById('startdate-@Model.MissionId');
+  var endDateInput = document.getElementById('enddate-@Model.MissionId');
+  endDateInput.min = startDateInput.value;
+}
+</script>

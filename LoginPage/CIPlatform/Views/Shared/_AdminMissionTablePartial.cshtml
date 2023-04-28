@@ -14,8 +14,12 @@
                         {
                             <td class="">Goal</td>
                         }
-                        <td>@item.StartDate.ToString().Substring(0,11)</td>
-                        <td>@item.EndDate.ToString().Substring(0,11)</td>
+                        @*<td>@item.StartDate.ToString().Substring(0,11)</td>
+                        <td>@item.EndDate.ToString().Substring(0,11)</td>*@
+                        <td>@(string.IsNullOrEmpty(item.StartDate.ToString()) ? "" : item.StartDate.ToString().Substring(0, Math.Min(item.StartDate.ToString().Length, 11)))</td>
+                        <td>@(string.IsNullOrEmpty(item.EndDate.ToString()) ? "" : item.EndDate.ToString().Substring(0, Math.Min(item.EndDate.ToString().Length, 11)))</td>
+
+
                         <td>
                             <a href="" class="fst-normal text-decoration-none" data-bs-toggle="modal" data-bs-target="#AdminAddEditModal-@item.MissionId" onclick="getMissionSkills(this)" data-missionid="@item.MissionId">
                                 <i class="bi text-orange bi-pencil-square me-2"></i>

@@ -14,7 +14,7 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         public List<CommentUserInfo> CommentByMissionUserId(long missionId);
         public void AddComment(string comment, long missionId,long userId);
 
-        public void ApplyMission(long missionId, long userId);
+        public bool ApplyMission(long missionId, long userId);
         public void UpdateRate(MissionRating missionRating);
         public void addRate(MissionRating missionRating);
     }

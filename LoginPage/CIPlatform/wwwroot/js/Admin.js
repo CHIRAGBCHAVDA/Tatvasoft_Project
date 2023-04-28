@@ -531,31 +531,48 @@ function UpdateUser(e) {
         event.preventDefault();
 
         var formData = new FormData(form);
-
-        $.ajax({
-            type: "POST",
-            url: addEditUrl,
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (result) {
-                console.log("Going to console the result");
-                console.log(result);
-                //$(".admin-main-wrapper").html(result);
-                if (result == true) {
-                    $("#v-pills-user-tab").click();
+        //set the image to img src
+        var imgSrc = "";
+        var fileInput = document.querySelector(`#avatar-upload-${UserId}`);
+        var file = fileInput.files[0];
+        readAsDataURL(file)
+            .then(function (imgSrc) {
+                if (imgSrc != null) {
+                    formData.set("avatar", imgSrc.toString());
                 }
                 else {
-                    return;
+                    formData.set("avatar", document.getElementById(`hidden-user-edit-avatar-${UserId}`).value);
                 }
+                console.log("The image src is : ", imgSrc);
 
-            },
-            error: function (xhr, status, error) {
-                console.log("IN error function");
-                console.log(error);
-                return;
-            }
-        });
+                $.ajax({
+                    type: "POST",
+                    url: addEditUrl,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        console.log("Going to console the result");
+                        console.log(result);
+                        //$(".admin-main-wrapper").html(result);
+                        if (result == true) {
+                            $("#v-pills-user-tab").click();
+                        }
+                        else {
+                            return;
+                        }
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("IN error function");
+                        console.log(error);
+                        return;
+                    }
+                });
+            });
+
+
+        
         
     });
 }
@@ -571,6 +588,8 @@ function adminAddCMS(e) {
         event.preventDefault();
 
         var formData = new FormData(form);
+
+
 
         $.ajax({
             type: "POST",
@@ -651,6 +670,7 @@ function AdminAddEditMission(e) {
     console.log("Mission Id",missionId);
     var form = document.getElementById(`AdminAddEditForm-${missionId}`);
     console.log(form);
+    
 
     var videourls = $(`#videourl-${missionId}`).val().toString().split(",");
     console.log("Video urls are : ",videourls);
@@ -669,24 +689,39 @@ function AdminAddEditMission(e) {
         formData.append("videourls", videourls[i]);
     }
 
+
         $.ajax({
             type: "POST",
             url: "/Admin/AddEditMission",
             data: formData,
             processData: false,
             contentType: false,
-            complete: function (result) {
-                $(".dismiss-modal-button").click();
-                toastr.success("Changes has been saved...!!");
+            success: function (result) {
+                if (result != null) {
+                    $(".admin-mission-table-wrapper").html(result);
+                    $(".dismiss-modal-button").click();
+                    toastr.success("Changes has been saved...!!");
+                    return;
+                }
+                else {
+                    return;
+                }
             },
             error: function (xhr, status, error) {
-                
+
                 console.log(error);
                 return;
             }
         });
+
+
+        
 }
 
+$(document).on('submit', 'form.admin-add-edit-form', function (event) {
+    event.preventDefault();
+    AdminAddEditMission(this);
+});
 
 
 //To get the country city theme availability and skills
@@ -858,18 +893,19 @@ function StoryReject(e) {
 }
 
 function adminAddEditBanner(e) {
+    debugger;
     var bannerId = parseInt($(e).attr("data-bannerid"));
     console.log("Banner id isssssssssssssssssssssssssss ",bannerId);
     var form = document.getElementById(`adminBannerAddEditForm-${bannerId}`);
     var formData = new FormData(form);
-    console.log("hello from the form data : ", formData);
+    console.log("bannerid",formData);
+    formData.set("BannerId", bannerId);
     //set the image to img src
     var imgSrc = "";
     var fileInput = document.querySelector(`#files-${bannerId}`);
     var file = fileInput.files[0];
     readAsDataURL(file)
         .then(function (imgSrc) {
-            console.log("The image src is : ", imgSrc);
             formData.set("image", imgSrc.toString());
 
             $.ajax({
@@ -879,7 +915,6 @@ function adminAddEditBanner(e) {
                 processData: false,
                 contentType: false,
                 success: function (result) {
-                    console.log(result);
                     $(".dismiss-modal-btn").click();
                     $(".banner-table-wrapper").html(result);
                     toastr.success("Changes has been saved...!!");
@@ -897,6 +932,9 @@ function adminAddEditBanner(e) {
 }
 
 function readAsDataURL(file) {
+    if (!(file instanceof Blob)) {
+        return Promise.resolve(null);
+    }
     return new Promise(function (resolve, reject) {
         var reader = new FileReader();
         reader.onload = function (event) {
@@ -1018,4 +1056,15 @@ function bannerDelete(e) {
 
 
 
+$(document).on('change', '.admin-user-image-input', function () {
+    debugger
+    var userid = $(this).attr("data-userid");
+    var fileInput = document.getElementById($(this).attr("id"));
+    var file = fileInput.files[0];
+    readAsDataURL(file)
+        .then(function (imgSrc) {
+            $(`#admin-user-editImg-${userid}`).attr("src", imgSrc);
+        });
+
+});
 

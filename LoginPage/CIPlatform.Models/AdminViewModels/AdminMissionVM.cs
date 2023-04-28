@@ -34,8 +34,10 @@ namespace CIPlatform.Models.AdminViewModels
         public DateTime? RegistrationDeadline { get; set; }
         public long? Goal { get; set; }
         public string? GoalObjective { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime? StartDate { get; set; } = DateTime.Now;
+        //public DateTime? EndDate { get; set; }
+        [Compare(nameof(StartDate), ErrorMessage = "End Date must be greater than or equal to Start Date.")]
+        public DateTime? EndDate { get; set; } = DateTime.Now;
 
         public List<Country> Countries { get; set; } = new List<Country>();
         public List<City> Cities { get; set; } = new List<City>();

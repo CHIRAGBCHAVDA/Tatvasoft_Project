@@ -65,6 +65,11 @@ namespace CIPlatform.Controllers
         {
             return View();
         }
+
+        public IActionResult GetBanner()
+        {
+            return PartialView("_HomeBanner",_unitOfWork.AdminRepo.getBannerData().ToList());
+        }
         [HttpPost]
         public IActionResult ResetPassword(User user)
         {
@@ -125,6 +130,15 @@ namespace CIPlatform.Controllers
                 if (!string.IsNullOrEmpty(returnUrl))
                 {
                     return Redirect(returnUrl);
+                }
+                else if (dbUser.UserId==1)
+                {
+                    HttpContext.Session.SetString("isAdmin", "true");
+                    return RedirectToAction("AdminPage", "Admin");
+                }
+                else if (string.IsNullOrEmpty(dbUser.ProfileText))
+                {
+                    return RedirectToAction("UserEdit", "User");
                 }
                 else
                 {
@@ -198,7 +212,7 @@ namespace CIPlatform.Controllers
         {
             var client = new SmtpClient("smtp.gmail.com", 587);
             client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential("chiragchavda.tatvasoft@gmail.com", "orltrydyhfxgxdrz");
+            client.Credentials = new NetworkCredential("chiragchavda.tatvasoft@gmail.com", "xyivzeubzckqahvi");
             client.EnableSsl = true;
 
             var message = new MailMessage();
@@ -215,7 +229,7 @@ namespace CIPlatform.Controllers
 
         public IActionResult PolicyPage()
         {
-            return View();
+            return View(_unitOfWork.AdminRepo.GetCmsData().Records);
         }
 
 

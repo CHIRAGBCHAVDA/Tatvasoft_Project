@@ -21,8 +21,12 @@ namespace CIPlatform.Controllers
         }
         public IActionResult AdminPage()
         {
-            var userData = _unitOfWork.AdminRepo.GetUserData();
-            return View(userData);
+            if (HttpContext.Session.GetString("isAdmin")!=null)
+            {
+                var userData = _unitOfWork.AdminRepo.GetUserData();
+                return View(userData);
+            }
+            return RedirectToAction("PlatformLanding", "MissionListing");
         }
 
         public IActionResult GetPartialUser()
@@ -348,18 +352,19 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public IActionResult AddEditMission(AdminMissionVM missionModel)
         {
-
+            var isSuccess = false;
             if (missionModel.MissionId == 0)
             {
                 //add
-                var isSuccess = _unitOfWork.AdminRepo.AddNewMission(missionModel);
+                isSuccess = _unitOfWork.AdminRepo.AddNewMission(missionModel);
             }
             else
             {
                 //edit
-                var isSuccess = _unitOfWork.AdminRepo.EditMission(missionModel);
+                isSuccess = _unitOfWork.AdminRepo.EditMission(missionModel);
             }
-
+            if(isSuccess)
+            return PartialView("_AdminMissionTablePartial", _unitOfWork.AdminRepo.getAllMissionData().Skip(0).Take(10).ToList());
             return null;
         }
 

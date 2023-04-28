@@ -18,11 +18,19 @@
               <div class="m-auto w-75">
                 <div class="d-flex mt-3 w-100">
                     <div class="pe-5 align-self-center">
-                                <label for="avatar-upload">
-                                    <img src="@Model.Avatar" id="admin-user-editImg-@Model.UserId" class="rounded-circle user-img-left" />
+                                <label for="avatar-upload-@Model.UserId">
+                                    @if (!string.IsNullOrEmpty(Model.Avatar))
+                                    {
+                                        <img src="@Model.Avatar" id="admin-user-editImg-@Model.UserId" style="height:100px;width:100px" class="rounded-circle user-img-left" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/assets/user1.png" id="admin-editImg-@Model.UserId" style="height:100px;width:100px" class="rounded-circle user-img-left h-100" />
+                                    }
                                 </label>
-                                <input type="file" id="avatar-upload-@Model.UserId" style="display: none;">
+                                <input type="file" value="@Model.Avatar" class="admin-user-image-input" data-userid="@Model.UserId" id="avatar-upload-@Model.UserId" style="display: none;">
                                 <input type="hidden" asp-for="UserId" value="@Model.UserId" id="admin-userEdit-userid-@Model.UserId"/>
+                                <input type="hidden" value="@Model.Avatar" id="hidden-user-edit-avatar-@Model.UserId" />
                     </div>
                     <div class="d-flex flex-column ms-3 w-100">
                         <div class="d-flex w-100">

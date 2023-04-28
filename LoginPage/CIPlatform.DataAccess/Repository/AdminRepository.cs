@@ -34,7 +34,7 @@ namespace CIPlatform.DataAccess.Repository
             });
             var cmsData = new PageList<AdminCmsVM>()
             {
-                Records = cmsRecords.ToList(),
+                Records = cmsRecords.Take(10).ToList(),
                 Count = cmsRecords.Count()
             };
 
@@ -108,7 +108,7 @@ namespace CIPlatform.DataAccess.Repository
                 LongDescription = mission.Description,
                 VideoUrl = mission.MissionMedia.AsQueryable().Where(media => media.MediaType.Equals("vid")).Select(url => url.MediaPath).ToList(),
                 Photos = mission.MissionMedia.AsQueryable().Where(media => media.MediaType.Equals("img")).Select(src => src.MediaPath).ToList(),
-                StartDate = mission.StartDate,
+                StartDate = (DateTime)mission.StartDate,
                 EndDate = mission.EndDate,
             });
 
@@ -164,7 +164,7 @@ namespace CIPlatform.DataAccess.Repository
 
             var userData = new PageList<AdminUserVM>()
             {
-                Records = userRecords.ToList(),
+                Records = userRecords.Take(10).ToList(),
                 Count = userRecords.Count()
             };
 
@@ -501,7 +501,7 @@ namespace CIPlatform.DataAccess.Repository
             });
             var toReturn = new PageList<AdminMissionThemeVM>()
             {
-                Records = missionThemes.ToList(),
+                Records = missionThemes.Take(10).ToList(),
                 Count = missionThemes.Count()
             };
 
@@ -781,7 +781,7 @@ namespace CIPlatform.DataAccess.Repository
                 LongDescription = mission.Description,
                 VideoUrl = mission.MissionMedia.AsQueryable().Where(media => media.MediaType.Equals("vid")).Select(url => url.MediaPath).ToList(),
                 Photos = mission.MissionMedia.AsQueryable().Where(media => media.MediaType.Equals("img")).Select(src => src.MediaPath).ToList(),
-                StartDate = mission.StartDate,
+                StartDate = (DateTime)mission.StartDate,
                 EndDate = mission.EndDate,
             });
             return missionRecords;

@@ -1,5 +1,6 @@
 ﻿<script src="~/js/tempJS.js"> </script>
-
+@using CIPlatform.Models.AdminViewModels
+@model List<AdminCmsVM>
 
 
 <partial name="_Header" />
@@ -14,7 +15,13 @@
             <div class="col-3 sticky-top" id="policy-leftnav">
              
                 <nav class="nav flex-column">
-                
+                    @foreach (var item in Model)
+                    {
+                        <a class="nav-link border-bottom justify-content-between d-flex fst-normal text-secondary text-decoration-none policy-link" href="#Item-@item.CMSId">
+                            <span>@item.Title</span><span class="dropdown-arrow">></span>
+                        </a>
+                    }
+                @*
                     <a class="nav-link border-bottom justify-content-between d-flex fst-normal text-secondary text-decoration-none policy-link" href="#introduction">
                         <span>Introduction</span><span class="dropdown-arrow">></span>
                     </a>
@@ -54,7 +61,7 @@
                         </a>
                         <a class="nav-link" href="#Deleting-Your-Personal-Information">Deleting Your Personal Information</a>
                         <a class="nav-link" href="#Updates-to-This-Policy">Updates to This Policy</a>
-                    </div>
+                    </div>*@
                 </nav>
             </div>
             <div class="col-9 h-100 overflow-y-auto" id="policy-rightcontent">
@@ -62,7 +69,16 @@
                      data-bs-spy="scroll"
                      data-bs-target=".scrollspy-example">
                     <div>
-                        <section id="introduction">
+                        @foreach (var item in Model)
+                        {
+                            <section id="Item-@item.CMSId">
+                            <h2>@item.Title</h2>
+                            <div>@Html.Raw(item.Description)</div>
+                            </section>
+                            
+                        }
+
+                       @* <section id="introduction">
                             <h2>Introduction</h2>
                             <p>
                                 We are committed to protecting your privacy and personal information. This Privacy Policy explains how we collect, use, and protect your data, and outlines your rights as a user of our website and services. We value your trust and take our responsibilities regarding your privacy seriously.
@@ -179,7 +195,7 @@
                             <h6 id="Updates-to-This-Policy">Updates to This Policy</h6>
                             <p>We may update this Privacy Policy from time to time to reflect changes in our services or legal requirements. Any updates will be posted on this page, and we encourage you to review this Policy periodically.</p>
 
-                        </section>
+                        </section>*@
                     </div>
                 </div>
             </div>

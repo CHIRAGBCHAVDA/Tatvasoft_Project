@@ -333,14 +333,21 @@ namespace CIPlatform.Controllers
         {
             var UserId = long.Parse(HttpContext.Session.GetString("userId"));
 
-            _unitOfWork.MissionRepo.ApplyMission(missionId, UserId);
-            _unitOfWork.Save();
+            var isSuccess = _unitOfWork.MissionRepo.ApplyMission(missionId, UserId);
+            if (isSuccess)
+            {
+                _unitOfWork.Save();
+            }
+            else
+            {
+                TempData["user-inactive"] = "You're currently marked as INACTIVE";
+            }
 
             myMissionAndUser myuser = new myMissionAndUser()
             {
                 myMission = missionListingCards.Where(m => m.mission.MissionId == missionId).FirstOrDefault(),
                 Users = _unitOfWork.User.GetAll(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList(),
-                IsApplied = true
+                IsApplied = isSuccess ? true : false
             };
 
             return PartialView("_VolunteerMissionRightUpper", myuser);
