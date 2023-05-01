@@ -28,7 +28,7 @@ namespace CIPlatform.Models.AdminViewModels
         [Required(ErrorMessage = "Enter A valid Password")]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "This Field is required")]
+        
         [Compare("Password", ErrorMessage = "Password and Confirm Password must be matched")]
         public string ConfirmPassword { get; set; }
 

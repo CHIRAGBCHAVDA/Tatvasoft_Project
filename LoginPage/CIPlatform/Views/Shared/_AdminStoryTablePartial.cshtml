@@ -8,7 +8,7 @@
         <td class="">@item.FullName</td>
         <td>@item.MissionTitle</td>
         <td>
-            <a href="https://localhost:44383/StoryListing/StoryDetail?missionId=@item.MissionId&storyId=@item.StoryId&userId=1" target="_blank" id="" class="btn rounded-pill fst-normal text-decoration-none border-orange bg-white text-orange px-3 py-0 me-1">
+            <a href="https://localhost:44383/StoryListing/StoryDetail?missionId=@item.MissionId&storyId=@item.StoryId&userId=@item.UserId" target="_blank" id="" class="btn rounded-pill fst-normal text-decoration-none border-orange bg-white text-orange px-3 py-0 me-1">
                 View
             </a>
             <button class="btn bg-white border-0 p-0 m-0 fst-normal text-decoration-none" data-storyid="@item.StoryId" onclick="StoryApprove(this)">

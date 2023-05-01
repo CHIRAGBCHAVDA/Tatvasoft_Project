@@ -491,5 +491,14 @@ background-image: url("../assets/left.png");
 }
 
 .admin-banner-card img{
-    height: 100px;
+    height: 150px;
+}
+
+.admin-sidebar-btn:hover {
+    background-color: white !important;
+    color: orange !important;
+}
+.admin-sidebar-btn:hover i {
+    background-color: white !important;
+    color: orange !important;
 }

@@ -352,17 +352,22 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public IActionResult AddEditMission(AdminMissionVM missionModel)
         {
+            var temp = ModelState.IsValid;
             var isSuccess = false;
-            if (missionModel.MissionId == 0)
+            if (ModelState.IsValid)
             {
-                //add
-                isSuccess = _unitOfWork.AdminRepo.AddNewMission(missionModel);
+                if (missionModel.MissionId == 0)
+                {
+                    //add
+                    isSuccess = _unitOfWork.AdminRepo.AddNewMission(missionModel);
+                }
+                else
+                {
+                    //edit
+                    isSuccess = _unitOfWork.AdminRepo.EditMission(missionModel);
+                }
             }
-            else
-            {
-                //edit
-                isSuccess = _unitOfWork.AdminRepo.EditMission(missionModel);
-            }
+            
             if(isSuccess)
             return PartialView("_AdminMissionTablePartial", _unitOfWork.AdminRepo.getAllMissionData().Skip(0).Take(10).ToList());
             return null;

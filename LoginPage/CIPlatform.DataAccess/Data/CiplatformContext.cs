@@ -1159,6 +1159,8 @@ namespace CIPlatform.Data
                     .HasColumnType("text")
                     .HasColumnName("profile_text");
 
+                entity.Property(e => e.Role).HasColumnName("role");
+
                 entity.Property(e => e.Status)
                     .IsRequired()
                     .HasColumnName("status")

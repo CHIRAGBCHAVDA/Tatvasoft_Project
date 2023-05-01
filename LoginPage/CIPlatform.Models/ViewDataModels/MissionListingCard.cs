@@ -18,6 +18,7 @@ namespace CIPlatform.Models.ViewDataModels
         //public bool isFav { get; set; }
         //public long? UserId { get; set; }
         public FavouriteMission favourite { get; set; }
+        public DateTime? RegistrationDeadline { get; set; }
 
     }
 }

@@ -1,13 +1,11 @@
 ﻿@model List<CIPlatform.Models.ViewDataModels.StoryListingViewModel>
 
-    @{
-        string myUserId = Context.Session.GetString("userId");
-    }
 
 
 <div class="row storytempchavda">
     @foreach(var item in Model)
     {
+        
         <div class="col-12 col-md-6 col-lg-4  story-card-wrapper">
             <div class="card rounded shadow m-1 card-to-scale h-100">
                 <div class="card img-to-overlay">
@@ -21,7 +19,7 @@
                     }
                     <div class="card-img-overlay d-flex flex-column">
                         <div class="text-center story-listing-btn-to-hide m-auto">
-                            <button class="btn border rounded-pill px-4 py-2 m-auto text-light fw-bold view-storydetails-btn" data-mid="@item.Stories.MissionId" data-uid="@item.Stories.UserId" data-sid="@item.Stories.StoryId" onclick="viewStoryDetails(this)">View Details &nbsp; &nbsp; <i class="bi bi-arrow-right"></i></button>
+                            <button class="btn border rounded-pill px-4 py-2 m-auto text-light fw-bold view-storydetails-btn" data-mid="@item.Stories.MissionId" data-uid="@item.Stories.User.UserId" data-sid="@item.Stories.StoryId" onclick="viewStoryDetails(this)">View Details &nbsp; &nbsp; <i class="bi bi-arrow-right"></i></button>
                         </div>
                         <div class="story-listing-card-theme text-dark fw-lighter text-center" style="margin-top:auto;margin-bottom:-2rem">
                             <span class="rounded-pill px-2 bg-light">@item.Theme</span>

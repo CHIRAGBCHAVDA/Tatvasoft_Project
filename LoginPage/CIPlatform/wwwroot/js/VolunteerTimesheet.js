@@ -306,12 +306,12 @@ $(document).ready(function () {
         let newUserApplied = new Date(userAppliedDate).toLocaleDateString();
         let today = formatDate(new Date());
         console.log("lets solve \n newdate >= newUserApplied && newdate <= today \n ", newdate, newUserApplied, today);
-        if (newdate >= newUserApplied && newdate <= today) {
-            console.log("yes you're right");
-        } else {
-            toastr.error("Date must be between user applied date and today's date..!!");
-            return;
-        }
+        //if (newdate >= newUserApplied && newdate <= today) {
+        //    console.log("yes you're right");
+        //} else {
+        //    toastr.error("Date must be between user applied date and today's date..!!");
+        //    return;
+        //}
 
 
 

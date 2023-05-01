@@ -1,10 +1,24 @@
-﻿
-
-var searchKeyword = "";
+﻿var searchKeyword = "";
 var sources = [];
 var pdfs = [];
 
 $(document).ready(function () {
+
+    $('.admin-sidebar-btn').eq(0).addClass('active');
+
+    // add active class on hover
+    
+
+    // add active class on click
+    $('.admin-sidebar-btn').on('click', function () {
+        // remove active class from all buttons
+        $('.admin-sidebar-btn').removeClass('active');
+        // add active class to the clicked button
+        $(this).addClass('active');
+        console.log("This is the buttpon to add class active",$(this));
+    });
+
+
     getUserFilter(1);
     //getCmsFilter(1);
 
@@ -23,6 +37,7 @@ $(document).ready(function () {
                     success: function (result) {
                         console.log(result);
                         $(".admin-main-wrapper").html(result);
+                        $('.admin-sidebar-btn').eq(0).addClass('active');
                     },
                     error: function (xhr, status, error) {
                         console.log(error);
@@ -40,6 +55,7 @@ $(document).ready(function () {
                     success: function (result) {
                         console.log(result);
                         $(".admin-main-wrapper").html(result);
+                        $('.admin-sidebar-btn').eq(1).addClass('active');
                     },
                     error: function (xhr, status, error) {
                         console.log(error);
@@ -57,6 +73,7 @@ $(document).ready(function () {
                     success: function (result) {
                         console.log(result);
                         $(".admin-main-wrapper").html(result);
+                        $('.admin-sidebar-btn').eq(2).addClass('active');
                     },
                     error: function (xhr, status, error) {
                         console.log(error);
@@ -74,6 +91,7 @@ $(document).ready(function () {
                     success: function (result) {
                         console.log(result);
                         $(".admin-main-wrapper").html(result);
+                        $('.admin-sidebar-btn').eq(3).addClass('active');
                     },
                     error: function (xhr, status, error) {
                         console.log(error);
@@ -91,6 +109,7 @@ $(document).ready(function () {
                     success: function (result) {
                         console.log(result);
                         $(".admin-main-wrapper").html(result);
+                        $('.admin-sidebar-btn').eq(4).addClass('active');
                     },
                     error: function (xhr, status, error) {
                         console.log(error);
@@ -108,6 +127,7 @@ $(document).ready(function () {
                     success: function (result) {
                         console.log(result);
                         $(".admin-main-wrapper").html(result);
+                        $('.admin-sidebar-btn').eq(5).addClass('active');
                     },
                     error: function (xhr, status, error) {
                         console.log(error);
@@ -125,6 +145,7 @@ $(document).ready(function () {
                     success: function (result) {
                         console.log(result);
                         $(".admin-main-wrapper").html(result);
+                        $('.admin-sidebar-btn').eq(6).addClass('active');
                     },
                     error: function (xhr, status, error) {
                         console.log(error);
@@ -142,6 +163,7 @@ $(document).ready(function () {
                     success: function (result) {
                         console.log(result);
                         $(".admin-main-wrapper").html(result);
+                        $('.admin-sidebar-btn').eq(7).addClass('active');
                     },
                     error: function (xhr, status, error) {
                         console.log(error);
@@ -700,6 +722,8 @@ function AdminAddEditMission(e) {
                 if (result != null) {
                     $(".admin-mission-table-wrapper").html(result);
                     $(".dismiss-modal-button").click();
+                    $(".button-to-close").click();
+                    $(".modal-backdrop").remove();
                     toastr.success("Changes has been saved...!!");
                     return;
                 }
@@ -708,7 +732,7 @@ function AdminAddEditMission(e) {
                 }
             },
             error: function (xhr, status, error) {
-
+                toastr.error("End date must be greater than start date");
                 console.log(error);
                 return;
             }
@@ -893,7 +917,7 @@ function StoryReject(e) {
 }
 
 function adminAddEditBanner(e) {
-    debugger;
+    //debugger;
     var bannerId = parseInt($(e).attr("data-bannerid"));
     console.log("Banner id isssssssssssssssssssssssssss ",bannerId);
     var form = document.getElementById(`adminBannerAddEditForm-${bannerId}`);
@@ -1057,7 +1081,7 @@ function bannerDelete(e) {
 
 
 $(document).on('change', '.admin-user-image-input', function () {
-    debugger
+    //debugger
     var userid = $(this).attr("data-userid");
     var fileInput = document.getElementById($(this).attr("id"));
     var file = fileInput.files[0];

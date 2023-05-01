@@ -1,4 +1,5 @@
-﻿using CIPlatform.Data;
+﻿using CIPlatform.Authorization;
+using CIPlatform.Data;
 using CIPlatform.DataAccess.Repository.IRepository;
 using CIPlatform.Models;
 using CIPlatform.Models.ViewDataModels;
@@ -23,11 +24,10 @@ namespace CIPlatform.Controllers
             getFilterMs = missionListingCards;
 
         }
-
+        
         public IActionResult PlatformLanding()
         {
-            if (HttpContext.Session.GetString("email") != null)
-            {
+            
                 MissionListingHeader Model = new MissionListingHeader();
                 List<Country> country = _unitOfWork.Country.GetAll();
                 List<City> city = _unitOfWork.City.GetAll();
@@ -47,8 +47,8 @@ namespace CIPlatform.Controllers
 
                 return View(Model);
 
-            }
-            else return RedirectToAction("Index", "Home");
+            
+            
         }
 
         #region Get Cities Grid List
@@ -146,7 +146,6 @@ namespace CIPlatform.Controllers
             return 0;
         }
         #endregion
-
 
         public IActionResult VolunteeringMissionPage(int missionId)
         {
@@ -309,7 +308,7 @@ namespace CIPlatform.Controllers
         #region TO GET THE LIST OF USER FOR RECOMMENDATION
         public List<User> GetListOfUserRecommendation()
         {
-            var usersList = _unitOfWork.User.GetAll(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList();
+            var usersList = _unitOfWork.User.GetAll(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId")) && u.DeletedAt==null).ToList();
             return usersList;
         }
         #endregion

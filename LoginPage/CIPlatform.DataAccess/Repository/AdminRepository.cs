@@ -109,7 +109,7 @@ namespace CIPlatform.DataAccess.Repository
                 VideoUrl = mission.MissionMedia.AsQueryable().Where(media => media.MediaType.Equals("vid")).Select(url => url.MediaPath).ToList(),
                 Photos = mission.MissionMedia.AsQueryable().Where(media => media.MediaType.Equals("img")).Select(src => src.MediaPath).ToList(),
                 StartDate = (DateTime)mission.StartDate,
-                EndDate = mission.EndDate,
+                EndDate = (DateTime)mission.EndDate,
             });
 
             var missionData = new PageList<AdminMissionVM>()
@@ -129,7 +129,8 @@ namespace CIPlatform.DataAccess.Repository
                 MissionId = story.MissionId,
                 StoryTitle = story.Title,
                 FullName = story.User.FirstName + story.User.LastName,
-                MissionTitle = story.Mission.Title
+                MissionTitle = story.Mission.Title,
+                UserId = story.User.UserId,
             });
 
             var storyData = new PageList<AdminStoryVM>()
@@ -655,7 +656,8 @@ namespace CIPlatform.DataAccess.Repository
                 MissionId = story.MissionId,
                 StoryTitle = story.Title,
                 FullName = story.User.FirstName + story.User.LastName,
-                MissionTitle = story.Mission.Title
+                MissionTitle = story.Mission.Title,
+                UserId = story.User.UserId
             });
 
             return toReturn;
@@ -782,7 +784,7 @@ namespace CIPlatform.DataAccess.Repository
                 VideoUrl = mission.MissionMedia.AsQueryable().Where(media => media.MediaType.Equals("vid")).Select(url => url.MediaPath).ToList(),
                 Photos = mission.MissionMedia.AsQueryable().Where(media => media.MediaType.Equals("img")).Select(src => src.MediaPath).ToList(),
                 StartDate = (DateTime)mission.StartDate,
-                EndDate = mission.EndDate,
+                EndDate = (DateTime)mission.EndDate,
             });
             return missionRecords;
         }

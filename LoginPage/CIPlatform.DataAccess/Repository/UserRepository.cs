@@ -21,12 +21,23 @@ namespace CIPlatform.DataAccess.Repository
 
         public User login(string email,string password)
         {
+            
             var dbUser = _db.Users.FirstOrDefault(u => u.Email.Equals(email));
             if (dbUser != null && BCrypt.Net.BCrypt.Verify(password, dbUser.Password) && dbUser.DeletedAt==null)
             {
                 return dbUser;
             }
 
+            return null;
+        }
+
+        public Admin adminLogin(string email,string password)
+        {
+            var dbAdmin = _db.Admins.First(admin => admin.Email == email);
+            if (dbAdmin != null && BCrypt.Net.BCrypt.Verify(password, dbAdmin.Password))
+            {
+                return dbAdmin;
+            }
             return null;
         }
 

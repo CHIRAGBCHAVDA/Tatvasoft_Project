@@ -14,7 +14,6 @@ $(document).ready(function () {
 
     $("#storydetailbtn-tomission").on('click', function () {
         let mid = $(this).attr("data-missionid");
-        console.log("chiragbhai jovo to missionid shu aayu : " + mid)
         window.location.href = '/MissionListing/VolunteeringMissionPage?missionId=' + mid;
     });
 
@@ -49,7 +48,7 @@ $(document).ready(function () {
 
 
     $('#storySaveBtn').on('click', function (e) {
-        debugger;
+        //debugger;
         e.preventDefault();
         var storyMissionName = $("#storyMissionName").val();
         var storyTitle = $("#storyTitle").val();
@@ -677,7 +676,7 @@ function getFilter(pg) {
 
 
 function getEditorHTML() {
-    debugger
+    //debugger
     // Get the CKEditor instance
     const editor = CKEDITOR.instances['ck-editor'];
 
@@ -712,7 +711,7 @@ function viewStoryDetails(btn) {
     var mid = $(btn).attr("data-mid");
     var sid = $(btn).attr("data-sid");
     var uid = $(btn).attr("data-uid");
-
+    
     var url = '/StoryListing/StoryDetail?missionId=' + mid + '&storyId=' + sid + '&userId=' + uid;
     window.location.href = url;
 

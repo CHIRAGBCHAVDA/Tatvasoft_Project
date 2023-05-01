@@ -13,5 +13,7 @@ namespace CIPlatform.Models.AdminViewModels
         public string FullName { get; set; }
         public string MissionTitle { get; set; }
         public long MissionId { get; set; }
+        
+        public long? UserId { get; set; }
     }
 }

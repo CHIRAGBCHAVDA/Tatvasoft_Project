@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CIPlatform;
+using CIPlatform.Models.AdminViewModels;
 
 namespace CIPlatform.Models.AdminViewModels
 {
@@ -34,10 +36,23 @@ namespace CIPlatform.Models.AdminViewModels
         public DateTime? RegistrationDeadline { get; set; }
         public long? Goal { get; set; }
         public string? GoalObjective { get; set; }
+        [DataType(DataType.Date)]
         public DateTime? StartDate { get; set; } = DateTime.Now;
         //public DateTime? EndDate { get; set; }
-        [Compare(nameof(StartDate), ErrorMessage = "End Date must be greater than or equal to Start Date.")]
-        public DateTime? EndDate { get; set; } = DateTime.Now;
+
+        [DataType(DataType.Date)]
+        [CustomValidation(typeof(AdminMissionVM), "EndDateValidation")]
+        public DateTime EndDate { get; set; }
+
+        public static ValidationResult EndDateValidation(DateTime endDate, ValidationContext context)
+        {
+            var model = (AdminMissionVM)context.ObjectInstance;
+            if (endDate <= model.StartDate)
+            {
+                return new ValidationResult("End Date must be greater than Start Date");
+            }
+            return ValidationResult.Success;
+        }
 
         public List<Country> Countries { get; set; } = new List<Country>();
         public List<City> Cities { get; set; } = new List<City>();

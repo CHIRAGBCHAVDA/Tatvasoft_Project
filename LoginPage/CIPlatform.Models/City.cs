@@ -21,7 +21,9 @@ namespace CIPlatform.Models
 
         [JsonIgnore]
         public virtual Country? Country { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Mission> Missions { get; set; }
+        [JsonIgnore]
         public virtual ICollection<User> Users { get; set; }
     }
 }

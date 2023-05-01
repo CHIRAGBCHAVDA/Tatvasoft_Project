@@ -42,6 +42,7 @@ namespace CIPlatform.Models
         public DateTime? TokenCreatedAt { get; set; }
         public string? ManagerDetails { get; set; }
         public byte? AvailabilityId { get; set; }
+        public byte Role { get; set; }
 
         public virtual Availability? Availability { get; set; }
         public virtual City City { get; set; } = null!;

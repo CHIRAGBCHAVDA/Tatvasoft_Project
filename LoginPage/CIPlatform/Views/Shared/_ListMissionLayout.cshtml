@@ -8,7 +8,17 @@
                 <div class="col-md-4">
                     <div class="card">
                         @*"@item.ImageLink.Replace("file/d/", "uc?export=download&id=").Replace("/view?usp=sharing","")"*@
-                        <img src= "~/assets/Grow-Trees-On-the-path-to-environment-sustainability-2.png" class="img-fluid rounded-start" alt="...">
+                        @if (!string.IsNullOrEmpty(item.ImageLink))
+                        {
+                            <img src="@item.ImageLink" class="card-img-top" alt="..." style="height:250px">
+                        }
+                        else
+                        {
+                            <img src="~/assets/404-Page-image.png" class="card-img-top" alt="..." style="height:250px">
+                        }
+
+
+                        @*<img src= "~/assets/Grow-Trees-On-the-path-to-environment-sustainability-2.png" class="img-fluid rounded-start" alt="...">*@
                         <div class="card-img-overlay">
                             <div class="location-and-applied-tags d-flex justify-content-between">
 
@@ -156,7 +166,7 @@
                                 <div class="mission-list-footer-right mt-2 mx-auto">
                                     <div class="mission-submit-btn text-center">
                                         <button type="submit"
-                                            class="btn bg-white  rounded-pill px-4">
+                                            class="btn bg-white  rounded-pill px-4" onclick="volunteeringMissionDetails(@item.mission.MissionId)">
                                             Apply
                                             &nbsp; &nbsp;<img src="~/assets/right-arrow.png"
                                                           alt="">
@@ -208,3 +218,10 @@
         </div>
     </div>
 </div>
+
+
+<script>
+        function volunteeringMissionDetails(missionId) {
+        window.location.href = '@Url.Action("VolunteeringMissionPage","MissionListing")?missionId=' + missionId;
+    }
+</script>

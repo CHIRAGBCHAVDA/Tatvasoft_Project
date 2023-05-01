@@ -4,13 +4,19 @@
     <div class="mission-cards row  view-group" id="products">
         @foreach (var item in Model)
         {
+        
             <div class="item col-md-6 col-sm-12 col-lg-4 my-4">
                 <div class="card thumbnail shadow card-to-scale">
                     <div class="card">
                         @*"@item.ImageLink.Replace("file/d/", "uc?export=download&id=").Replace("/view?usp=sharing","")"*@
-
-                        <img src="~/assets/Grow-Trees-On-the-path-to-environment-sustainability-2.png"
-                         class="card-img-top" alt="...">
+                        @if (!string.IsNullOrEmpty(item.ImageLink))
+                        {
+                            <img src="@item.ImageLink" class="card-img-top" alt="..." style="height:200px">
+                        }
+                        else
+                        {
+                            <img src="~/assets/404-Page-image.png" class="card-img-top" alt="..." style="height:200px">
+                        }
 
                         <div class="card-img-overlay">
                             <div class="d-flex features-like-location flex-column align-items-end h-100 justify-content-between">
@@ -125,7 +131,7 @@
                                                 <img src="~/assets/deadline.png" alt="">
                                             </div>
                                             <div class="d-flex flex-column ">
-                                                <span>09/01/2019</span>
+                                                <span>@item.RegistrationDeadline</span>
                                                 <span class="fw-lighter">Deadline</span>
                                             </div>
                                         </div>

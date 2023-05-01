@@ -33,9 +33,11 @@ namespace CIPlatform.DataAccess.Repository
                 City = mission.City.Name,
                 MissionTheme = mission.MissionTheme.Title,
                 Skills = mission.MissionSkills.Select(missionSkills => missionSkills.Skill.SkillName),
-                ImageLink = mission.MissionMedia.Select(m => m.MediaPath).ToString(),
+                ImageLink = mission.MissionMedia.FirstOrDefault(m => m.MediaType.Equals("img")).MediaPath,
+            //ImageLink = mission.MissionMedia.First(m => m.MediaType.Equals("img")).Select(m => m.MediaPath).ToString(),
                 rating = mission.MissionRatings,
-                favourite = mission.FavouriteMissions.First()
+                favourite = mission.FavouriteMissions.First(),
+                RegistrationDeadline = mission.RegistrationDeadline
             });
 
             //var missionListingCard = from M in _db.Missions
@@ -86,7 +88,7 @@ namespace CIPlatform.DataAccess.Repository
                              comments = c,
                              users = u
                          };
-            return newcui.ToList();
+            return newcui.OrderByDescending(c => c.comments.CreatedAt).ToList();
         }
 
         public void AddComment(string comment, long missionId, long userId)
@@ -109,6 +111,8 @@ namespace CIPlatform.DataAccess.Repository
                 return false;
             }
 
+            var mission = _db.Missions.First(m => m.MissionId == missionId);
+            
 
             var checkIfExist = _db.MissionApplications.Where(mapp => mapp.UserId == userId && mapp.MissionId == missionId).FirstOrDefault();
             if (checkIfExist == null)
@@ -121,7 +125,13 @@ namespace CIPlatform.DataAccess.Repository
                     ApprovalStatusId = 1,
                     CreatedAt = DateTime.Now
                 };
+
                 _db.MissionApplications.Add(missionApplication);
+                if (mission.MissionTypeId == 1)
+                {
+                    mission.AvailableSeats = mission.AvailableSeats - 1;
+                    _db.Missions.Update(mission);
+                }
                 return true;
             }
 

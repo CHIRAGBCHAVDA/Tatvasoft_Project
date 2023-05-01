@@ -104,7 +104,7 @@ namespace CIPlatform.Controllers
         {
             if (HttpContext.Session.GetString("email") != null)
                 return View();
-            else return RedirectToAction("Index");
+            else return RedirectToAction("Index","Home");
         }
 
         [HttpPost]
@@ -125,6 +125,14 @@ namespace CIPlatform.Controllers
                 else
                 {
                     HttpContext.Session.SetString("userImage", "/assets/user1.png");
+                }
+                if (dbUser.Role == 1)
+                {
+                    HttpContext.Session.SetString("role", "Admin");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("role", "User");
                 }
 
                 if (!string.IsNullOrEmpty(returnUrl))

@@ -372,7 +372,7 @@ namespace CIPlatform.DataAccess.Repository
         {
             try
             {
-                var sql = $"UPDATE story SET story_status_id = 3 WHERE user_id = {userId} AND mission_id = {missionId} AND story_status_id = 1";
+                var sql = $"UPDATE story SET story_status_id = 2 WHERE user_id = {userId} AND mission_id = {missionId} AND story_status_id = 1";
                 _db.Database.ExecuteSqlRaw(sql);
                 return true;
             }
