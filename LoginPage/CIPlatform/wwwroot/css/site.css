@@ -239,11 +239,11 @@ background-image: url("../assets/left.png");
     }
 
 
-    .card-to-scale:hover{
+    /*.card-to-scale:hover{
         transform : scale(1.1);
         transition : 0.2s ease-in-out;
         z-index:5;
-    }
+    }*/
 .city-item {
     display: none;
 }

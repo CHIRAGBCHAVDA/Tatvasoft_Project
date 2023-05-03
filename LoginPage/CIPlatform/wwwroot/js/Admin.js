@@ -419,7 +419,8 @@ function getMissionThemeFilter(pg) {
             searchKeyword: searchKeyword
         },
         success: function (result) {
-            $("#admin-missiontheme-table-body-wrapper").html(result);
+            console.log(result);
+            $(".admin-missiontheme-table-body-wrapper").html(result);
         },
         error: function (xhr, status, error) {
             console.log(error);
@@ -693,9 +694,10 @@ function AdminAddEditMission(e) {
     var form = document.getElementById(`AdminAddEditForm-${missionId}`);
     console.log(form);
     
-
-    var videourls = $(`#videourl-${missionId}`).val().toString().split(",");
-    console.log("Video urls are : ",videourls);
+    if ($(`#videourl-${missionId}`) != null) {
+        var videourls = $(`#videourl-${missionId}`).val().toString().split(",");
+        console.log("Video urls are : ",videourls);
+    }
     
     var formData = new FormData(form);
     for (var i = 0; i < files.length; i++) {
@@ -732,8 +734,6 @@ function AdminAddEditMission(e) {
                 }
             },
             error: function (xhr, status, error) {
-                toastr.error("End date must be greater than start date");
-                console.log(error);
                 return;
             }
         });

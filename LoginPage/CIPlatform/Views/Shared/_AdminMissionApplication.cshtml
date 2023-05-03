@@ -16,8 +16,8 @@
             <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-missionapplication-query">
         </div>
     </div>
-    <div class="missionapplication-table mt-4">
-        <table class="table" style="">
+    <div class="missionapplication-table mt-4" id="admin-missionapplication-table-body-wrapper">
+        @*<table class="table" style="">
             <thead>
                 <tr>
                     <th scope="col">Mission Title</th>
@@ -28,8 +28,8 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody id="admin-missionapplication-table-body-wrapper">
-                <partial name="_AdminMissionApplicationTablePartial" model="@Model.Records" /> 
+            <tbody >*@
+                <partial name="_AdminMissionApplicationTablePartial" model="@Model" /> 
                 
 
                @* <tr>
@@ -79,7 +79,7 @@
                 </tr>*@
 
 
-
+@*
             </tbody>
         </table>
 
@@ -118,6 +118,6 @@
                 </ul>
             </nav>
 
-        </div>
+        </div>*@
     </div>
 </div>

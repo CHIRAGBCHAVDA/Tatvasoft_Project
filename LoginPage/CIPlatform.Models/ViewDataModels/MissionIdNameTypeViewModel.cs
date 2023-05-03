@@ -11,5 +11,6 @@ namespace CIPlatform.Models.ViewDataModels
         public long MissionId { get; set; }
         public string MissionName { get; set; }
         public bool IsGoalBased { get; set; }
+        public DateTime? enddate { get; set; }
     }
 }

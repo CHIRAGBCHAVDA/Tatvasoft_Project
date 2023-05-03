@@ -1,24 +1,38 @@
 ﻿@using CIPlatform.Models.AdminViewModels
-@model List<AdminUserVM>
+@model PageList<AdminUserVM>
 
-     @foreach (var item in Model)
-{
-    <tr>
-        <td>@item.FirstName</td>
-        <td>@item.LastName</td>
-        <td>@item.Email</td>
-        <td>@item.EmployeeId</td>
-        <td>@item.Department</td>
-        @if ((bool)item.Status)
+
+     <table class="table" style="">
+            <thead>
+                <tr>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Employee Id</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody class="">
+     @foreach (var item in Model.Records)
         {
-            <td class="text-success">Active</td>
-        }
-        else
-        {
-            <td class="text-danger">Inactive</td>
-        }
-        <td>
-            <a href="" class="fst-normal edit-user-btn text-decoration-none" data-bs-toggle="modal" data-bs-target="#myModal-@item.UserId" data-userid="@item.UserId"
+        <tr>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.Email</td>
+            <td>@item.EmployeeId</td>
+            <td>@item.Department</td>
+                @if ((bool)item.Status)
+                {
+                    <td class="text-success">Active</td>
+                }
+                else
+                {
+                    <td class="text-danger">Inactive</td>
+                }
+            <td>
+                <a href="" class="fst-normal edit-user-btn text-decoration-none" data-bs-toggle="modal" data-bs-target="#myModal-@item.UserId" data-userid="@item.UserId"
            data-firstname="@item.FirstName"
            data-lastname="@item.LastName"
            data-email="@item.Email"
@@ -29,13 +43,55 @@
            data-cityid="@item.CityId"
            data-countryid="@item.CountryId"
            data-profiletext="@item.ProfileText">
-                <i class="bi text-orange bi-pencil-square me-2">
-                </i>
-            </a>
-            <partial name="_AdminUserEditForm" model="@item" />
-            <button class="btn bg-white border-0 px-4 rounded-pill" data-userid="@item.UserId" onclick="userDelete(this)">
-                <i class="text-secondary bi bi-trash"></i>
-            </button>
-        </td>
-    </tr>
+                    <i class="bi text-orange bi-pencil-square me-2">
+                    </i>
+                </a>
+                <partial name="_AdminUserEditForm" model="@item" />
+                <button class="btn bg-white border-0 px-4 rounded-pill" data-userid="@item.UserId" onclick="userDelete(this)">
+                    <i class="text-secondary bi bi-trash"></i>
+                </button>
+            </td>
+        </tr>
+        }
+
+</tbody>
+        </table>
+
+@{
+    double d = Model.Count / 10.0;
+    double pages = Math.Ceiling(d);
 }
+
+
+        <div class="pagination-nav d-flex flex-row-reverse w-100">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item-user d-flex">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true"><<</span>
+                        </a>
+                    </li>
+                    <li class="page-item-user d-flex">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true"><</span>
+                        </a>
+                    </li>
+            @for (int i = 1; i <= @pages; i++)
+            {
+                            <li class="page-item-user" id="@i"><a class="page-link">@i</a></li>
+            }
+
+                    <li class="page-item-user d-flex">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">></span>
+                        </a>
+                    </li>
+                    <li class="page-item-user d-flex">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">>></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>

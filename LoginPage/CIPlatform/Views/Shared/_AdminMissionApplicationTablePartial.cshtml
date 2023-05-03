@@ -1,21 +1,74 @@
 ﻿@using CIPlatform.Models.AdminViewModels
-@model List<AdminMissionApplicationVM>
+@model PageList<AdminMissionApplicationVM>
 
- @foreach (var item in Model)
-{
-    <tr>
-        <td>@item.MissionTitle</td>
-        <td class="">@item.MissionId</td>
-        <td class="">@item.UserId</td>
-        <td class="">@item.UserName</td>
-        <td>@item.AppliedDate.ToString().Substring(0,11)</td>
-        <td>
-            <button class="btn bg-white border-0 p-0 m-0" data-missionapplicationid="@item.MissionApplicationId" class="fst-normal text-decoration-none" onclick="MissionApplicationApprove(this)">
-                <i class="bi bi-check-circle text-success"></i>
-            </button>
-            <button class="btn bg-white border-0 p-0 m-0" id="deleteTimebasedTimesheet" data-missionapplicationid="@item.MissionApplicationId" onclick="MissionApplicationReject(this)">
-                <i class="bi bi-x-circle text-danger"></i>
-            </button>
-        </td>
-    </tr>
+<table class="table" style="">
+    <thead>
+        <tr>
+            <th scope="col">Mission Title</th>
+            <th scope="col">Mission Id</th>
+            <th scope="col">User Id</th>
+            <th scope="col">User Name</th>
+            <th scope="col">Applied Date</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Records)
+        {
+            <tr>
+                <td>@item.MissionTitle</td>
+                <td class="">@item.MissionId</td>
+                <td class="">@item.UserId</td>
+                <td class="">@item.UserName</td>
+                <td>@item.AppliedDate.ToString().Substring(0,11)</td>
+                <td>
+                    <button class="btn bg-white border-0 p-0 m-0" data-missionapplicationid="@item.MissionApplicationId" class="fst-normal text-decoration-none" onclick="MissionApplicationApprove(this)">
+                        <i class="bi bi-check-circle text-success"></i>
+                    </button>
+                    <button class="btn bg-white border-0 p-0 m-0" id="deleteTimebasedTimesheet" data-missionapplicationid="@item.MissionApplicationId" onclick="MissionApplicationReject(this)">
+                        <i class="bi bi-x-circle text-danger"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+
+@{
+    double d = Model.Count / 10.0;
+    double pages = Math.Ceiling(d);
 }
+
+<div class="pagination-nav d-flex flex-row-reverse w-100">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item page-item-missionapplication d-flex">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true"><<</span>
+                </a>
+            </li>
+            <li class="page-item page-item-missionapplication d-flex">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true"><</span>
+                </a>
+            </li>
+            @for (int i = 1; i <= @pages; i++)
+            {
+                <li class="page-item page-item-missionapplication" id="@i"><a class="page-link">@i</a></li>
+            }
+            <li class="page-item page-item-missionapplication d-flex">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">></span>
+                </a>
+            </li>
+            <li class="page-item page-item-missionapplication d-flex">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">>></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>

@@ -20,8 +20,8 @@
             <button class="btn bg-white text-orange border-orange px-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#cmsAddModal-0"> <i class="bi bi-plus"></i> Add </button>
         </div>
     </div>
-    <div class="cms-table mt-4">
-        <table class="table" style="">
+    <div class="cms-table mt-4 admin-cms-table-body-wrapper">
+        @*<table class="table" style="">
             <thead>
                 <tr>
                     <th scope="col">Title</th>
@@ -29,8 +29,8 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody class="admin-cms-table-body-wrapper">
-                <partial name="_AdminCmsTablePartial" model="@Model.Records" />
+            <tbody class="">*@
+                <partial name="_AdminCmsTablePartial" model="@Model" />
                 @*@foreach (var item in Model.Records)
                 {
                     <tr>
@@ -55,7 +55,7 @@
                         </td>
                     </tr>
                 }*@
-            </tbody>
+            @*</tbody>
         </table>
 
 
@@ -94,7 +94,7 @@
                 </ul>
             </nav>
 
-        </div>
+        </div>*@
     </div>
 
     <partial name="_AdminCmsAddForm" model="new AdminCmsVM()" />

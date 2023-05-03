@@ -1,8 +1,19 @@
 ﻿@using CIPlatform.Models.AdminViewModels
-@model List<AdminMissionVM>
+@model PageList<AdminMissionVM>
 
 
-@foreach (var item in Model)
+<table class="table" style="">
+            <thead>
+                <tr>
+                    <th scope="col">Mission Title</th>
+                    <th scope="col">Mission Type</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody class="">
+@foreach (var item in Model.Records)
                 {
                     <tr>
                         <td>@item.MissionTitle</td>
@@ -31,3 +42,43 @@
                         </td>
                     </tr>
                 }
+
+ </tbody>
+        </table>
+
+          @{
+        double d = Model.Count / 10.0;
+        double pages = Math.Ceiling(d);
+    }
+
+    <div class="pagination-nav d-flex flex-row-reverse w-100">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item page-item-mission d-flex">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true"><<</span>
+                    </a>
+                </li>
+                <li class="page-item page-item-mission d-flex">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true"><</span>
+                    </a>
+                </li>
+                @for (int i = 1; i <= @pages; i++)
+                {
+                    <li class="page-item page-item-mission" id="@i"><a class="page-link">@i</a></li>
+                }
+                <li class="page-item page-item-mission d-flex">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">></span>
+                    </a>
+                </li>
+                <li class="page-item page-item-mission d-flex">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">>></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>

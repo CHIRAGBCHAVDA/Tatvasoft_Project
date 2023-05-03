@@ -1,26 +1,64 @@
 ﻿@using CIPlatform.Models.AdminViewModels
-@model List<AdminBannerViewModel>
+@model PageList<AdminBannerViewModel>
 
-@foreach (var item in @Model)
-        {
-            <div class="card mb-3 admin-banner-card">
-                <div class="row g-0 align-items-center">
-                    <div class="col-4 p-4 border-end text-center">
-                        <img src="@item.Image" class="" />
-                    </div>
-                    <div class="col-8">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Heading</h5>
-                            <p class="card-text">@item.ShortDescription</p>            
-                            <button class="btn bg-white border-success px-4 rounded-pill me-3" data-bannerid="@item.BannerId" data-bs-toggle="modal" data-bs-target="#bannerAddEditModal-@item.BannerId"> 
-                                <i class="bi text-success bi-pencil-square"></i>
-                            </button>
-                            <partial name="_AdminBannerAddEditModal" model="@item" />
-                            <button class="btn bg-white border-danger px-4 rounded-pill" data-bannerid="@item.BannerId" onclick="bannerDelete(this)"> 
-                                <i class="bi bi-trash text-danger"></i>
-                            </button>
-                        </div>
-                    </div>
+@foreach (var item in @Model.Records)
+{
+    <div class="card mb-3 admin-banner-card">
+        <div class="row g-0 align-items-center">
+            <div class="col-4 p-4 border-end text-center">
+                <img src="@item.Image" class="" />
+            </div>
+            <div class="col-8">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Heading</h5>
+                    <p class="card-text">@item.ShortDescription</p>
+                    <button class="btn bg-white border-success px-4 rounded-pill me-3" data-bannerid="@item.BannerId" data-bs-toggle="modal" data-bs-target="#bannerAddEditModal-@item.BannerId">
+                        <i class="bi text-success bi-pencil-square"></i>
+                    </button>
+                    <partial name="_AdminBannerAddEditModal" model="@item" />
+                    <button class="btn bg-white border-danger px-4 rounded-pill" data-bannerid="@item.BannerId" onclick="bannerDelete(this)">
+                        <i class="bi bi-trash text-danger"></i>
+                    </button>
                 </div>
             </div>
-        }
+        </div>
+    </div>
+}
+
+
+@{
+    double d = Model.Count / 10.0;
+    double pages = Math.Ceiling(d);
+}
+
+<div class="pagination-nav d-flex flex-row-reverse w-100">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item page-item-banner d-flex">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true"><<</span>
+                </a>
+            </li>
+            <li class="page-item page-item-banner d-flex">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true"><</span>
+                </a>
+            </li>
+            @for (int i = 1; i <= @pages; i++)
+            {
+                <li class="page-item page-item-banner" id="@i"><a class="page-link">@i</a></li>
+            }
+            <li class="page-item page-item-banner d-flex">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">></span>
+                </a>
+            </li>
+            <li class="page-item page-item-banner d-flex">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">>></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>

@@ -177,9 +177,19 @@
                                         <label for="floatingTextarea2" class="text-secondary">Enter Your Comments...</label>
                                     </div>
                                     <div class="mission-submit-btn text-start mt-3">
-                                        <button type="submit" class="btn bg-white  rounded-pill px-4" id="post-comment-btn" onclick="postTheComment()">
-                                            Post Comment
-                                        </button>
+                                        @if (Model.myMissionAndUser.IsApproved)
+                                        {
+                                            <button type="submit" class="btn bg-white  rounded-pill px-4" id="post-comment-btn" onclick="postTheComment()">
+                                                Post Comment
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn bg-white  rounded-pill px-4" id="post-comment-btn" onclick="postTheComment()" disabled>
+                                                Post Comment
+                                            </button>
+                                        }
+
                                     </div>
                                     <div class="bg-light mt-4">
                                         <nav id="navbar-example2" class="navbar bg-light px-3 mb-0">

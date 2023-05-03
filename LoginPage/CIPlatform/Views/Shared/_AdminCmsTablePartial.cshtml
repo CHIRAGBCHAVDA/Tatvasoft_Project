@@ -1,7 +1,17 @@
 ﻿@using CIPlatform.Models.AdminViewModels
-@model List<AdminCmsVM>
+@model PageList<AdminCmsVM>
 
-@foreach (var item in Model)
+
+<table class="table" style="">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody class="">
+@foreach (var item in Model.Records)
 {
     <tr>
         <td>@item.Title</td>
@@ -25,3 +35,45 @@
         </td>
     </tr>
 }
+
+
+</tbody>
+        </table>
+
+
+         @{
+            double d = Model.Count/ 10.0;
+            double pages = Math.Ceiling(d);
+        }
+
+        <div class="pagination-nav d-flex flex-row-reverse w-100">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item-cms d-flex">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true"><<</span>
+                        </a>
+                    </li>
+                    <li class="page-item-cms d-flex">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true"><</span>
+                        </a>
+                    </li>
+                   @for (int i = 1; i <= @pages; i++)
+                    {
+                        <li class="page-item-cms" id="@i"><a class="page-link">@i</a></li>
+                    }
+                    <li class="page-item-cms d-flex">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">></span>
+                        </a>
+                    </li>
+                    <li class="page-item-cms d-flex">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">>></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>

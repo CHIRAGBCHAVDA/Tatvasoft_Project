@@ -49,7 +49,7 @@
                             <div class="d-flex features-like-location flex-column align-items-end h-75 justify-content-between">
                                 <div class="like-group d-flex flex-column justify-content-between align-items-end mt-auto">
                                     <div class="bg-dark p-1 rounded-pill">
-                                        @if (item.favourite != null)
+                                        @if (item.IsFavourite)
                                         {
                                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16" style="color: red;height:20px;width:20px">
                                                 <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
@@ -63,7 +63,7 @@
 
                                         }
                                     </div>
-                                     <button class="bg-dark bg-dark p-1 my-1  rounded-pill border-0 recommendation-grid-list" id="tempToCoworker" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" onclick="gridListRecommend()">
+                                    <button class="bg-dark bg-dark p-1 my-1  rounded-pill border-0 recommendation-grid-list" id="tempToCoworker" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" onclick="gridListRecommend()">
                                         <img src="~/assets/add1.png" />
                                     </button>
                                 </div>
@@ -94,24 +94,24 @@
                             <div class="card-header-small-right">
                                 <div class="d-flex rating-imgs">
                                     @{
-                                    double? avgRating = @item.rating.Average(u => u.Rating);
-                                     }
+                                        double? avgRating = @item.rating.Average(u => u.Rating);
+                                    }
 
-                                        @for (double i = 1; i <= 5; i+=1)
+                                    @for (double i = 1; i <= 5; i += 1)
+                                    {
+                                        if (i <= avgRating)
                                         {
-                                            if(i<=avgRating)
-                                            {
-                                                <i class="bi bi-star-fill text-warning"></i>
-                                            }
-                                            else if (i <= avgRating+0.5)
-                                            {
-                                                <i class="bi bi-star-half text-warning"></i>
-                                            }
-                                            else
-                                            {
-                                                 <i class="bi bi-star text-muted"></i>
-                                            }
+                                            <i class="bi bi-star-fill text-warning"></i>
                                         }
+                                        else if (i <= avgRating + 0.5)
+                                        {
+                                            <i class="bi bi-star-half text-warning"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-star text-muted"></i>
+                                        }
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -165,12 +165,31 @@
                                 </div>
                                 <div class="mission-list-footer-right mt-2 mx-auto">
                                     <div class="mission-submit-btn text-center">
-                                        <button type="submit"
+                                        @if (item.isApplied)
+                                        {
+                                            <button type="submit"
                                             class="btn bg-white  rounded-pill px-4" onclick="volunteeringMissionDetails(@item.mission.MissionId)">
-                                            Apply
-                                            &nbsp; &nbsp;<img src="~/assets/right-arrow.png"
-                                                          alt="">
-                                        </button>
+                                                Applied
+                                                &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
+                                            </button>
+                                        }
+                                        else if (item.isPending)
+                                        {
+                                            <button type="submit"
+                                            class="btn bg-white  rounded-pill px-4" onclick="volunteeringMissionDetails(@item.mission.MissionId)">
+                                                Pending
+                                                &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit"
+                                            class="btn bg-white  rounded-pill px-4" onclick="volunteeringMissionDetails(@item.mission.MissionId)">
+                                                Apply
+                                                &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
+                                            </button>
+                                        }
+
                                     </div>
                                 </div>
                             </div>
@@ -213,11 +232,33 @@
                 </ul>
             </div>
             <div class="modal-footer">
-                    <button type="button" class="btn btn-primary reccommendMissionBtn" id="reccommendMissionBtn2" data-bs-dismiss="modal" onclick="jovamate()">Reccommend</button>
+                <button type="button" class="btn btn-primary reccommendMissionBtn" id="reccommendMissionBtn2" data-bs-dismiss="modal" onclick="jovamate()">Reccommend</button>
             </div>
         </div>
     </div>
 </div>
+
+@*
+
+ @{
+        double d = @ViewBag.totalMissions / 3.0;
+        double pages = Math.Ceiling(d);
+    }
+    <nav class="d-flex justify-content-center mt-5">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link"><span>&laquo;</span></a></li>
+            <li class="page-item"><a class="page-link"><img src="~/assets/left.png"/></a></li>
+            @for(int i = 1; i <= @pages; i++)
+            {
+                <li class="page-item" id="@i"><a class="page-link">@i</a></li>
+            }
+            <li class="page-item"><a class="page-link"><span>&raquo;</span></a></li>
+            <li class="page-item"><a class="page-link"><img src="~/assets/arrow.png"/></a></li>
+        </ul>
+    </nav>
+*@
+
+
 
 
 <script>

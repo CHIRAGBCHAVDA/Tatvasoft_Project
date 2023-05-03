@@ -19,6 +19,10 @@ namespace CIPlatform.Models.ViewDataModels
         //public long? UserId { get; set; }
         public FavouriteMission favourite { get; set; }
         public DateTime? RegistrationDeadline { get; set; }
+        public bool IsFavourite { get; set; }
+        public GoalMission GetGoalMission { get; set; } = new GoalMission();
+        public bool isApplied { get; set; }
+        public bool isPending { get; set; }
 
     }
 }

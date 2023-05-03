@@ -298,9 +298,9 @@ namespace CIPlatform.DataAccess.Repository
                             {
                                 MissionId = missonApplication.MissionId,
                                 MissionName = missonApplication.Mission.Title,
-                                IsGoalBased = missonApplication.Mission.MissionTypeId == 1 ? true : false
+                                IsGoalBased = missonApplication.Mission.MissionTypeId == 2 ? true : false,
+                                enddate = missonApplication.Mission.EndDate,
                             }));
-
             return toReturn.ToList();
         }
 
@@ -403,7 +403,6 @@ namespace CIPlatform.DataAccess.Repository
                 baseResponse.StatusCode = 500;
             }
             return baseResponse;
-
         }
 
         public BaseResponseViewModel deleteTimeSheetHourData(long TimesheetId)
@@ -443,9 +442,17 @@ namespace CIPlatform.DataAccess.Repository
                 CreatedAt = DateTime.Now,
             };
 
+            var goalMission = _db.GoalMissions.FirstOrDefault(goal => goal.MissionId == addGoal.MissionId);
+            if (goalMission != null)
+            {
+                goalMission.Achieved = goalMission.Achieved  + addGoal.Action;
+            }
+
             try
             {
                 _db.Timesheets.Add(timesheet);
+
+                _db.GoalMissions.Update(goalMission);
                 _db.SaveChanges();
                 baseResponse.Success = true;
                 baseResponse.Message = "New Data has been added in the Timesheet..!!";
@@ -467,14 +474,27 @@ namespace CIPlatform.DataAccess.Repository
             BaseResponseViewModel baseResponse = new BaseResponseViewModel();
             var oldTimesheet = _db.Timesheets.First(timesheet => timesheet.TimesheetId == editGoal.TimesheetId);
             oldTimesheet.MissionId = editGoal.MissionId;
+            var actionOld = oldTimesheet.Action;
             oldTimesheet.Action = editGoal.Action;
             oldTimesheet.DateVolunteered = editGoal.VolunteeredDate;
             oldTimesheet.Notes = editGoal.Message;
             oldTimesheet.ApprovalStatusId = 2;
             oldTimesheet.UpdatedAt = DateTime.Now;
+
+            var goalMission = _db.GoalMissions.FirstOrDefault(goal => goal.MissionId == editGoal.MissionId);
+            if (goalMission != null)
+            {
+                goalMission.Achieved = actionOld > editGoal.Action ?
+                            actionOld - Math.Abs((actionOld ?? 0) - editGoal.Action) :
+                            actionOld + Math.Abs((actionOld ?? 0) - editGoal.Action);
+
+            }
+
             try
             {
                 _db.Timesheets.Update(oldTimesheet);
+
+                _db.GoalMissions.Update(goalMission);
                 _db.SaveChanges();
                 baseResponse.Success = true;
                 baseResponse.Message = "Timesheet has been updates successfully...!!";
@@ -496,7 +516,14 @@ namespace CIPlatform.DataAccess.Repository
             try
             {
                 var oldTimesheet = _db.Timesheets.First(timesheet => timesheet.TimesheetId == TimesheetId);
+                var action = oldTimesheet.Action;
+                var missionId = oldTimesheet.MissionId;
                 _db.Timesheets.Remove(oldTimesheet);
+
+                var oldGoalMission = _db.GoalMissions.FirstOrDefault(m => m.MissionId == missionId);
+                oldGoalMission.Achieved = oldGoalMission.Achieved + action;
+                _db.GoalMissions.Update(oldGoalMission);
+
                 _db.SaveChanges();
                 baseResponse.Success = true;
                 baseResponse.Message = "Timesheet has been deleted successfully...!!";

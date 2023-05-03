@@ -410,6 +410,10 @@ namespace CIPlatform.Data
 
                 entity.Property(e => e.GoalMissionId).HasColumnName("goal_mission_id");
 
+                entity.Property(e => e.Achieved)
+                    .HasColumnName("achieved")
+                    .HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("created_at")

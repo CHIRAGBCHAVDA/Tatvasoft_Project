@@ -288,6 +288,19 @@ namespace CIPlatform.DataAccess.Repository
                 _db.Missions.Add(newMission);
                 _db.SaveChanges();
 
+                if (newMission.MissionTypeId == 2)
+                {
+                    var goalMission = new GoalMission()
+                    {
+                        MissionId = newMission.MissionId,
+                        GoalObjectiveText = missionModel.GoalObjective,
+                        GoalValue = (int)missionModel.Goal,
+                        CreatedAt = DateTime.Now,
+                    };
+                    _db.GoalMissions.Add(goalMission);
+                }
+                
+
                 foreach (var skillId in missionModel.skillids)
                 {
                     MissionSkill newMissionSkill = new MissionSkill()
@@ -395,6 +408,30 @@ namespace CIPlatform.DataAccess.Repository
 
                 _db.Missions.Update(oldMission);
                 _db.SaveChanges();
+
+                if (oldMission.MissionTypeId == 2)
+                {
+                    var goalMission = _db.GoalMissions.FirstOrDefault(goalM => goalM.MissionId == oldMission.MissionId);
+                    if (goalMission != null)
+                    {
+                        goalMission.GoalValue = (int)missionModel.Goal;
+                        goalMission.GoalObjectiveText = missionModel.GoalObjective;
+                        goalMission.UpdatedAt = DateTime.Now;
+                        _db.GoalMissions.Update(goalMission);
+                    }
+                    else
+                    {
+                        var newGoalMission = new GoalMission()
+                        {
+                            MissionId = oldMission.MissionId,
+                            GoalValue = (int)missionModel.Goal,
+                            GoalObjectiveText = missionModel.GoalObjective,
+                            CreatedAt = DateTime.Now,
+                        };
+                        _db.GoalMissions.Add(newGoalMission);
+                    }
+                    
+                }
 
 
                 var oldMissionImg = _db.MissionMedia.Where(media => media.MissionId == oldMission.MissionId).ToList();
@@ -622,6 +659,13 @@ namespace CIPlatform.DataAccess.Repository
                 var MissionApplication = _db.MissionApplications.FirstOrDefault(application => application.MissionApplicationId == id);
                 MissionApplication.ApprovalStatusId = 2;
                 _db.MissionApplications.Update(MissionApplication);
+
+                var mission = _db.Missions.FirstOrDefault(m => m.MissionId == MissionApplication.MissionId);
+                if (mission.MissionTypeId == 1)
+                {
+                    mission.AvailableSeats = mission.AvailableSeats - 1;
+                    _db.Missions.Update(mission);
+                }
                 _db.SaveChanges();
                 return true;
             }

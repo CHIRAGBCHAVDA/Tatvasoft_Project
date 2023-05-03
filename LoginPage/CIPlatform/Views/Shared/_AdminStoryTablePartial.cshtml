@@ -1,25 +1,75 @@
 ﻿@using CIPlatform.Models.AdminViewModels
-@model List<AdminStoryVM>
+@model PageList<AdminStoryVM>
 
-@foreach (var item in Model)
-{
-    <tr>
-        <td>@item.StoryTitle</td>
-        <td class="">@item.FullName</td>
-        <td>@item.MissionTitle</td>
-        <td>
-            <a href="https://localhost:44383/StoryListing/StoryDetail?missionId=@item.MissionId&storyId=@item.StoryId&userId=@item.UserId" target="_blank" id="" class="btn rounded-pill fst-normal text-decoration-none border-orange bg-white text-orange px-3 py-0 me-1">
-                View
-            </a>
-            <button class="btn bg-white border-0 p-0 m-0 fst-normal text-decoration-none" data-storyid="@item.StoryId" onclick="StoryApprove(this)">
-                <i class="bi bi-check-circle text-success"></i>
-            </button>
-            <button class="btn bg-white border-0 p-0 m-0" id="deleteTimebasedTimesheet" data-storyid="@item.StoryId" onclick="StoryReject(this)">
-                <i class="bi bi-x-circle text-danger"></i>
-            </button>
-            <a href="" id="deleteTimebasedTimesheet">
-                <i class="text-secondary bi bi-trash"></i>
-            </a>
-        </td>
-    </tr>
+<table class="table" style="">
+    <thead>
+        <tr>
+            <th scope="col">Story Title</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Mission Title</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Records)
+        {
+            <tr>
+                <td>@item.StoryTitle</td>
+                <td class="">@item.FullName</td>
+                <td>@item.MissionTitle</td>
+                <td>
+                    <a href="https://localhost:44383/StoryListing/StoryDetail?missionId=@item.MissionId&storyId=@item.StoryId&userId=@item.UserId" target="_blank" id="" class="btn rounded-pill fst-normal text-decoration-none border-orange bg-white text-orange px-3 py-0 me-1">
+                        View
+                    </a>
+                    <button class="btn bg-white border-0 p-0 m-0 fst-normal text-decoration-none" data-storyid="@item.StoryId" onclick="StoryApprove(this)">
+                        <i class="bi bi-check-circle text-success"></i>
+                    </button>
+                    <button class="btn bg-white border-0 p-0 m-0" id="deleteTimebasedTimesheet" data-storyid="@item.StoryId" onclick="StoryReject(this)">
+                        <i class="bi bi-x-circle text-danger"></i>
+                    </button>
+                    <a href="" id="deleteTimebasedTimesheet">
+                        <i class="text-secondary bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@{
+    double d = Model.Count / 10.0;
+    double pages = Math.Ceiling(d);
 }
+
+<div class="pagination-nav d-flex flex-row-reverse w-100">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item page-item-story d-flex">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true"><<</span>
+                </a>
+            </li>
+            <li class="page-item page-item-story d-flex">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true"><</span>
+                </a>
+            </li>
+            @for (int i = 1; i <= @pages; i++)
+            {
+                <li class="page-item page-item-story" id="@i"><a class="page-link">@i</a></li>
+            }
+            <li class="page-item page-item-story d-flex">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">></span>
+                </a>
+            </li>
+            <li class="page-item page-item-story d-flex">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">>></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>

@@ -109,10 +109,10 @@ $(document).ready(function () {
 
 
     $("#1").addClass('active');
-    $('.pagination').on('click', '.page-item', function () {
+    $(document).on('click', '.pagination .page-item', async function () {
         $('.pagination .page-item').removeClass('active');
+        await getFilter($(this).attr('id'));
         $(this).addClass('active');
-        getFilter($(this).attr('id'));
     });
 
     $(document).on("click","#partialView .reccommendMissionBtn, .reccommendMissionBtn",function () {

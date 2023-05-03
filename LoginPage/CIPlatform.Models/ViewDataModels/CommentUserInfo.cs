@@ -10,5 +10,6 @@ namespace CIPlatform.Models.ViewDataModels
     {
         public User users;
         public Comment comments;
+        public bool IsApproved;
     }
 }

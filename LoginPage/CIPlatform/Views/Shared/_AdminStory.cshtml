@@ -16,8 +16,8 @@
             <input class="form-control border border-0" type="search" placeholder="Search" aria-label="Search" id="search-story-query">
         </div>
     </div>
-    <div class="story-table mt-4">
-        <table class="table" style="">
+    <div class="story-table mt-4" id="admin-story-table-body-wrapper">
+        @*<table class="table" style="">
             <thead>
                 <tr>
                     <th scope="col">Story Title</th>
@@ -26,9 +26,9 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody id="admin-story-table-body-wrapper">
-                <partial name="_AdminStoryTablePartial" model="Model.Records" />
-            </tbody>
+            <tbody >*@
+                <partial name="_AdminStoryTablePartial" model="Model" />
+            @*</tbody>
         </table>
 
         @{
@@ -66,6 +66,6 @@
                 </ul>
             </nav>
 
-        </div>
+        </div>*@
     </div>
 </div>

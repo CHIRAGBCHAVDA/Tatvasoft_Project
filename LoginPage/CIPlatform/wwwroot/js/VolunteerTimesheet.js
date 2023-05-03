@@ -40,6 +40,7 @@ $(document).ready(function () {
                         $("#EditvolMission").append($('<option>', {
                             'value': value.missionId,
                             'data-mid': value.missionId,
+                            'data-enddate': new Date(value.enddate).toISOString().substr(0, 10),
                             'text': value.missionName
                         }));
                     }
@@ -80,6 +81,7 @@ $(document).ready(function () {
                         $("#volMission").append($('<option>', {
                             'value': value.missionId,
                             'data-mid': value.missionId,
+                            'data-enddate': new Date(value.enddate).toISOString().substr(0, 10),
                             'text': value.missionName
                         }));
                     }
@@ -210,6 +212,8 @@ $(document).ready(function () {
 
     $(document).on("change", "#volMission", function () {
         let mid = $(this).val();
+        let endDateStr = $(this).find(':selected').data('enddate');
+        let endDate = new Date(endDateStr);
         console.log("Changed mission to mid : ", mid);
         $.ajax({
             type: "post",
@@ -226,7 +230,16 @@ $(document).ready(function () {
                 let finalAppliedStr = appliedYr.trim() + "-" + appliedMonth.trim() + "-" + appliedDate.trim();
                 let todaysDate = new Date().toISOString().slice(0, 10);
                 $("#dateVolunteered").attr('min', finalAppliedStr);
-                $("#dateVolunteered").attr('max', todaysDate);
+
+                let d1 = new Date(todaysDate);
+                let d2 = new Date(endDate);
+                if (d1 < d2) {
+                    $("#dateVolunteered").attr('max', todaysDate);
+                }
+                else {
+                    $("#dateVolunteered").attr('max', endDate);
+                }
+
                 console.log(finalAppliedStr);
                 console.log(todaysDate);
             },
@@ -238,6 +251,8 @@ $(document).ready(function () {
 
     $(document).on("change", "#EditvolMission", function () {
         let mid = $(this).val();
+        let endDateStr = $(this).find(':selected').data('enddate');
+        let endDate = new Date(endDateStr);
         console.log("Changed mission to mid : ", mid);
         $.ajax({
             type: "post",
@@ -253,7 +268,15 @@ $(document).ready(function () {
                 let finalAppliedStr = appliedYr.trim() + "-" + appliedMonth.trim() + "-" + appliedDate.trim();
                 let todaysDate = new Date().toISOString().slice(0, 10);
                 $("#EditdateVolunteered").attr('min', finalAppliedStr);
-                $("#EditdateVolunteered").attr('max', todaysDate);
+
+                let d1 = new Date(todaysDate);
+                let d2 = new Date(endDate);
+                if (d1 < d2) {
+                    $("#EditdateVolunteered").attr('max', todaysDate);
+                }
+                else {
+                    $("#EditdateVolunteered").attr('max', endDate);
+                }
             },
             error: function (xhr, status, error) {
                 console.log(error);
@@ -280,6 +303,7 @@ $(document).ready(function () {
                         $("#GoalvolMission").append($('<option>', {
                             'value': value.missionId,
                             'data-mid': value.missionId,
+                            'data-enddate': new Date(value.enddate).toISOString().substr(0, 10),
                             'text': value.missionName
                         }));
                     }
@@ -382,6 +406,7 @@ $(document).ready(function () {
                         $("#EditGoalvolMission").append($('<option>', {
                             'value': value.missionId,
                             'data-mid': value.missionId,
+                            'data-enddate': new Date(value.enddate).toISOString().substr(0, 10),
                             'text': value.missionName
                         }));
                     }
@@ -486,8 +511,13 @@ $(document).ready(function () {
 
 
     $(document).on("change", "#GoalvolMission", function () {
+        //debugger
         let mid = $(this).val();
-        console.log("Changed mission to mid : ", mid);
+        //console.log($(this).attr());
+        let endDateStr = $(this).find(':selected').data('enddate');
+        let endDate = new Date(endDateStr);
+        //console.log("The end date is  :  ", endDate);
+        //console.log("Changed mission to mid : ", mid);
         $.ajax({
             type: "post",
             url: "/User/getAppliedDateByMissionId",
@@ -495,6 +525,7 @@ $(document).ready(function () {
                 MissionId: mid
             },
             success: function (userAppliedDateNew) {
+                //debugger
                 console.log(userAppliedDateNew);
                 userAppliedDate = userAppliedDateNew;
                 let appliedYr = userAppliedDateNew.substring(0, 11).split("-")[0].substring(0,4);
@@ -503,9 +534,19 @@ $(document).ready(function () {
                 let finalAppliedStr = appliedYr.trim() + "-" + appliedMonth.trim() + "-" + appliedDate.trim();
                 let todaysDate = new Date().toISOString().slice(0, 10);
                 $("#GoaldateVolunteered").attr('min', finalAppliedStr);
-                $("#GoaldateVolunteered").attr('max', todaysDate);
-                console.log(finalAppliedStr);
-                console.log(todaysDate);
+
+                let d1 = new Date(todaysDate);
+                let d2 = new Date(endDate);
+                if (d1 < d2) {
+                    $("#GoaldateVolunteered").attr('max', todaysDate);
+                }
+                else {
+                    $("#GoaldateVolunteered").attr('max', endDate);
+                }
+
+                //$("#GoaldateVolunteered").attr('max', todaysDate);
+                //console.log(finalAppliedStr);
+                //console.log(todaysDate);Math.min(todaysDate, endDate.toISOString().slice(0, 10))
             },
             error: function (xhr, status, error) {
                 console.log(error);
@@ -515,6 +556,8 @@ $(document).ready(function () {
 
     $(document).on("change", "#EditGoalvolMission", function () {
         let mid = $(this).val();
+        let endDateStr = $(this).find(':selected').data('enddate');
+        let endDate = new Date(endDateStr);
         console.log("Changed mission to mid : ", mid);
         $.ajax({
             type: "post",
@@ -530,7 +573,15 @@ $(document).ready(function () {
                 let finalAppliedStr = appliedYr.trim() + "-" + appliedMonth.trim() + "-" + appliedDate.trim();
                 let todaysDate = new Date().toISOString().slice(0, 10);
                 $("#EditGoaldateVolunteered").attr('min', finalAppliedStr);
-                $("#EditGoaldateVolunteered").attr('max', todaysDate);
+                let d1 = new Date(todaysDate);
+                let d2 = new Date(endDate);
+                if (d1 < d2) {
+                    $("#EditGoaldateVolunteered").attr('max',todaysDate);
+
+                }
+                else {
+                    $("#EditGoaldateVolunteered").attr('max', endDate);
+                }
             },
             error: function (xhr, status, error) {
                 console.log(error);

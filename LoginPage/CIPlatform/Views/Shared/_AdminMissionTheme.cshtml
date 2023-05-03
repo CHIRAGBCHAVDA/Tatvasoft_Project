@@ -17,8 +17,8 @@
             <button class="btn bg-white text-orange border-orange px-3 rounded-pill" id="admin-missiontheme-add" data-bs-toggle="modal" data-bs-target="#missionThemeAddEditModal-0"> <i class="bi bi-plus"></i> Add </button>
         </div>
     </div>
-    <div class="missiontheme-table mt-4">
-        <table class="table" style="">
+    <div class="missiontheme-table mt-4 admin-missiontheme-table-body-wrapper">
+        @*<table class="table" style="">
             <thead>
                 <tr>
                     <th scope="col">Theme Name</th>
@@ -26,9 +26,9 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody id="admin-missiontheme-table-body-wrapper">
-                <partial name="_AdminMissionThemeTablePartial" model="Model.Records" />
-            </tbody>
+            <tbody id="">*@
+                <partial name="_AdminMissionThemeTablePartial" model="Model" />
+            @*</tbody>
         </table>
 
          @{
@@ -68,7 +68,7 @@
                 </ul>
             </nav>
 
-        </div>
+        </div>*@
     </div>
 </div>
 

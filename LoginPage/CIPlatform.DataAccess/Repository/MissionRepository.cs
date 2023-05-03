@@ -27,18 +27,22 @@ namespace CIPlatform.DataAccess.Repository
         {
             string myUserId = _httpContext.Session.GetString("userId");
 
-            var missionListingCard = _db.Missions.Where(m => m.DeletedAt==null).Select(mission => new MissionListingCard()
+            var missionListingCard = _db.Missions.Where(m => m.DeletedAt == null).Select(mission => new MissionListingCard()
             {
                 mission = mission,
+                GetGoalMission = mission.GoalMissions.First(),
                 City = mission.City.Name,
                 MissionTheme = mission.MissionTheme.Title,
                 Skills = mission.MissionSkills.Select(missionSkills => missionSkills.Skill.SkillName),
                 ImageLink = mission.MissionMedia.FirstOrDefault(m => m.MediaType.Equals("img")).MediaPath,
-            //ImageLink = mission.MissionMedia.First(m => m.MediaType.Equals("img")).Select(m => m.MediaPath).ToString(),
+                //ImageLink = mission.MissionMedia.First(m => m.MediaType.Equals("img")).Select(m => m.MediaPath).ToString(),
                 rating = mission.MissionRatings,
                 favourite = mission.FavouriteMissions.First(),
-                RegistrationDeadline = mission.RegistrationDeadline
-            });
+                RegistrationDeadline = mission.RegistrationDeadline,
+                IsFavourite = mission.FavouriteMissions.Where(m => m.UserId == long.Parse(myUserId) && m.DeletedAt == null).FirstOrDefault() != null ? true : false,
+                isApplied = mission.MissionApplications.FirstOrDefault(ma => ma.UserId == long.Parse(myUserId) && ma.ApprovalStatusId==2) != null ? true:false,
+                isPending = mission.MissionApplications.FirstOrDefault(ma => ma.UserId == long.Parse(myUserId) && ma.ApprovalStatusId==1) != null ? true:false,
+              }); ;
 
             //var missionListingCard = from M in _db.Missions
             //                         join C in _db.Cities on M.CityId equals C.CityId
@@ -80,13 +84,15 @@ namespace CIPlatform.DataAccess.Repository
 
         public List<CommentUserInfo> CommentByMissionUserId(long missionId)
         {
+            var isApproved = _db.MissionApplications.FirstOrDefault(m => m.MissionId == missionId && m.ApprovalStatusId == 2 && m.UserId == long.Parse(_httpContext.Session.GetString("userId"))) != null ? true : false;
             var newcui = from c in _db.Comments
                          join u in _db.Users on c.UserId equals u.UserId
                          where c.MissionId == missionId
                          select new CommentUserInfo()
                          {
                              comments = c,
-                             users = u
+                             users = u,
+                             IsApproved = isApproved
                          };
             return newcui.OrderByDescending(c => c.comments.CreatedAt).ToList();
         }
@@ -127,11 +133,7 @@ namespace CIPlatform.DataAccess.Repository
                 };
 
                 _db.MissionApplications.Add(missionApplication);
-                if (mission.MissionTypeId == 1)
-                {
-                    mission.AvailableSeats = mission.AvailableSeats - 1;
-                    _db.Missions.Update(mission);
-                }
+                
                 return true;
             }
 

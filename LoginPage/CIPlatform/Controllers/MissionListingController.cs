@@ -112,6 +112,9 @@ namespace CIPlatform.Controllers
                     case 4:
                         getFilterMs = getFilterMs.OrderBy(m => m.mission.AvailableSeats);
                         break;
+                    case 5:
+                        getFilterMs = getFilterMs.OrderByDescending(m => m.IsFavourite);
+                        break;
                     default:
                         getFilterMs = getFilterMs.OrderByDescending(m => m.mission.StartDate);
                         break;
@@ -125,6 +128,7 @@ namespace CIPlatform.Controllers
             }
 
             a = getFilterMs.Count();
+            ViewBag.totalMissions = a;
 
             var toReturn = getFilterMs.Skip((pageNum - 1) * 3).Take(3);
 
@@ -159,14 +163,17 @@ namespace CIPlatform.Controllers
                 var Rating = tempMr != null ? tempMr.Rating : 0;
                 var missiontemp = missionDetail.mission.MissionApplications.Where(mission => mission.MissionId == missionId && mission.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault();
                 var b = missionDetail.mission.MissionApplications.Where(mission => mission.MissionId == missionId && mission.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault() != null ? true : false;
-
+                var goalMission = _db.GoalMissions.FirstOrDefault(mission => mission.MissionId == missionId);
                 myMissionAndUser myuser = new myMissionAndUser()
                 {
                     myMission = missionDetail,
                     Users = GetListOfUserRecommendation(),
-
-                    IsApplied = _db.MissionApplications.Where(m => m.MissionId == missionId && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault() != null ? true : false,
-                    ratedByUser = (long)Rating
+                    
+                    IsApplied = _db.MissionApplications.Where(m => m.MissionId == missionId && m.ApprovalStatusId == 1 && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault() != null ? true : false,
+                    ratedByUser = (long)Rating,
+                    IsApproved = _db.MissionApplications.Where(m => m.MissionId == missionId && m.ApprovalStatusId == 2 && m.UserId == long.Parse(HttpContext.Session.GetString("userId"))).FirstOrDefault() != null ? true : false,
+                    GoalObjective = goalMission != null ? goalMission.GoalObjectiveText : "",
+                    Goal = goalMission!=null ? goalMission.GoalValue:0,
                 };
                 missionDetailsViewModel.myMissionAndUser = myuser;
 
@@ -341,12 +348,15 @@ namespace CIPlatform.Controllers
             {
                 TempData["user-inactive"] = "You're currently marked as INACTIVE";
             }
-
+            var goalMission = _db.GoalMissions.FirstOrDefault(mission => mission.MissionId == missionId);
             myMissionAndUser myuser = new myMissionAndUser()
             {
                 myMission = missionListingCards.Where(m => m.mission.MissionId == missionId).FirstOrDefault(),
                 Users = _unitOfWork.User.GetAll(u => u.UserId != long.Parse(HttpContext.Session.GetString("userId"))).ToList(),
-                IsApplied = isSuccess ? true : false
+                IsApplied = isSuccess ? true : false,
+                IsApproved = _db.MissionApplications.FirstOrDefault(m => m.MissionId==missionId && m.ApprovalStatusId==2 && m.UserId== long.Parse(HttpContext.Session.GetString("userId")))!=null? true : false,
+                GoalObjective = goalMission!=null?goalMission.GoalObjectiveText:"",
+                Goal = goalMission!=null?goalMission.GoalValue:0,
             };
 
             return PartialView("_VolunteerMissionRightUpper", myuser);

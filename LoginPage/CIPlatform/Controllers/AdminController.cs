@@ -186,10 +186,10 @@ namespace CIPlatform.Controllers
             var adminUserViewModelPagelist = new PageList<AdminUserVM>()
             {
                 Records = toAppendDataModel,
-                Count = toAppendDataModel.Count()
+                Count = userData.Count()
             };
 
-            return PartialView("_AdminUserTablePartial", toAppendDataModel);
+            return PartialView("_AdminUserTablePartial", adminUserViewModelPagelist);
         }
 
         [HttpPost]
@@ -243,7 +243,12 @@ namespace CIPlatform.Controllers
                 cmsData = cmsData.Where(cms => cms.Title.ToLower().Contains(searchKeyword.ToLower()));
             }
 
-            var toAppendDataModel = cmsData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            var toAppendDataModel = new PageList<AdminCmsVM>()
+            {
+                Records = cmsData.Skip((pageNum - 1) * 10).Take(10).ToList(),
+                Count = cmsData.Count()
+            };
+
             return PartialView("_AdminCmsTablePartial", toAppendDataModel);
         }
 
@@ -255,8 +260,11 @@ namespace CIPlatform.Controllers
             {
                 missionthemeData = missionthemeData.Where(cms => cms.Title.ToLower().Contains(searchKeyword.ToLower()));
             }
-
-            var toAppendDataModel = missionthemeData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            var toAppendDataModel = new PageList<AdminMissionThemeVM>()
+            {
+                Records = missionthemeData.Skip((pageNum - 1) * 10).Take(10).ToList(),
+                Count = missionthemeData.Count()
+            };
             return PartialView("_AdminMissionThemeTablePartial", toAppendDataModel);
         }
 
@@ -269,7 +277,12 @@ namespace CIPlatform.Controllers
                 missionSkillData = missionSkillData.Where(cms => cms.SkillName.ToLower().Contains(searchKeyword.ToLower()));
             }
 
-            var toAppendDataModel = missionSkillData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            var toAppendDataModel = new PageList<AdminSkillsViewModel>()
+            {
+                Records = missionSkillData.Skip((pageNum - 1) * 10).Take(10).ToList(),
+                Count = missionSkillData.Count()
+            };
+
             return PartialView("_AdminMissionSkillTablePartial", toAppendDataModel);
         }
 
@@ -281,8 +294,11 @@ namespace CIPlatform.Controllers
             {
                 missionApplicationData = missionApplicationData.Where(cms => cms.MissionTitle.ToLower().Contains(searchKeyword.ToLower()));
             }
-
-            var toAppendDataModel = missionApplicationData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            var toAppendDataModel = new PageList<AdminMissionApplicationVM>()
+            {
+                Records = missionApplicationData.Skip((pageNum - 1) * 10).Take(10).ToList(),
+                Count = missionApplicationData.Count()
+            };
             return PartialView("_AdminMissionApplicationTablePartial", toAppendDataModel);
         }
 
@@ -295,7 +311,11 @@ namespace CIPlatform.Controllers
                 storyData = storyData.Where(cms => cms.StoryTitle.ToLower().Contains(searchKeyword.ToLower()));
             }
 
-            var toAppendDataModel = storyData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            var toAppendDataModel = new PageList<AdminStoryVM>()
+            {
+                Records = storyData.Skip((pageNum - 1) * 10).Take(10).ToList(),
+                Count = storyData.Count()
+            };
             return PartialView("_AdminStoryTablePartial", toAppendDataModel);
         }
         
@@ -318,8 +338,11 @@ namespace CIPlatform.Controllers
                 {
                     bannerData = bannerData.Where(banner => banner.Heading.ToString().Contains(searchKeyword)).ToList();
                 }
-
-                var toAppendDataModel = bannerData.Skip((pageNum - 1) * 10).Take(10).ToList();
+                var toAppendDataModel = new PageList<AdminBannerViewModel>()
+                {
+                    Records = bannerData.Skip((pageNum - 1) * 10).Take(10).ToList(),
+                    Count = bannerData.Count()
+                };
                 return PartialView("_AdminBannerTablePartial", toAppendDataModel);
             }
             catch (SqlException ex)
@@ -338,7 +361,11 @@ namespace CIPlatform.Controllers
                 missionData = missionData.Where(mission => mission.MissionTitle.ToLower().Contains(searchKeyword.ToLower()));
             }
 
-            var toAppendDataModel = missionData.Skip((pageNum - 1) * 10).Take(10).ToList();
+            var toAppendDataModel = new PageList<AdminMissionVM>()
+            {
+                Records = missionData.Skip((pageNum - 1) * 10).Take(10).ToList(),
+                Count = missionData.Count()
+            };
             return PartialView("_AdminMissionTablePartial", toAppendDataModel);
         }
 
@@ -367,9 +394,18 @@ namespace CIPlatform.Controllers
                     isSuccess = _unitOfWork.AdminRepo.EditMission(missionModel);
                 }
             }
-            
-            if(isSuccess)
-            return PartialView("_AdminMissionTablePartial", _unitOfWork.AdminRepo.getAllMissionData().Skip(0).Take(10).ToList());
+
+            if (isSuccess)
+            {
+                var missionData = _unitOfWork.AdminRepo.getAllMissionData();
+                var toAppendDataModel = new PageList<AdminMissionVM>()
+                {
+                    Records = missionData.Take(10).ToList(),
+                    Count = missionData.Count()
+                };
+
+                return PartialView("_AdminMissionTablePartial", toAppendDataModel);
+            }
             return null;
         }
 
@@ -395,7 +431,13 @@ namespace CIPlatform.Controllers
                 isSuccess = _unitOfWork.AdminRepo.EditMissionTheme(missionThemeVM);
             }
 
-            return PartialView("_AdminMissionThemeTablePartial", _unitOfWork.AdminRepo.getAllMissionThemedata().ToList());
+            var missionthemeData = _unitOfWork.AdminRepo.getAllMissionThemedata();
+            var toAppendDataModel = new PageList<AdminMissionThemeVM>()
+            {
+                Records = missionthemeData.Take(10).ToList(),
+                Count = missionthemeData.Count()
+            };
+            return PartialView("_AdminMissionThemeTablePartial", toAppendDataModel);
         }
 
         [HttpPost]
@@ -412,21 +454,44 @@ namespace CIPlatform.Controllers
                 var isSuccess = _unitOfWork.AdminRepo.EditSkill(skillsViewModel);
             }
 
-            return PartialView("_AdminMissionSkillTablePartial",_unitOfWork.AdminRepo.getAllSkillData().ToList());
+            var missionSkillData = _unitOfWork.AdminRepo.getAllSkillData();
+            
+
+            var toAppendDataModel = new PageList<AdminSkillsViewModel>()
+            {
+                Records = missionSkillData.Take(10).ToList(),
+                Count = missionSkillData.Count()
+            };
+
+
+            return PartialView("_AdminMissionSkillTablePartial", toAppendDataModel);
         }
 
         [HttpPost]
         public IActionResult MissionApplicationApprove(long missionApplicationId)
         {
             var isSuccess = _unitOfWork.AdminRepo.MissionApplicationApprove(missionApplicationId);
-            return PartialView("_AdminMissionApplicationTablePartial", _unitOfWork.AdminRepo.getAllMissionApplicationData().ToList());
+
+            var missionApplicationData = _unitOfWork.AdminRepo.getAllMissionApplicationData();
+            var toAppendDataModel = new PageList<AdminMissionApplicationVM>()
+            {
+                Records = missionApplicationData.Take(10).ToList(),
+                Count = missionApplicationData.Count()
+            };
+            return PartialView("_AdminMissionApplicationTablePartial", toAppendDataModel);
         }
 
         [HttpPost]
         public IActionResult MissionApplicationReject(long missionApplicationId)
         {
             var isSuccess = _unitOfWork.AdminRepo.MissionApplicationReject(missionApplicationId);
-            return PartialView("_AdminMissionApplicationTablePartial", _unitOfWork.AdminRepo.getAllMissionApplicationData().ToList());
+            var missionApplicationData = _unitOfWork.AdminRepo.getAllMissionApplicationData();
+            var toAppendDataModel = new PageList<AdminMissionApplicationVM>()
+            {
+                Records = missionApplicationData.Take(10).ToList(),
+                Count = missionApplicationData.Count()
+            };
+            return PartialView("_AdminMissionApplicationTablePartial", toAppendDataModel);
         }
 
 
@@ -434,14 +499,26 @@ namespace CIPlatform.Controllers
         public IActionResult StoryApprove(long storyId)
         {
             var isSuccess = _unitOfWork.AdminRepo.StoryApprove(storyId);
-            return PartialView("_AdminStoryTablePartial", _unitOfWork.AdminRepo.getAllStoryData().ToList());
+            var storyData = _unitOfWork.AdminRepo.getAllStoryData();
+            var toAppendDataModel = new PageList<AdminStoryVM>()
+            {
+                Records = storyData.Take(10).ToList(),
+                Count = storyData.Count()
+            };
+            return PartialView("_AdminStoryTablePartial", toAppendDataModel);
         }
 
         [HttpPost]
         public IActionResult StoryReject(long storyId)
         {
             var isSuccess = _unitOfWork.AdminRepo.StoryReject(storyId);
-            return PartialView("_AdminStoryTablePartial", _unitOfWork.AdminRepo.getAllStoryData().ToList());
+            var storyData = _unitOfWork.AdminRepo.getAllStoryData();
+            var toAppendDataModel = new PageList<AdminStoryVM>()
+            {
+                Records = storyData.Take(10).ToList(),
+                Count = storyData.Count()
+            };
+            return PartialView("_AdminStoryTablePartial", toAppendDataModel);
         }
 
         
@@ -460,7 +537,14 @@ namespace CIPlatform.Controllers
                 //edit
             }
 
-            return PartialView("_AdminBannerTablePartial", _unitOfWork.AdminRepo.getBannerData().Skip(0).Take(10).ToList());
+            var bannerData = _unitOfWork.AdminRepo.getBannerData().ToList();
+            
+            var toAppendDataModel = new PageList<AdminBannerViewModel>()
+            {
+                Records = bannerData.Take(10).ToList(),
+                Count = bannerData.Count()
+            };
+            return PartialView("_AdminBannerTablePartial", toAppendDataModel);
         }
 
         [HttpPost]
@@ -471,7 +555,16 @@ namespace CIPlatform.Controllers
             _db.Users.Update(user);
             _db.SaveChanges();
 
-            return PartialView("_AdminUserTablePartial",_unitOfWork.AdminRepo.getAllUserdata().Skip(0).Take(10).ToList());
+            var userData = _unitOfWork.AdminRepo.getAllUserdata();
+            var toAppendDataModel = userData.Take(10).ToList();
+
+            var adminUserViewModelPagelist = new PageList<AdminUserVM>()
+            {
+                Records = toAppendDataModel,
+                Count = userData.Count()
+            };
+
+            return PartialView("_AdminUserTablePartial", adminUserViewModelPagelist);
         }
 
         [HttpPost]
@@ -482,7 +575,14 @@ namespace CIPlatform.Controllers
             _db.CmsPages.Update(cms);
             _db.SaveChanges();
 
-            return PartialView("_AdminCmsTablePartial", _unitOfWork.AdminRepo.getAllCmsdata().Skip(0).Take(10).ToList());
+            var cmsData = _unitOfWork.AdminRepo.getAllCmsdata();
+            var toAppendDataModel = new PageList<AdminCmsVM>()
+            {
+                Records = cmsData.Take(10).ToList(),
+                Count = cmsData.Count()
+            };
+
+            return PartialView("_AdminCmsTablePartial", toAppendDataModel);
         }
 
         [HttpPost]
@@ -493,7 +593,14 @@ namespace CIPlatform.Controllers
             _db.Missions.Update(mission);
             _db.SaveChanges();
 
-            return PartialView("_AdminMissionTablePartial", _unitOfWork.AdminRepo.getAllMissionData().Skip(0).Take(10).ToList());
+            var missionData = _unitOfWork.AdminRepo.getAllMissionData();
+            var toAppendDataModel = new PageList<AdminMissionVM>()
+            {
+                Records = missionData.Take(10).ToList(),
+                Count = missionData.Count()
+            };
+
+            return PartialView("_AdminMissionTablePartial", toAppendDataModel);
         }
 
         [HttpPost]
@@ -504,7 +611,14 @@ namespace CIPlatform.Controllers
             _db.MissionThemes.Update(missionTheme);
             _db.SaveChanges();
 
-            return PartialView("_AdminMissionThemeTablePartial", _unitOfWork.AdminRepo.getAllMissionThemedata().Skip(0).Take(10).ToList());
+            var missionthemeData = _unitOfWork.AdminRepo.getAllMissionThemedata();
+            var toAppendDataModel = new PageList<AdminMissionThemeVM>()
+            {
+                Records = missionthemeData.Take(10).ToList(),
+                Count = missionthemeData.Count()
+            };
+
+            return PartialView("_AdminMissionThemeTablePartial", toAppendDataModel);
         }
 
         [HttpPost]
@@ -515,7 +629,16 @@ namespace CIPlatform.Controllers
             _db.Skills.Update(missionSkill);
             _db.SaveChanges();
 
-            return PartialView("_AdminMissionSkillTablePartial", _unitOfWork.AdminRepo.getAllSkillData().Skip(0).Take(10).ToList());
+            var missionSkillData = _unitOfWork.AdminRepo.getAllSkillData();
+
+
+            var toAppendDataModel = new PageList<AdminSkillsViewModel>()
+            {
+                Records = missionSkillData.Take(10).ToList(),
+                Count = missionSkillData.Count()
+            };
+
+            return PartialView("_AdminMissionSkillTablePartial", toAppendDataModel);
         }
 
         [HttpPost]
@@ -526,7 +649,15 @@ namespace CIPlatform.Controllers
             _db.Banners.Update(banner);
             _db.SaveChanges();
 
-            return PartialView("_AdminBannerTablePartial", _unitOfWork.AdminRepo.getBannerData().Skip(0).Take(10).ToList());
+            var bannerData = _unitOfWork.AdminRepo.getBannerData().ToList();
+
+            var toAppendDataModel = new PageList<AdminBannerViewModel>()
+            {
+                Records = bannerData.Take(10).ToList(),
+                Count = bannerData.Count()
+            };
+
+            return PartialView("_AdminBannerTablePartial", toAppendDataModel);
         }
 
     }

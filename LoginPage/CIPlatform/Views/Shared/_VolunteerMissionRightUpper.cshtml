@@ -34,7 +34,7 @@
         else if(Model.myMission.mission.MissionTypeId == 2)
         {
              <span class="rounded-pill bg-white fw-light border px-2 mt-4" style="z-index: 1;">
-                 Goal Based Mission
+                 @Model.GoalObjective
             </span>
         }
         else
@@ -87,7 +87,7 @@
                          aria-valuemin="0" aria-valuemax="100"
                          style="height:8px">
                             <div class="progress-bar bg-warning bg-orange-color"
-                             style="width: 75%"></div>
+                             style="width: @(@Model.myMission.GetGoalMission.Achieved*100/Model.myMission.GetGoalMission.GoalValue)%"></div>
                         </div>
                         <span class="light-gray fs-fourteen mt-2">achieved</span>
                     </div>
@@ -143,7 +143,7 @@
     <hr style="opacity:1; color:lightgray" />
     <div class="text-center" style="margin-top:-2.5rem">
         <span class="rating-star-images bg-white">
-            @if (Model.IsApplied)
+            @if (Model.IsApproved)
             {
                 @for (int i = 1; i <= Model.ratedByUser; i++)
                 {
@@ -206,10 +206,17 @@
     </div>
 
     <div class="mission-submit-btn text-center mt-3 apply-missionbtn-div-volmission">
-        @if (Model.IsApplied == true)
+        @if (Model.IsApproved == true)
+        {
+             <button type="submit" class="btn bg-white  rounded-pill px-4 volMission-applybtn" data-missionid="@Model.myMission.mission.MissionId" onclick="applyMission()" disabled>
+                Applied
+                &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
+            </button>
+        }
+        else if (Model.IsApplied == true)
         {
             <button type="submit" class="btn bg-white  rounded-pill px-4 volMission-applybtn" data-missionid="@Model.myMission.mission.MissionId" onclick="applyMission()" disabled>
-                Applied
+                Pending
                 &nbsp; &nbsp;<img src="~/assets/right-arrow.png" alt="">
             </button>
         }

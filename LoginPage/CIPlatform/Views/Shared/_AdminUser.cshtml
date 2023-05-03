@@ -22,8 +22,8 @@
             <button class="btn bg-white text-orange border-orange px-3 rounded-pill" id="admin-user-add" data-bs-toggle="modal" data-bs-target="#myModal"> <i class="bi bi-plus"></i> Add </button>
         </div>
     </div>
-    <div class="user-table mt-4">
-        <table class="table" style="">
+    <div class="user-table mt-4 admin-user-table-body-wrapper">
+        @*<table class="table" style="">
             <thead>
                 <tr>
                     <th scope="col">First Name</th>
@@ -35,9 +35,9 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody class="admin-user-table-body-wrapper">
-                <partial name="_AdminUserTablePartial" model="Model.Records" />
-            </tbody>
+            <tbody class="">*@
+                <partial name="_AdminUserTablePartial" model="Model" />
+            @*</tbody>
         </table>
 
          @{
@@ -77,7 +77,7 @@
                 </ul>
             </nav>
 
-        </div>
+        </div>*@
     </div>
 </div>
 
