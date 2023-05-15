@@ -54,6 +54,15 @@ namespace CIPlatform.DataAccess.Repository.IRepository
         public bool EditBanner(AdminBannerViewModel bannerModel);
         public bool AddBanner(AdminBannerViewModel bannerModel);
 
+        public bool GetUserEditFormPost(AdminUserVM userEditParams);
+        public bool GetUserAddFormPost(AdminUserAddViewModel userAddParams);
+
+        public bool DeleteUser(long userId);
+        public bool DeleteCms(long cmsId);
+        public bool DeleteMission(long missionId);
+        public bool DeleteMissionTheme(long missionthemeId);
+        public bool DeleteMissionSkill(long missionskillId);
+        public bool DeleteBanner(long bannerId); 
 
 
     }

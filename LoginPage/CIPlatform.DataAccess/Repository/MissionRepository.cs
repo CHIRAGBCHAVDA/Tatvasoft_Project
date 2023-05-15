@@ -42,7 +42,7 @@ namespace CIPlatform.DataAccess.Repository
                 IsFavourite = mission.FavouriteMissions.Where(m => m.UserId == long.Parse(myUserId) && m.DeletedAt == null).FirstOrDefault() != null ? true : false,
                 isApplied = mission.MissionApplications.FirstOrDefault(ma => ma.UserId == long.Parse(myUserId) && ma.ApprovalStatusId==2) != null ? true:false,
                 isPending = mission.MissionApplications.FirstOrDefault(ma => ma.UserId == long.Parse(myUserId) && ma.ApprovalStatusId==1) != null ? true:false,
-              }); ;
+              }); 
 
             //var missionListingCard = from M in _db.Missions
             //                         join C in _db.Cities on M.CityId equals C.CityId

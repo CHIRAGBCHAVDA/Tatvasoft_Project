@@ -393,5 +393,66 @@ namespace CIPlatform.Controllers
 
         }
         #endregion
+
+        #region Explore Feature
+
+        public IActionResult ExploreMission(string exploreString)
+        {
+            var ExploreMissions = new List<MissionListingCard>();
+            switch (exploreString)
+            {
+                case "topThemes":
+                    ExploreMissions = missionListingCards.ToList().Where(mission => mission.mission.DeletedAt == null).GroupBy(mlc => mlc.mission.MissionThemeId)
+                        .OrderByDescending(g => g.Count())
+                        .SelectMany(g=>g)
+                        //.Take(3)
+                        .ToList();
+                    break;
+
+                case "mostRanked":
+                    ExploreMissions = missionListingCards.ToList().Where(mission => mission.mission.DeletedAt == null)
+                        .GroupBy(mlc => mlc.mission.MissionRatings)
+                        .OrderByDescending(g => g.SelectMany(mlc => mlc.mission.MissionRatings)
+                              .Average(r => (decimal?)r.Rating) ?? null)
+                        .Select(g => g.First())
+                        .Take(3)
+                        .ToList();
+                    break;
+                
+                case "topFavorite":
+                    ExploreMissions = missionListingCards
+                        .Where(mlc => mlc.mission.DeletedAt == null)
+                        .OrderByDescending(mlc => mlc.mission.FavouriteMissions.Count())
+                        .Take(3)
+                        .ToList();
+                    break;
+
+                case "random":
+                    Random random = new Random();
+                    ExploreMissions = missionListingCards
+                        .Where(mlc => mlc.mission.DeletedAt == null)
+                        .AsEnumerable()
+                        .OrderBy(mlc => random.Next())
+                        .Take(3)
+                        .ToList();
+                    break;
+            }
+
+            if (ExploreMissions == null || ExploreMissions.Count() == 0)
+            {
+                a = ExploreMissions.Count();
+                return PartialView("_MissionNotFound");
+            }
+
+            a = ExploreMissions.Count();
+            ViewBag.totalMissions = a;
+
+            var toReturn = ExploreMissions;
+            return PartialView("_GridMissionLayout", toReturn.ToList());
+            
+
+        }
+
+        #endregion
     }
 }

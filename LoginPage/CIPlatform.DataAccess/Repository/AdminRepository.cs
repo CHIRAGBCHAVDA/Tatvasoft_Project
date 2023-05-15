@@ -832,6 +832,169 @@ namespace CIPlatform.DataAccess.Repository
             });
             return missionRecords;
         }
+
+        public bool GetUserEditFormPost(AdminUserVM userEditParams)
+        {
+            var user = _db.Users.First(u=> u.UserId==userEditParams.UserId);
+            user.FirstName = userEditParams.FirstName;
+            user.LastName = userEditParams.LastName;
+            user.Department = userEditParams.Department;
+            user.Email = userEditParams.Email;
+            user.EmployeeId = userEditParams.EmployeeId;
+            user.CityId = userEditParams.CityId;
+            user.CountryId = userEditParams.CountryId;
+            user.Status = userEditParams.Status;
+            user.Avatar = userEditParams.Avatar;
+            user.ProfileText = userEditParams.ProfileText;
+
+            try
+            {
+                _db.Users.Update(user);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool GetUserAddFormPost(AdminUserAddViewModel userAddParams)
+        {
+            string pwd = BCrypt.Net.BCrypt.HashPassword(userAddParams.Password);
+            var user = new User()
+            {
+                FirstName = userAddParams.FirstName,
+                LastName = userAddParams.LastName,
+                Department = userAddParams.Department,
+                Email = userAddParams.Email,
+                EmployeeId = userAddParams.EmployeeId,
+                CityId = (long)userAddParams.CityId,
+                CountryId = (long)userAddParams.CountryId,
+                Status = userAddParams.Status,
+                Avatar = userAddParams.Avatar,
+                ProfileText = userAddParams.ProfileText,
+                Password = pwd
+            };
+            try
+            {
+                _db.Users.Add(user);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+
+            }
+        }
+
+        public bool DeleteUser(long userId)
+        {
+            try
+            {
+                var user = _db.Users.First(u => u.UserId == userId);
+                user.DeletedAt = DateTime.Now;
+                _db.Users.Update(user);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+            
+        }
+
+        public bool DeleteCms(long cmsId)
+        {
+            try
+            {
+                var cms = _db.CmsPages.FirstOrDefault(cms => cms.CmsPageId == cmsId);
+                cms.DeletedAt = DateTime.Now;
+                _db.CmsPages.Update(cms);
+                _db.SaveChanges();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool DeleteMission(long missionId)
+        {
+            try
+            {
+                var mission = _db.Missions.FirstOrDefault(mission => mission.MissionId == missionId);
+                mission.DeletedAt = DateTime.Now;
+                _db.Missions.Update(mission);
+                _db.SaveChanges();
+
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
+
+        public bool DeleteMissionTheme(long missionthemeId)
+        {
+            try
+            {
+                var missionTheme = _db.MissionThemes.FirstOrDefault(mission => mission.MissionThemeId == missionthemeId);
+                missionTheme.DeletedAt = DateTime.Now;
+                _db.MissionThemes.Update(missionTheme);
+                _db.SaveChanges();
+
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
+
+        public bool DeleteMissionSkill(long missionskillId)
+        {
+            try
+            {
+                var missionSkill = _db.Skills.FirstOrDefault(skill => skill.SkillId == missionskillId);
+                missionSkill.DeletedAt = DateTime.Now;
+                _db.Skills.Update(missionSkill);
+                _db.SaveChanges();
+
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
+
+        public bool DeleteBanner(long bannerId)
+        {
+            try
+            {
+                var banner = _db.Banners.FirstOrDefault(banner => banner.BannerId == bannerId);
+                banner.DeletedAt = DateTime.Now;
+                _db.Banners.Update(banner);
+                _db.SaveChanges();
+
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
+
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using CIPlatform.Data;
+﻿using CIPlatform.Authorization;
+using CIPlatform.Data;
 using CIPlatform.DataAccess.Repository.IRepository;
 using CIPlatform.Models;
 using CIPlatform.Models.AdminViewModels;
@@ -19,13 +20,14 @@ namespace CIPlatform.Controllers
             _unitOfWork = unitOfWork;
             _db = db;
         }
+        [AuthAttribute("Admin")]
         public IActionResult AdminPage()
         {
-            if (HttpContext.Session.GetString("isAdmin")!=null)
-            {
+            //if (HttpContext.Session.GetString("isAdmin")!=null)
+            //{
                 var userData = _unitOfWork.AdminRepo.GetUserData();
                 return View(userData);
-            }
+            //}
             return RedirectToAction("PlatformLanding", "MissionListing");
         }
 
@@ -90,29 +92,7 @@ namespace CIPlatform.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = _unitOfWork.User.getUserByUID(userEditParams.UserId);
-                user.FirstName = userEditParams.FirstName;
-                user.LastName = userEditParams.LastName;
-                user.Department = userEditParams.Department;
-                user.Email = userEditParams.Email;
-                user.EmployeeId = userEditParams.EmployeeId;
-                user.CityId = userEditParams.CityId;
-                user.CountryId = userEditParams.CountryId;
-                user.Status = userEditParams.Status;
-                user.Avatar = userEditParams.Avatar;
-                user.ProfileText = userEditParams.ProfileText;
-
-                try
-                {
-                    _db.Users.Update(user);
-                    _db.SaveChanges();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-
+                return _unitOfWork.AdminRepo.GetUserEditFormPost(userEditParams);
             }
 
             return false;
@@ -123,37 +103,9 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public bool UserAddFormPost(AdminUserAddViewModel userAddParams)
         {
-            string pwd = BCrypt.Net.BCrypt.HashPassword(userAddParams.Password);
-            
-
             if (ModelState.IsValid)
             {
-                var user = new User()
-                {
-                    FirstName = userAddParams.FirstName,
-                    LastName = userAddParams.LastName,
-                    Department = userAddParams.Department,
-                    Email = userAddParams.Email,
-                    EmployeeId = userAddParams.EmployeeId,
-                    CityId = (long)userAddParams.CityId,
-                    CountryId = (long)userAddParams.CountryId,
-                    Status = userAddParams.Status,
-                    Avatar = userAddParams.Avatar,
-                    ProfileText = userAddParams.ProfileText,
-                    Password = pwd
-                };
-                try
-                {
-                    _db.Users.Add(user);
-                    _db.SaveChanges();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-
-                }
-
+                return _unitOfWork.AdminRepo.GetUserAddFormPost(userAddParams);
             }
             else
             {
@@ -550,10 +502,7 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public IActionResult DeleteUser(long userId)
         {
-            var user = _db.Users.FirstOrDefault(user => user.UserId == userId);
-            user.DeletedAt = DateTime.Now;
-            _db.Users.Update(user);
-            _db.SaveChanges();
+            bool isSuccess = _unitOfWork.AdminRepo.DeleteUser(userId);
 
             var userData = _unitOfWork.AdminRepo.getAllUserdata();
             var toAppendDataModel = userData.Take(10).ToList();
@@ -570,10 +519,7 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public IActionResult DeleteCms(long cmsId)
         {
-            var cms = _db.CmsPages.FirstOrDefault(cms => cms.CmsPageId== cmsId);
-            cms.DeletedAt = DateTime.Now;
-            _db.CmsPages.Update(cms);
-            _db.SaveChanges();
+            var isSuccess = _unitOfWork.AdminRepo.DeleteCms(cmsId);
 
             var cmsData = _unitOfWork.AdminRepo.getAllCmsdata();
             var toAppendDataModel = new PageList<AdminCmsVM>()
@@ -588,10 +534,7 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public IActionResult DeleteMission(long missionId)
         {
-            var mission = _db.Missions.FirstOrDefault(mission => mission.MissionId== missionId);
-            mission.DeletedAt = DateTime.Now;
-            _db.Missions.Update(mission);
-            _db.SaveChanges();
+            var isSuccess = _unitOfWork.AdminRepo.DeleteMission(missionId);
 
             var missionData = _unitOfWork.AdminRepo.getAllMissionData();
             var toAppendDataModel = new PageList<AdminMissionVM>()
@@ -606,11 +549,7 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public IActionResult DeleteMissionTheme(long missionthemeId)
         {
-            var missionTheme = _db.MissionThemes.FirstOrDefault(mission => mission.MissionThemeId == missionthemeId);
-            missionTheme.DeletedAt = DateTime.Now;
-            _db.MissionThemes.Update(missionTheme);
-            _db.SaveChanges();
-
+            var isSuccess = _unitOfWork.AdminRepo.DeleteMissionTheme(missionthemeId);
             var missionthemeData = _unitOfWork.AdminRepo.getAllMissionThemedata();
             var toAppendDataModel = new PageList<AdminMissionThemeVM>()
             {
@@ -624,10 +563,7 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public IActionResult DeleteMissionSkill(long missionskillId)
         {
-            var missionSkill = _db.Skills.FirstOrDefault(skill => skill.SkillId== missionskillId);
-            missionSkill.DeletedAt = DateTime.Now;
-            _db.Skills.Update(missionSkill);
-            _db.SaveChanges();
+            var isSuccess = _unitOfWork.AdminRepo.DeleteMissionSkill(missionskillId);
 
             var missionSkillData = _unitOfWork.AdminRepo.getAllSkillData();
 
@@ -644,10 +580,7 @@ namespace CIPlatform.Controllers
         [HttpPost]
         public IActionResult DeleteBanner(long bannerId)
         {
-            var banner = _db.Banners.FirstOrDefault(banner => banner.BannerId== bannerId);
-            banner.DeletedAt = DateTime.Now;
-            _db.Banners.Update(banner);
-            _db.SaveChanges();
+            var isSuccess = _unitOfWork.AdminRepo.DeleteBanner(bannerId);
 
             var bannerData = _unitOfWork.AdminRepo.getBannerData().ToList();
 

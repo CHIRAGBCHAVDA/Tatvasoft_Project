@@ -8,6 +8,25 @@
             </button>
             <div class="collapse navbar-collapse w-75" id="navbarText">
                 <ul class="navbar-nav w-100 mb-2 mb-lg-0 align-items-center d-flex-column justify-content-end">
+                    <li class="nav-item ">
+                        @*<a class="nav-link" href="#">Policy</a>*@
+                        <div class="dropdown">
+
+                            <a class="btn btn-secondary bg-white text-white  border border-0 dropdown-toggle" role="button" id="dropdownMenuExplore" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="text-dark">
+                                    Explore &nbsp; &nbsp; <img src="~/assets/drop-down.png" alt="">
+                                </span>
+                            </a>
+
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuExplore">
+                                <li><button class="dropdown-item" onclick="exploreFilter('topThemes')">Top Themes</button></li>
+                                <li><button class="dropdown-item" onclick="exploreFilter('mostRanked')">Most Ranked</button></li>
+                                <li><button class="dropdown-item" onclick="exploreFilter('topFavorite')">Top Favourite</button></li>
+                                <li><button class="dropdown-item" onclick="exploreFilter('random')">Random</button></li>
+                            </ul>
+                        </div>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" asp-action="StoryListing" asp-controller="StoryListing">Stories</a>
                     </li>
@@ -59,3 +78,42 @@
         </div>
     </nav>
 </div>
+
+<script>
+    
+function exploreFilter(str) {
+    $.ajax({
+        url: "/MissionListing/ExploreMission",
+        type: "POST",
+        data: {
+           "exploreString":str
+        },
+        success: function (result) {
+            $("#partialView").html(result);
+            getTotalCount();
+            if(str=="topThemes"){
+                $("#mission-listing-explore-p").html("Explore Top 3 Themes")
+            }
+            else if(str=="mostRanked"){
+                $("#mission-listing-explore-p").html("Explore Top 3 Ranked Missions")
+            }
+             else if(str=="topFavorite"){
+                $("#mission-listing-explore-p").html("Explore Top 3 Favorite Missions")
+            }
+             else if(str=="random"){
+                $("#mission-listing-explore-p").html("Explore Random Missions")
+            }
+
+            $("#partialView .page-item .page-link").hide();
+
+            
+           
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+
+</script>
