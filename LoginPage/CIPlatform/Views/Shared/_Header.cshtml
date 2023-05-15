@@ -51,6 +51,13 @@
                 </ul>
             </div>
             <div class="navbar-img d-flex w-100 justify-content-center">
+                <div class="notification-header mx-lg-5">
+                    <button class="btn p-1" data-bs-toggle="modal" data-bs-target="#notification-modal">
+                        <img src="~/assets/bell.png"/>
+                    </button>
+
+                </div>
+
                 @if (HttpContextAccessor.HttpContext.Session.GetString("userImage") != null)
                 {
                     <img src="@HttpContextAccessor.HttpContext.Session.GetString("userImage")" class="rounded-circle mx-2" style="height:40px;width:40px" alt="">
@@ -115,5 +122,139 @@ function exploreFilter(str) {
     });
 }
 
+$('#notification-modal').on('hidden.bs.modal', function (e) {
+    // Trigger the close event on the nested modal
+    $('#notification-settings-modal').modal('hide');
+  });
+
+  function changeModalBody(){
+      $("#tempNoti").load("/MissionListing/GetNotificationPrefForm");
+  }
+
 
 </script>
+
+
+
+<div class="modal fade" id="notification-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn p-2" onclick="changeModalBody()" @*data-bs-toggle="modal" data-bs-target="#notification-settings-modal"*@>
+            <img src="~/assets/settings.png"/>
+        </button>
+        <h1 class="modal-title fs-5" id="staticBackdropLabel" >Notification</h1>
+        <button type="button" class="btn text-secondary">Clear All</button>
+      </div>
+      <div class="modal-body" id="tempNoti">
+        <div class="d-flex align-items-center border-bottom justify-content-between notification-for-user">
+            <img src="~/assets/add.png"/>
+            <p>This is the notification for user</p>
+            <img src="~/assets/checked.png"/>
+        </div>
+        <div class="d-flex align-items-center border-bottom justify-content-between notification-for-user">
+            <img src="~/assets/add.png"/>
+            <p>This is the notification for user</p>
+            <img src="~/assets/checked.png"/>
+        </div>
+        <div class="d-flex align-items-center border-bottom justify-content-between notification-for-user">
+            <img src="~/assets/add.png"/>
+            <p>This is the notification for user</p>
+            <img src="~/assets/checked.png"/>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+@*
+
+<div class="modal fade" id="notification-settings-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+       
+        <h1 class="modal-title fs-5 text-center" id="staticBackdropLabel">Notification Settings</h1>
+        
+      </div>
+      <div class="modal-body">
+        <p class="ps-3 bg-secondary text-light text-left">Get a notification for</p>
+        <div class="form-check d-flex justify-content-between">
+            <label class="form-check-label" for="RecommendedMissions">
+                Recommended Missions
+            </label>
+            <input class="form-check-input" type="checkbox" value="" id="RecommendedMissions">
+        </div>
+         <div class="form-check d-flex justify-content-between">
+            <label class="form-check-label" for="VolunteeringHours">
+                Volunteering Hours
+            </label>
+            <input class="form-check-input" type="checkbox" value="" id="VolunteeringHours">
+        </div>
+         <div class="form-check d-flex justify-content-between">
+            <label class="form-check-label" for="VolunteeringGoals">
+                Volunteering Goals
+            </label>
+            <input class="form-check-input" type="checkbox" value="" id="VolunteeringGoals">
+        </div>
+         <div class="form-check d-flex justify-content-between">
+            <label class="form-check-label" for="MyComments">
+                My Comments
+            </label>
+            <input class="form-check-input" type="checkbox" value="" id="MyComments">
+        </div>
+         <div class="form-check d-flex justify-content-between">
+            <label class="form-check-label" for="MyStories">
+                My Stories
+            </label>
+            <input class="form-check-input" type="checkbox" value="" id="MyStories">
+        </div>
+         <div class="form-check d-flex justify-content-between">
+            <label class="form-check-label" for="NewMissions">
+                New Missions
+            </label>
+            <input class="form-check-input" type="checkbox" value="" id="NewMissions">
+        </div>
+         <div class="form-check d-flex justify-content-between">
+            <label class="form-check-label" for="NewMessages">
+                New Messages
+            </label>
+            <input class="form-check-input" type="checkbox" value="" id="NewMessages">
+        </div>
+         <div class="form-check d-flex justify-content-between">
+            <label class="form-check-label" for="RecommendedStory">
+                Recommended Story
+            </label>
+            <input class="form-check-input" type="checkbox" value="" id="RecommendedStory">
+        </div>
+         <div class="form-check d-flex justify-content-between">
+            <label class="form-check-label" for="MissionApplication">
+                Mission Application
+            </label>
+            <input class="form-check-input" type="checkbox" value="" id="MissionApplication">
+        </div>
+         <div class="form-check d-flex justify-content-between">
+            <label class="form-check-label" for="News">
+                News
+            </label>
+            <input class="form-check-input" type="checkbox" value="" id="News">
+        </div>
+         <div class="form-check d-flex justify-content-between">
+            <label class="form-check-label" for="ReceiveNotificationsbyMail">
+               Receive Notifications by Mail
+            </label>
+            <input class="form-check-input" type="checkbox" value="" id="ReceiveNotificationsbyMail">
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-target="#notification-settings-modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>*@

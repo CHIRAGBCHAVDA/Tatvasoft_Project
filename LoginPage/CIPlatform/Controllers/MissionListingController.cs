@@ -454,5 +454,11 @@ namespace CIPlatform.Controllers
         }
 
         #endregion
+
+        public IActionResult GetNotificationPrefForm()
+        {
+            return PartialView("_NotificationPrefForm");
+        }
+
     }
 }

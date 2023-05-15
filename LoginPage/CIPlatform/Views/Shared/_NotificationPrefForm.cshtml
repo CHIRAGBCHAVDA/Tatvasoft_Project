@@ -1,0 +1,82 @@
+﻿
+
+
+
+<p class="ps-3 bg-secondary text-light text-left">Get a notification for</p>
+<div class="form-check d-flex justify-content-between">
+    <label class="form-check-label" for="RecommendedMissions">
+        Recommended Missions
+    </label>
+    <input class="form-check-input notification-pref-check" type="checkbox" value="" id="RecommendedMissions">
+</div>
+<div class="form-check d-flex justify-content-between">
+    <label class="form-check-label" for="VolunteeringHours">
+        Volunteering Hours
+    </label>
+    <input class="form-check-input notification-pref-check" type="checkbox" value="" id="VolunteeringHours">
+</div>
+<div class="form-check d-flex justify-content-between">
+    <label class="form-check-label" for="VolunteeringGoals">
+        Volunteering Goals
+    </label>
+    <input class="form-check-input notification-pref-check" type="checkbox" value="" id="VolunteeringGoals">
+</div>
+<div class="form-check d-flex justify-content-between">
+    <label class="form-check-label" for="MyComments">
+        My Comments
+    </label>
+    <input class="form-check-input notification-pref-check" type="checkbox" value="" id="MyComments">
+</div>
+<div class="form-check d-flex justify-content-between">
+    <label class="form-check-label" for="MyStories">
+        My Stories
+    </label>
+    <input class="form-check-input notification-pref-check" type="checkbox" value="" id="MyStories">
+</div>
+<div class="form-check d-flex justify-content-between">
+    <label class="form-check-label" for="NewMissions">
+        New Missions
+    </label>
+    <input class="form-check-input notification-pref-check" type="checkbox" value="" id="NewMissions">
+</div>
+<div class="form-check d-flex justify-content-between">
+    <label class="form-check-label" for="NewMessages">
+        New Messages
+    </label>
+    <input class="form-check-input notification-pref-check" type="checkbox" value="" id="NewMessages">
+</div>
+<div class="form-check d-flex justify-content-between">
+    <label class="form-check-label" for="RecommendedStory">
+        Recommended Story
+    </label>
+    <input class="form-check-input notification-pref-check" type="checkbox" value="" id="RecommendedStory">
+</div>
+<div class="form-check d-flex justify-content-between">
+    <label class="form-check-label" for="MissionApplication">
+        Mission Application
+    </label>
+    <input class="form-check-input notification-pref-check" type="checkbox" value="" id="MissionApplication">
+</div>
+<div class="form-check d-flex justify-content-between">
+    <label class="form-check-label" for="News">
+        News
+    </label>
+    <input class="form-check-input notification-pref-check" type="checkbox" value="" id="News">
+</div>
+<div class="form-check d-flex justify-content-between">
+    <label class="form-check-label" for="ReceiveNotificationsbyMail">
+        Receive Notifications by Mail
+    </label>
+    <input class="form-check-input notification-pref-check" type="checkbox" value="" id="ReceiveNotificationsbyMail">
+</div>
+
+<button type="button" class="btn dismiss-modal-btn bg-white text-dark border border-dark rounded-pill px-3 me-2" data-bs-dismiss="modal" id="">Cancel</button>
+<button type="button" class="btn bg-white text-orange bg-white border-orange rounded-pill px-3" onclick="setUserPref()">Submit</button>
+                       
+
+<script>
+    function setUserPref(){
+        let checkedPref = document.querySelectorAll(".notification-pref-check:checked");
+        console.log(checkedPref);
+    }
+</script>

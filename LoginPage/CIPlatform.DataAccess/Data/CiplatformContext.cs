@@ -37,6 +37,7 @@ namespace CIPlatform.Data
         public virtual DbSet<MissionSkill> MissionSkills { get; set; } = null!;
         public virtual DbSet<MissionTheme> MissionThemes { get; set; } = null!;
         public virtual DbSet<MissionType> MissionTypes { get; set; } = null!;
+        public virtual DbSet<Notification> Notifications { get; set; } = null!;
         public virtual DbSet<PasswordReset> PasswordResets { get; set; } = null!;
         public virtual DbSet<Skill> Skills { get; set; } = null!;
         public virtual DbSet<Story> Stories { get; set; } = null!;
@@ -45,6 +46,8 @@ namespace CIPlatform.Data
         public virtual DbSet<StoryStatus> StoryStatuses { get; set; } = null!;
         public virtual DbSet<Timesheet> Timesheets { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<UserNotification> UserNotifications { get; set; } = null!;
+        public virtual DbSet<UserNotificationPref> UserNotificationPrefs { get; set; } = null!;
         public virtual DbSet<UserSkill> UserSkills { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -812,6 +815,16 @@ namespace CIPlatform.Data
                     .HasColumnName("updated_at");
             });
 
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.Property(e => e.NotificationId).HasColumnName("notification_id");
+
+                entity.Property(e => e.NotificationName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("notification_name");
+            });
+
             modelBuilder.Entity<PasswordReset>(entity =>
             {
                 entity.HasNoKey();
@@ -1207,6 +1220,45 @@ namespace CIPlatform.Data
                     .HasForeignKey(d => d.CountryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_user_country");
+            });
+
+            modelBuilder.Entity<UserNotification>(entity =>
+            {
+                entity.Property(e => e.MarkedAsRead).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.NotificationDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.NotificationText).HasColumnType("text");
+
+                entity.HasOne(d => d.Notification)
+                    .WithMany(p => p.UserNotifications)
+                    .HasForeignKey(d => d.NotificationId)
+                    .HasConstraintName("FK__UserNotif__Notif__29AC2CE0");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserNotifications)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK__UserNotif__UserI__28B808A7");
+            });
+
+            modelBuilder.Entity<UserNotificationPref>(entity =>
+            {
+                entity.HasKey(e => e.PrefId)
+                    .HasName("PK__UserNoti__1F832A20BF9ABBB2");
+
+                entity.ToTable("UserNotificationPref");
+
+                entity.HasOne(d => d.Notification)
+                    .WithMany(p => p.UserNotificationPrefs)
+                    .HasForeignKey(d => d.NotificationId)
+                    .HasConstraintName("FK__UserNotif__Notif__24E777C3");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserNotificationPrefs)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK__UserNotif__UserI__25DB9BFC");
             });
 
             modelBuilder.Entity<UserSkill>(entity =>

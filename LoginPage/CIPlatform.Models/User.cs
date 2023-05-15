@@ -16,6 +16,8 @@ namespace CIPlatform.Models
             StoryInviteFromUsers = new HashSet<StoryInvite>();
             StoryInviteToUsers = new HashSet<StoryInvite>();
             Timesheets = new HashSet<Timesheet>();
+            UserNotificationPrefs = new HashSet<UserNotificationPref>();
+            UserNotifications = new HashSet<UserNotification>();
             UserSkills = new HashSet<UserSkill>();
         }
 
@@ -56,6 +58,8 @@ namespace CIPlatform.Models
         public virtual ICollection<StoryInvite> StoryInviteFromUsers { get; set; }
         public virtual ICollection<StoryInvite> StoryInviteToUsers { get; set; }
         public virtual ICollection<Timesheet> Timesheets { get; set; }
+        public virtual ICollection<UserNotificationPref> UserNotificationPrefs { get; set; }
+        public virtual ICollection<UserNotification> UserNotifications { get; set; }
         public virtual ICollection<UserSkill> UserSkills { get; set; }
     }
 }
