@@ -667,6 +667,24 @@ namespace CIPlatform.DataAccess.Repository
                     _db.Missions.Update(mission);
                 }
                 _db.SaveChanges();
+
+                var checkToNotify = _db.UserNotificationPrefs.FirstOrDefault(noti => noti.UserId == MissionApplication.UserId && noti.NotificationId == 8);
+                if(checkToNotify != null)
+                {
+                    UserNotification notification = new UserNotification()
+                    {
+                        UserId = MissionApplication.UserId,
+                        NotificationId = 8,
+                        NotificationText = "Mission Application for " + MissionApplication.Mission.Title + " is Approved!!",
+                        NotificationAnchorId = MissionApplication.MissionId,
+                        NotificationDate = DateTime.Now,
+                        MarkedAsRead = 0
+                    };
+
+                    _db.UserNotifications.Add(notification);
+                    _db.SaveChanges();
+                }
+
                 return true;
             }
             catch(Exception e)

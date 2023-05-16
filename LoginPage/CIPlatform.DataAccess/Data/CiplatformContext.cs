@@ -1235,12 +1235,12 @@ namespace CIPlatform.Data
                 entity.HasOne(d => d.Notification)
                     .WithMany(p => p.UserNotifications)
                     .HasForeignKey(d => d.NotificationId)
-                    .HasConstraintName("FK__UserNotif__Notif__29AC2CE0");
+                    .HasConstraintName("FK__UserNotif__Notif__2F650636");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserNotifications)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__UserNotif__UserI__28B808A7");
+                    .HasConstraintName("FK__UserNotif__UserI__2E70E1FD");
             });
 
             modelBuilder.Entity<UserNotificationPref>(entity =>

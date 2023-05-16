@@ -545,5 +545,40 @@ namespace CIPlatform.DataAccess.Repository
 
             return toReturn;
         }
+
+        public BaseResponseViewModel setNotificationPref(int[] notificationPrefIds)
+        {
+            BaseResponseViewModel baseResponse = new BaseResponseViewModel();
+            var userId = long.Parse(_httpContext.Session.GetString("userId"));
+            try
+            {
+                _db.UserNotificationPrefs.RemoveRange(_db.UserNotificationPrefs.Where(prefs => prefs.UserId == userId));
+                foreach (var id in notificationPrefIds)
+                {
+                    UserNotificationPref toAdd = new UserNotificationPref()
+                    {
+                        NotificationId = id,
+                        UserId = userId
+                    };
+                    _db.UserNotificationPrefs.Add(toAdd);
+                }
+
+                _db.SaveChanges();
+
+                baseResponse.Success = true;
+                baseResponse.Message = "Notification preferences set successfully";
+                baseResponse.StatusCode = 200;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return baseResponse;
+        }
+
+        
+
     }
 }

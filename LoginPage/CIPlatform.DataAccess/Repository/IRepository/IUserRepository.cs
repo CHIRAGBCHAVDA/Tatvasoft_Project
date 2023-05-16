@@ -35,5 +35,7 @@ namespace CIPlatform.DataAccess.Repository.IRepository
 
         public DateTime getAppliedDateByMissionId(long userId, long missionId);
         public Admin adminLogin(string email, string password);
+        public BaseResponseViewModel setNotificationPref(int[] notificationPrefIds);
+        
     }
 }

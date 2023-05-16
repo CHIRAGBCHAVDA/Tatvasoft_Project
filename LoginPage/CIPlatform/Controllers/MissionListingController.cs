@@ -3,6 +3,7 @@ using CIPlatform.Data;
 using CIPlatform.DataAccess.Repository.IRepository;
 using CIPlatform.Models;
 using CIPlatform.Models.ViewDataModels;
+using CIPlatform.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 
@@ -459,6 +460,29 @@ namespace CIPlatform.Controllers
         {
             return PartialView("_NotificationPrefForm");
         }
+        public IActionResult GetUserNotifications()
+        {
+            var userId = long.Parse(HttpContext.Session.GetString("userId"));
+            var modelToAppend = StoredProcedureManager.GetUserNotifications(userId);
+            return PartialView("_UserNotificationPartial",modelToAppend);
+        }
 
+        [HttpPost]
+        public BaseResponseViewModel StoreUserPref(int[] notificationPrefIds)
+        {
+            BaseResponseViewModel toReturn = new BaseResponseViewModel();
+            toReturn = _unitOfWork.User.setNotificationPref(notificationPrefIds);
+            return toReturn;
+        }
+
+        [HttpPost]
+        public List<int> GetUserNotificationPreferences()
+        {
+            var userId = long.Parse(HttpContext.Session.GetString("userId"));
+            List<int> prefIds = StoredProcedureManager.GetNotificationPrefIdsByUserId(userId);
+            return prefIds;
+        }
+
+        
     }
 }

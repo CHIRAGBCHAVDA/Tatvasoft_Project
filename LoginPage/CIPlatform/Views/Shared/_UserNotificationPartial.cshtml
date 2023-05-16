@@ -1,0 +1,40 @@
+﻿@using CIPlatform.Models.ViewDataModels
+@model List<UserNotification>
+
+@foreach (var notification in Model)
+{
+    <div class="d-flex align-items-center border-bottom justify-content-between notification-for-user">
+        @if (notification.NotificationId==8)
+        {
+            <img src="~/assets/mission.png" style="height:30px;width:30px"/>
+            <a href='@Url.Action("VolunteeringMissionPage","MissionListing")?missionId=@notification.NotificationAnchorId' class="fst-normal text-decoration-none">
+                <p class="text-dark ps-3">@notification.NotificationText</p>
+            </a>
+        }
+        @if (notification.MarkedAsRead == 1)
+        {
+            <img src="~/assets/checked.png" />
+        }
+        else if (notification.MarkedAsRead == 0)
+        {
+            <img src="~/assets/checked.png" />
+        }
+        
+    </div>
+}
+
+<div class="d-flex align-items-center border-bottom justify-content-between notification-for-user">
+    <img src="~/assets/add.png" />
+    <p>This is the notification for user</p>
+    <img src="~/assets/checked.png" />
+</div>
+<div class="d-flex align-items-center border-bottom justify-content-between notification-for-user">
+    <img src="~/assets/add.png" />
+    <p>This is the notification for user</p>
+    <img src="~/assets/checked.png" />
+</div>
+<div class="d-flex align-items-center border-bottom justify-content-between notification-for-user">
+    <img src="~/assets/add.png" />
+    <p>This is the notification for user</p>
+    <img src="~/assets/checked.png" />
+</div>

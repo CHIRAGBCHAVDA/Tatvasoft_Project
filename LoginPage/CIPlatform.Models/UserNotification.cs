@@ -9,6 +9,7 @@ namespace CIPlatform.Models
         public long? UserId { get; set; }
         public int? NotificationId { get; set; }
         public string NotificationText { get; set; } = null!;
+        public long? NotificationAnchorId { get; set; }
         public DateTime NotificationDate { get; set; }
         public byte? MarkedAsRead { get; set; }
 
